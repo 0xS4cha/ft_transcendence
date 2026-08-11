@@ -1,4 +1,24 @@
 services:
+  backend:
+    build: backend
+    container_name: transcendance-backend
+    restart: unless-stopped
+    expose:
+      - "3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:3000/ || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    networks:
+      - localnet_transcendance
+
   postgres:
     image: postgres:15
     container_name: transcendance-pg-db
@@ -42,6 +62,8 @@ services:
       - "8443:443"
     depends_on:
       web:
+        condition: service_healthy
+      backend:
         condition: service_healthy
     networks:
       - localnet_transcendance
