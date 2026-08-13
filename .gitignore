@@ -5,4 +5,8 @@
 *.pyc
 *.pyo
 *.pyd
+node_modules
 web/dist
+backend/dist
+backend/node_modules
+backend/generated
