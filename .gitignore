@@ -5,6 +5,7 @@
 *.pyc
 *.pyo
 *.pyd
+.venv/
 node_modules
 web/dist
 backend/dist
