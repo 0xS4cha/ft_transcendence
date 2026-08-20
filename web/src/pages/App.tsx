@@ -8,10 +8,10 @@ export default function App() {
             {
             /* <Route path="/home" element={<home />} /> */
 
-            /* <Route path="info/units" element={<units />} /> */
-            /* <Route path="info/items" element={<item />} /> */
-            /* <Route path="info/traits" element={<traits />} /> */
-            /* <Route path="info/patch_note" element={<patch_note />} /> */
+            /* <Route path="/info/units" element={<units />} /> */
+            /* <Route path="/info/items" element={<item />} /> */
+            /* <Route path="/info/traits" element={<traits />} /> */
+            /* <Route path="/info/patch_note" element={<patch_note />} /> */
 
             /* <Route path="/builder" element={<builder />} /> */
             
