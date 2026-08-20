@@ -11,3 +11,5 @@ web/dist
 backend/dist
 backend/node_modules
 backend/generated
+.~lock.*.csv#
+.gitignore
