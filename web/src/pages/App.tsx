@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes } from "react-router-dom";
-
+import { RouterProvider } from "react-router-dom";
+import { router } from "@/lib/router";
 
 export default function App() {
   return (
