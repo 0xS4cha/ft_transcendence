@@ -5,6 +5,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+body {
+  background-color: #07070B;
+  color: white;
+}
+
 @theme inline {
     --font-heading: var(--font-sans);
     --font-sans: 'Geist Variable', sans-serif;
@@ -49,7 +54,7 @@
 }
 
 :root {
-    --background: oklch(1 0 0);
+    --background: oklch(13.441% 0.00002 271.152);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.145 0 0);
