@@ -18,8 +18,8 @@ const NAV_ITEMS: readonly NavItem[] = [
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#07070B]/90 backdrop-blur-md">
-      <div className="flex h-16 w-full items-center justify-between px-8">
+    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#07070B]/80 backdrop-blur">
+      <div className="flex h-16 w-full items-center justify-between px-8 ">
         <Link
           to="/"
           className="bg-linear-to-r from-[#4E80EE] via-[#38E1FF] to-[#70A6FF] bg-clip-text text-xl font-bold tracking-wide text-transparent"
