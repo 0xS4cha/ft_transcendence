@@ -1,5 +1,5 @@
 export default function Layout() {
-    return (<>
+    return (<div className="fixed">
     Layout
-    </>)
+    </div>)
 }
