@@ -32,4 +32,4 @@ COPY    --from=builder /app/src /app/src
 
 ENV     PATH="/app/.venv/bin:$PATH"
 
-CMD     ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "3000"]
+CMD     ["uv", "run", "fastapi", "dev", "src/main.py", "--host", "0.0.0.0", "--port", "3000"]
