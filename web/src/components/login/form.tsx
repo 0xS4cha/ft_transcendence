@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
+import { toast } from "@/components/ui/toast"
 
 type LoginFormProps = React.ComponentProps<"form"> & {
   func?: (type: boolean) => void;
@@ -21,9 +22,42 @@ export function LoginForm({
   func,
   ...props
 }: LoginFormProps) {
-  const [viewPassword, setViewPassword] = useState(true)
+  const [viewPassword, setViewPassword] = useState(true);
+  const [formData, setFormData] = useState({});
+
+  function handleChange(event) {
+        const { name, value } = event.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    fetch("/login", {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    }).then(response => {
+      if (!response.ok) {
+        toast.add({
+          type: "error",
+          title: "Login failed",
+        });
+      }
+      return response.json();
+    }).then(userData => {
+        toast.add({
+          type: "info",
+          title: "Login successfully",
+        });
+    }).catch(() => {
+        toast.add({
+          type: "error",
+          title: "Login failed (INTERNAL)",
+        });
+    });
+  }
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form className={cn("flex flex-col gap-6", className)} onSubmit={handleSubmit} {...props}>
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="text-2xl font-bold">Login to your account</h1>
@@ -33,14 +67,14 @@ export function LoginForm({
         </div>
         <Field>
           <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input id="email" type="email" placeholder="m@example.com" required />
+          <Input id="email" type="email" placeholder="m@example.com" required onChange={handleChange}/>
         </Field>
         <Field>
           <div className="flex items-center">
             <FieldLabel htmlFor="password">Password</FieldLabel>
           </div>
           <ButtonGroup>
-            <Input id="password" type={viewPassword ? "password" : "text"} required />
+            <Input id="password" type={viewPassword ? "password" : "text"} required onChange={handleChange}/>
             <Button variant={viewPassword ? "outline" : "default"} onClick={() => setViewPassword(!viewPassword)}><Eye/></Button>
           </ButtonGroup>
           <a

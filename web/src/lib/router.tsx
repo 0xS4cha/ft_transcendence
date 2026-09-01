@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "@/components/Layout";
+import { Toaster } from "@/components/ui/toast"
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    // element: <Layout />,
+    // element: <Toaster />,
     children: [
       {
         index: true,
