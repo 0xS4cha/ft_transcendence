@@ -1,28 +1,35 @@
-FROM    node:22-alpine AS builder
+FROM    python:3.14-slim-bookworm AS builder
+
+COPY    --from=ghcr.io/astral-sh/uv:0.12.8 /uv /uvx /bin/
+
+ENV     UV_COMPILE_BYTECODE=1 \
+        UV_LINK_MODE=copy
 
 WORKDIR /app
 
-COPY    package*.json ./
-COPY    prisma ./prisma
-COPY    . .
+COPY    app/pyproject.toml app/uv.lock ./
 
-RUN     npm ci && \
-        npx prisma generate && \
-        npm run build
+RUN     --mount=type=cache,target=/root/.cache/uv \
+        uv sync --frozen --no-install-project --no-dev
 
-FROM    node:22-alpine
+COPY    app/ .
+
+RUN     --mount=type=cache,target=/root/.cache/uv \
+        uv sync --frozen --no-dev
+
+
+
+FROM    python:3.14-slim-bookworm
+
+RUN     apt-get update && \
+        apt-get install -y --no-install-recommends wget && \
+        rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-COPY    package*.json ./
-COPY    --from=builder /app/node_modules ./node_modules
-COPY    --from=builder /app/generated ./generated
-COPY    --from=builder /app/dist ./dist
-COPY    --from=builder /app/prisma ./prisma
-COPY    --from=builder /app/prisma.config.ts ./prisma.config.ts
+COPY    --from=builder /app/.venv /app/.venv
+COPY    --from=builder /app/src /app/src
 
-RUN     npm ci --omit=dev
+ENV     PATH="/app/.venv/bin:$PATH"
 
-EXPOSE  3000
-
-CMD     ["node", "dist/src/main.js"]
+CMD     ["uv", "run", "fastapi", "dev", "src/main.py", "--host", "0.0.0.0", "--port", "3000"]
