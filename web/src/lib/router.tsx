@@ -1,10 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "@/components/Layout";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    // element: <Toaster />,
     children: [
       {
         index: true,
@@ -13,6 +12,13 @@ export const router = createBrowserRouter([
           return { Component };
         },
       },
+      {
+        path: "authenticate",
+        lazy: async () => {
+          const { default: Component } = await import("@/pages/Authenticate");
+          return { Component }; 
+        }
+      }
     //   {
     //     path: "units",
     //     lazy: async () => {
