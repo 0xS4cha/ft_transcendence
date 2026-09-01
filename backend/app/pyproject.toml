@@ -19,3 +19,6 @@ dev = [
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+
+[tool.fastapi]
+entrypoint = "src.main:app"

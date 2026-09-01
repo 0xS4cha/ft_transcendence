@@ -29,7 +29,9 @@ WORKDIR /app
 
 COPY    --from=builder /app/.venv /app/.venv
 COPY    --from=builder /app/src /app/src
+COPY    --from=builder /app/pyproject.toml /app/pyproject.toml
 
 ENV     PATH="/app/.venv/bin:$PATH"
 
-CMD     ["uv", "run", "fastapi", "dev", "src/main.py", "--host", "0.0.0.0", "--port", "3000"]
+CMD     ["fastapi", "dev", "--host", "0.0.0.0", "--port", "3000"]
+#dev command

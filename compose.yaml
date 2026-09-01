@@ -16,6 +16,8 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: ${DATABASE_URL}
+    volumes:
+      - ./backend/app/src:/app/src #dev env, change when prod
     networks:
       - localnet_transcendence
 
