@@ -15,25 +15,25 @@ import { useState } from "react"
 import { Link } from "react-router-dom";
 import { toast } from "@/components/ui/toast"
 
-type LoginFormProps = React.ComponentProps<"form"> & {
-  func?: (type: boolean) => void;
+type SignupFormProps = React.ComponentProps<"form"> & {
+  func: (type: boolean) => void;
 };
 
 export function SignupForm({
   className,
   func,
   ...props
-}: LoginFormProps) {
+}: SignupFormProps) {
   const [viewPassword, setViewPassword] = useState(true);
   const [viewConfirmPassword, setViewConfirmPassword] = useState(true);
   const [formData, setFormData] = useState({});
 
-    function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     }
 
-  function handleSubmit(event) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     fetch("/signup", {
       method: "POST",
@@ -48,15 +48,16 @@ export function SignupForm({
       }
       return response.json();
     }).then(userData => {
-        toast.add({
-          type: "info",
-          title: "Sign up successfully",
-        });
+      console.log(userData);
+      toast.add({
+        type: "info",
+        title: "Sign up successfully",
+      });
     }).catch(() => {
-        toast.add({
-          type: "error",
-          title: "Sign up failed (INTERNAL)",
-        });
+      toast.add({
+        type: "error",
+        title: "Sign up failed (INTERNAL)",
+      });
     });
   }
 

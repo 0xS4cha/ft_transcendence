@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Toaster } from "@/components/ui/toast"
 
 export const router = createBrowserRouter([
   {
