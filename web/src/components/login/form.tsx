@@ -14,7 +14,7 @@ import { useState } from "react"
 import { toast } from "@/components/ui/toast"
 
 type LoginFormProps = React.ComponentProps<"form"> & {
-  func?: (type: boolean) => void;
+  func: (type: boolean) => void;
 };
 
 export function LoginForm({
@@ -25,12 +25,12 @@ export function LoginForm({
   const [viewPassword, setViewPassword] = useState(true);
   const [formData, setFormData] = useState({});
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     }
 
-  function handleSubmit(event) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     fetch("/login", {
       method: "POST",
@@ -45,15 +45,16 @@ export function LoginForm({
       }
       return response.json();
     }).then(userData => {
-        toast.add({
-          type: "info",
-          title: "Login successfully",
-        });
+      console.log(userData);
+      toast.add({
+        type: "info",
+        title: "Login successfully",
+      });
     }).catch(() => {
-        toast.add({
-          type: "error",
-          title: "Login failed (INTERNAL)",
-        });
+      toast.add({
+        type: "error",
+        title: "Login failed (INTERNAL)",
+      });
     });
   }
   return (
