@@ -1,0 +1,8 @@
+app/.pytest_cache
+app/.ruff_cache
+app/.venv
+app/.env
+app/.python-version
+app/src/__pycache__
+app/tests
+app/README.md
