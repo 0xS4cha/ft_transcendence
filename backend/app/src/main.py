@@ -1,16 +1,12 @@
-from fastapi import FastAPI
+from    fastapi     import  FastAPI
+from    .database    import  lifespan
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
-
-@app.get("/health")
+@app.head("/health")
 def health():
-    return {"status": "ok"}
+    return {"status": "healthy"}
 
 @app.get("/")
 def home():
     return {"message": "First FastAPI app"}
-
-@app.head("/")
-def index():
-    return {"message": "Healthy"}
