@@ -38,10 +38,8 @@ services:
       - localnet_transcendence
 
   character_set:
-    build: 
+    build:
       context: character_set
-      args:
-        DATABASE_URL: ${DATABASE_URL}
     container_name: transcendence-character-set
     restart: unless-stopped
     depends_on:

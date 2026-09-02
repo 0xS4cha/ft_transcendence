@@ -1,7 +1,5 @@
 FROM python:3.12.14-alpine3.24
 
-ARG DATABASE_URL
-
 RUN mkdir -p /opt/character_set/
 WORKDIR /opt/character_set/
 
@@ -10,8 +8,14 @@ COPY ./crontab .
 
 RUN /usr/bin/crontab /opt/character_set/crontab
 
-RUN pip install requests pydantic SQLAlchemy psycopg2-binary
+RUN pip install --no-cache-dir \
+    requests \
+    pydantic \
+    SQLAlchemy \
+    psycopg2-binary
 
-RUN python3 /opt/character_set/app.py 2>&1
+COPY entrypoint.sh .
 
-CMD ["/usr/sbin/crond", "-f"]
+RUN chmod +x entrypoint.sh
+
+CMD ["/opt/character_set/entrypoint.sh"]
