@@ -6,8 +6,12 @@ import {
   ChevronsRight,
 } from "lucide-react";
 
-export function UnitsPagination({ table }: { table: any }) {
-    return (
+interface DataTablePaginationProps {
+  table: any;
+}
+
+export function DataTablePagination({ table }: DataTablePaginationProps) {
+  return (
     <>
       <div className="flex w-fit items-center justify-center font-medium text-sm">
         Page {table.state.pagination.pageIndex + 1} of {table.getPageCount()}
@@ -56,4 +60,4 @@ export function UnitsPagination({ table }: { table: any }) {
       </div>
     </>
   );
-};
+}

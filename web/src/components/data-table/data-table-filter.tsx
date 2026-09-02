@@ -78,7 +78,11 @@ const DEFAULTS = {
   server: "euw",
 } as const;
 
-export function UnitsFilter({ table }: { table: any }) {
+interface DataTableFilterProps {
+  table: any;
+}
+
+export function DataTableFilter({ table }: DataTableFilterProps) {
   const setFilter =
     (table?.getColumn("set")?.getFilterValue() as string | undefined) ?? DEFAULTS.set;
   const queueFilter =
@@ -221,4 +225,4 @@ export function UnitsFilter({ table }: { table: any }) {
       )}
     </div>
   );
-};
+}
