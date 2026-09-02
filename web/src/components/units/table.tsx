@@ -1,6 +1,4 @@
-"use client";
-import * as React from "react";
-
+import { useState, useMemo } from "react"
 import {
   type ColumnFiltersState,
   type ColumnVisibilityState,
@@ -10,10 +8,6 @@ import {
 } from "@tanstack/react-table"
 import {
   ArrowUpDown,
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
   Search,
 } from "lucide-react"
 
@@ -33,8 +27,7 @@ import { dataTableFeatures } from "@/lib/data-table-features"
 import fake_data from "./data.json"
 import { UnitsColumns } from "@/components/units/columns"
 import { UnitsFilter } from "@/components/units/filter"
-
-
+import { UnitsPagination } from "@/components/units/pagination"
 
 const sortOptions = [
   { value: "name-asc", label: "Name A-Z" },
@@ -47,15 +40,15 @@ const sortOptionState = {
 } satisfies Record<(typeof sortOptions)[number]["value"], SortingState>;
 
 export function UnitsTable() {
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = React.useState<SortingState>([{ id: "unit", desc: false }]);
+  const [rowSelection, setRowSelection] = useState({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([{ id: "unit", desc: false }]);
   const data = fake_data.units;
-  const [columnVisibility] = React.useState<ColumnVisibilityState>({
+  const [columnVisibility] = useState<ColumnVisibilityState>({
     search: false,
     joinedWindow: false,
   });
-  const [pagination, setPagination] = React.useState<PaginationState>({
+  const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
@@ -81,7 +74,7 @@ export function UnitsTable() {
 
   const searchQuery = (table.getColumn("search")?.getFilterValue() as string | undefined) ?? "";
 
-  const sortValue = React.useMemo(() => {
+  const sortValue = useMemo(() => {
     const currentSort = sorting[0];
     if (currentSort.id === "unit" && !currentSort.desc) return "name-asc";
     if (currentSort.id === "unit" && currentSort.desc) return "name-desc";
@@ -196,51 +189,7 @@ export function UnitsTable() {
               </SelectContent>
             </Select>
           </div>
-          <div className="flex w-fit items-center justify-center font-medium text-sm">
-            Page {table.state.pagination.pageIndex + 1} of {table.getPageCount()}
-          </div>
-          <div className="ml-auto flex items-center gap-2 lg:ml-0">
-            <Button
-              variant="outline"
-              className="hidden size-8 lg:flex"
-              size="icon"
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <span className="sr-only">Go to first page</span>
-              <ChevronsLeft className="size-4" />
-            </Button>
-            <Button
-              variant="outline"
-              className="size-8"
-              size="icon"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <span className="sr-only">Go to previous page</span>
-              <ChevronLeft className="size-4" />
-            </Button>
-            <Button
-              variant="outline"
-              className="size-8"
-              size="icon"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              <span className="sr-only">Go to next page</span>
-              <ChevronRight className="size-4" />
-            </Button>
-            <Button
-              variant="outline"
-              className="hidden size-8 lg:flex"
-              size="icon"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-            >
-              <span className="sr-only">Go to last page</span>
-              <ChevronsRight className="size-4" />
-            </Button>
-          </div>
+          <UnitsPagination table={table} />
         </div>
       </div>
     </div>
