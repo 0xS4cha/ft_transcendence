@@ -18,14 +18,14 @@ export const router = createBrowserRouter([
           const { default: Component } = await import("@/pages/Authenticate");
           return { Component }; 
         }
-      }
-    //   {
-    //     path: "units",
-    //     lazy: async () => {
-    //       const { default: Component } = await import("@/pages/Units");
-    //       return { Component };
-    //     },
-    //   },
+      },
+      {
+        path: "units",
+        lazy: async () => {
+          const { default: Component } = await import("@/pages/Units");
+          return { Component };
+        },
+      },
     //   {
     //     path: "items",
     //     lazy: async () => {
