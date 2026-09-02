@@ -50,7 +50,7 @@ export function AppSidebar() {
   return (
     <Sidebar
       collapsible="icon"
-      className="border-r border-white/5 bg-[#07070B] text-neutral-300"
+      className="border-r border-white/5 text-neutral-300"
       variant="floating"
     >
       <SidebarHeader className="flex h-14 flex-row items-center justify-between border-b border-white/5 px-3 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
