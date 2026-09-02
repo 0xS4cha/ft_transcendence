@@ -39,6 +39,7 @@ interface DataTableProps {
   getRowId: (originalRow: any, index: number, parent?: any) => string;
   defaultSortId: string;
   searchPlaceholder?: string;
+  customToolbar?: React.ReactNode;
 }
 
 export function DataTable({
@@ -47,6 +48,7 @@ export function DataTable({
   getRowId,
   defaultSortId,
   searchPlaceholder = "Search...",
+  customToolbar,
 }: DataTableProps) {
   const sortOptionState = useMemo(() => ({
     "name-asc": [{ id: defaultSortId, desc: false }],
@@ -97,6 +99,7 @@ export function DataTable({
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
         <DataTableFilter table={table} />
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center xl:w-auto">
+          {customToolbar}
           <div className="relative w-full lg:w-80">
             <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
