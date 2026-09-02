@@ -32,17 +32,16 @@ services:
       timeout: 5s
       retries: 10
     env_file: ".env"
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - pgdata_transcendence:/var/lib/postgresql/data
     networks:
       - localnet_transcendence
 
   character_set:
-    build: character_set
+    build: 
+      context: character_set
+      args:
+        DATABASE_URL: ${DATABASE_URL}
     container_name: transcendence-character-set
     restart: unless-stopped
     depends_on:
