@@ -1,14 +1,10 @@
-"use client";
 import type { ColumnDef } from "@tanstack/react-table"
 import { Subscribe } from "@tanstack/react-table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import type { DataTableFeatures } from "@/lib/data-table-features"
-
 import type { UnitRow } from "@/components/units/schema"
-
 
 export const UnitsColumns: ColumnDef<DataTableFeatures, UnitRow>[] = [
   {
