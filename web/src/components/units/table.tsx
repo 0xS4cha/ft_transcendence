@@ -7,7 +7,7 @@ import {
   type PaginationState,
   type SortingState,
   useTable,
-} from "@tanstack/react-table";
+} from "@tanstack/react-table"
 import {
   ArrowUpDown,
   ChevronLeft,
@@ -15,78 +15,41 @@ import {
   ChevronsLeft,
   ChevronsRight,
   Search,
-} from "lucide-react";
+} from "lucide-react"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { dataTableFeatures } from "@/lib/data-table-features";
+} from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { dataTableFeatures } from "@/lib/data-table-features"
 import fake_data from "./data.json"
-import { UnitsColumns } from "@/components/units/columns";
+import { UnitsColumns } from "@/components/units/columns"
+import { UnitsFilter } from "@/components/units/filter"
 
-
-const setOptions = [
-  { value: "all", label: "*" },
-  { value: "S18", label: "Set 18" },
-  { value: "S17", label: "Set 17" },
-];
-
-const gameType = [
-  { value: "doubleup", label: "Double up" },
-  { value: "ranked", label: "Ranked" }
-] as const;
-
-const joinedDateOptions = [
-  { value: "1", label: "Last day" },
-  { value: "2", label: "Last 2 days" },
-  { value: "3", label: "Last 3 days" },
-  { value: "4", label: "Last 4 days" },
-  { value: "5", label: "Last 5 days" },
-  { value: "6", label: "Last 6 days" },
-  { value: "7", label: "Last 7 days" },
-] as const;
-
-const rankedOptions = [
-  { value: "unknown", label: "Unknown" },
-  { value: "iron", label: "Iron" },
-  { value: "bronze", label: "Bronze" },
-  { value: "silver", label: "Silver" },
-  { value: "gold", label: "Gold" },
-  { value: "platinium", label: "Platinium" },
-  { value: "emerald", label: "Emerald" },
-  { value: "diamond", label: "Diamond" },
-  { value: "master", label: "Master" },
-  { value: "grandmaster", label: "Grand Master" },
-  { value: "challenger", label: "Challenger" },
-] as const;
 
 
 const sortOptions = [
-  { value: "newest", label: "Newest first" },
-  { value: "oldest", label: "Oldest first" },
   { value: "name-asc", label: "Name A-Z" },
   { value: "name-desc", label: "Name Z-A" },
 ] as const;
+
 const sortOptionState = {
-  newest: [{ id: "joined", desc: true }],
-  oldest: [{ id: "joined", desc: false }],
-  "name-asc": [{ id: "name", desc: false }],
-  "name-desc": [{ id: "name", desc: true }],
+  "name-asc": [{ id: "unit", desc: false }],
+  "name-desc": [{ id: "unit", desc: true }],
 } satisfies Record<(typeof sortOptions)[number]["value"], SortingState>;
 
 export function UnitsTable() {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = React.useState<SortingState>([{ id: "joined", desc: true }]);
+  const [sorting, setSorting] = React.useState<SortingState>([{ id: "unit", desc: false }]);
   const data = fake_data.units;
   const [columnVisibility] = React.useState<ColumnVisibilityState>({
     search: false,
@@ -117,45 +80,18 @@ export function UnitsTable() {
   });
 
   const searchQuery = (table.getColumn("search")?.getFilterValue() as string | undefined) ?? "";
-  const statusFilter = (table.getColumn("status")?.getFilterValue() as string | undefined) ?? "all";
+
   const sortValue = React.useMemo(() => {
     const currentSort = sorting[0];
-    if (!currentSort) return "newest";
-    if (currentSort.id === "joined" && currentSort.desc) return "newest";
-    if (currentSort.id === "joined" && !currentSort.desc) return "oldest";
-    if (currentSort.id === "name" && !currentSort.desc) return "name-asc";
-    if (currentSort.id === "name" && currentSort.desc) return "name-desc";
-
+    if (currentSort.id === "unit" && !currentSort.desc) return "name-asc";
+    if (currentSort.id === "unit" && currentSort.desc) return "name-desc";
     return "newest";
   }, [sorting]);
 
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-        <div className="flex flex-wrap items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                Set {statusFilter}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-35" align="start">
-              <DropdownMenuRadioGroup
-                value={statusFilter}
-                onValueChange={(value) => {
-                  table.getColumn("set")?.setFilterValue(value === "all" ? undefined : value);
-                  table.setPageIndex(0);
-                }}
-              >
-                {setOptions.map((status) => (
-                  <DropdownMenuRadioItem key={status.value} value={status.value}>
-                    {status.label}
-                  </DropdownMenuRadioItem>
-                ))}
-              </DropdownMenuRadioGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <UnitsFilter table={table}/>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center xl:w-auto">
           <div className="relative w-full lg:w-80">
             <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -180,7 +116,7 @@ export function UnitsTable() {
               <DropdownMenuRadioGroup
                 value={sortValue}
                 onValueChange={(value) => {
-                  table.setSorting(sortOptionState[value as keyof typeof sortOptionState] ?? sortOptionState.newest);
+                  table.setSorting(sortOptionState[value as keyof typeof sortOptionState] ?? sortOptionState["name-asc"]);
                   table.setPageIndex(0);
                 }}
               >
