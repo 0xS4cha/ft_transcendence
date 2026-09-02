@@ -5,6 +5,8 @@ services:
     restart: unless-stopped
     expose:
       - "3000"
+    ports:
+      - "3000:3000" #dev env, delete when prod
     healthcheck:
       test: ["CMD-SHELL", "wget --spider -q http://localhost:3000/ || exit 1"]
       interval: 5s
