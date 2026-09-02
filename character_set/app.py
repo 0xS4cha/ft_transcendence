@@ -44,4 +44,4 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         print(f"\033[31mERROR\033[0m: {e.args[0] if e.args else e.with_traceback(None)}", file=sys.stderr)
-        #sys.exit(1)
+        sys.exit(1)
