@@ -8,7 +8,7 @@ COPY ./crontab .
 
 RUN /usr/bin/crontab /opt/character_set/crontab
 
-RUN pip install requests pydantic
+RUN pip install requests pydantic SQLAlchemy psycopg2
 
 RUN python3 /opt/character_set/app.py
 
