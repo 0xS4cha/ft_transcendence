@@ -106,7 +106,7 @@ export function UnitsTable() {
             />
           </div>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger>
               <Button variant="outline" size="sm">
                 <ArrowUpDown />
                 Sort
