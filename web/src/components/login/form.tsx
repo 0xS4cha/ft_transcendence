@@ -1,17 +1,17 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { ButtonGroup } from "@/components/ui/button-group"
-import { Eye } from "lucide-react"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { Eye } from "lucide-react";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { useState } from "react"
-import { toast } from "@/components/ui/toast"
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { toast } from "@/components/ui/toast";
 
 type LoginFormProps = React.ComponentProps<"form"> & {
   func: (type: boolean) => void;
@@ -28,7 +28,7 @@ export function LoginForm({
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target;
         setFormData(prev => ({ ...prev, [name]: value }));
-    }
+  };
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -56,7 +56,7 @@ export function LoginForm({
         title: "Login failed (INTERNAL)",
       });
     });
-  }
+  };
   return (
     <form className={cn("flex flex-col gap-6", className)} onSubmit={handleSubmit} {...props}>
       <FieldGroup>
@@ -109,5 +109,5 @@ export function LoginForm({
         </Field>
       </FieldGroup>
     </form>
-  )
-}
+  );
+};
