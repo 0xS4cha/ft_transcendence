@@ -30,7 +30,7 @@ export const UnitsColumns: ColumnDef<DataTableFeatures, UnitRow>[] = [
         >
           {(checked) => (
             <Checkbox
-              checked={checked}
+              checked={Boolean(checked)}
               onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
               aria-label="Select all units on this page"
             />
@@ -78,7 +78,7 @@ export const UnitsColumns: ColumnDef<DataTableFeatures, UnitRow>[] = [
     accessorKey: "tier",
     header: "Tier",
     filterFn: "equalsString",
-    cell: ({ row }) => (
+    cell: () => (
       <Badge className="bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300">
         S
       </Badge>
@@ -103,6 +103,6 @@ export const UnitsColumns: ColumnDef<DataTableFeatures, UnitRow>[] = [
   {
     accessorKey: "items",
     header: "Popular items",
-    cell: ({ row }) => {},
+    cell: () => {},
   },
 ];

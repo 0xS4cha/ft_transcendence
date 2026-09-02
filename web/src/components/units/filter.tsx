@@ -7,7 +7,6 @@ import {
   Trophy,
   Globe,
   RotateCcw,
-  SlidersHorizontal,
 } from "lucide-react";
 
 import {
@@ -118,7 +117,7 @@ export function UnitsFilter({ table }: { table: any }) {
     <div className="flex flex-wrap items-center gap-2 rounded-lg">
       <Select
         value={setFilter}
-        onValueChange={(value) => updateFilter("set", value, DEFAULTS.set)}
+        onValueChange={(value) => value ? updateFilter("set", value, DEFAULTS.set) : console.log("value is null")}
       >
         <SelectTrigger size="sm" className="w-[130px]">
           <div className="flex items-center gap-1.5 truncate">
@@ -137,7 +136,7 @@ export function UnitsFilter({ table }: { table: any }) {
 
       <Select
         value={queueFilter}
-        onValueChange={(value) => updateFilter("queue", value, DEFAULTS.queue)}
+        onValueChange={(value) => value ? updateFilter("queue", value, DEFAULTS.queue) : console.log("value is null")}
       >
         <SelectTrigger size="sm" className="w-[130px]">
           <div className="flex items-center gap-1.5 truncate">
@@ -156,7 +155,7 @@ export function UnitsFilter({ table }: { table: any }) {
 
       <Select
         value={dateFilter}
-        onValueChange={(value) => updateFilter("date", value, DEFAULTS.date)}
+        onValueChange={(value) => value ? updateFilter("date", value, DEFAULTS.date) : console.log("value is null")}
       >
         <SelectTrigger size="sm" className="w-[150px]">
           <div className="flex items-center gap-1.5 truncate">
@@ -175,7 +174,7 @@ export function UnitsFilter({ table }: { table: any }) {
 
       <Select
         value={rankFilter}
-        onValueChange={(value) => updateFilter("ranked", value, DEFAULTS.ranked)}
+        onValueChange={(value) => value ? updateFilter("ranked", value, DEFAULTS.ranked) : console.log("value is null")}
       >
         <SelectTrigger size="sm" className="w-[140px]">
           <div className="flex items-center gap-1.5 truncate">
@@ -194,7 +193,7 @@ export function UnitsFilter({ table }: { table: any }) {
 
       <Select
         value={serverFilter}
-        onValueChange={(value) => updateFilter("server", value, DEFAULTS.server)}
+        onValueChange={(value) => value ? updateFilter("server", value, DEFAULTS.server) : console.log("value is null")}
       >
         <SelectTrigger size="sm" className="w-[100px]">
           <div className="flex items-center gap-1.5 truncate">
@@ -219,7 +218,7 @@ export function UnitsFilter({ table }: { table: any }) {
           className="ml-auto h-8 text-muted-foreground hover:text-foreground"
         >
           <RotateCcw className="mr-1 h-3.5 w-3.5" />
-          Réinitialiser
+          Reset
         </Button>
       )}
     </div>
