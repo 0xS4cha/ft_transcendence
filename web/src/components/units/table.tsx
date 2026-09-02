@@ -1,33 +1,33 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo } from "react";
 import {
   type ColumnFiltersState,
   type ColumnVisibilityState,
   type PaginationState,
   type SortingState,
   useTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 import {
   ArrowUpDown,
   Search,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { dataTableFeatures } from "@/lib/data-table-features"
-import fake_data from "./data.json"
-import { UnitsColumns } from "@/components/units/columns"
-import { UnitsFilter } from "@/components/units/filter"
-import { UnitsPagination } from "@/components/units/pagination"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { dataTableFeatures } from "@/lib/data-table-features";
+import fake_data from "@/assets/data.json";
+import { UnitsColumns } from "@/components/units/columns";
+import { UnitsFilter } from "@/components/units/filter";
+import { UnitsPagination } from "@/components/units/pagination";
 
 const sortOptions = [
   { value: "name-asc", label: "Name A-Z" },
@@ -46,7 +46,6 @@ export function UnitsTable() {
   const data = fake_data.units;
   const [columnVisibility] = useState<ColumnVisibilityState>({
     search: false,
-    joinedWindow: false,
   });
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -194,4 +193,4 @@ export function UnitsTable() {
       </div>
     </div>
   );
-}
+};

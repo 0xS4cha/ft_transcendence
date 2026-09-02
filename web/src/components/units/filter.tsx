@@ -221,4 +221,4 @@ export function UnitsFilter({ table }: { table: any }) {
       )}
     </div>
   );
-}
+};
