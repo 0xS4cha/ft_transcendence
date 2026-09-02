@@ -1,0 +1,1756 @@
+{
+  "id": 134,
+  "contentId": "66062b25-6352-4727-b23f-7c05e1c2ebc8",
+  "name": "Syndra",
+  "alias": "Syndra",
+  "title": "the Dark Sovereign",
+  "shortBio": "Syndra is a fearsome Ionian mage with incredible power at her command. As a child, she disturbed the village elders with her reckless and wild magic. She was sent away to be taught greater control, but eventually discovered her supposed mentor was restraining her abilities. Forming her feelings of betrayal and hurt into dark spheres of energy, Syndra has sworn to destroy all who would try to control her.",
+  "isVisibleInClient": true,
+  "tacticalInfo": {
+    "style": 10,
+    "difficulty": 2,
+    "damageType": "kMagic",
+    "attackType": "ranged"
+  },
+  "playstyleInfo": {
+    "damage": 3,
+    "durability": 1,
+    "crowdControl": 2,
+    "mobility": 1,
+    "utility": 1
+  },
+  "championTagInfo": {
+    "championTagPrimary": "Burst",
+    "championTagSecondary": "Long Range"
+  },
+  "squarePortraitPath": "/lol-game-data/assets/v1/champion-icons/134.png",
+  "stingerSfxPath": "/lol-game-data/assets/v1/champion-sfx-audios/134.ogg",
+  "chooseVoPath": "/lol-game-data/assets/v1/champion-choose-vo/134.ogg",
+  "banVoPath": "/lol-game-data/assets/v1/champion-ban-vo/134.ogg",
+  "roles": [
+    "mage"
+  ],
+  "recommendedItemDefaults": [],
+  "skins": [
+    {
+      "id": 134000,
+      "contentId": "8da778b8-1226-42b3-a350-90c15dd11da6",
+      "isBase": true,
+      "name": "Syndra",
+      "skinClassification": "kChampion",
+      "splashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Base/Images/syndra_splash_centered_0.jpg",
+      "uncenteredSplashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Base/Images/syndra_splash_uncentered_0.jpg",
+      "tilePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Base/Images/syndra_splash_tile_0.jpg",
+      "loadScreenPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Base/SyndraLoadScreen_0.jpg",
+      "skinType": "",
+      "rarity": "kNoRarity",
+      "isLegacy": false,
+      "splashVideoPath": null,
+      "previewVideoUrl": null,
+      "collectionSplashVideoPath": null,
+      "collectionCardHoverVideoPath": null,
+      "featuresText": null,
+      "chromaPath": null,
+      "emblems": null,
+      "regionRarityId": 0,
+      "rarityGemPath": null,
+      "skinLines": null,
+      "description": null
+    },
+    {
+      "id": 134001,
+      "contentId": "8b7e9fde-b28b-4582-aa5b-52d648a45610",
+      "isBase": false,
+      "name": "Justicar Syndra",
+      "skinClassification": "kChampion",
+      "splashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin01/Images/syndra_splash_centered_1.jpg",
+      "uncenteredSplashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin01/Images/syndra_splash_uncentered_1.jpg",
+      "tilePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin01/Images/syndra_splash_tile_1.jpg",
+      "loadScreenPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin01/SyndraLoadScreen_1.jpg",
+      "skinType": "",
+      "rarity": "kNoRarity",
+      "isLegacy": false,
+      "splashVideoPath": null,
+      "previewVideoUrl": null,
+      "collectionSplashVideoPath": null,
+      "collectionCardHoverVideoPath": null,
+      "featuresText": null,
+      "chromaPath": null,
+      "emblems": null,
+      "regionRarityId": 0,
+      "rarityGemPath": null,
+      "skinLines": [
+        {
+          "id": 33
+        }
+      ],
+      "description": "Chief among the Arclight stand the Justicars, sentinels who serve as living embodiments of justice and order. Syndra embodies knowledge, for what guides the world if not the wisdom of gods?"
+    },
+    {
+      "id": 134002,
+      "contentId": "7737680e-af2e-4e35-aafc-d82671b1420a",
+      "isBase": false,
+      "name": "Atlantean Syndra",
+      "skinClassification": "kChampion",
+      "splashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin02/Images/syndra_splash_centered_2.jpg",
+      "uncenteredSplashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin02/Images/syndra_splash_uncentered_2.jpg",
+      "tilePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin02/Images/syndra_splash_tile_2.jpg",
+      "loadScreenPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin02/SyndraLoadScreen_2.jpg",
+      "skinType": "",
+      "rarity": "kNoRarity",
+      "isLegacy": false,
+      "splashVideoPath": null,
+      "previewVideoUrl": null,
+      "collectionSplashVideoPath": null,
+      "collectionCardHoverVideoPath": null,
+      "featuresText": null,
+      "chromaPath": null,
+      "emblems": null,
+      "regionRarityId": 0,
+      "rarityGemPath": null,
+      "skinLines": [
+        {
+          "id": 108
+        }
+      ],
+      "description": "“The Atlanteans were skilled in magic, we know that much is true. But the extent of their power is truly unfathomable… to this day we cannot know if they persist in some forgotten corner of the world, reanimated by whatever dark thing has taken their once-proud city.”"
+    },
+    {
+      "id": 134003,
+      "contentId": "1b700cc0-7aab-4a27-b110-bd1829473ef6",
+      "isBase": false,
+      "name": "Queen of Diamonds Syndra",
+      "skinClassification": "kChampion",
+      "splashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin03/Images/syndra_splash_centered_3.jpg",
+      "uncenteredSplashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin03/Images/syndra_splash_uncentered_3.jpg",
+      "tilePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin03/Images/syndra_splash_tile_3.jpg",
+      "loadScreenPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin03/SyndraLoadScreen_3.jpg",
+      "skinType": "",
+      "rarity": "kNoRarity",
+      "isLegacy": false,
+      "splashVideoPath": null,
+      "previewVideoUrl": null,
+      "collectionSplashVideoPath": null,
+      "collectionCardHoverVideoPath": null,
+      "featuresText": null,
+      "chromaPath": null,
+      "emblems": null,
+      "regionRarityId": 0,
+      "rarityGemPath": null,
+      "skinLines": [
+        {
+          "id": 41
+        }
+      ],
+      "description": "Fourth is the Queen, ever dark and serene,\u003Cbr\u003EWhose true power lies deeper still.\u003Cbr\u003EAlone, she could conquer the whole of the earth…\u003Cbr\u003EAnd perhaps, in the future, she will."
+    },
+    {
+      "id": 134004,
+      "contentId": "1ff4a068-0192-4abb-9421-a9b397cd7c1e",
+      "isBase": false,
+      "name": "Snow Day Syndra",
+      "skinClassification": "kChampion",
+      "splashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin04/Images/syndra_splash_centered_4.jpg",
+      "uncenteredSplashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin04/Images/syndra_splash_uncentered_4.jpg",
+      "tilePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin04/Images/syndra_splash_tile_4.jpg",
+      "loadScreenPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin04/SyndraLoadScreen_4.jpg",
+      "skinType": "",
+      "rarity": "kEpic",
+      "isLegacy": true,
+      "splashVideoPath": null,
+      "previewVideoUrl": null,
+      "collectionSplashVideoPath": null,
+      "collectionCardHoverVideoPath": null,
+      "featuresText": null,
+      "chromaPath": null,
+      "emblems": null,
+      "regionRarityId": 0,
+      "rarityGemPath": null,
+      "skinLines": [
+        {
+          "id": 46
+        }
+      ],
+      "description": "Impossibly powerful magic is one way to enter a snowball fight, and Syndra's unshackled abilities spell doom for anyone who hates getting snow in their eyes. Everyone has a lighter side, even the Dark Sovereign."
+    },
+    {
+      "id": 134005,
+      "contentId": "c8dfac9c-81c2-4518-8157-3df8856d13fd",
+      "isBase": false,
+      "name": "SKT T1 Syndra",
+      "skinClassification": "kChampion",
+      "splashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin05/Images/syndra_splash_centered_5.jpg",
+      "uncenteredSplashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin05/Images/syndra_splash_uncentered_5.jpg",
+      "tilePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin05/Images/syndra_splash_tile_5.jpg",
+      "loadScreenPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin05/SyndraLoadscreen_5.jpg",
+      "skinType": "",
+      "rarity": "kEpic",
+      "isLegacy": true,
+      "splashVideoPath": null,
+      "previewVideoUrl": null,
+      "collectionSplashVideoPath": null,
+      "collectionCardHoverVideoPath": null,
+      "featuresText": null,
+      "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134005.png",
+      "chromas": [
+        {
+          "id": 134064,
+          "name": "SKT T1 Syndra (Paragon)",
+          "contentId": "8ef12c96-2049-4373-ad93-ae580eaf7039",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134064.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134064.png",
+          "colors": [
+            "#64DCC8",
+            "#E446F7"
+          ],
+          "descriptions": [
+            {
+              "region": "riot",
+              "description": "This chroma was released as an exclusive reward for players who obtained the 2024 Hall of Legends Signature Edition Collection honoring Faker."
+            }
+          ],
+          "description": "This chroma was released as an exclusive reward for players who obtained the 2024 Hall of Legends Signature Edition Collection honoring Faker.",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 5
+            }
+          ]
+        }
+      ],
+      "emblems": null,
+      "regionRarityId": 0,
+      "rarityGemPath": null,
+      "skinLines": [
+        {
+          "id": 6
+        }
+      ],
+      "description": "Honoring Faker's winning performance as Syndra during the 2016 World Championship. This is Faker's third World Champion skin, following his wins with SKT at the 2013 and 2015 World Championships."
+    },
+    {
+      "id": 134006,
+      "contentId": "80874725-8ef5-4579-8fb0-cd8978786cb8",
+      "isBase": false,
+      "name": "Star Guardian Syndra",
+      "skinClassification": "kChampion",
+      "splashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin06/Images/syndra_splash_centered_6.jpg",
+      "uncenteredSplashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin06/Images/syndra_splash_uncentered_6.jpg",
+      "tilePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin06/Images/syndra_splash_tile_6.jpg",
+      "loadScreenPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin06/SyndraLoadScreen_6.jpg",
+      "loadScreenVintagePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin06/SyndraLoadScreen_6_LE.jpg",
+      "skinType": "",
+      "rarity": "kEpic",
+      "isLegacy": false,
+      "splashVideoPath": null,
+      "previewVideoUrl": null,
+      "collectionSplashVideoPath": null,
+      "collectionCardHoverVideoPath": null,
+      "featuresText": null,
+      "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134006.png",
+      "chromas": [
+        {
+          "id": 134035,
+          "name": "Star Guardian Syndra (Ruby)",
+          "contentId": "3f9891a2-92c7-430f-aacd-9560ac37f26a",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134035.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134035.png",
+          "colors": [
+            "#D33528",
+            "#D33528"
+          ],
+          "descriptions": [
+            {
+              "region": "riot",
+              "description": "This chroma was released as a bundle exclusive in 2022."
+            }
+          ],
+          "description": "This chroma was released as a bundle exclusive in 2022.",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134036,
+          "name": "Star Guardian Syndra (Catseye)",
+          "contentId": "68cf1983-1642-49bb-b67f-f8ec3961f674",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134036.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134036.png",
+          "colors": [
+            "#FFEE59",
+            "#FFEE59"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134037,
+          "name": "Star Guardian Syndra (Emerald)",
+          "contentId": "df189777-b662-4670-bfe4-985ff40be3f7",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134037.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134037.png",
+          "colors": [
+            "#2DA130",
+            "#2DA130"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134038,
+          "name": "Star Guardian Syndra (Sapphire)",
+          "contentId": "6a77308e-e897-4301-acda-c2dd0d5bcea5",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134038.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134038.png",
+          "colors": [
+            "#2756CE",
+            "#2756CE"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134039,
+          "name": "Star Guardian Syndra (Tanzanite)",
+          "contentId": "a66f5b75-28d0-4376-ae12-7c4fb3a009c8",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134039.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134039.png",
+          "colors": [
+            "#54209B",
+            "#54209B"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134040,
+          "name": "Star Guardian Syndra (Rose Quartz)",
+          "contentId": "672368cb-02c7-4206-8492-1d445152a85b",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134040.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134040.png",
+          "colors": [
+            "#E58BA5",
+            "#E58BA5"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": [
+            {
+              "region": "TENCENT",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134041,
+          "name": "Star Guardian Syndra (Pearl)",
+          "contentId": "c9094690-d5a2-4a22-a67e-4b971092d825",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134041.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134041.png",
+          "colors": [
+            "#ECF9F8",
+            "#ECF9F8"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134042,
+          "name": "Star Guardian Syndra (Obsidian)",
+          "contentId": "4d109bb5-4fcf-499c-bf44-276aa0787497",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134042.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134042.png",
+          "colors": [
+            "#27211C",
+            "#27211C"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134043,
+          "name": "Star Guardian Syndra (Brilliant)",
+          "contentId": "31978443-5657-4835-b833-f00b64f70f8a",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134043.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134043.png",
+          "colors": [
+            "#FDA4DA",
+            "#9DE5FF"
+          ],
+          "descriptions": [
+            {
+              "region": "riot",
+              "description": "This chroma was released as a Loot exclusive in the 2022 Star Guardian event."
+            }
+          ],
+          "description": "This chroma was released as a Loot exclusive in the 2022 Star Guardian event.",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        }
+      ],
+      "emblems": null,
+      "regionRarityId": 0,
+      "rarityGemPath": null,
+      "skinLines": [
+        {
+          "id": 20
+        }
+      ],
+      "description": "Feared and admired, Syndra is a formidable Star Guardian from an earlier era, whose history is cloaked in shadow. She acts as an advisor on Ahri's team, but despite her captain's trust, some members suspect there is no price that Syndra won't pay to achieve her personal ambitions."
+    },
+    {
+      "id": 134007,
+      "contentId": "7f4f10ca-2c61-4fd6-9ff7-467fa8bc5910",
+      "isBase": false,
+      "name": "Pool Party Syndra",
+      "skinClassification": "kChampion",
+      "splashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin07/Images/syndra_splash_centered_7.jpg",
+      "uncenteredSplashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin07/Images/syndra_splash_uncentered_7.jpg",
+      "tilePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin07/Images/syndra_splash_tile_7.jpg",
+      "loadScreenPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin07/SyndraLoadscreen_7.jpg",
+      "skinType": "",
+      "rarity": "kEpic",
+      "isLegacy": false,
+      "splashVideoPath": null,
+      "previewVideoUrl": null,
+      "collectionSplashVideoPath": null,
+      "collectionCardHoverVideoPath": null,
+      "featuresText": null,
+      "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134007.png",
+      "chromas": [
+        {
+          "id": 134008,
+          "name": "Pool Party Syndra (Ruby)",
+          "contentId": "9294ebd0-da5a-4755-9ba7-98cac4173676",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134008.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134008.png",
+          "colors": [
+            "#D33528",
+            "#D33528"
+          ],
+          "descriptions": [
+            {
+              "region": "riot",
+              "description": "This chroma was released as a bundle exclusive in 2020."
+            }
+          ],
+          "description": "This chroma was released as a bundle exclusive in 2020.",
+          "rarities": [
+            {
+              "region": "TENCENT",
+              "rarity": 0
+            },
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134009,
+          "name": "Pool Party Syndra (Rose Quartz)",
+          "contentId": "8a2da7c7-3d9b-4227-beac-82d57e505c75",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134009.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134009.png",
+          "colors": [
+            "#E58BA5",
+            "#E58BA5"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": [
+            {
+              "region": "TENCENT",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134010,
+          "name": "Pool Party Syndra (Catseye)",
+          "contentId": "14cf1324-c014-4154-b0c7-fdfc9bf9b468",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134010.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134010.png",
+          "colors": [
+            "#FFEE59",
+            "#FFEE59"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134011,
+          "name": "Pool Party Syndra (Aquamarine)",
+          "contentId": "166ab445-8c25-4048-9b71-d6d352489784",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134011.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134011.png",
+          "colors": [
+            "#6ABBEE",
+            "#6ABBEE"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134012,
+          "name": "Pool Party Syndra (Emerald)",
+          "contentId": "16f42978-e4e8-40bd-92d0-8a36ac157f4b",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134012.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134012.png",
+          "colors": [
+            "#2DA130",
+            "#2DA130"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134013,
+          "name": "Pool Party Syndra (Pearl)",
+          "contentId": "0ea3ee14-87d3-4e9c-ab60-77200ae8aaf2",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134013.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134013.png",
+          "colors": [
+            "#ECF9F8",
+            "#ECF9F8"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134014,
+          "name": "Pool Party Syndra (Tanzanite)",
+          "contentId": "898de2ec-67ce-4232-bd92-116104b152dd",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134014.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134014.png",
+          "colors": [
+            "#54209B",
+            "#54209B"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134015,
+          "name": "Pool Party Syndra (Rainbow)",
+          "contentId": "89204409-3bed-4035-9b57-204ee0e2c7b0",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134015.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134015.png",
+          "colors": [
+            "#C1F2FF",
+            "#C1F2FF"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        }
+      ],
+      "emblems": null,
+      "regionRarityId": 0,
+      "rarityGemPath": null,
+      "skinLines": [
+        {
+          "id": 15
+        }
+      ],
+      "description": "Now that Syndra's aced all her opponents, it's time for her final test: prevent any rogue volleyballs from hitting her friends. Again."
+    },
+    {
+      "id": 134016,
+      "contentId": "665012dc-77e4-485b-b9b7-29571f2974f6",
+      "isBase": false,
+      "name": "Withered Rose Syndra",
+      "skinClassification": "kChampion",
+      "splashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin16/Images/syndra_splash_centered_16.jpg",
+      "uncenteredSplashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin16/Images/syndra_splash_uncentered_16.jpg",
+      "tilePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin16/Images/syndra_splash_tile_16.jpg",
+      "loadScreenPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin16/SyndraLoadscreen_16.jpg",
+      "skinType": "",
+      "rarity": "kEpic",
+      "isLegacy": false,
+      "splashVideoPath": null,
+      "previewVideoUrl": null,
+      "collectionSplashVideoPath": null,
+      "collectionCardHoverVideoPath": null,
+      "featuresText": null,
+      "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134016.png",
+      "chromas": [
+        {
+          "id": 134017,
+          "name": "Withered Rose Syndra (Ruby)",
+          "contentId": "843cea4d-054b-489e-a514-e82098268022",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134017.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134017.png",
+          "colors": [
+            "#D33528",
+            "#D33528"
+          ],
+          "descriptions": [
+            {
+              "region": "riot",
+              "description": "This chroma was released as a bundle exclusive in 2021."
+            }
+          ],
+          "description": "This chroma was released as a bundle exclusive in 2021.",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134018,
+          "name": "Withered Rose Syndra (Citrine)",
+          "contentId": "8d84c983-18ed-4a91-b959-ca161d21dc50",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134018.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134018.png",
+          "colors": [
+            "#DF9117",
+            "#DF9117"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134019,
+          "name": "Withered Rose Syndra (Emerald)",
+          "contentId": "d000fe90-ea37-4209-bab3-297fd0b58360",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134019.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134019.png",
+          "colors": [
+            "#2DA130",
+            "#2DA130"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134020,
+          "name": "Withered Rose Syndra (Turquoise)",
+          "contentId": "c0e8a3f4-f0ac-40dd-a8b3-6392210eb049",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134020.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134020.png",
+          "colors": [
+            "#73BFBE",
+            "#73BFBE"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134021,
+          "name": "Withered Rose Syndra (Sapphire)",
+          "contentId": "7f786d32-7449-4671-b0a3-1f8b527c7029",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134021.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134021.png",
+          "colors": [
+            "#2756CE",
+            "#2756CE"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134022,
+          "name": "Withered Rose Syndra (Rose Quartz)",
+          "contentId": "8b9a0cda-c275-42fb-8d6b-d4c156e5078a",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134022.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134022.png",
+          "colors": [
+            "#E58BA5",
+            "#E58BA5"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": [
+            {
+              "region": "TENCENT",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134023,
+          "name": "Withered Rose Syndra (Obsidian)",
+          "contentId": "331eefa7-2e82-4277-ae34-dbfb1fa7414e",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134023.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134023.png",
+          "colors": [
+            "#27211C",
+            "#27211C"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134024,
+          "name": "Withered Rose Syndra (Pearl)",
+          "contentId": "3f488890-ebbd-45a1-ae6c-5e2f2a55b7b6",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134024.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134024.png",
+          "colors": [
+            "#ECF9F8",
+            "#ECF9F8"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        }
+      ],
+      "emblems": null,
+      "regionRarityId": 0,
+      "rarityGemPath": null,
+      "skinLines": [
+        {
+          "id": 141
+        }
+      ],
+      "description": "Syndra has been shunned from the festival for years over her support of the disgraced Zed. Unable to bear this slight any longer, she is determined to infiltrate the event and poison the very heart of the Crystal Rose itself with her sweetly dripping ichor."
+    },
+    {
+      "id": 134025,
+      "contentId": "def088d2-d939-4265-9c43-8e5622ea6596",
+      "isBase": false,
+      "name": "Bewitching Syndra",
+      "skinClassification": "kChampion",
+      "splashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin25/Images/syndra_splash_centered_25.jpg",
+      "uncenteredSplashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin25/Images/syndra_splash_uncentered_25.jpg",
+      "tilePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin25/Images/syndra_splash_tile_25.jpg",
+      "loadScreenPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin25/SyndraLoadscreen_25.jpg",
+      "loadScreenVintagePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin25/SyndraLoadscreen_25_LE.jpg",
+      "skinType": "",
+      "rarity": "kEpic",
+      "isLegacy": true,
+      "splashVideoPath": null,
+      "previewVideoUrl": null,
+      "collectionSplashVideoPath": null,
+      "collectionCardHoverVideoPath": null,
+      "featuresText": null,
+      "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134025.png",
+      "chromas": [
+        {
+          "id": 134026,
+          "name": "Bewitching Syndra (Ruby)",
+          "contentId": "08b7df65-580e-4e1b-bc7c-1941848eb94a",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134026.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134026.png",
+          "colors": [
+            "#D33528",
+            "#D33528"
+          ],
+          "descriptions": [
+            {
+              "region": "riot",
+              "description": "This chroma was released as a bundle exclusive in 2021."
+            }
+          ],
+          "description": "This chroma was released as a bundle exclusive in 2021.",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 2
+            }
+          ]
+        },
+        {
+          "id": 134027,
+          "name": "Bewitching Syndra (Citrine)",
+          "contentId": "30beac6d-9777-4a1e-9868-c1c4ceb48361",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134027.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134027.png",
+          "colors": [
+            "#DF9117",
+            "#DF9117"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134028,
+          "name": "Bewitching Syndra (Emerald)",
+          "contentId": "ba51010d-55c0-4216-9f66-1280eb330b45",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134028.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134028.png",
+          "colors": [
+            "#2DA130",
+            "#2DA130"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134029,
+          "name": "Bewitching Syndra (Rose Quartz)",
+          "contentId": "0ddf79de-6b98-4a29-b53c-756fc597726c",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134029.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134029.png",
+          "colors": [
+            "#E58BA5",
+            "#E58BA5"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": [
+            {
+              "region": "TENCENT",
+              "rarity": 2
+            },
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134030,
+          "name": "Bewitching Syndra (Turquoise)",
+          "contentId": "8f435268-0cf6-4a12-8044-1d3be7139de0",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134030.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134030.png",
+          "colors": [
+            "#73BFBE",
+            "#73BFBE"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134031,
+          "name": "Bewitching Syndra (Sapphire)",
+          "contentId": "e91077bd-da61-4808-83f8-a1132464ee9a",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134031.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134031.png",
+          "colors": [
+            "#2756CE",
+            "#2756CE"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134032,
+          "name": "Bewitching Syndra (Pearl)",
+          "contentId": "b72380b7-82bf-4b13-a27b-b20e3ea18e82",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134032.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134032.png",
+          "colors": [
+            "#ECF9F8",
+            "#ECF9F8"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134033,
+          "name": "Bewitching Syndra (Obsidian)",
+          "contentId": "c943b1ef-ec12-4395-9d02-c87b2f8518ab",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134033.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134033.png",
+          "colors": [
+            "#27211C",
+            "#27211C"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        }
+      ],
+      "emblems": null,
+      "regionRarityId": 0,
+      "rarityGemPath": null,
+      "skinLines": [
+        {
+          "id": 172
+        }
+      ],
+      "description": "No celebration would be complete without the March of the Pumpkin Lanterns! Syndra conjures hundreds of great gourds from the sky, their crooked smiles delighting the children below."
+    },
+    {
+      "id": 134034,
+      "contentId": "6a03c9e1-d16a-49ff-a1ad-3e849128590c",
+      "isBase": false,
+      "name": "Prestige Star Guardian Syndra",
+      "skinClassification": "kChampion",
+      "splashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin34/Images/syndra_splash_centered_34.jpg",
+      "uncenteredSplashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin34/Images/syndra_splash_uncentered_34.jpg",
+      "tilePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin34/Images/syndra_splash_tile_34.jpg",
+      "loadScreenPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin34/SyndraLoadscreen_34.jpg",
+      "loadScreenVintagePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin34/SyndraLoadscreen_34_LE.jpg",
+      "skinType": "",
+      "rarity": "kMythic",
+      "isLegacy": false,
+      "splashVideoPath": null,
+      "previewVideoUrl": null,
+      "collectionSplashVideoPath": null,
+      "collectionCardHoverVideoPath": null,
+      "featuresText": null,
+      "chromaPath": null,
+      "emblems": null,
+      "regionRarityId": 0,
+      "rarityGemPath": null,
+      "skinLines": [
+        {
+          "id": 161
+        }
+      ],
+      "description": "A vision in silk and shadow, Syndra doesn't need hordes of adoring fans (though she has them) nor hundreds of eager ateliers desperate to design for her (though she has those, too), because she is always at the center of her own orbit. Her secret? Starlight never goes out of style."
+    },
+    {
+      "id": 134044,
+      "contentId": "9474561b-b124-4cbc-88ab-e508a6b164d3",
+      "isBase": false,
+      "name": "Spirit Blossom Syndra",
+      "skinClassification": "kChampion",
+      "splashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin44/Images/syndra_splash_centered_44.jpg",
+      "uncenteredSplashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin44/Images/syndra_splash_uncentered_44.jpg",
+      "tilePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin44/Images/syndra_splash_tile_44.jpg",
+      "loadScreenPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin44/SyndraLoadscreen_44.jpg",
+      "loadScreenVintagePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin44/SyndraLoadscreen_44_LE.jpg",
+      "skinType": "",
+      "rarity": "kEpic",
+      "isLegacy": false,
+      "splashVideoPath": null,
+      "previewVideoUrl": null,
+      "collectionSplashVideoPath": null,
+      "collectionCardHoverVideoPath": null,
+      "featuresText": null,
+      "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134044.png",
+      "chromas": [
+        {
+          "id": 134045,
+          "name": "Spirit Blossom Syndra (Ruby)",
+          "contentId": "4c964ddc-ade9-4d69-a41d-72e2e3f8b222",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134045.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134045.png",
+          "colors": [
+            "#D33528",
+            "#D33528"
+          ],
+          "descriptions": [
+            {
+              "region": "riot",
+              "description": "This chroma was released as a bundle exclusive in 2022."
+            }
+          ],
+          "description": "This chroma was released as a bundle exclusive in 2022.",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134046,
+          "name": "Spirit Blossom Syndra (Turquoise)",
+          "contentId": "a45a2e21-29fa-440a-a92c-a3db5765aad7",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134046.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134046.png",
+          "colors": [
+            "#73BFBE",
+            "#73BFBE"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134047,
+          "name": "Spirit Blossom Syndra (Catseye)",
+          "contentId": "a9f6262d-ca49-43e6-9fb5-f1fb8f0a7322",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134047.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134047.png",
+          "colors": [
+            "#FFEE59",
+            "#FFEE59"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134048,
+          "name": "Spirit Blossom Syndra (Sapphire)",
+          "contentId": "ad06ae9b-595b-4637-9edf-e4e6709dffe9",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134048.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134048.png",
+          "colors": [
+            "#2756CE",
+            "#2756CE"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134049,
+          "name": "Spirit Blossom Syndra (Rose Quartz)",
+          "contentId": "f5f1ac23-8212-4d7b-bd34-db87297af185",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134049.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134049.png",
+          "colors": [
+            "#E58BA5",
+            "#E58BA5"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": [
+            {
+              "region": "TENCENT",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134050,
+          "name": "Spirit Blossom Syndra (Tanzanite)",
+          "contentId": "5337202b-e9d6-4c22-a605-5d8b0ceaad3e",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134050.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134050.png",
+          "colors": [
+            "#54209B",
+            "#54209B"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134051,
+          "name": "Spirit Blossom Syndra (Pearl)",
+          "contentId": "065f74d4-d4e1-4289-baef-1b36120ca225",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134051.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134051.png",
+          "colors": [
+            "#ECF9F8",
+            "#ECF9F8"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134052,
+          "name": "Spirit Blossom Syndra (Obsidian)",
+          "contentId": "322f42c8-7778-4aae-8c3a-7bbcd956202e",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134052.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134052.png",
+          "colors": [
+            "#27211C",
+            "#27211C"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134053,
+          "name": "Spirit Blossom Syndra (Night Blossom)",
+          "contentId": "def45127-1643-4380-9037-94f0a538eeb2",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134053.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134053.png",
+          "colors": [
+            "#0C0C0F",
+            "#B2D1E4"
+          ],
+          "descriptions": [
+            {
+              "region": "riot",
+              "description": "This chroma was released as a Loot exclusive in the Worlds 2022 event."
+            }
+          ],
+          "description": "This chroma was released as a Loot exclusive in the Worlds 2022 event.",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        }
+      ],
+      "emblems": null,
+      "regionRarityId": 0,
+      "rarityGemPath": null,
+      "skinLines": [
+        {
+          "id": 171
+        }
+      ],
+      "description": "Those who seek freedom may offer prayers to the Fluttering Joy, a savior of lost souls. One story recounts a tree that wrapped its roots around a wandering wisp. The wisp struggled in vain, until the spirit tore away the roots that bound it tight. She watched as the wisp tasted freedom again—a blessing she is said to bestow upon all she meets."
+    },
+    {
+      "id": 134054,
+      "contentId": "77d11c20-f6d2-4882-b74d-f9e6c2d401ba",
+      "isBase": false,
+      "name": "Coven Syndra",
+      "skinClassification": "kChampion",
+      "splashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin54/Images/syndra_splash_centered_54.jpg",
+      "uncenteredSplashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin54/Images/syndra_splash_uncentered_54.jpg",
+      "tilePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin54/Images/syndra_splash_tile_54.jpg",
+      "loadScreenPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin54/SyndraLoadscreen_54.jpg",
+      "loadScreenVintagePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin54/SyndraLoadscreen_54_LE.jpg",
+      "skinType": "",
+      "rarity": "kEpic",
+      "isLegacy": false,
+      "splashVideoPath": null,
+      "previewVideoUrl": null,
+      "collectionSplashVideoPath": null,
+      "collectionCardHoverVideoPath": null,
+      "featuresText": null,
+      "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134054.png",
+      "chromas": [
+        {
+          "id": 134055,
+          "name": "Coven Syndra (Ruby)",
+          "contentId": "3aa136dc-97f2-4ccd-b8ba-1000c4c4e9fa",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134055.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134055.png",
+          "colors": [
+            "#D33528",
+            "#D33528"
+          ],
+          "descriptions": [
+            {
+              "region": "riot",
+              "description": "This chroma was released as a bundle exclusive in 2023."
+            }
+          ],
+          "description": "This chroma was released as a bundle exclusive in 2023.",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134056,
+          "name": "Coven Syndra (Rose Quartz)",
+          "contentId": "a7d49f90-0438-4d49-8146-a414321dcdf5",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134056.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134056.png",
+          "colors": [
+            "#E58BA5",
+            "#E58BA5"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": [
+            {
+              "region": "TENCENT",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134057,
+          "name": "Coven Syndra (Catseye)",
+          "contentId": "a645664f-38b4-4097-971d-cb1e47ba3402",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134057.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134057.png",
+          "colors": [
+            "#FFEE59",
+            "#FFEE59"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134058,
+          "name": "Coven Syndra (Emerald)",
+          "contentId": "d404d184-c632-441d-b0a5-0d846437c5f0",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134058.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134058.png",
+          "colors": [
+            "#2DA130",
+            "#2DA130"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134059,
+          "name": "Coven Syndra (Meteorite)",
+          "contentId": "9055392d-6cb5-439d-b3c7-96a642ade292",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134059.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134059.png",
+          "colors": [
+            "#5F432B",
+            "#5F432B"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134060,
+          "name": "Coven Syndra (Pearl)",
+          "contentId": "9d6a0283-d9cf-4f08-ac08-c6b1fcabe294",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134060.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134060.png",
+          "colors": [
+            "#ECF9F8",
+            "#ECF9F8"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134061,
+          "name": "Coven Syndra (Amethyst)",
+          "contentId": "1b881e4b-6485-495d-91c9-2af569f5739a",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134061.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134061.png",
+          "colors": [
+            "#9C68D7",
+            "#9C68D7"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134062,
+          "name": "Coven Syndra (Aquamarine)",
+          "contentId": "f41eb077-c5d4-4379-8f3d-20ea141cc112",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134062.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134062.png",
+          "colors": [
+            "#6ABBEE",
+            "#6ABBEE"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134063,
+          "name": "Coven Syndra (Profane)",
+          "contentId": "2696c34b-186e-491e-8166-9f205bd54b95",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134063.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134063.png",
+          "colors": [
+            "#429184",
+            "#942861"
+          ],
+          "descriptions": [
+            {
+              "region": "riot",
+              "description": "This chroma was released as a Loot exclusive in the Worlds 2023 event."
+            }
+          ],
+          "description": "This chroma was released as a Loot exclusive in the Worlds 2023 event.",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        }
+      ],
+      "emblems": null,
+      "regionRarityId": 0,
+      "rarityGemPath": null,
+      "skinLines": [
+        {
+          "id": 92
+        }
+      ],
+      "description": "They came to Syndra in a thundering flutter of carrion wings, beckoning her to free herself from the limitations of mortals. Following the wings' foul wind to a ritual site, she along with another witch awakened the Horned King from his putrid tomb. She now seeks retribution against all who stand against the Coven or the Old Gods."
+    },
+    {
+      "id": 134065,
+      "contentId": "106984d2-329f-4fcb-bb7c-d7ac97140036",
+      "isBase": false,
+      "name": "Dumpling Darlings Syndra",
+      "skinClassification": "kChampion",
+      "splashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin65/Images/syndra_splash_centered_65.jpg",
+      "uncenteredSplashPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin65/Images/syndra_splash_uncentered_65.jpg",
+      "tilePath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin65/Images/syndra_splash_tile_65.jpg",
+      "loadScreenPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/Skins/Skin65/SyndraLoadScreen_65_2.jpg",
+      "skinType": "",
+      "rarity": "kEpic",
+      "isLegacy": false,
+      "splashVideoPath": null,
+      "previewVideoUrl": null,
+      "collectionSplashVideoPath": null,
+      "collectionCardHoverVideoPath": null,
+      "featuresText": null,
+      "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134065.png",
+      "chromas": [
+        {
+          "id": 134066,
+          "name": "Dumpling Darlings Syndra (Ruby)",
+          "contentId": "edd7e2c8-e9f3-4c42-86b6-9b20c5e66a78",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134066.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134066.png",
+          "colors": [
+            "#D33528",
+            "#D33528"
+          ],
+          "descriptions": [
+            {
+              "region": "riot",
+              "description": "This chroma was released as a bundle exclusive in 2025."
+            }
+          ],
+          "description": "This chroma was released as a bundle exclusive in 2025.",
+          "rarities": [
+            {
+              "region": "riot",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134067,
+          "name": "Dumpling Darlings Syndra (Sapphire)",
+          "contentId": "2d093905-2edd-40e0-ae99-7733b21a4cdc",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134067.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134067.png",
+          "colors": [
+            "#2756CE",
+            "#2756CE"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134068,
+          "name": "Dumpling Darlings Syndra (Catseye)",
+          "contentId": "bbf52f2c-aea2-46a1-b335-fd962b2a6f5e",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134068.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134068.png",
+          "colors": [
+            "#FFEE59",
+            "#FFEE59"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134069,
+          "name": "Dumpling Darlings Syndra (Tanzanite)",
+          "contentId": "72cdc87b-d14f-4def-af1e-75e3a2c53a33",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134069.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134069.png",
+          "colors": [
+            "#54209B",
+            "#54209B"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134070,
+          "name": "Dumpling Darlings Syndra (Emerald)",
+          "contentId": "7a0304fd-9a7a-43ba-8405-5477492db419",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134070.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134070.png",
+          "colors": [
+            "#2DA130",
+            "#2DA130"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134071,
+          "name": "Dumpling Darlings Syndra (Rose Quartz)",
+          "contentId": "4ca6c298-25d8-4073-b816-9506e103c8df",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134071.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134071.png",
+          "colors": [
+            "#E58BA5",
+            "#E58BA5"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": [
+            {
+              "region": "TENCENT",
+              "rarity": 1
+            }
+          ]
+        },
+        {
+          "id": 134072,
+          "name": "Dumpling Darlings Syndra (Obsidian)",
+          "contentId": "9e214132-fb86-4405-8d01-d176c5e69194",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134072.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134072.png",
+          "colors": [
+            "#27211C",
+            "#27211C"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": []
+        },
+        {
+          "id": 134073,
+          "name": "Dumpling Darlings Syndra (Pearl)",
+          "contentId": "6c5d5c56-66af-4744-988c-6ebe19092c66",
+          "relatedPrimeContentId": "",
+          "skinClassification": "kRecolor",
+          "chromaPath": "/lol-game-data/assets/v1/champion-chroma-images/134/134073.png",
+          "tilePath": "/lol-game-data/assets/v1/champion-chroma-images/134/134073.png",
+          "colors": [
+            "#ECF9F8",
+            "#ECF9F8"
+          ],
+          "descriptions": [],
+          "description": "",
+          "rarities": [
+            {
+              "region": "TENCENT",
+              "rarity": 1
+            }
+          ]
+        }
+      ],
+      "emblems": null,
+      "regionRarityId": 0,
+      "rarityGemPath": null,
+      "skinLines": [
+        {
+          "id": 213
+        }
+      ],
+      "description": "A gifted culinary mage with limitless potential, Syndra's ambition always gives rise to decadent treats—and stirs feuds with her fellow chefs when their creations fall short of her standards. Still, what customer can complain when everything tastes so sensational?"
+    }
+  ],
+  "passive": {
+    "name": "Transcendent",
+    "abilityIconPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/HUD/Icons2D/Syndra_P1.png",
+    "abilityVideoPath": "champion-abilities/0134/ability_0134_P1.webm",
+    "abilityVideoImagePath": "champion-abilities/0134/ability_0134_P1.jpg",
+    "description": "Syndra collects Splinters of Wrath from gaining levels and damaging enemies which upgrade her abilities.\u003Cbr\u003E\u003Cbr\u003E\u003Cfont color='#FF9900'\u003EDark Sphere\u003C/font\u003E: Syndra can hold an additional charge\u003Cbr\u003E\u003Cfont color='#FF9900'\u003EForce of Will\u003C/font\u003E: Bonus true damage.\u003Cbr\u003E\u003Cfont color='#FF9900'\u003EScatter the Weak\u003C/font\u003E: Increased width and slows all targets\u003Cbr\u003E\u003Cfont color='#FF9900'\u003EUnleashed Power\u003C/font\u003E: Executes low health targets"
+  },
+  "spells": [
+    {
+      "spellKey": "q",
+      "name": "Dark Sphere",
+      "abilityIconPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/HUD/Icons2D/Syndra_Q1.png",
+      "abilityVideoPath": "champion-abilities/0134/ability_0134_Q1.webm",
+      "abilityVideoImagePath": "champion-abilities/0134/ability_0134_Q1.jpg",
+      "cost": "@Cost@ @AbilityResourceName@",
+      "cooldown": "@Cooldown@s %i:cooldown%",
+      "description": "Syndra conjures a Dark Sphere dealing magic damage. The sphere remains and can be manipulated by her other powers.",
+      "dynamicDescription": "Syndra conjures a \u003CkeywordMajor\u003EDark Sphere\u003C/keywordMajor\u003E, dealing \u003CmagicDamage\u003E@TotalDamage@ magic damage\u003C/magicDamage\u003E. The \u003CkeywordMajor\u003EDark Sphere\u003C/keywordMajor\u003E remains for @SphereDuration@ seconds and can be manipulated by Syndra's other Abilities.\u003Cbr\u003E\u003Cbr\u003E\u003Cevolve\u003E@spell.SyndraPassive:Q1UpgradeThreshold@ Splinters of Wrath\u003C/evolve\u003E: Syndra can store @Upgrade1MaxAmmo@ charges of \u003CkeywordMajor\u003EDark Sphere\u003C/keywordMajor\u003E.@SpellModifierDescriptionAppend@",
+      "range": [800, 800, 800, 800, 800, 800],
+      "costCoefficients": [40, 45, 50, 55, 60, 60],
+      "cooldownCoefficients": [7, 7, 7, 7, 7, 7],
+      "coefficients": {
+        "coefficient1": 0,
+        "coefficient2": 0
+      },
+      "effectAmounts": {
+        "Effect1Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect2Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect3Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect4Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect5Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect6Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect7Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect8Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect9Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect10Amount": [0, 0, 0, 0, 0, 0, 0]
+      },
+      "ammo": {
+        "ammoRechargeTime": [0, 0, 0, 0, 0, 0],
+        "maxAmmo": [0, 0, 0, 0, 0, 0]
+      },
+      "maxLevel": 0
+    },
+    {
+      "spellKey": "w",
+      "name": "Force of Will",
+      "abilityIconPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/HUD/Icons2D/Syndra_W1.png",
+      "abilityVideoPath": "champion-abilities/0134/ability_0134_W1.webm",
+      "abilityVideoImagePath": "champion-abilities/0134/ability_0134_W1.jpg",
+      "cost": "@Cost@ @AbilityResourceName@",
+      "cooldown": "@Cooldown@s %i:cooldown%",
+      "description": "Syndra picks up and throws a Dark Sphere or enemy minion dealing magic damage and slowing the Move Speed of enemies.",
+      "dynamicDescription": "Syndra grabs a \u003CkeywordMajor\u003EDark Sphere\u003C/keywordMajor\u003E, enemy minion, or non-epic monster. She drags it with her and can \u003Crecast\u003ERecast\u003C/recast\u003E for up to 5 seconds.\u003Cbr\u003E\u003Cbr\u003E\u003Crecast\u003ERecast\u003C/recast\u003E: Syndra hurls the object, dealing \u003CmagicDamage\u003E@ThrowDamage@ magic damage\u003C/magicDamage\u003E and \u003Cstatus\u003ESlowing\u003C/status\u003E by @TotalSlowAmount@% for @f2@ seconds.\u003Cbr\u003E\u003Cbr\u003E\u003Cevolve\u003E@spell.SyndraPassive:WUpgradeThreshold@ Splinters of Wrath\u003C/evolve\u003E: This Ability deals an additional \u003CtrueDamage\u003E@TOOLTIPONLYPassiveBonusPercent@ true damage\u003C/trueDamage\u003E.\u003Cbr\u003E@SpellModifierDescriptionAppend@",
+      "range": [925, 925, 925, 925, 925, 925],
+      "costCoefficients": [60, 70, 80, 90, 100, 100],
+      "cooldownCoefficients": [12, 11, 10, 9, 8, 8],
+      "coefficients": {
+        "coefficient1": 0,
+        "coefficient2": 0
+      },
+      "effectAmounts": {
+        "Effect1Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect2Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect3Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect4Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect5Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect6Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect7Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect8Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect9Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect10Amount": [0, 0, 0, 0, 0, 0, 0]
+      },
+      "ammo": {
+        "ammoRechargeTime": [0, 0, 0, 0, 0, 0],
+        "maxAmmo": [0, 0, 0, 0, 0, 0]
+      },
+      "maxLevel": 0
+    },
+    {
+      "spellKey": "e",
+      "name": "Scatter the Weak",
+      "abilityIconPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/HUD/Icons2D/Syndra_E1.png",
+      "abilityVideoPath": "champion-abilities/0134/ability_0134_E1.webm",
+      "abilityVideoImagePath": "champion-abilities/0134/ability_0134_E1.jpg",
+      "cost": "@Cost@ @AbilityResourceName@",
+      "cooldown": "@Cooldown@s %i:cooldown%",
+      "description": "Syndra knocks enemies and Dark Spheres back dealing magic damage. Enemies hit by Dark Spheres become stunned.",
+      "dynamicDescription": "Syndra projects a wave of force, \u003Cstatus\u003EKnocking Back\u003C/status\u003E enemies and \u003CkeywordMajor\u003EDark Spheres\u003C/keywordMajor\u003E and dealing \u003CmagicDamage\u003E@TotalDamage@ magic damage\u003C/magicDamage\u003E.\u003Cbr\u003E\u003Cbr\u003E\u003CkeywordMajor\u003EDark Spheres\u003C/keywordMajor\u003E that are pushed \u003Cstatus\u003EStun\u003C/status\u003E enemies for @StunDuration@ seconds and deal \u003CmagicDamage\u003E@TotalDamage@ magic damage\u003C/magicDamage\u003E.\u003Cbr\u003E\u003Cbr\u003E\u003Cevolve\u003E@spell.SyndraPassive:EUpgradeThreshold@ Splinters of Wrath\u003C/evolve\u003E: This Ability's width is increased and \u003Cstatus\u003ESlows\u003C/status\u003E enemies by \u003Cstatus\u003E@UpgradedSlowAmount*100@%\u003C/status\u003E for @UpgradedSlowDuration@ seconds.@SpellModifierDescriptionAppend@",
+      "range": [650, 650, 650, 650, 650, 650],
+      "costCoefficients": [50, 50, 50, 50, 50, 50],
+      "cooldownCoefficients": [15, 15, 15, 15, 15, 15],
+      "coefficients": {
+        "coefficient1": 0,
+        "coefficient2": 0
+      },
+      "effectAmounts": {
+        "Effect1Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect2Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect3Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect4Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect5Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect6Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect7Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect8Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect9Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect10Amount": [0, 0, 0, 0, 0, 0, 0]
+      },
+      "ammo": {
+        "ammoRechargeTime": [0, 0, 0, 0, 0, 0],
+        "maxAmmo": [0, 0, 0, 0, 0, 0]
+      },
+      "maxLevel": 0
+    },
+    {
+      "spellKey": "r",
+      "name": "Unleashed Power",
+      "abilityIconPath": "/lol-game-data/assets/ASSETS/Characters/Syndra/HUD/Icons2D/Syndra_R1.png",
+      "abilityVideoPath": "champion-abilities/0134/ability_0134_R1.webm",
+      "abilityVideoImagePath": "champion-abilities/0134/ability_0134_R1.jpg",
+      "cost": "@Cost@ @AbilityResourceName@",
+      "cooldown": "@Cooldown@s %i:cooldown%",
+      "description": "Syndra bombards an enemy Champion with all of her Dark Spheres.",
+      "dynamicDescription": "\u003CspellPassive\u003EPassive\u003C/spellPassive\u003E: \u003CspellName\u003EDark Sphere\u003C/spellName\u003E gains an additional @QHastePerRank@ Ability Haste for each rank of \u003CspellName\u003EUnleashed Power\u003C/spellName\u003E.\u003Cbr\u003E\u003Cbr\u003ESyndra draws on her full cataclysmic power, launching the 3 \u003CkeywordMajor\u003EDark Spheres\u003C/keywordMajor\u003E orbiting her plus up to 4 more nearby at an enemy champion. Each \u003CkeywordMajor\u003EDark Sphere\u003C/keywordMajor\u003E deals \u003CmagicDamage\u003E@DamageCalc@ magic damage\u003C/magicDamage\u003E (max \u003CmagicDamage\u003E@MaxDamageCalc@ magic damage\u003C/magicDamage\u003E).\u003Cbr\u003E\u003Cbr\u003E\u003Cevolve\u003E@spell.SyndraPassive:RUpgradeThreshold@ Splinters of Wrath\u003C/evolve\u003E: This Ability \u003Cdanger\u003Eexecutes\u003C/danger\u003E enemies below @UpgradeExecuteThreshold*100@% Health.@SpellModifierDescriptionAppend@",
+      "range": [675, 675, 675, 675, 675, 675],
+      "costCoefficients": [100, 100, 100, 100, 100, 100],
+      "cooldownCoefficients": [120, 100, 80, 60, 60, 60],
+      "coefficients": {
+        "coefficient1": 0,
+        "coefficient2": 0
+      },
+      "effectAmounts": {
+        "Effect1Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect2Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect3Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect4Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect5Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect6Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect7Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect8Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect9Amount": [0, 0, 0, 0, 0, 0, 0],
+        "Effect10Amount": [0, 0, 0, 0, 0, 0, 0]
+      },
+      "ammo": {
+        "ammoRechargeTime": [0, 0, 0, 0, 0, 0],
+        "maxAmmo": [0, 0, 0, 0, 0, 0]
+      },
+      "maxLevel": 0
+    }
+  ]
+}
