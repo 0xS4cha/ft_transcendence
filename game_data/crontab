@@ -1,0 +1,1 @@
+0 3 * * 0 cd /opt && /usr/local/bin/python3 -m game_data.app >> /var/log/script.log 2>&1
