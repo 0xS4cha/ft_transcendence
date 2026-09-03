@@ -24,4 +24,4 @@ dev = [
 pythonpath = ["src"]
 
 [tool.fastapi]
-entrypoint = "src.main:app"
+entrypoint = "app.main:app"
