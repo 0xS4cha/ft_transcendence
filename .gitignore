@@ -18,3 +18,5 @@ backend/app/.env
 backend/app/.python-version
 backend/app/src/__pycache__
 backend/app/tests/__pycache__
+
+character_set/shared/

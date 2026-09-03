@@ -2,8 +2,11 @@
 
 set -e
 
+find /opt/character_set -maxdepth 3 -type f -print
+
 echo "Running initial character set update..."
-python3 /opt/character_set/app.py
+cd /opt
+python -m character_set.app
 
 echo "Starting cron..."
 exec /usr/sbin/crond -f
