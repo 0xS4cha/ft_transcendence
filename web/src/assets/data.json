@@ -6754,8 +6754,8 @@
     }
   ],
   "items": {},
-  "itemNames": {
-    "TFT_Item_GuinsoosRageblade": {
+  "itemNames": [
+    {
       "itemName": "TFT_Item_GuinsoosRageblade",
       "count": 7626086,
       "place": 33041676,
@@ -6809,7 +6809,7 @@
         }
       ]
     },
-    "TFT_Item_WarmogsArmor": {
+    {
       "itemName": "TFT_Item_WarmogsArmor",
       "count": 6055331,
       "place": 25013272,
@@ -6863,7 +6863,7 @@
         }
       ]
     },
-    "TFT_Item_InfinityEdge": {
+    {
       "itemName": "TFT_Item_InfinityEdge",
       "count": 5771898,
       "place": 24378026,
@@ -6917,7 +6917,7 @@
         }
       ]
     },
-    "TFT_Item_GargoyleStoneplate": {
+    {
       "itemName": "TFT_Item_GargoyleStoneplate",
       "count": 5385838,
       "place": 22762456,
@@ -6971,7 +6971,7 @@
         }
       ]
     },
-    "TFT_Item_SpearOfShojin": {
+    {
       "itemName": "TFT_Item_SpearOfShojin",
       "count": 5313068,
       "place": 22250257,
@@ -7025,7 +7025,7 @@
         }
       ]
     },
-    "TFT_Item_RedBuff": {
+    {
       "itemName": "TFT_Item_RedBuff",
       "count": 4400496,
       "place": 18243726,
@@ -7079,7 +7079,7 @@
         }
       ]
     },
-    "TFT_Item_JeweledGauntlet": {
+    {
       "itemName": "TFT_Item_JeweledGauntlet",
       "count": 3620819,
       "place": 15100213,
@@ -7133,7 +7133,7 @@
         }
       ]
     },
-    "TFT_Item_ThiefsGloves": {
+    {
       "itemName": "TFT_Item_ThiefsGloves",
       "count": 3344009,
       "place": 12745333,
@@ -7187,7 +7187,7 @@
         }
       ]
     },
-    "TFT_Item_RunaansHurricane": {
+    {
       "itemName": "TFT_Item_RunaansHurricane",
       "count": 3249882,
       "place": 13457780,
@@ -7241,7 +7241,7 @@
         }
       ]
     },
-    "TFT_Item_Bloodthirster": {
+    {
       "itemName": "TFT_Item_Bloodthirster",
       "count": 3007296,
       "place": 12340299,
@@ -7295,7 +7295,7 @@
         }
       ]
     },
-    "TFT_Item_BrambleVest": {
+    {
       "itemName": "TFT_Item_BrambleVest",
       "count": 2971182,
       "place": 11986717,
@@ -7349,7 +7349,7 @@
         }
       ]
     },
-    "TFT_Item_DragonsClaw": {
+    {
       "itemName": "TFT_Item_DragonsClaw",
       "count": 2956332,
       "place": 12291720,
@@ -7403,7 +7403,7 @@
         }
       ]
     },
-    "TFT_Item_PowerGauntlet": {
+    {
       "itemName": "TFT_Item_PowerGauntlet",
       "count": 2905978,
       "place": 11438342,
@@ -7457,7 +7457,7 @@
         }
       ]
     },
-    "TFT_Item_Redemption": {
+    {
       "itemName": "TFT_Item_Redemption",
       "count": 2878938,
       "place": 11492161,
@@ -7511,7 +7511,7 @@
         }
       ]
     },
-    "TFT_Item_MadredsBloodrazor": {
+    {
       "itemName": "TFT_Item_MadredsBloodrazor",
       "count": 2663685,
       "place": 10714750,
@@ -7565,7 +7565,7 @@
         }
       ]
     },
-    "TFT_Item_BlueBuff": {
+    {
       "itemName": "TFT_Item_BlueBuff",
       "count": 2562169,
       "place": 10720409,
@@ -7619,7 +7619,7 @@
         }
       ]
     },
-    "TFT_Item_ArchangelsStaff": {
+    {
       "itemName": "TFT_Item_ArchangelsStaff",
       "count": 2556274,
       "place": 10619203,
@@ -7673,7 +7673,7 @@
         }
       ]
     },
-    "TFT_Item_UnstableConcoction": {
+    {
       "itemName": "TFT_Item_UnstableConcoction",
       "count": 2531969,
       "place": 10281738,
@@ -7727,7 +7727,7 @@
         }
       ]
     },
-    "TFT_Item_FrozenHeart": {
+    {
       "itemName": "TFT_Item_FrozenHeart",
       "count": 2426809,
       "place": 9550596,
@@ -7781,7 +7781,7 @@
         }
       ]
     },
-    "TFT_Item_HextechGunblade": {
+    {
       "itemName": "TFT_Item_HextechGunblade",
       "count": 2339338,
       "place": 9538995,
@@ -7835,7 +7835,7 @@
         }
       ]
     },
-    "TFT_Item_LastWhisper": {
+    {
       "itemName": "TFT_Item_LastWhisper",
       "count": 2319405,
       "place": 9405906,
@@ -7889,7 +7889,7 @@
         }
       ]
     },
-    "TFT_Item_SpectralGauntlet": {
+    {
       "itemName": "TFT_Item_SpectralGauntlet",
       "count": 1995769,
       "place": 7869704,
@@ -7943,7 +7943,7 @@
         }
       ]
     },
-    "TFT_Item_NightHarvester": {
+    {
       "itemName": "TFT_Item_NightHarvester",
       "count": 1663944,
       "place": 6442203,
@@ -7997,7 +7997,7 @@
         }
       ]
     },
-    "TFT_Item_Deathblade": {
+    {
       "itemName": "TFT_Item_Deathblade",
       "count": 1526482,
       "place": 6045073,
@@ -8051,7 +8051,7 @@
         }
       ]
     },
-    "TFT_Item_SteraksGage": {
+    {
       "itemName": "TFT_Item_SteraksGage",
       "count": 1502376,
       "place": 5691648,
@@ -8105,7 +8105,7 @@
         }
       ]
     },
-    "TFT_Item_IonicSpark": {
+    {
       "itemName": "TFT_Item_IonicSpark",
       "count": 1465962,
       "place": 5635967,
@@ -8159,7 +8159,7 @@
         }
       ]
     },
-    "TFT_Item_TitansResolve": {
+    {
       "itemName": "TFT_Item_TitansResolve",
       "count": 1461694,
       "place": 5820953,
@@ -8213,7 +8213,7 @@
         }
       ]
     },
-    "TFT_Item_RapidFireCannon": {
+    {
       "itemName": "TFT_Item_RapidFireCannon",
       "count": 1401195,
       "place": 5583236,
@@ -8267,7 +8267,7 @@
         }
       ]
     },
-    "TFT_Item_Crownguard": {
+    {
       "itemName": "TFT_Item_Crownguard",
       "count": 1384343,
       "place": 5287638,
@@ -8321,7 +8321,7 @@
         }
       ]
     },
-    "TFT_Item_Leviathan": {
+    {
       "itemName": "TFT_Item_Leviathan",
       "count": 1309715,
       "place": 5350759,
@@ -8375,7 +8375,7 @@
         }
       ]
     },
-    "TFT_Item_RabadonsDeathcap": {
+    {
       "itemName": "TFT_Item_RabadonsDeathcap",
       "count": 1309306,
       "place": 5226517,
@@ -8429,7 +8429,7 @@
         }
       ]
     },
-    "TFT_Item_GuardianAngel": {
+    {
       "itemName": "TFT_Item_GuardianAngel",
       "count": 1282476,
       "place": 5106175,
@@ -8483,7 +8483,7 @@
         }
       ]
     },
-    "TFT_Item_StatikkShiv": {
+    {
       "itemName": "TFT_Item_StatikkShiv",
       "count": 1199311,
       "place": 4635073,
@@ -8537,7 +8537,7 @@
         }
       ]
     },
-    "TFT_Item_AdaptiveHelm": {
+    {
       "itemName": "TFT_Item_AdaptiveHelm",
       "count": 1158964,
       "place": 4308984,
@@ -8591,7 +8591,7 @@
         }
       ]
     },
-    "TFT_Item_Quicksilver": {
+    {
       "itemName": "TFT_Item_Quicksilver",
       "count": 1000124,
       "place": 3920807,
@@ -8645,7 +8645,7 @@
         }
       ]
     },
-    "TFT_Item_Morellonomicon": {
+    {
       "itemName": "TFT_Item_Morellonomicon",
       "count": 963383,
       "place": 3592581,
@@ -8699,7 +8699,7 @@
         }
       ]
     },
-    "TFT_Item_GiantsBelt": {
+    {
       "itemName": "TFT_Item_GiantsBelt",
       "count": 780093,
       "place": 3710849,
@@ -8753,7 +8753,7 @@
         }
       ]
     },
-    "TFT14_MordekaiserCyberneticItem": {
+    {
       "itemName": "TFT14_MordekaiserCyberneticItem",
       "count": 632045,
       "place": 2637266,
@@ -8792,7 +8792,7 @@
         }
       ]
     },
-    "TFT14_Item_Nitro_ChromeCounter": {
+    {
       "itemName": "TFT14_Item_Nitro_ChromeCounter",
       "count": 622511,
       "place": 2707184,
@@ -8813,7 +8813,7 @@
         }
       ]
     },
-    "TFT_Item_ChainVest": {
+    {
       "itemName": "TFT_Item_ChainVest",
       "count": 579568,
       "place": 2687527,
@@ -8867,7 +8867,7 @@
         }
       ]
     },
-    "TFT_Item_TearOfTheGoddess": {
+    {
       "itemName": "TFT_Item_TearOfTheGoddess",
       "count": 579280,
       "place": 2724767,
@@ -8921,7 +8921,7 @@
         }
       ]
     },
-    "TFT_Item_NeedlesslyLargeRod": {
+    {
       "itemName": "TFT_Item_NeedlesslyLargeRod",
       "count": 575539,
       "place": 2722501,
@@ -8975,7 +8975,7 @@
         }
       ]
     },
-    "TFT14_JaxCyberneticItem": {
+    {
       "itemName": "TFT14_JaxCyberneticItem",
       "count": 569121,
       "place": 2370347,
@@ -9014,7 +9014,7 @@
         }
       ]
     },
-    "TFT14_SejuaniCyberneticItem": {
+    {
       "itemName": "TFT14_SejuaniCyberneticItem",
       "count": 557502,
       "place": 2395205,
@@ -9053,7 +9053,7 @@
         }
       ]
     },
-    "TFT_Item_RecurveBow": {
+    {
       "itemName": "TFT_Item_RecurveBow",
       "count": 538126,
       "place": 2539909,
@@ -9107,7 +9107,7 @@
         }
       ]
     },
-    "TFT14_ZeriCyberneticItem": {
+    {
       "itemName": "TFT14_ZeriCyberneticItem",
       "count": 534828,
       "place": 2210567,
@@ -9146,7 +9146,7 @@
         }
       ]
     },
-    "TFT_Item_BFSword": {
+    {
       "itemName": "TFT_Item_BFSword",
       "count": 526732,
       "place": 2532322,
@@ -9200,7 +9200,7 @@
         }
       ]
     },
-    "TFT_Item_NegatronCloak": {
+    {
       "itemName": "TFT_Item_NegatronCloak",
       "count": 522152,
       "place": 2431290,
@@ -9254,7 +9254,7 @@
         }
       ]
     },
-    "TFT14_JhinCyberneticItem": {
+    {
       "itemName": "TFT14_JhinCyberneticItem",
       "count": 511253,
       "place": 2063481,
@@ -9293,7 +9293,7 @@
         }
       ]
     },
-    "TFT14_Item_ImmortalEmblemItem": {
+    {
       "itemName": "TFT14_Item_ImmortalEmblemItem",
       "count": 465323,
       "place": 2060152,
@@ -9332,7 +9332,7 @@
         }
       ]
     },
-    "TFT14_VarusCyberneticItem": {
+    {
       "itemName": "TFT14_VarusCyberneticItem",
       "count": 458420,
       "place": 1948679,
@@ -9371,7 +9371,7 @@
         }
       ]
     },
-    "TFT_Item_SparringGloves": {
+    {
       "itemName": "TFT_Item_SparringGloves",
       "count": 448283,
       "place": 2127731,
@@ -9425,7 +9425,7 @@
         }
       ]
     },
-    "TFT14_NaafiriCyberneticItem": {
+    {
       "itemName": "TFT14_NaafiriCyberneticItem",
       "count": 443333,
       "place": 1849273,
@@ -9464,7 +9464,7 @@
         }
       ]
     },
-    "TFT_Item_ForceOfNature": {
+    {
       "itemName": "TFT_Item_ForceOfNature",
       "count": 406976,
       "place": 1707305,
@@ -9518,7 +9518,7 @@
         }
       ]
     },
-    "TFT14_Item_BallistekEmblemItem": {
+    {
       "itemName": "TFT14_Item_BallistekEmblemItem",
       "count": 395042,
       "place": 1625762,
@@ -9557,7 +9557,7 @@
         }
       ]
     },
-    "TFT14_Item_EdgeRunnerEmblemItem": {
+    {
       "itemName": "TFT14_Item_EdgeRunnerEmblemItem",
       "count": 359227,
       "place": 1467050,
@@ -9596,7 +9596,7 @@
         }
       ]
     },
-    "TFT14_Item_DivinicorpEmblemItem": {
+    {
       "itemName": "TFT14_Item_DivinicorpEmblemItem",
       "count": 335393,
       "place": 1360774,
@@ -9635,7 +9635,7 @@
         }
       ]
     },
-    "TFT14_Item_DarkWebEmblemItem": {
+    {
       "itemName": "TFT14_Item_DarkWebEmblemItem",
       "count": 292620,
       "place": 1195331,
@@ -9674,7 +9674,7 @@
         }
       ]
     },
-    "TFT14_Item_SwiftEmblemItem": {
+    {
       "itemName": "TFT14_Item_SwiftEmblemItem",
       "count": 286285,
       "place": 1268461,
@@ -9713,7 +9713,7 @@
         }
       ]
     },
-    "TFT14_Item_ThirstyEmblemItem": {
+    {
       "itemName": "TFT14_Item_ThirstyEmblemItem",
       "count": 264576,
       "place": 1075857,
@@ -9752,7 +9752,7 @@
         }
       ]
     },
-    "TFT14_Item_BruiserEmblemItem": {
+    {
       "itemName": "TFT14_Item_BruiserEmblemItem",
       "count": 263518,
       "place": 1070640,
@@ -9791,7 +9791,7 @@
         }
       ]
     },
-    "TFT14_Item_StreetDemonEmblemItem": {
+    {
       "itemName": "TFT14_Item_StreetDemonEmblemItem",
       "count": 255791,
       "place": 1097069,
@@ -9830,7 +9830,7 @@
         }
       ]
     },
-    "TFT14_Item_ControllerEmblemItem": {
+    {
       "itemName": "TFT14_Item_ControllerEmblemItem",
       "count": 245653,
       "place": 1011957,
@@ -9869,7 +9869,7 @@
         }
       ]
     },
-    "TFT4_Item_OrnnTheCollector": {
+    {
       "itemName": "TFT4_Item_OrnnTheCollector",
       "count": 240162,
       "place": 1039580,
@@ -9923,7 +9923,7 @@
         }
       ]
     },
-    "TFT14_Item_ArmorcladEmblemItem": {
+    {
       "itemName": "TFT14_Item_ArmorcladEmblemItem",
       "count": 227715,
       "place": 963208,
@@ -9962,7 +9962,7 @@
         }
       ]
     },
-    "TFT14_Item_MobEmblemItem": {
+    {
       "itemName": "TFT14_Item_MobEmblemItem",
       "count": 224206,
       "place": 853129,
@@ -10001,7 +10001,7 @@
         }
       ]
     },
-    "TFT14_Item_TechieEmblemItem": {
+    {
       "itemName": "TFT14_Item_TechieEmblemItem",
       "count": 205582,
       "place": 855823,
@@ -10040,7 +10040,7 @@
         }
       ]
     },
-    "TFT14_Item_StrongEmblemItem": {
+    {
       "itemName": "TFT14_Item_StrongEmblemItem",
       "count": 200193,
       "place": 847436,
@@ -10079,7 +10079,7 @@
         }
       ]
     },
-    "TFT14_Item_GuardianEmblemItem": {
+    {
       "itemName": "TFT14_Item_GuardianEmblemItem",
       "count": 192682,
       "place": 767128,
@@ -10118,7 +10118,7 @@
         }
       ]
     },
-    "TFT14_Item_CutterEmblemItem": {
+    {
       "itemName": "TFT14_Item_CutterEmblemItem",
       "count": 187586,
       "place": 791184,
@@ -10157,7 +10157,7 @@
         }
       ]
     },
-    "TFT4_Item_OrnnInfinityForce": {
+    {
       "itemName": "TFT4_Item_OrnnInfinityForce",
       "count": 186902,
       "place": 816930,
@@ -10211,7 +10211,7 @@
         }
       ]
     },
-    "TFT5_Item_ThiefsGlovesRadiant": {
+    {
       "itemName": "TFT5_Item_ThiefsGlovesRadiant",
       "count": 185112,
       "place": 786150,
@@ -10265,7 +10265,7 @@
         }
       ]
     },
-    "TFT9_Item_OrnnHorizonFocus": {
+    {
       "itemName": "TFT9_Item_OrnnHorizonFocus",
       "count": 176171,
       "place": 749527,
@@ -10319,7 +10319,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_NavoriFlickerblades": {
+    {
       "itemName": "TFT_Item_Artifact_NavoriFlickerblades",
       "count": 171690,
       "place": 703300,
@@ -10373,7 +10373,7 @@
         }
       ]
     },
-    "TFT4_Item_OrnnRanduinsSanctum": {
+    {
       "itemName": "TFT4_Item_OrnnRanduinsSanctum",
       "count": 168211,
       "place": 750511,
@@ -10427,7 +10427,7 @@
         }
       ]
     },
-    "TFT5_Item_GuinsoosRagebladeRadiant": {
+    {
       "itemName": "TFT5_Item_GuinsoosRagebladeRadiant",
       "count": 167943,
       "place": 721958,
@@ -10481,7 +10481,7 @@
         }
       ]
     },
-    "TFT14_Item_MarksmanEmblemItem": {
+    {
       "itemName": "TFT14_Item_MarksmanEmblemItem",
       "count": 167166,
       "place": 696924,
@@ -10520,7 +10520,7 @@
         }
       ]
     },
-    "TFT5_Item_ZzRotPortalRadiant": {
+    {
       "itemName": "TFT5_Item_ZzRotPortalRadiant",
       "count": 150510,
       "place": 614000,
@@ -10574,7 +10574,7 @@
         }
       ]
     },
-    "TFT_Item_ZekesHerald": {
+    {
       "itemName": "TFT_Item_ZekesHerald",
       "count": 144066,
       "place": 641811,
@@ -10628,7 +10628,7 @@
         }
       ]
     },
-    "TFT9_Item_OrnnHullbreaker": {
+    {
       "itemName": "TFT9_Item_OrnnHullbreaker",
       "count": 141731,
       "place": 601101,
@@ -10682,7 +10682,7 @@
         }
       ]
     },
-    "TFT4_Item_OrnnMuramana": {
+    {
       "itemName": "TFT4_Item_OrnnMuramana",
       "count": 139992,
       "place": 589439,
@@ -10736,7 +10736,7 @@
         }
       ]
     },
-    "TFT7_Item_ShimmerscaleGamblersBlade": {
+    {
       "itemName": "TFT7_Item_ShimmerscaleGamblersBlade",
       "count": 138250,
       "place": 619049,
@@ -10790,7 +10790,7 @@
         }
       ]
     },
-    "TFT5_Item_InfinityEdgeRadiant": {
+    {
       "itemName": "TFT5_Item_InfinityEdgeRadiant",
       "count": 135377,
       "place": 551419,
@@ -10844,7 +10844,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_Fishbones": {
+    {
       "itemName": "TFT_Item_Artifact_Fishbones",
       "count": 131960,
       "place": 591883,
@@ -10898,7 +10898,7 @@
         }
       ]
     },
-    "TFT7_Item_ShimmerscaleMogulsMail": {
+    {
       "itemName": "TFT7_Item_ShimmerscaleMogulsMail",
       "count": 130426,
       "place": 576371,
@@ -10952,7 +10952,7 @@
         }
       ]
     },
-    "TFT_Item_TacticiansRing": {
+    {
       "itemName": "TFT_Item_TacticiansRing",
       "count": 124157,
       "place": 503139,
@@ -11006,7 +11006,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_InnervatingLocket": {
+    {
       "itemName": "TFT_Item_Artifact_InnervatingLocket",
       "count": 123542,
       "place": 541632,
@@ -11060,7 +11060,7 @@
         }
       ]
     },
-    "TFT_Item_LocketOfTheIronSolari": {
+    {
       "itemName": "TFT_Item_LocketOfTheIronSolari",
       "count": 105877,
       "place": 448370,
@@ -11114,7 +11114,7 @@
         }
       ]
     },
-    "TFT4_Item_OrnnZhonyasParadox": {
+    {
       "itemName": "TFT4_Item_OrnnZhonyasParadox",
       "count": 101789,
       "place": 421120,
@@ -11168,7 +11168,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_TalismanOfAscension": {
+    {
       "itemName": "TFT_Item_Artifact_TalismanOfAscension",
       "count": 101628,
       "place": 475578,
@@ -11222,7 +11222,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_UnendingDespair": {
+    {
       "itemName": "TFT_Item_Artifact_UnendingDespair",
       "count": 101399,
       "place": 411150,
@@ -11276,7 +11276,7 @@
         }
       ]
     },
-    "TFT_Item_UnstableTreasureChest": {
+    {
       "itemName": "TFT_Item_UnstableTreasureChest",
       "count": 100144,
       "place": 421913,
@@ -11330,7 +11330,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_LightshieldCrest": {
+    {
       "itemName": "TFT_Item_Artifact_LightshieldCrest",
       "count": 99722,
       "place": 415948,
@@ -11384,7 +11384,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_LudensTempest": {
+    {
       "itemName": "TFT_Item_Artifact_LudensTempest",
       "count": 99273,
       "place": 423067,
@@ -11438,7 +11438,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_SuspiciousTrenchCoat": {
+    {
       "itemName": "TFT_Item_Artifact_SuspiciousTrenchCoat",
       "count": 98184,
       "place": 420519,
@@ -11492,7 +11492,7 @@
         }
       ]
     },
-    "TFT_Item_TacticiansScepter": {
+    {
       "itemName": "TFT_Item_TacticiansScepter",
       "count": 91866,
       "place": 378288,
@@ -11546,7 +11546,7 @@
         }
       ]
     },
-    "TFT5_Item_WarmogsArmorRadiant": {
+    {
       "itemName": "TFT5_Item_WarmogsArmorRadiant",
       "count": 91446,
       "place": 378490,
@@ -11600,7 +11600,7 @@
         }
       ]
     },
-    "TFT5_Item_SpearOfShojinRadiant": {
+    {
       "itemName": "TFT5_Item_SpearOfShojinRadiant",
       "count": 89199,
       "place": 354370,
@@ -11654,7 +11654,7 @@
         }
       ]
     },
-    "TFT4_Item_OrnnDeathsDefiance": {
+    {
       "itemName": "TFT4_Item_OrnnDeathsDefiance",
       "count": 87976,
       "place": 372210,
@@ -11708,7 +11708,7 @@
         }
       ]
     },
-    "TFT_Item_RadiantVirtue": {
+    {
       "itemName": "TFT_Item_RadiantVirtue",
       "count": 82030,
       "place": 351203,
@@ -11762,7 +11762,7 @@
         }
       ]
     },
-    "TFT_Item_SupportKnightsVow": {
+    {
       "itemName": "TFT_Item_SupportKnightsVow",
       "count": 81872,
       "place": 363744,
@@ -11816,7 +11816,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_TheIndomitable": {
+    {
       "itemName": "TFT_Item_Artifact_TheIndomitable",
       "count": 79541,
       "place": 348833,
@@ -11870,7 +11870,7 @@
         }
       ]
     },
-    "TFT7_Item_ShimmerscaleHeartOfGold": {
+    {
       "itemName": "TFT7_Item_ShimmerscaleHeartOfGold",
       "count": 79469,
       "place": 335743,
@@ -11924,7 +11924,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_StatikkShiv": {
+    {
       "itemName": "TFT_Item_Artifact_StatikkShiv",
       "count": 78087,
       "place": 339955,
@@ -11978,7 +11978,7 @@
         }
       ]
     },
-    "TFT_Item_BansheesVeil": {
+    {
       "itemName": "TFT_Item_BansheesVeil",
       "count": 77963,
       "place": 342557,
@@ -12032,7 +12032,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_TitanicHydra": {
+    {
       "itemName": "TFT_Item_Artifact_TitanicHydra",
       "count": 73660,
       "place": 326904,
@@ -12086,7 +12086,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_RapidFirecannon": {
+    {
       "itemName": "TFT_Item_Artifact_RapidFirecannon",
       "count": 70577,
       "place": 325301,
@@ -12140,7 +12140,7 @@
         }
       ]
     },
-    "TFT_Item_AegisOfTheLegion": {
+    {
       "itemName": "TFT_Item_AegisOfTheLegion",
       "count": 68745,
       "place": 299562,
@@ -12194,7 +12194,7 @@
         }
       ]
     },
-    "TFT_Item_EternalFlame": {
+    {
       "itemName": "TFT_Item_EternalFlame",
       "count": 67214,
       "place": 296529,
@@ -12248,7 +12248,7 @@
         }
       ]
     },
-    "TFT5_Item_GargoyleStoneplateRadiant": {
+    {
       "itemName": "TFT5_Item_GargoyleStoneplateRadiant",
       "count": 67030,
       "place": 257946,
@@ -12302,7 +12302,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_ProwlersClaw": {
+    {
       "itemName": "TFT_Item_Artifact_ProwlersClaw",
       "count": 66416,
       "place": 303861,
@@ -12356,7 +12356,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_WitsEnd": {
+    {
       "itemName": "TFT_Item_Artifact_WitsEnd",
       "count": 65587,
       "place": 273651,
@@ -12410,7 +12410,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_BlightingJewel": {
+    {
       "itemName": "TFT_Item_Artifact_BlightingJewel",
       "count": 65208,
       "place": 287713,
@@ -12464,7 +12464,7 @@
         }
       ]
     },
-    "TFT5_Item_RunaansHurricaneRadiant": {
+    {
       "itemName": "TFT5_Item_RunaansHurricaneRadiant",
       "count": 61998,
       "place": 257353,
@@ -12518,7 +12518,7 @@
         }
       ]
     },
-    "TFT4_Item_OrnnObsidianCleaver": {
+    {
       "itemName": "TFT4_Item_OrnnObsidianCleaver",
       "count": 61049,
       "place": 263786,
@@ -12572,7 +12572,7 @@
         }
       ]
     },
-    "TFT_Item_Moonstone": {
+    {
       "itemName": "TFT_Item_Moonstone",
       "count": 55352,
       "place": 242167,
@@ -12626,7 +12626,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_LichBane": {
+    {
       "itemName": "TFT_Item_Artifact_LichBane",
       "count": 55170,
       "place": 240337,
@@ -12680,7 +12680,7 @@
         }
       ]
     },
-    "TFT_Item_Chalice": {
+    {
       "itemName": "TFT_Item_Chalice",
       "count": 54159,
       "place": 230094,
@@ -12734,7 +12734,7 @@
         }
       ]
     },
-    "TFT9_Item_OrnnTrickstersGlass": {
+    {
       "itemName": "TFT9_Item_OrnnTrickstersGlass",
       "count": 52622,
       "place": 221951,
@@ -12788,7 +12788,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_Mittens": {
+    {
       "itemName": "TFT_Item_Artifact_Mittens",
       "count": 49744,
       "place": 214026,
@@ -12842,7 +12842,7 @@
         }
       ]
     },
-    "TFT5_Item_JeweledGauntletRadiant": {
+    {
       "itemName": "TFT5_Item_JeweledGauntletRadiant",
       "count": 48982,
       "place": 213824,
@@ -12896,7 +12896,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_SeekersArmguard": {
+    {
       "itemName": "TFT_Item_Artifact_SeekersArmguard",
       "count": 46704,
       "place": 211708,
@@ -12950,7 +12950,7 @@
         }
       ]
     },
-    "TFT9_Item_OrnnDeathfireGrasp": {
+    {
       "itemName": "TFT9_Item_OrnnDeathfireGrasp",
       "count": 46645,
       "place": 197117,
@@ -13004,7 +13004,7 @@
         }
       ]
     },
-    "TFT5_Item_TrapClawRadiant": {
+    {
       "itemName": "TFT5_Item_TrapClawRadiant",
       "count": 45749,
       "place": 188900,
@@ -13058,7 +13058,7 @@
         }
       ]
     },
-    "TFT5_Item_BloodthirsterRadiant": {
+    {
       "itemName": "TFT5_Item_BloodthirsterRadiant",
       "count": 44274,
       "place": 192400,
@@ -13112,7 +13112,7 @@
         }
       ]
     },
-    "TFT5_Item_BlueBuffRadiant": {
+    {
       "itemName": "TFT5_Item_BlueBuffRadiant",
       "count": 43727,
       "place": 186697,
@@ -13166,7 +13166,7 @@
         }
       ]
     },
-    "TFT_Item_Spatula": {
+    {
       "itemName": "TFT_Item_Spatula",
       "count": 42676,
       "place": 181393,
@@ -13220,7 +13220,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_HorizonFocus": {
+    {
       "itemName": "TFT_Item_Artifact_HorizonFocus",
       "count": 41199,
       "place": 181075,
@@ -13274,7 +13274,7 @@
         }
       ]
     },
-    "TFT5_Item_HandOfJusticeRadiant": {
+    {
       "itemName": "TFT5_Item_HandOfJusticeRadiant",
       "count": 40967,
       "place": 173698,
@@ -13328,7 +13328,7 @@
         }
       ]
     },
-    "TFT_Item_Zephyr": {
+    {
       "itemName": "TFT_Item_Zephyr",
       "count": 40703,
       "place": 184974,
@@ -13382,7 +13382,7 @@
         }
       ]
     },
-    "TFT5_Item_ArchangelsStaffRadiant": {
+    {
       "itemName": "TFT5_Item_ArchangelsStaffRadiant",
       "count": 40167,
       "place": 181017,
@@ -13436,7 +13436,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_SpectralCutlass": {
+    {
       "itemName": "TFT_Item_Artifact_SpectralCutlass",
       "count": 38584,
       "place": 164930,
@@ -13490,7 +13490,7 @@
         }
       ]
     },
-    "TFT5_Item_RedemptionRadiant": {
+    {
       "itemName": "TFT5_Item_RedemptionRadiant",
       "count": 36590,
       "place": 156869,
@@ -13544,7 +13544,7 @@
         }
       ]
     },
-    "TFT_Item_Artifact_SilvermereDawn": {
+    {
       "itemName": "TFT_Item_Artifact_SilvermereDawn",
       "count": 36571,
       "place": 165479,
@@ -13598,7 +13598,7 @@
         }
       ]
     },
-    "TFT_Item_FryingPan": {
+    {
       "itemName": "TFT_Item_FryingPan",
       "count": 35065,
       "place": 186668,
@@ -13652,7 +13652,7 @@
         }
       ]
     },
-    "TFT5_Item_DeathbladeRadiant": {
+    {
       "itemName": "TFT5_Item_DeathbladeRadiant",
       "count": 33447,
       "place": 141852,
@@ -13706,7 +13706,7 @@
         }
       ]
     },
-    "TFT_Item_Shroud": {
+    {
       "itemName": "TFT_Item_Shroud",
       "count": 32679,
       "place": 144820,
@@ -13760,7 +13760,7 @@
         }
       ]
     },
-    "TFT5_Item_HextechGunbladeRadiant": {
+    {
       "itemName": "TFT5_Item_HextechGunbladeRadiant",
       "count": 31976,
       "place": 133658,
@@ -13814,7 +13814,7 @@
         }
       ]
     },
-    "TFT5_Item_GiantSlayerRadiant": {
+    {
       "itemName": "TFT5_Item_GiantSlayerRadiant",
       "count": 31661,
       "place": 134415,
@@ -13868,7 +13868,7 @@
         }
       ]
     },
-    "TFT5_Item_SteraksGageRadiant": {
+    {
       "itemName": "TFT5_Item_SteraksGageRadiant",
       "count": 30672,
       "place": 125243,
@@ -13922,7 +13922,7 @@
         }
       ]
     },
-    "TFT5_Item_DragonsClawRadiant": {
+    {
       "itemName": "TFT5_Item_DragonsClawRadiant",
       "count": 30666,
       "place": 133046,
@@ -13976,7 +13976,7 @@
         }
       ]
     },
-    "TFT5_Item_NightHarvesterRadiant": {
+    {
       "itemName": "TFT5_Item_NightHarvesterRadiant",
       "count": 30190,
       "place": 115975,
@@ -14030,7 +14030,7 @@
         }
       ]
     },
-    "TFT5_Item_CrownguardRadiant": {
+    {
       "itemName": "TFT5_Item_CrownguardRadiant",
       "count": 29351,
       "place": 111767,
@@ -14084,7 +14084,7 @@
         }
       ]
     },
-    "TFT5_Item_SunfireCapeRadiant": {
+    {
       "itemName": "TFT5_Item_SunfireCapeRadiant",
       "count": 26262,
       "place": 111281,
@@ -14138,7 +14138,7 @@
         }
       ]
     },
-    "TFT5_Item_BrambleVestRadiant": {
+    {
       "itemName": "TFT5_Item_BrambleVestRadiant",
       "count": 26238,
       "place": 112687,
@@ -14192,7 +14192,7 @@
         }
       ]
     },
-    "TFT5_Item_GuardianAngelRadiant": {
+    {
       "itemName": "TFT5_Item_GuardianAngelRadiant",
       "count": 22297,
       "place": 91364,
@@ -14246,7 +14246,7 @@
         }
       ]
     },
-    "TFT5_Item_LastWhisperRadiant": {
+    {
       "itemName": "TFT5_Item_LastWhisperRadiant",
       "count": 21190,
       "place": 90041,
@@ -14300,7 +14300,7 @@
         }
       ]
     },
-    "TFT5_Item_RabadonsDeathcapRadiant": {
+    {
       "itemName": "TFT5_Item_RabadonsDeathcapRadiant",
       "count": 19914,
       "place": 89152,
@@ -14354,7 +14354,7 @@
         }
       ]
     },
-    "TFT5_Item_TitansResolveRadiant": {
+    {
       "itemName": "TFT5_Item_TitansResolveRadiant",
       "count": 18164,
       "place": 79863,
@@ -14408,7 +14408,7 @@
         }
       ]
     },
-    "TFT5_Item_FrozenHeartRadiant": {
+    {
       "itemName": "TFT5_Item_FrozenHeartRadiant",
       "count": 17557,
       "place": 74863,
@@ -14462,7 +14462,7 @@
         }
       ]
     },
-    "TFT5_Item_SpectralGauntletRadiant": {
+    {
       "itemName": "TFT5_Item_SpectralGauntletRadiant",
       "count": 15186,
       "place": 62676,
@@ -14516,7 +14516,7 @@
         }
       ]
     },
-    "TFT5_Item_QuicksilverRadiant": {
+    {
       "itemName": "TFT5_Item_QuicksilverRadiant",
       "count": 15100,
       "place": 63760,
@@ -14570,7 +14570,7 @@
         }
       ]
     },
-    "TFT5_Item_LeviathanRadiant": {
+    {
       "itemName": "TFT5_Item_LeviathanRadiant",
       "count": 15070,
       "place": 67847,
@@ -14624,7 +14624,7 @@
         }
       ]
     },
-    "TFT5_Item_IonicSparkRadiant": {
+    {
       "itemName": "TFT5_Item_IonicSparkRadiant",
       "count": 13154,
       "place": 56804,
@@ -14678,7 +14678,7 @@
         }
       ]
     },
-    "TFT5_Item_StatikkShivRadiant": {
+    {
       "itemName": "TFT5_Item_StatikkShivRadiant",
       "count": 11982,
       "place": 50634,
@@ -14732,7 +14732,7 @@
         }
       ]
     },
-    "TFT5_Item_RapidFirecannonRadiant": {
+    {
       "itemName": "TFT5_Item_RapidFirecannonRadiant",
       "count": 11298,
       "place": 48820,
@@ -14786,7 +14786,7 @@
         }
       ]
     },
-    "TFT5_Item_AdaptiveHelmRadiant": {
+    {
       "itemName": "TFT5_Item_AdaptiveHelmRadiant",
       "count": 11215,
       "place": 51694,
@@ -14840,7 +14840,7 @@
         }
       ]
     },
-    "TFT5_Item_MorellonomiconRadiant": {
+    {
       "itemName": "TFT5_Item_MorellonomiconRadiant",
       "count": 8125,
       "place": 34604,
@@ -14894,7 +14894,7 @@
         }
       ]
     },
-    "TFT14_MordekaiserCyberneticItem_Radiant": {
+    {
       "itemName": "TFT14_MordekaiserCyberneticItem_Radiant",
       "count": 3671,
       "place": 3869,
@@ -14933,7 +14933,7 @@
         }
       ]
     },
-    "TFT14_JaxCyberneticItem_Radiant": {
+    {
       "itemName": "TFT14_JaxCyberneticItem_Radiant",
       "count": 3621,
       "place": 3810,
@@ -14972,7 +14972,7 @@
         }
       ]
     },
-    "TFT14_SejuaniCyberneticItem_Radiant": {
+    {
       "itemName": "TFT14_SejuaniCyberneticItem_Radiant",
       "count": 3583,
       "place": 3780,
@@ -15011,7 +15011,7 @@
         }
       ]
     },
-    "TFT14_JhinCyberneticItem_Radiant": {
+    {
       "itemName": "TFT14_JhinCyberneticItem_Radiant",
       "count": 3570,
       "place": 3764,
@@ -15050,7 +15050,7 @@
         }
       ]
     },
-    "TFT14_ZeriCyberneticItem_Radiant": {
+    {
       "itemName": "TFT14_ZeriCyberneticItem_Radiant",
       "count": 3565,
       "place": 3753,
@@ -15089,7 +15089,7 @@
         }
       ]
     },
-    "TFT14_VarusCyberneticItem_Radiant": {
+    {
       "itemName": "TFT14_VarusCyberneticItem_Radiant",
       "count": 3551,
       "place": 3752,
@@ -15128,7 +15128,7 @@
         }
       ]
     },
-    "TFT14_NaafiriCyberneticItem_Radiant": {
+    {
       "itemName": "TFT14_NaafiriCyberneticItem_Radiant",
       "count": 3550,
       "place": 3746,
@@ -15167,7 +15167,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Item_SevikasJinxedArm": {
+    {
       "itemName": "TFTEvent5YR_Item_SevikasJinxedArm",
       "count": 350161,
       "place": 1504492,
@@ -15191,7 +15191,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Item_BossKnuckles": {
+    {
       "itemName": "TFTEvent5YR_Item_BossKnuckles",
       "count": 348544,
       "place": 1546133,
@@ -15215,7 +15215,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Item_ShimmerscaleGoldmancersStaff": {
+    {
       "itemName": "TFTEvent5YR_Item_ShimmerscaleGoldmancersStaff",
       "count": 309322,
       "place": 1459180,
@@ -15239,7 +15239,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Item_ShimmerscaleDravensAxe": {
+    {
       "itemName": "TFTEvent5YR_Item_ShimmerscaleDravensAxe",
       "count": 305900,
       "place": 1430218,
@@ -15263,7 +15263,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Item_GlacialMallet": {
+    {
       "itemName": "TFTEvent5YR_Item_GlacialMallet",
       "count": 218118,
       "place": 1002024,
@@ -15287,7 +15287,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Item_TrainerSnax": {
+    {
       "itemName": "TFTEvent5YR_Item_TrainerSnax",
       "count": 168362,
       "place": 731980,
@@ -15299,7 +15299,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Storyweaver3_AS": {
+    {
       "itemName": "TFTEvent5YR_Storyweaver3_AS",
       "count": 124115,
       "place": 553920,
@@ -15311,7 +15311,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Item_ShimmerscaleCrownOfChampions": {
+    {
       "itemName": "TFTEvent5YR_Item_ShimmerscaleCrownOfChampions",
       "count": 120857,
       "place": 572419,
@@ -15335,7 +15335,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Storyweaver5_AS": {
+    {
       "itemName": "TFTEvent5YR_Storyweaver5_AS",
       "count": 76169,
       "place": 332784,
@@ -15347,7 +15347,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Storyweaver5_AP": {
+    {
       "itemName": "TFTEvent5YR_Storyweaver5_AP",
       "count": 57484,
       "place": 257297,
@@ -15359,7 +15359,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Storyweaver7_AS": {
+    {
       "itemName": "TFTEvent5YR_Storyweaver7_AS",
       "count": 56196,
       "place": 230104,
@@ -15371,7 +15371,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Storyweaver3_Support": {
+    {
       "itemName": "TFTEvent5YR_Storyweaver3_Support",
       "count": 44737,
       "place": 220993,
@@ -15383,7 +15383,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Storyweaver3_AP": {
+    {
       "itemName": "TFTEvent5YR_Storyweaver3_AP",
       "count": 43958,
       "place": 193707,
@@ -15395,7 +15395,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Storyweaver7_AP": {
+    {
       "itemName": "TFTEvent5YR_Storyweaver7_AP",
       "count": 39509,
       "place": 160821,
@@ -15407,7 +15407,7 @@
         }
       ]
     },
-    "TFTEvent5YR_Storyweaver7_Support": {
+    {
       "itemName": "TFTEvent5YR_Storyweaver7_Support",
       "count": 21423,
       "place": 89407,
@@ -15419,7 +15419,7 @@
         }
       ]
     },
-    "TFT_Consumable_ChampionDuplicator_III": {
+    {
       "itemName": "TFT_Consumable_ChampionDuplicator_III",
       "count": 7,
       "place": 39,
@@ -15437,7 +15437,7 @@
         }
       ]
     },
-    "TFT10_Item_PBJEmblem": {
+    {
       "itemName": "TFT10_Item_PBJEmblem",
       "count": 51010,
       "place": 254346,
@@ -15461,7 +15461,7 @@
         }
       ]
     },
-    "TFT10_Item_PentakillEmblem": {
+    {
       "itemName": "TFT10_Item_PentakillEmblem",
       "count": 27366,
       "place": 100264,
@@ -15485,7 +15485,7 @@
         }
       ]
     },
-    "TFT10_Item_8bitEmblem": {
+    {
       "itemName": "TFT10_Item_8bitEmblem",
       "count": 26454,
       "place": 102951,
@@ -15509,7 +15509,7 @@
         }
       ]
     },
-    "TFT10_Item_KDAEmblem": {
+    {
       "itemName": "TFT10_Item_KDAEmblem",
       "count": 23343,
       "place": 85867,
@@ -15533,7 +15533,7 @@
         }
       ]
     },
-    "TFT10_Item_TrueDamageEmblem": {
+    {
       "itemName": "TFT10_Item_TrueDamageEmblem",
       "count": 21585,
       "place": 77391,
@@ -15557,7 +15557,7 @@
         }
       ]
     },
-    "TFT10_Item_CountryEmblem": {
+    {
       "itemName": "TFT10_Item_CountryEmblem",
       "count": 19243,
       "place": 74621,
@@ -15581,7 +15581,7 @@
         }
       ]
     },
-    "TFT10_Item_PunkEmblem": {
+    {
       "itemName": "TFT10_Item_PunkEmblem",
       "count": 18326,
       "place": 70214,
@@ -15605,7 +15605,7 @@
         }
       ]
     },
-    "TFT10_Item_SpellweaverEmblem": {
+    {
       "itemName": "TFT10_Item_SpellweaverEmblem",
       "count": 17987,
       "place": 70625,
@@ -15629,7 +15629,7 @@
         }
       ]
     },
-    "TFT10_Item_EdgelordEmblem": {
+    {
       "itemName": "TFT10_Item_EdgelordEmblem",
       "count": 17793,
       "place": 73252,
@@ -15653,7 +15653,7 @@
         }
       ]
     },
-    "TFT10_Item_DazzlerEmblem": {
+    {
       "itemName": "TFT10_Item_DazzlerEmblem",
       "count": 17530,
       "place": 71098,
@@ -15677,7 +15677,7 @@
         }
       ]
     },
-    "TFT10_Item_FighterEmblem": {
+    {
       "itemName": "TFT10_Item_FighterEmblem",
       "count": 17319,
       "place": 69706,
@@ -15701,7 +15701,7 @@
         }
       ]
     },
-    "TFT10_Item_EmoEmblem": {
+    {
       "itemName": "TFT10_Item_EmoEmblem",
       "count": 16151,
       "place": 61437,
@@ -15725,7 +15725,7 @@
         }
       ]
     },
-    "TFT10_Item_BigShotEmblem": {
+    {
       "itemName": "TFT10_Item_BigShotEmblem",
       "count": 15984,
       "place": 68167,
@@ -15749,7 +15749,7 @@
         }
       ]
     },
-    "TFT10_Item_RapidfireEmblem": {
+    {
       "itemName": "TFT10_Item_RapidfireEmblem",
       "count": 15402,
       "place": 60950,
@@ -15773,7 +15773,7 @@
         }
       ]
     },
-    "TFT10_Item_WardenEmblem": {
+    {
       "itemName": "TFT10_Item_WardenEmblem",
       "count": 15104,
       "place": 59105,
@@ -15797,7 +15797,7 @@
         }
       ]
     },
-    "TFT10_Item_CrowdDiverEmblem": {
+    {
       "itemName": "TFT10_Item_CrowdDiverEmblem",
       "count": 14019,
       "place": 55495,
@@ -15821,7 +15821,7 @@
         }
       ]
     },
-    "TFT10_Item_GuardianEmblem": {
+    {
       "itemName": "TFT10_Item_GuardianEmblem",
       "count": 12463,
       "place": 46165,
@@ -15845,7 +15845,7 @@
         }
       ]
     },
-    "TFT10_Item_BrawlerEmblem": {
+    {
       "itemName": "TFT10_Item_BrawlerEmblem",
       "count": 11535,
       "place": 44676,
@@ -15869,7 +15869,7 @@
         }
       ]
     },
-    "TFT10_Item_HyperPopEmblem": {
+    {
       "itemName": "TFT10_Item_HyperPopEmblem",
       "count": 10780,
       "place": 39369,
@@ -15893,7 +15893,7 @@
         }
       ]
     },
-    "TFT10_Item_SuperfanEmblem": {
+    {
       "itemName": "TFT10_Item_SuperfanEmblem",
       "count": 9675,
       "place": 36323,
@@ -15917,7 +15917,7 @@
         }
       ]
     },
-    "TFT10_Item_JazzEmblem": {
+    {
       "itemName": "TFT10_Item_JazzEmblem",
       "count": 9667,
       "place": 35596,
@@ -15941,7 +15941,7 @@
         }
       ]
     },
-    "TFT10_Item_ExecutionerEmblem": {
+    {
       "itemName": "TFT10_Item_ExecutionerEmblem",
       "count": 9562,
       "place": 36467,
@@ -15965,7 +15965,7 @@
         }
       ]
     },
-    "TFT10_Item_DiscoEmblem": {
+    {
       "itemName": "TFT10_Item_DiscoEmblem",
       "count": 7122,
       "place": 28575,
@@ -15989,7 +15989,7 @@
         }
       ]
     }
-  },
+  ],
   "updated": 1752259096165,
   "overall": {
     "count": 9546203
