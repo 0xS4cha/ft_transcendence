@@ -1,6 +1,7 @@
-from    backend_app.database    import  Base
-from    sqlalchemy.orm          import  Mapped, mapped_column
-from    sqlalchemy              import  Integer
+from sqlalchemy.orm import Mapped, mapped_column
+
+from backend_app.database import Base
+
 
 class   UserModel(Base):
     __tablename__ = "users"

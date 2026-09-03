@@ -1,7 +1,7 @@
-from    fastapi                                 import  APIRouter
-from    backend_app.api.endpoints.authenticate  import  router  as  authenticate_router
-from    backend_app.api.endpoints.champions     import  router  as  champions_router
+from fastapi import APIRouter
 
+from backend_app.api.endpoints.authenticate import router as authenticate_router
+from backend_app.api.endpoints.champions import router as champions_router
 
 api_router = APIRouter(prefix="/api")
 

@@ -1,10 +1,11 @@
-from    sqlalchemy.ext.asyncio  import  create_async_engine, async_sessionmaker, AsyncSession
-from    sqlalchemy.engine       import  URL
-from    sqlalchemy.orm          import  DeclarativeBase
-from    pydantic_settings       import  BaseSettings
-from    contextlib              import  asynccontextmanager
-from    typing                  import  Annotated
-from    fastapi                 import  Depends, FastAPI
+from contextlib import asynccontextmanager
+from typing import Annotated
+
+from fastapi import Depends, FastAPI
+from pydantic_settings import BaseSettings
+from sqlalchemy.engine import URL
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.orm import DeclarativeBase
 
 
 # store env variables
