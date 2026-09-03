@@ -1,9 +1,10 @@
-from    backend_app.core.security   import  hash_password
-from    backend_app.schemas.user    import  UserCreate, UserPublic
-from    backend_app.models.user     import  UserModel
-from    backend_app.database        import  AsyncSessionDep
-from    sqlalchemy                  import  select
-from    fastapi                     import  HTTPException, APIRouter
+from fastapi import APIRouter, HTTPException
+from sqlalchemy import select
+
+from backend_app.core.security import hash_password
+from backend_app.database import AsyncSessionDep
+from backend_app.models.user import UserModel
+from backend_app.schemas.user import UserCreate, UserPublic
 
 router = APIRouter() 
 

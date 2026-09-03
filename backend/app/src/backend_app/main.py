@@ -1,6 +1,7 @@
-from    fastapi                 import  FastAPI
-from    backend_app.database    import  lifespan
-from    backend_app.api.router  import  api_router
+from fastapi import FastAPI
+
+from backend_app.api.router import api_router
+from backend_app.database import lifespan
 
 app = FastAPI(lifespan=lifespan)
 
