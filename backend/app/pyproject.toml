@@ -8,6 +8,7 @@ dependencies = [
     "annotated>=0.0.2",
     "asyncpg>=0.31.0",
     "fastapi[standard]>=0.141.1",
+    "passlib[bcrypt]>=1.7.4",
     "pydantic-settings>=2.15.0",
     "sqlalchemy>=2.0.52",
 ]

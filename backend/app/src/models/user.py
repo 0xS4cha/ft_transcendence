@@ -1,3 +1,9 @@
-from    typing          import  Annotated
-from    fastapi         import  FastAPI
 from    src.database    import  Base
+from    sqlalchemy.orm  import  Mapped, mapped_column
+
+class   UserModel(Base):
+    __tablename__ = "user"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    email: Mapped[str] = mapped_column(unique=True, index=True)
+    hash_pass: Mapped[str]
