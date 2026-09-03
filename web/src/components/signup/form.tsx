@@ -72,14 +72,14 @@ export function SignupForm({
         </div>
         <Field>
           <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input id="email" type="email" placeholder="m@example.com" required onChange={handleChange}/>
+          <Input id="email" name="email" type="email" placeholder="m@example.com" required onChange={handleChange}/>
         </Field>
         <Field>
           <div className="flex items-center">
             <FieldLabel htmlFor="password">Password</FieldLabel>
           </div>
           <ButtonGroup>
-            <Input id="password" type={viewPassword ? "password" : "text"} required onChange={handleChange}/>
+            <Input id="password" name="password" type={viewPassword ? "password" : "text"} required onChange={handleChange}/>
             <Button variant={viewPassword ? "outline" : "default"} onClick={() => setViewPassword(!viewPassword)}><Eye/></Button>
           </ButtonGroup>
         </Field>
