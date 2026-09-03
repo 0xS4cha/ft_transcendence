@@ -1,0 +1,76 @@
+from fastapi import APIRouter
+from backend_app.database import get_async_session
+from backend_app.shared.models import Champion
+from sqlalchemy import inspect, select
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
+
+router = APIRouter(
+    prefix="/game_data/champions",
+    tags=["champions"],
+)
+
+
+def sqlalchemy_to_dict(obj, visited=None):
+    if visited is None:
+        visited = set()
+
+    if obj is None:
+        return None
+
+    obj_key = (type(obj), id(obj))
+    if obj_key in visited:
+        return None
+
+    visited.add(obj_key)
+    mapper = inspect(obj).mapper
+    state = inspect(obj)
+    data = {
+        column.key: getattr(obj, column.key)
+        for column in mapper.column_attrs
+    }
+
+    for relationship in mapper.relationships:
+        if relationship.key not in state.unloaded:
+            value = getattr(obj, relationship.key)
+
+            if value is None:
+                data[relationship.key] = None
+
+            elif relationship.uselist:
+                data[relationship.key] = [
+                    sqlalchemy_to_dict(item, visited)
+                    for item in value
+                ]
+            else:
+                data[relationship.key] = sqlalchemy_to_dict(
+                    value, visited
+                )
+    return data
+
+
+@router.get("/{champion_id}")
+async def get_champion(champion_id: int, session: AsyncSession = Depends(get_async_session)):    
+    async with session.begin():
+        stmt = (
+            select(Champion)
+            .where(Champion.id == champion_id)
+            .options(
+                selectinload(Champion.tactical_info),
+                selectinload(Champion.playstyle_info),
+                selectinload(Champion.tag_info),
+                selectinload(Champion.passive),
+                selectinload(Champion.roles),
+                selectinload(Champion.recommended_item_defaults),
+                selectinload(Champion.skins),
+                selectinload(Champion.spells),
+            )
+        )
+
+        result = await session.execute(stmt)
+        champion = result.scalar_one_or_none()
+    
+        if champion:
+            return sqlalchemy_to_dict(champion)
+        return {'status': 'not found'}
