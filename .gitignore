@@ -9,7 +9,7 @@
 web/dist
 .~lock.*.csv#
 .gitignore
-
+__pycache__
 
 backend/app/.pytest_cache
 backend/app/.ruff_cache
