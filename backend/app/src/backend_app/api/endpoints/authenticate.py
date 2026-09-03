@@ -1,14 +1,11 @@
-from    app.security        import  hash_password
-from    app.schemas.user    import  UserCreate, UserPublic
-from    app.models.user     import  UserModel
-from    app.database        import  AsyncSessionDep
-from    sqlalchemy          import  select
-from    fastapi             import  HTTPException, APIRouter
+from    backend_app.core.security   import  hash_password
+from    backend_app.schemas.user    import  UserCreate, UserPublic
+from    backend_app.models.user     import  UserModel
+from    backend_app.database        import  AsyncSessionDep
+from    sqlalchemy                  import  select
+from    fastapi                     import  HTTPException, APIRouter
 
-router = APIRouter(
-    tags=["Authentication"],
-    prefix="/auth"
-) 
+router = APIRouter() 
 
 @router.post("/signup", response_model=UserPublic)
 async def signup(
