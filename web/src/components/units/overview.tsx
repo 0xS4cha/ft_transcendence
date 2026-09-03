@@ -1,7 +1,7 @@
-import { Card, CardTitle, CardAction, CardHeader, CardDescription, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Download } from "lucide-react"
-import { UnitsTable } from "@/components/units/table"
+import { Card, CardTitle, CardAction, CardHeader, CardDescription, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
+import { UnitsTable } from "@/components/units/table";
 
 export function UnitsOverview() {
     return (
@@ -17,5 +17,5 @@ export function UnitsOverview() {
                 <UnitsTable />
             </CardContent>
         </Card>
-    )
-}
+    );
+};
