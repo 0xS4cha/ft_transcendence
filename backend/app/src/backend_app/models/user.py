@@ -1,4 +1,4 @@
-from    app.database    import  Base
+from    backend_app.database    import  Base
 from    sqlalchemy.orm  import  Mapped, mapped_column
 from    sqlalchemy      import  Integer
 
@@ -12,4 +12,4 @@ class   UserModel(Base):
         unique=True,
         index=True
     )
-    hash_pass: Mapped[str]
+    hashed_password: Mapped[str] = mapped_column()
