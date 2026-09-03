@@ -26,6 +26,7 @@ url = URL.create(
 
 # create the engine that connects to the db via the url
 engine = create_async_engine(url)
+print(f"\033[35mDATABASE_URL\033[0m: {url}")
 
 # declare sqlalchemy base class
 class   Base(DeclarativeBase):

@@ -53,6 +53,8 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: ${DATABASE_URL}
+    volumes:
+      - ./shared/:/opt/character_set/shared/
     networks:
       - localnet_transcendence
 
