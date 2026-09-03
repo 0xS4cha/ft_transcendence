@@ -22,6 +22,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       DATABASE_URL: ${DATABASE_URL}
     volumes:
+      - ./shared/:/app/src/shared/
       - ./backend/app/src:/app/src #dev env, change when prod
     networks:
       - localnet_transcendence
