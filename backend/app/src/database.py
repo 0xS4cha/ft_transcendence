@@ -14,7 +14,7 @@ class   Settings(BaseSettings):
     POSTGRES_DB: str
 
 settings = Settings()
-debug = True
+debug = False
 
 # create db url
 url = URL.create(
