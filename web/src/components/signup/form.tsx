@@ -1,19 +1,19 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { ButtonGroup } from "@/components/ui/button-group"
-import { Eye } from "lucide-react"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { Eye } from "lucide-react";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldSeparator
-} from "@/components/ui/field"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
-import { useState } from "react"
+} from "@/components/ui/field";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { toast } from "@/components/ui/toast"
+import { toast } from "@/components/ui/toast";
 
 type SignupFormProps = React.ComponentProps<"form"> & {
   func: (type: boolean) => void;
@@ -31,7 +31,7 @@ export function SignupForm({
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target;
         setFormData(prev => ({ ...prev, [name]: value }));
-    }
+  };
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -119,5 +119,5 @@ export function SignupForm({
         </Field>
       </FieldGroup>
     </form>
-  )
-}
+  );
+};
