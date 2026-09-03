@@ -45,10 +45,10 @@ services:
     networks:
       - localnet_transcendence
 
-  character_set:
+  game_data:
     build:
-      context: character_set
-    container_name: transcendence-character-set
+      context: game_data
+    container_name: transcendence-game-data
     restart: unless-stopped
     depends_on:
       postgres:
@@ -56,7 +56,7 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL}
     volumes:
-      - ./shared/:/opt/character_set/shared/
+      - ./shared/:/opt/game_data/shared/
     networks:
       - localnet_transcendence
 
