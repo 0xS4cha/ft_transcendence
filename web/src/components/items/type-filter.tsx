@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Coins } from "lucide-react";
+import { PackageOpen } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -24,11 +24,11 @@ export function ItemsTypeFilter() {
     <div className="flex items-center">
       <Select
         value={typeFilter}
-        onValueChange={setTypeFilter}
+        onValueChange={(value) => value ? setTypeFilter(value) : console.log("value is null")}
       >
         <SelectTrigger size="sm" className="w-[110px]">
           <div className="flex items-center gap-1.5 truncate">
-            <Coins className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+            <PackageOpen className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
             <SelectValue />
           </div>
         </SelectTrigger>

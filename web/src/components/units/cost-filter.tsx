@@ -24,7 +24,7 @@ export function UnitsCostFilter() {
     <div className="flex items-center">
       <Select
         value={costFilter}
-        onValueChange={setCostFilter}
+        onValueChange={(value) => value ? setCostFilter(value) : console.log("value is null")}
       >
         <SelectTrigger size="sm" className="w-[110px]">
           <div className="flex items-center gap-1.5 truncate">
