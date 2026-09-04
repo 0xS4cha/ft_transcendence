@@ -3,7 +3,7 @@ import heroBg from '@/assets/hero-bg.png';
 export function Hero() {
   return (
     <div className="w-full">
-      <section className="relative flex h-72 w-full flex-col justify-center items-left overflow-hidden  border border-white/5 h-[75vh]">
+      <section className="relative flex h-72 w-full flex-col justify-center items-left overflow-hidden  border border-white/5 h-[65vh]">
         <img
           src={heroBg}
           alt="tactyx hero banner"
@@ -15,7 +15,7 @@ export function Hero() {
         <div className="relative z-10 flex flex-col items-start p-6 sm:p-10 md:p-12">
           <h1 className="text-left text-3xl font-extrabold tracking-tight text-[#07070B] sm:text-4xl md:text-5xl lg:text-6xl">
             Stop guessing, start{' '}
-            <span className="bg-linear-to-r from-[#4E80EE] via-[#38E1FF] to-[#70A6FF] bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-[#93C5FD] via-[#38E1FF] to-[#70A6FF] bg-clip-text text-transparent">
               winning.
             </span>
           </h1>

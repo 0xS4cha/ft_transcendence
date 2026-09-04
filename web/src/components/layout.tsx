@@ -2,6 +2,16 @@ import { Outlet } from 'react-router-dom';
 import { AppSidebar } from '@/components/app-sidebar';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
+} from "@/components/ui/input-group"
+import { InputGroupDemo } from './input-groupDemo';
+
 export default function Layout() {
   return (
     <SidebarProvider>
@@ -23,6 +33,12 @@ export default function Layout() {
 
         <main>
           <Outlet />
+          <InputGroup>
+            <InputGroupInput placeholder="Search..." />
+              <InputGroupAddon>
+                <InputGroupDemo />
+              </InputGroupAddon>
+          </InputGroup>
         </main>
       </SidebarInset>
     </SidebarProvider>
