@@ -1,13 +1,13 @@
-from contextlib import asynccontextmanager
 from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
 from typing import Annotated
 
 from fastapi import Depends, FastAPI
 from pydantic import PostgresDsn
 from pydantic_settings import BaseSettings
-from sqlalchemy.engine import URL
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
+
 
 class   Base(DeclarativeBase):
     pass
@@ -30,7 +30,7 @@ class   Settings(BaseSettings):
                     username = self.POSTGRES_USER,
                     password = self.POSTGRES_PASSWORD,
                     host = self.DEBUG_HOST if self.DEBUG else self.POSTGRES_HOST,
-                    port = self.PORT,
+                    port = self.POSTGRES_PORT,
                     path = self.POSTGRES_DB
                 )
             )
@@ -49,21 +49,17 @@ class   Database:
             autoflush=False,
             expire_on_commit=False
         )
-        self.async_session_dep = Annotated[AsyncSession, Depends(self.get_async_session)]
 
-    async def get_async_session(self) -> AsyncGenerator[AsyncSession, None]:
+    async def get_async_session(self) -> AsyncGenerator[AsyncSession]:
         async with self.async_session_factory() as async_session:
             yield async_session
 
-    async def close(self) -> None:
+    @asynccontextmanager
+    async def lifespan(self, _app: FastAPI) -> AsyncGenerator[None]:
+        async with self.engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+        yield
         await self.engine.dispose()
 
-db = Database()
-
-print(f"\n\033[1;35mDATABASE_URL: \033[0;35m{db.settings.database_url}\033[0m\n")
-
-@asynccontextmanager
-async def lifespan(_app: FastAPI):
-    async with db.engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    yield
+db = Database();
+type AsyncSessionDep = Annotated[AsyncSession, Depends(db.get_async_session)]

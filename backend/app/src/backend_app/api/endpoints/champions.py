@@ -5,10 +5,7 @@ from sqlalchemy.orm import selectinload
 
 from backend_app.database import AsyncSessionDep
 
-router = APIRouter(
-    prefix="/game_data/champions",
-    tags=["champions"],
-)
+router = APIRouter()
 
 def sqlalchemy_to_dict(obj, visited=None):
     if visited is None:
