@@ -26,6 +26,17 @@ import {
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
+} from "@/components/ui/input-group"
+import { InputGroupDemo } from './input-groupDemo';
+
+
 interface NavItem {
   readonly label: string;
   readonly href: string;
@@ -78,15 +89,20 @@ export function AppSidebar() {
           className="group/reopen relative hidden h-8 w-8 items-center justify-center rounded-md transition-colors hover:bg-white/10 group-data-[collapsible=icon]:flex"
         >
           <span className="bg-gradient-to-r from-[#4E80EE] via-[#38E1FF] to-[#70A6FF] bg-clip-text font-mono text-[11px] font-black tracking-tighter text-transparent transition-opacity duration-150 group-hover/reopen:opacity-0">
-            TYX
+            TACTYX
           </span>
           <ChevronRight className="absolute h-4 w-4 translate-x-0.5 text-neutral-200 opacity-0 transition-all duration-150 group-hover/reopen:opacity-100" />
         </button>
       </SidebarHeader>
 
-      <SidebarContent className="px-2 py-3 group-data-[collapsible=icon]:px-1.5">
+      <SidebarContent className=" px-2 py-3 group-data-[collapsible=icon]:px-1.5">
         <SidebarGroup className="p-0">
           <SidebarGroupContent>
+            <div className="mb-2 group-data-[collapsible=icon]:hidden">
+             <InputGroup>
+            <InputGroupInput placeholder="Search..." />
+          </InputGroup>
+            </div>
             <SidebarMenu className="gap-1">
               {NAV_ITEMS.map((item) => (
                 <SidebarMenuItem key={item.href}>

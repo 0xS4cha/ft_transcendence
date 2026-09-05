@@ -5,6 +5,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group"
+
 export function InputGroupDemo() {
   return (
     <InputGroup className="max-w-xs">
