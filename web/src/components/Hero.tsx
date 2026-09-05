@@ -1,9 +1,10 @@
 import heroBg from '@/assets/hero-bg.png';
+import Appstat from './App-stat';
 
 export function Hero() {
   return (
     <div className="w-full">
-      <section className="relative flex h-72 w-full flex-col justify-center items-left overflow-hidden  border border-white/5 h-[65vh]">
+      <section className="relative flex h-72 w-full flex-col justify-center items-left overflow-hidden h-[65vh]">
         <img
           src={heroBg}
           alt="tactyx hero banner"
@@ -25,7 +26,7 @@ export function Hero() {
           </p>
         </div>
       </section>
-
+        <Appstat />
       <div className="mt-8 space-y-6">
       </div>
     </div>
