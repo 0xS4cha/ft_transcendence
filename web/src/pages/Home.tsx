@@ -1,8 +1,9 @@
-import { Hero } from "@/components/hero"
+import { Hero } from "@/components/Hero"
+import Layout from "@/components/Layout"
 
 export default function Home() {
     return (
-    <div className="relative w-full min-h-screen bg-[red]">
+    <div>
         <Hero />
         <div className="absolute inset-0 z-0 bg-red"></div>
     </div>

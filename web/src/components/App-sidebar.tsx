@@ -34,7 +34,7 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "@/components/ui/input-group"
-import { InputGroupDemo } from './input-groupDemo';
+import { InputGroupDemo } from './Input-groupDemo';
 
 
 interface NavItem {
@@ -131,7 +131,7 @@ export function AppSidebar() {
 
       <SidebarFooter className="border-t border-white/5 p-2">
         <Link
-          to="/profile"
+          to="/authenticate"
           className="flex h-10 items-center gap-3 rounded-md px-2 text-neutral-400 transition-colors hover:bg-white/[0.04] hover:text-white group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
         >
           <div className="h-6 w-6 shrink-0 rounded-full border border-white/10 bg-neutral-800" />
