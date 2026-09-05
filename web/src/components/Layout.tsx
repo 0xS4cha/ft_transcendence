@@ -21,8 +21,8 @@ export default function Layout() {
           </div>
         </header>
         <main>
-          <Outlet />
-        </main>
+        <Outlet />
+      </main>
       </SidebarInset>
     </SidebarProvider>
   );

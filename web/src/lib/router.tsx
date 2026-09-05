@@ -41,20 +41,20 @@ export const router = createBrowserRouter([
     //       return { Component };
     //     },
     //   },
-    //   {
-    //     path: "patch_note",
-    //     lazy: async () => {
-    //       const { default: Component } = await import("@/pages/PatchNote");
-    //       return { Component };
-    //     },
-    //   },
-    //   {
-    //     path: "builder",
-    //     lazy: async () => {
-    //       const { default: Component } = await import("@/pages/Builder");
-    //       return { Component };
-    //     },
-    //   },
+      {
+        path: "patch_note",
+        lazy: async () => {
+          const { default: Component } = await import("@/pages/PatchNote");
+          return { Component };
+        },
+      },
+      {
+        path: "builder",
+        lazy: async () => {
+          const { default: Component } = await import("@/pages/Builder");
+          return { Component };
+        },
+      },
     //   {
     //     path: "meta",
     //     lazy: async () => {
