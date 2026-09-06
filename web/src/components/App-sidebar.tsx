@@ -95,29 +95,29 @@ export function AppSidebar() {
         </button>
       </SidebarHeader>
 
-      <SidebarContent className=" px-2 py-3 group-data-[collapsible=icon]:px-1.5">
+      <SidebarContent className=" px-2 py-3 group-data-[collapsible=icon]:px-1.5 ">
         <SidebarGroup className="p-0">
           <SidebarGroupContent>
-            <div className="mb-2 group-data-[collapsible=icon]:hidden">
+            <div className="mb-2 py-2 group-data-[collapsible=icon]:hidden">
              <InputGroup>
             <InputGroupInput placeholder="Search..." />
           </InputGroup>
             </div>
-            <SidebarMenu className="gap-1">
+            <SidebarMenu className="gap-2">
               {NAV_ITEMS.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <NavLink
                     to={item.href}
                     className={({ isActive }) =>
                       cn(
-                        'group flex h-8 items-center gap-3 rounded-md px-2.5 text-[13px] font-normal transition-colors group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0',
+                        'group/item flex h-8 items-center gap-3 rounded-md px-2.5 text-[13px] font-normal transition-colors group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0',
                         isActive
                           ? 'bg-white/10 font-medium text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]'
-                          : 'text-neutral-400 hover:bg-white/[0.04] hover:text-neutral-200',
+                          : 'text-neutral-400 hover:bg-white/[0.04] hover:text-white',
                       )
                     }
                   >
-                    <item.icon className="h-4 w-4 shrink-0 stroke-[1.5] text-neutral-400 transition-colors group-hover:text-neutral-200" />
+                    <item.icon className="h-4 w-4 shrink-0 stroke-[1.5] text-neutral-400 transition-colors group-hover/item:text-white"/>
                     <span className="truncate group-data-[collapsible=icon]:hidden">
                       {item.label}
                     </span>
