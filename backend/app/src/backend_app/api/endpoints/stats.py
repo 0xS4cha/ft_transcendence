@@ -45,7 +45,7 @@ async def visits(session: AsyncSessionDep):
             select(func.count())
             .select_from(VisitModel)
             .where(VisitModel.date == (date.today() - timedelta(days=i)).isoformat())
-        )) for i in range(10)
+        ) or 0) for i in range(10)
     ]
 
 async def default(session: AsyncSessionDep):
