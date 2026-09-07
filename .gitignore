@@ -20,4 +20,4 @@ backend/app/src/__pycache__
 backend/app/tests/__pycache__
 
 game_data/shared/
-backend/app/src/backend_app/shared/
+backend/app/src/shared/

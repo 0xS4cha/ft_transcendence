@@ -1,35 +1,71 @@
+from datetime import date, timedelta
+import time
+
 from fastapi import APIRouter
-from shared.models import UnitStat
+from shared.models import ProcessedGame
+from backend_app.models.user import UserModel
+from backend_app.models.visit import VisitModel
 from backend_app.database import AsyncSessionDep
 from sqlalchemy import select, func
 from fastapi import Response, status
+from uuid import uuid4
 
 
 router = APIRouter()
+REFRESH_DELTA_SECONDS    = 3
 
 stats_cache = {}
-async def get_cache(name, calc_function, session: AsyncSessionDep):
-    if name in stats_cache:
+async def get_cache(name, calc_function, session: AsyncSessionDep, force_update = False):
+    if name in stats_cache.keys() and not force_update:
         return stats_cache.get(name)
-    stats_cache[name] = calc_function(session)
+    stats_cache[name] = await calc_function(session)
+    return stats_cache[name]
 
 
 async def processed_game_calc(session: AsyncSessionDep):
-    total = await session.scalar(select(func.sum(UnitStat.count))) or 0
-    return {"count": total}
+    total = int(await session.scalar(select(func.count()).select_from(ProcessedGame))) or 0
+    return {'count': total}
+
+async def created_accounts(session: AsyncSessionDep):
+    total = int(await session.scalar(select(func.count()).select_from(UserModel))) or 0
+    return {'count': total}
+
+async def visits(session: AsyncSessionDep):
+    today = date.today().isoformat()
+    session.add(
+        VisitModel(
+            id=uuid4().hex,
+            date=today,
+        )
+    )
+    await session.commit()
+    # return count
+    return [
+        int(await session.scalar(
+            select(func.count())
+            .select_from(VisitModel)
+            .where(VisitModel.date == (date.today() - timedelta(days=i)).isoformat())
+        )) for i in range(10)
+    ]
 
 async def default(session: AsyncSessionDep):
-    return 0
+    return {'count': 0}
 
 endpoints = {
-    "processed_game": {"cache": True, "function": processed_game_calc}
+    "processed_game": {"cache": True, "function": processed_game_calc, "last": 0.0},
+    "accounts_created": {"cache": False, "function": created_accounts, "last": 0.0},
+    "visits": {"cache": False, "function": visits, "last": 0.0},
 }
 @router.get("/{name}")
 async def stats_dispatcher(name: str, response: Response, session: AsyncSessionDep):
     if name in endpoints.keys():
-        #if endpoints[name].get("cache", False):
-        #    return await get_cache(name, endpoints[name].get("function", default))
-        #else:
-        return await endpoints[name].get("function", default)(session)
+        force_update = time.time() - endpoints[name].get("last", 0) > REFRESH_DELTA_SECONDS
+        if endpoints[name].get("cache", False) is True:
+            result = await get_cache(name, endpoints[name].get("function", default), session, force_update)
+        else:
+            result = await endpoints[name].get("function", default)(session)
+        if force_update:
+            endpoints[name]["last"] = time.time()
+        return result
     response.status_code = status.HTTP_404_NOT_FOUND
     return {'success': False}

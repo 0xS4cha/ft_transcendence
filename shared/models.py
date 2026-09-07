@@ -7,7 +7,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 if TYPE_CHECKING:
     from classes import DetailedChampion
 
-
+ 
 class Base(DeclarativeBase):
     pass
 
@@ -232,6 +232,11 @@ class SpellAmmo(Base):
     spell_id: Mapped[int] = mapped_column(ForeignKey("spells.id"), primary_key=True)
     ammo_recharge_time: Mapped[list[float]] = mapped_column("ammoRechargeTime", JSON)
     max_ammo: Mapped[list[float]] = mapped_column("maxAmmo", JSON)
+
+class ProcessedGame(Base):
+    __tablename__ = "processed_game"
+
+    match_id: Mapped[str] = mapped_column("match_id", primary_key=True)
 
 class UnitStat(Base):
     __tablename__ = "unit_stat"
