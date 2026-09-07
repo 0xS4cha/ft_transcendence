@@ -1,8 +1,6 @@
 import datetime
 import json
 import os
-import random
-import sys
 import time
 import requests
 
@@ -79,15 +77,12 @@ def process_last_ten_games(n, output_data, games, players, GAME_NAME, TAG_LINE):
     
     time.sleep(1)
 
-    print(f"Looking up {GAME_NAME}#{TAG_LINE}...")
-    print()
+    print(f"Looking up {GAME_NAME}#{TAG_LINE}...\n")
 
     account = get_account(GAME_NAME, TAG_LINE)
     puuid = account["puuid"]
-
     print(f"Riot ID : {account['gameName']}#{account['tagLine']}")
-    print(f"PUUID   : {puuid}")
-    print()
+    print(f"PUUID   : {puuid}\n")
 
     match_ids = get_match_ids(puuid)
     if not match_ids:
@@ -117,15 +112,12 @@ def process_last_ten_games(n, output_data, games, players, GAME_NAME, TAG_LINE):
             info["game_datetime"] / 1000
         )
 
-        participants = [f"{participant['puuid']}   win: {participant["win"]}" for participant in info['participants']]
-
+        # game data
         print(f"{index}. {match_id}")
         print(f"   Date       : {game_datetime}")
         print(f"   Placement  : #{player['placement']}")
         print(f"   Level      : {player['level']}")
-        print(f"   Last round : {player['last_round']}")
-        print(f"   Players    : \n\t{'\n\t'.join(participants)}")
-        print()
+        print(f"   Last round : {player['last_round']}\n")
 
         for unit in player['units']:
             unit_name = unit['character_id']
@@ -168,7 +160,7 @@ if __name__ == "__main__":
     data = {}
     games = []
     players = []
-    n = [100000]
+    n = [100000] # number of tries
     try:
         with open(output_file, 'r') as f:
             data = json.load(f)

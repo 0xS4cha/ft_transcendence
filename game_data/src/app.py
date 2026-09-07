@@ -12,6 +12,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from .shared.models import Base, Champion, champion_from_payload
+from .fetch_matches.load_in_db import load_games_in_db
 
 
 def main() -> None:
@@ -37,6 +38,12 @@ def main() -> None:
 
             print(f"Saved champion \033[35m{detailed_champion_detail.name}\033[0m")
         session.commit()
+
+    # try to load computed matches stats into memory
+    try:
+        load_games_in_db(engine)
+    except Exception as e:
+        print(f"Could not load computed games in database: {e}")
 
 if __name__ == "__main__":
     try:

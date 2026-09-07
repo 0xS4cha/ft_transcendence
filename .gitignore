@@ -19,4 +19,5 @@ backend/app/.python-version
 backend/app/src/__pycache__
 backend/app/tests/__pycache__
 
-character_set/shared/
+game_data/src/shared/
+backend/app/src/shared/
