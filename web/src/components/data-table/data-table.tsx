@@ -1,9 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, Fragment } from "react";
 import {
   type ColumnFiltersState,
   type ColumnVisibilityState,
   type PaginationState,
   type SortingState,
+  type ExpandedState,
   useTable,
 } from "@tanstack/react-table";
 import {
@@ -24,6 +25,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { dataTableFeatures } from "@/lib/data-table-features";
+import { Model } from "@/components/models/model";
 
 import { DataTableFilter } from "./data-table-filter";
 import { DataTablePagination } from "./data-table-pagination";
@@ -40,6 +42,7 @@ interface DataTableProps {
   defaultSortId: string;
   searchPlaceholder?: string;
   customToolbar?: React.ReactNode;
+  onExpand?: (unit: any, columns: any) => React.ReactNode;
 }
 
 export function DataTable({
@@ -48,6 +51,7 @@ export function DataTable({
   getRowId,
   defaultSortId,
   searchPlaceholder = "Search...",
+  onExpand,
   customToolbar,
 }: DataTableProps) {
   const sortOptionState = useMemo(() => ({
@@ -58,6 +62,7 @@ export function DataTable({
   const [rowSelection, setRowSelection] = useState({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([{ id: defaultSortId, desc: false }]);
+  const [expanded, setExpanded] = useState<ExpandedState>({});
   const [columnVisibility] = useState<ColumnVisibilityState>({
     search: false,
   });
@@ -76,6 +81,7 @@ export function DataTable({
       sorting,
       columnVisibility,
       pagination,
+      expanded
     },
     getRowId,
     enableRowSelection: true,
@@ -83,6 +89,8 @@ export function DataTable({
     onColumnFiltersChange: setColumnFilters,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
+    onExpandedChange: setExpanded,
+    getRowCanExpand: () => true,
   });
 
   const searchQuery = (table.getColumn("search")?.getFilterValue() as string | undefined) ?? "";
@@ -154,13 +162,20 @@ export function DataTable({
           <TableBody>
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row: any) => (
-                <TableRow key={row.id} data-state={table.state.rowSelection[row.id] && "selected"}>
-                  {row.getVisibleCells().map((cell: any) => (
-                    <TableCell key={cell.id} className="p-3 align-middle">
-                      <table.FlexRender cell={cell} />
-                    </TableCell>
-                  ))}
-                </TableRow>
+                <Fragment key={row.id}>
+                  <TableRow key={row.id} data-state={table.state.rowSelection[row.id] && "selected"}>
+                    {row.getVisibleCells().map((cell: any) => (
+                      <TableCell key={cell.id} className="p-3 align-middle">
+                        <table.FlexRender cell={cell} />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                 {onExpand && row.getIsExpanded() && (
+                  <>
+                    {onExpand(row, columns)}
+                 </>
+                )}
+                </Fragment>
               ))
             ) : (
               <TableRow>
