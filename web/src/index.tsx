@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import '@/index.css'
-import App from '@/pages/App'
+import App from '@/pages/app'
 import { Provider } from 'react-redux';
 import { store } from '@/store/store'
 
