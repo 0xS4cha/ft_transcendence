@@ -28,13 +28,8 @@ import { cn } from '@/lib/utils';
 
 import {
   InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
   InputGroupInput,
-  InputGroupText,
-  InputGroupTextarea,
 } from "@/components/ui/input-group"
-import { InputGroupDemo } from './Input-groupDemo';
 
 
 interface NavItem {
@@ -57,6 +52,7 @@ const NAV_ITEMS: readonly NavItem[] = [
 export function AppSidebar() {
   const { state, toggleSidebar } = useSidebar();
   const isCollapsed = state === 'collapsed';
+  console.log(isCollapsed);
 
   return (
     <Sidebar
