@@ -1,35 +1,36 @@
+import Layout from "@/components/nayout";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    // element: <Toaster />,
+    element: <Layout />,
     children: [
       {
         index: true,
         lazy: async () => {
-          const { default: Component } = await import("@/pages/Home");
+          const { default: Component } = await import("@/pages/home");
           return { Component };
         },
       },
       {
         path: "authenticate",
         lazy: async () => {
-          const { default: Component } = await import("@/pages/Authenticate");
+          const { default: Component } = await import("@/pages/authenticate");
           return { Component }; 
         }
       },
       {
         path: "units",
         lazy: async () => {
-          const { default: Component } = await import("@/pages/Units");
+          const { default: Component } = await import("@/pages/units");
           return { Component };
         },
       },
       {
         path: "items",
         lazy: async () => {
-          const { default: Component } = await import("@/pages/Items");
+          const { default: Component } = await import("@/pages/items");
           return { Component };
         },
       },
@@ -40,20 +41,20 @@ export const router = createBrowserRouter([
     //       return { Component };
     //     },
     //   },
-    //   {
-    //     path: "patch_note",
-    //     lazy: async () => {
-    //       const { default: Component } = await import("@/pages/PatchNote");
-    //       return { Component };
-    //     },
-    //   },
-    //   {
-    //     path: "builder",
-    //     lazy: async () => {
-    //       const { default: Component } = await import("@/pages/Builder");
-    //       return { Component };
-    //     },
-    //   },
+      {
+        path: "patch_note",
+        lazy: async () => {
+          const { default: Component } = await import("@/pages/patchnote");
+          return { Component };
+        },
+      },
+      {
+        path: "builder",
+        lazy: async () => {
+          const { default: Component } = await import("@/pages/builder");
+          return { Component };
+        },
+      },
     //   {
     //     path: "meta",
     //     lazy: async () => {
