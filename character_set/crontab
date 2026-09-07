@@ -1,1 +1,0 @@
-0 3 * * 0 /usr/local/bin/python3 /opt/character_set/app.py >> /var/log/script.log 2>&1
