@@ -1,5 +1,5 @@
 import BuilderPreview from '@/assets/builder.png';
-import { ButtonWrap } from './Button';
+import { ButtonWrap } from '@/components/button';
 
 export function AppPreview() {
   return (

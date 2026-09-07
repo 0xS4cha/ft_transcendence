@@ -57,7 +57,7 @@ export function AppSidebar() {
   return (
     <Sidebar
       collapsible="icon"
-      className="text-neutral-300 bg-background"
+      className="text-neutral-300 bg-background py-8"
       variant="floating"
     >
       <SidebarHeader className="flex h-14 flex-row items-center justify-between border-b border-white/5 px-3 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">

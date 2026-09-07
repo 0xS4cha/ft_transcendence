@@ -1,5 +1,5 @@
 import heroBg from '@/assets/hero-bg.png';
-import Appstat from './App-stat';
+import Appstat from '@/components/app_stat';
 
 export function Hero() {
   return (

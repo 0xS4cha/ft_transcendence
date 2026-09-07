@@ -1,7 +1,7 @@
 import fake_data from "@/assets/data.json";
 import { ItemsColumns } from "@/components/items/columns";
 import { DataTable } from "@/components/data-table/data-table";
-import { ItemsTypeFilter } from "@/components/items/type-filter";
+import { ItemsTypeFilter } from "@/components/items/type_filter";
 
 export function ItemsTable() {
   const data = fake_data.itemNames;
