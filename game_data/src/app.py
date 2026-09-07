@@ -7,11 +7,11 @@ import sys
 import time
 
 
-from classes import ChampionSummaryItem, DetailedChampion
+from .classes import ChampionSummaryItem, DetailedChampion
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from models import Base, Champion, champion_from_payload
+from .shared.models import Base, Champion, champion_from_payload
 
 
 def main() -> None:
@@ -36,7 +36,6 @@ def main() -> None:
             session.add(champion_from_payload(detailed_champion_detail))
 
             print(f"Saved champion \033[35m{detailed_champion_detail.name}\033[0m")
-            #time.sleep(1)
         session.commit()
 
 if __name__ == "__main__":

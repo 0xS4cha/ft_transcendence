@@ -3,7 +3,8 @@
 set -e
 
 echo "Running initial character set update..."
-python3 /opt/character_set/app.py
+cd /opt
+python -m game_data.app
 
 echo "Starting cron..."
 exec /usr/sbin/crond -f

@@ -5,18 +5,24 @@ services:
     restart: unless-stopped
     expose:
       - "3000"
+    ports:
+      - "3000:3000" #dev env, delete when prod
     healthcheck:
-      test: ["CMD-SHELL", "wget --spider -q http://localhost:3000/ || exit 1"]
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:3000/health || exit 1"]
       interval: 5s
       timeout: 3s
-      retries: 10
+      retries: 2 #change back to 10 later
       start_period: 10s
     depends_on:
       postgres:
         condition: service_healthy
     environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
       DATABASE_URL: ${DATABASE_URL}
     volumes:
+      - ./shared/:/app/src/shared/
       - ./backend/app/src:/app/src #dev env, change when prod
     networks:
       - localnet_transcendence
@@ -32,21 +38,25 @@ services:
       timeout: 5s
       retries: 10
     env_file: ".env"
+    ports:
+      - "5432:5432"
     volumes:
       - pgdata_transcendence:/var/lib/postgresql/data
     networks:
       - localnet_transcendence
 
-  character_set:
+  game_data:
     build:
-      context: character_set
-    container_name: transcendence-character-set
+      context: game_data
+    container_name: transcendence-game-data
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
     environment:
       DATABASE_URL: ${DATABASE_URL}
+    volumes:
+      - ./shared/:/opt/game_data/shared/
     networks:
       - localnet_transcendence
 

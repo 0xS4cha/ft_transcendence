@@ -8,3 +8,6 @@ Transcendence - Milestone 6 - 42 CC
 - Commit and PR format: https://www.conventionalcommits.org/en/v1.0.0/
 - More complete github commits convention: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
 - TS Guide format: https://google.github.io/styleguide/tsguide.html
+
+# TODO
+remove db port expose in compose 
