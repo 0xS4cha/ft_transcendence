@@ -1,12 +1,35 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { Subscribe } from "@tanstack/react-table";
+import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { DataTableFeatures } from "@/lib/data-table-features";
+import { dataTableFeatures } from "@/lib/data-table-features";
 import type { UnitRow } from "@/components/units/schema";
+import { ChevronRight } from "lucide-react";
 
-export const UnitsColumns: ColumnDef<DataTableFeatures, UnitRow>[] = [
+export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
+    {
+    id: "expand",
+    header: () => null,
+    cell: ({ row }: any) => (
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={(event) => {
+          event.stopPropagation();
+          row.toggleExpanded();
+        }}
+        aria-label={row.getIsExpanded() ? "Collapse row" : "Expand row"}
+        className="h-8 w-8 p-0">
+        <ChevronRight
+          className={`transition-transform ${row.getIsExpanded() ? "rotate-90" : ""}`}
+        />
+      </Button>
+    ),
+    enableSorting: false,
+    enableHiding: false
+  },
   {
     id: "search",
     accessorFn: (row) => `${row.unit}`,
@@ -15,7 +38,7 @@ export const UnitsColumns: ColumnDef<DataTableFeatures, UnitRow>[] = [
   },
   {
     id: "select",
-    header: ({ table }) => (
+    header: ({ table }: any) => (
       <div className="flex items-center justify-center">
         <Subscribe
           source={table.atoms.rowSelection}
@@ -34,9 +57,9 @@ export const UnitsColumns: ColumnDef<DataTableFeatures, UnitRow>[] = [
         </Subscribe>
       </div>
     ),
-    cell: ({ row }) => (
+    cell: ({ row }: any) => (
       <div className="flex items-center justify-center">
-        <Subscribe source={row.table.atoms.rowSelection} selector={(selection) => Boolean(selection?.[row.id])}>
+        <Subscribe source={row.table.atoms.rowSelection} selector={(selection: Record<string, boolean>) => Boolean(selection?.[row.id])}>
           {(checked) => (
             <Checkbox
               checked={checked}
@@ -52,21 +75,26 @@ export const UnitsColumns: ColumnDef<DataTableFeatures, UnitRow>[] = [
   {
     accessorKey: "unit",
     header: "Unit",
-    cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-          <Avatar>
-            <AvatarImage src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/134.png"/>
-            <AvatarFallback>{row.original.unit}</AvatarFallback>
-          </Avatar>
+    cell: ({ row }: any) => (
+      <div className="flex items-center gap-2 cursor-pointer">
+        <Avatar>
+          <AvatarImage src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/134.png" />
+          <AvatarFallback>{row.original.unit}</AvatarFallback>
+        </Avatar>
         <div className="min-w-0 flex-1">
           <div className="flex items-end justify-between gap-3">
             <div className="grid min-w-0 gap-0.5">
-              <span className="truncate font-medium text-sm leading-none">{row.original.unit}</span>
-              <span className="truncate text-muted-foreground text-xs leading-none">#{row.original.count}</span>
+              <span className="truncate font-medium text-sm leading-none">
+                {row.original.unit}
+              </span>
+              <span className="truncate text-muted-foreground text-xs leading-none">
+                #{row.original.count}
+              </span>
             </div>
           </div>
         </div>
       </div>
+
     ),
     enableHiding: false,
   },
@@ -84,17 +112,17 @@ export const UnitsColumns: ColumnDef<DataTableFeatures, UnitRow>[] = [
     accessorKey: "place",
     header: "Avg. place",
     filterFn: "equalsString",
-    cell: ({ row }) => <span className="text-sm">{row.original.avg}%</span>
+    cell: ({ row }: any) => <span className="text-sm">{row.original.avg}%</span>
   },
   {
     accessorKey: "wr",
     header: "WR",
-    cell: ({ row }) => <span className="text-sm">{row.original.avg}%</span>,
+    cell: ({ row }: any) => <span className="text-sm">{row.original.avg}%</span>,
   },
   {
     accessorKey: "frequency",
     header: "Frequency",
-    cell: ({ row }) => <span className="text-sm">{row.original.pick}</span>,
+    cell: ({ row }: any) => <span className="text-sm">{row.original.pick}</span>,
   },
   {
     accessorKey: "items",

@@ -3,10 +3,10 @@ import { Subscribe } from "@tanstack/react-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { DataTableFeatures } from "@/lib/data-table-features";
+import { dataTableFeatures } from "@/lib/data-table-features";
 import type { ItemRow } from "@/components/items/schema";
 
-export const ItemsColumns: ColumnDef<DataTableFeatures, ItemRow>[] = [
+export const ItemsColumns: ColumnDef<typeof dataTableFeatures, ItemRow>[] = [
   {
     id: "search",
     accessorFn: (row) => `${row.itemName}`,
@@ -15,7 +15,7 @@ export const ItemsColumns: ColumnDef<DataTableFeatures, ItemRow>[] = [
   },
   {
     id: "select",
-    header: ({ table }) => (
+    header: ({ table }: any) => (
       <div className="flex items-center justify-center">
         <Subscribe
           source={table.atoms.rowSelection}
@@ -34,9 +34,12 @@ export const ItemsColumns: ColumnDef<DataTableFeatures, ItemRow>[] = [
         </Subscribe>
       </div>
     ),
-    cell: ({ row }) => (
+    cell: ({ row }: any) => (
       <div className="flex items-center justify-center">
-        <Subscribe source={row.table.atoms.rowSelection} selector={(selection) => Boolean(selection?.[row.id])}>
+        <Subscribe
+          source={row.table.atoms.rowSelection}
+          selector={(selection: Record<string, boolean>) => Boolean(selection?.[row.id])}
+        >
           {(checked) => (
             <Checkbox
               checked={checked}
@@ -52,7 +55,7 @@ export const ItemsColumns: ColumnDef<DataTableFeatures, ItemRow>[] = [
   {
     accessorKey: "itemName",
     header: "Item",
-    cell: ({ row }) => (
+    cell: ({ row }: any) => (
       <div className="flex items-center gap-2">
           <Avatar>
             <AvatarImage src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/096_eye_of_the_observer.png"/>
@@ -84,17 +87,17 @@ export const ItemsColumns: ColumnDef<DataTableFeatures, ItemRow>[] = [
     accessorKey: "place",
     header: "Place change (avg.)",
     filterFn: "equalsString",
-    cell: ({ row }) => <span className="text-sm">{row.original.avg}</span>
+    cell: ({ row }: any) => <span className="text-sm">{row.original.avg}</span>
   },
   {
     accessorKey: "wr",
     header: "WR",
-    cell: ({ row }) => <span className="text-sm">{row.original.avg}%</span>,
+    cell: ({ row }: any) => <span className="text-sm">{row.original.avg}%</span>,
   },
   {
     accessorKey: "frequency",
     header: "Frequency",
-    cell: ({ row }) => <span className="text-sm">{row.original.pick}</span>,
+    cell: ({ row }: any) => <span className="text-sm">{row.original.pick}</span>,
   },
   {
     accessorKey: "units",
