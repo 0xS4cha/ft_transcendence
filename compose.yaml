@@ -11,7 +11,7 @@ services:
       test: ["CMD-SHELL", "wget --spider -q http://localhost:3000/health || exit 1"]
       interval: 5s
       timeout: 3s
-      retries: 3 #change back to 10 later
+      retries: 2 #change back to 10 later
       start_period: 10s
     depends_on:
       postgres:

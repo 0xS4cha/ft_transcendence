@@ -88,7 +88,7 @@ export function SignupForm({
             <FieldLabel htmlFor="password">Confirm your password</FieldLabel>
           </div>
           <ButtonGroup>
-            <Input id="password" type={viewConfirmPassword ? "password" : "text"} required onChange={handleChange}/>
+            <Input id="password" name="confirm_password" type={viewConfirmPassword ? "password" : "text"} required onChange={handleChange}/>
             <Button variant={viewConfirmPassword ? "outline" : "default"} onClick={() => setViewConfirmPassword(!viewConfirmPassword)}><Eye/></Button>
           </ButtonGroup>
         </Field>

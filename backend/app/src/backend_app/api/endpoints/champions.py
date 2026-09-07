@@ -1,16 +1,11 @@
 from fastapi import APIRouter
-from ...database import get_async_session
-from ...shared.models import Champion
+from shared.models import Champion
 from sqlalchemy import inspect, select
-from fastapi import Depends
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-router = APIRouter(
-    prefix="/game_data/champions",
-    tags=["champions"],
-)
+from backend_app.database import AsyncSessionDep
 
+router = APIRouter()
 
 def sqlalchemy_to_dict(obj, visited=None):
     if visited is None:
@@ -51,7 +46,7 @@ def sqlalchemy_to_dict(obj, visited=None):
 
 
 @router.get("/{champion_id}")
-async def get_champion(champion_id: int, session: AsyncSession = Depends(get_async_session)):    
+async def get_champion(champion_id: int, session: AsyncSessionDep):    
     async with session.begin():
         stmt = (
             select(Champion)

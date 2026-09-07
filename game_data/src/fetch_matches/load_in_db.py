@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from ..shared.models import UnitStat
 import os
 
-def load_games_in_db(engine):
+def load_units_in_db(engine):
 	game_data = {}
 	with open("/opt/game_data/fetch_matches/data.json", 'r') as f:
 		game_data = json.load(f)

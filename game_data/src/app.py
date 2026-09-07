@@ -12,7 +12,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from .shared.models import Base, Champion, champion_from_payload
-from .fetch_matches.load_in_db import load_games_in_db
+from .fetch_matches.load_in_db import load_units_in_db
 
 
 def main() -> None:
@@ -41,7 +41,7 @@ def main() -> None:
 
     # try to load computed matches stats into memory
     try:
-        load_games_in_db(engine)
+        load_units_in_db(engine)
     except Exception as e:
         print(f"Could not load computed games in database: {e}")
 
