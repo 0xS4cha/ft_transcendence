@@ -3,6 +3,7 @@ import {
   columnFilteringFeature,
   columnSizingFeature,
   columnVisibilityFeature,
+  createExpandedRowModel,
   createFacetedRowModel,
   createFacetedUniqueValues,
   createFilteredRowModel,
@@ -12,6 +13,7 @@ import {
   filterFn_equalsString,
   filterFn_includesString,
   globalFilteringFeature,
+  rowExpandingFeature,
   rowPaginationFeature,
   rowSelectionFeature,
   rowSortingFeature,
@@ -27,9 +29,11 @@ export const dataTableFeatures = tableFeatures({
   columnSizingFeature,
   columnVisibilityFeature,
   globalFilteringFeature,
+  rowExpandingFeature,
   rowPaginationFeature,
   rowSelectionFeature,
   rowSortingFeature,
+  expandedRowModel: createExpandedRowModel(),
   facetedRowModel: createFacetedRowModel(),
   facetedUniqueValues: createFacetedUniqueValues(),
   filteredRowModel: createFilteredRowModel(),
@@ -46,5 +50,3 @@ export const dataTableFeatures = tableFeatures({
     text: sortFn_text,
   },
 });
-
-export type DataTableFeatures = typeof dataTableFeatures;
