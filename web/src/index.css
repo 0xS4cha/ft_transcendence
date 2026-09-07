@@ -54,7 +54,7 @@ body {
 }
 
 :root {
-    --background: #07070B;
+    --background: #2e2e2e;
     --foreground: #FFFFFF;
     --card: oklch(0.205 0 0);
     --card-foreground: oklch(0.985 0 0);
@@ -79,10 +79,10 @@ body {
     --chart-5: oklch(0.269 0 0);
     --radius: 0.625rem;
 
-    --sidebar: oklch(14% 0.004 285);
-    --sidebar-foreground: oklch(14% 0.004 285);
-    --sidebar-primary: oklch(14% 0.004 285);
-    --sidebar-primary-foreground: oklch(14% 0.004 285);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
     --sidebar-accent: oklch(0.97 0 0);
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(14% 0.004 285);
@@ -92,7 +92,7 @@ body {
 }
 
 .dark {
-    --background: #07070B;
+    --background: #1f1f1f;
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.205 0 0);
     --card-foreground: oklch(0.985 0 0);
