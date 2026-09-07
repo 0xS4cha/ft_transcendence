@@ -12,7 +12,7 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
     {
     id: "expand",
     header: () => null,
-    cell: ({ row }) => (
+    cell: ({ row }: any) => (
       <Button
         variant="ghost"
         size="sm"
@@ -38,7 +38,7 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
   },
   {
     id: "select",
-    header: ({ table }) => (
+    header: ({ table }: any) => (
       <div className="flex items-center justify-center">
         <Subscribe
           source={table.atoms.rowSelection}
@@ -57,9 +57,9 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
         </Subscribe>
       </div>
     ),
-    cell: ({ row }) => (
+    cell: ({ row }: any) => (
       <div className="flex items-center justify-center">
-        <Subscribe source={row.table.atoms.rowSelection} selector={(selection) => Boolean(selection?.[row.id])}>
+        <Subscribe source={row.table.atoms.rowSelection} selector={(selection: Record<string, boolean>) => Boolean(selection?.[row.id])}>
           {(checked) => (
             <Checkbox
               checked={checked}
@@ -75,7 +75,7 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
   {
     accessorKey: "unit",
     header: "Unit",
-    cell: ({ row }) => (
+    cell: ({ row }: any) => (
       <div className="flex items-center gap-2 cursor-pointer">
         <Avatar>
           <AvatarImage src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/134.png" />
@@ -112,17 +112,17 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
     accessorKey: "place",
     header: "Avg. place",
     filterFn: "equalsString",
-    cell: ({ row }) => <span className="text-sm">{row.original.avg}%</span>
+    cell: ({ row }: any) => <span className="text-sm">{row.original.avg}%</span>
   },
   {
     accessorKey: "wr",
     header: "WR",
-    cell: ({ row }) => <span className="text-sm">{row.original.avg}%</span>,
+    cell: ({ row }: any) => <span className="text-sm">{row.original.avg}%</span>,
   },
   {
     accessorKey: "frequency",
     header: "Frequency",
-    cell: ({ row }) => <span className="text-sm">{row.original.pick}</span>,
+    cell: ({ row }: any) => <span className="text-sm">{row.original.pick}</span>,
   },
   {
     accessorKey: "items",

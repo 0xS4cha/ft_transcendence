@@ -5,8 +5,11 @@ import {
   type PaginationState,
   type SortingState,
   type ExpandedState,
+  type Row,
   useTable,
 } from "@tanstack/react-table";
+import type { UnitRow } from "@/components/units/schema";
+
 import {
   ArrowUpDown,
   Search,
@@ -25,7 +28,6 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { dataTableFeatures } from "@/lib/data-table-features";
-import { Model } from "@/components/models/model";
 
 import { DataTableFilter } from "./data-table-filter";
 import { DataTablePagination } from "./data-table-pagination";
@@ -42,7 +44,7 @@ interface DataTableProps {
   defaultSortId: string;
   searchPlaceholder?: string;
   customToolbar?: React.ReactNode;
-  onExpand?: (unit: any, columns: any) => React.ReactNode;
+  onExpand?: (unit: Row<typeof dataTableFeatures, UnitRow>, columns: unknown[]) => React.ReactNode;
 }
 
 export function DataTable({
