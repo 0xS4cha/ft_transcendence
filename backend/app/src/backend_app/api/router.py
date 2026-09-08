@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 
 from backend_app.api.endpoints import (
+    champions_router,
     login_router,
     signup_router,
-    champions_router,
     stats_router,
 )
 
