@@ -21,7 +21,7 @@ export function Hero() {
             </span>
           </h1>
 
-          <p className="mt-2 text-left text-xs font-normal text-[#07070B] sm:mt-3 sm:text-sm md:text-base">
+          <p className="px-2 mt-2 text-left text-xs font-normal text-[#07070B] sm:mt-3 sm:text-sm md:text-base">
             Real stats from millions of ranked games, refreshed each patch.
           </p>
         </div>
