@@ -236,7 +236,7 @@ function Sidebar({
           "data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]",
           "data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
           "md:flex",
-          "p-2",
+          "px-2 py-8",
           "group-data-[collapsible=icon]:w-(--sidebar-width-icon)",
           className
         )}
