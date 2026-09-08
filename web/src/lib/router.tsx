@@ -1,4 +1,4 @@
-import Layout from "@/components/nayout";
+import Layout from "@/components/layout";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
