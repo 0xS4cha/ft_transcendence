@@ -18,14 +18,6 @@ const container = {
   },
 };
 
-const item = {
-  hidden: { opacity: 0, y: 16 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, ease: "easeOut" },
-  },
-};
 
 export default function Home() {
   return (
@@ -54,7 +46,7 @@ export default function Home() {
           className="grid grid-cols-1 gap-6 md:grid-cols-3"
         >
           {stats.map(({ Icon, title, count }) => (
-            <motion.div key={title} variants={item}>
+            <motion.div key={title} >
               <BreakdownCard Icon={Icon} title={title} count={count} />
             </motion.div>
           ))}
