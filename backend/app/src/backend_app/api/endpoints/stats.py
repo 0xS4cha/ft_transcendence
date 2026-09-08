@@ -2,13 +2,13 @@ import time
 from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Response, status
+from shared.models import PerDayStats, ProcessedGame
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert
 
 from backend_app.database import AsyncSessionDep
 from backend_app.models.user import UserModel
 from backend_app.models.visit import VisitModel
-from shared.models import PerDayStats, ProcessedGame
 
 router = APIRouter()
 REFRESH_DELTA_SECONDS    = 3
