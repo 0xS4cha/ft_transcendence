@@ -4,7 +4,7 @@ from backend_app.core.authenticate import Authenticate
 from backend_app.core.security import Password
 from backend_app.database import AsyncSessionDep
 from backend_app.models.user import UserModel
-from backend_app.schemas.user import UserCreate, UserPublic
+from backend_app.schemas.user import UserCreate, UserLogin, UserPublic
 
 router = APIRouter()
 

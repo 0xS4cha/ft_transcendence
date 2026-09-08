@@ -1,6 +1,11 @@
 from fastapi import APIRouter
 
-from backend_app.api.endpoints import champions_router, login_router, signup_router
+from backend_app.api.endpoints import (
+    login_router,
+    signup_router,
+    champions_router,
+    stats_router,
+)
 
 api_router = APIRouter(prefix="/api")
 
@@ -20,4 +25,10 @@ api_router.include_router(
     champions_router,
     tags=["Champions"],
     prefix="/game_data/champions",
+)
+
+api_router.include_router(
+    stats_router,
+    tags=["Stats"],
+    prefix="/stats",
 )

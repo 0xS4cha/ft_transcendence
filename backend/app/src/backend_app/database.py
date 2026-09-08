@@ -62,5 +62,5 @@ class   Database:
         yield
         await self.engine.dispose()
 
-db = Database();
+db = Database()
 type AsyncSessionDep = Annotated[AsyncSession, Depends(db.get_async_session)]
