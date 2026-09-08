@@ -13,7 +13,7 @@ export function InputGroupDemo() {
       <InputGroupAddon>
         <Search />
       </InputGroupAddon>
-      <InputGroupAddon align="inline-end">12 results</InputGroupAddon>
+      <InputGroupAddon align="inline-end">1 result</InputGroupAddon>
     </InputGroup>
   )
 }
