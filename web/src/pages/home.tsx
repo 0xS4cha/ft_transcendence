@@ -3,12 +3,8 @@ import { motion } from "motion/react";
 import { Separator } from "@/components/ui/separator";
 import { BreakdownCard } from "@/components/home/breakdowncard";
 import { ChartAreaInteractive } from "@/components/home/chart_test";
-
-const stats = [
-  { Icon: User, title: "Visits", count: 1000 },
-  { Icon: Coins, title: "Coins wasted", count: 1000 },
-  { Icon: ChartSpline, title: "Matches analyzed", count: 1000 },
-];
+import { useEffect, useState } from "react";
+import { toast } from "@/components/ui/toast";
 
 const container = {
   hidden: { opacity: 0 },
@@ -18,8 +14,62 @@ const container = {
   },
 };
 
+interface HistoryChartProps {
+  date: string;
+  coins_avg: number;
+  time_elapsed_avg: number;
+}
+
+interface HomeDataProps {
+  visitsCount: number;
+  coinsCount: number;
+  matchCount: number;
+  history: HistoryChartProps[];
+}
 
 export default function Home() {
+  const [data, setData] = useState<HomeDataProps>({
+    visitsCount: 0,
+    coinsCount: 0,
+    matchCount: 0,
+    history: []
+  });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/stats/home", { method: "GET" });
+
+        if (!response.ok) {
+          toast.add({
+            type: "error",
+            title: "Failed to fetch units",
+          });
+          return;
+        }
+
+        const result = await response.json();
+        setData(result);
+
+        toast.add({
+          type: "info",
+          title: "Welcome !",
+        });
+      } catch (error) {
+        toast.add({
+          type: "error",
+          title: `Fetch failed: ${error}`,
+        });
+      }
+    };
+
+    fetchData();
+  }, []);
+  const stats = [
+    { Icon: User, title: "Visits", count: data.visitsCount },
+    { Icon: Coins, title: "Coins wasted", count: data.coinsCount },
+    { Icon: ChartSpline, title: "Matches analyzed", count: data.matchCount },
+  ];
+
   return (
     <div className="relative w-full min-h-screen">
       <div className="w-full px-6 py-10 space-y-10">
