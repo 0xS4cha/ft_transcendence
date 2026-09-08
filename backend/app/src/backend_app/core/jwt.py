@@ -1,9 +1,9 @@
+import datetime as dt
 from datetime import datetime, timedelta
-from typing import Annotated, Literal
+from typing import Annotated
 
 import jwt
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import Cookie, HTTPException, status
 from jwt.exceptions import InvalidTokenError
 from pydantic import BaseModel
 
@@ -11,16 +11,11 @@ from backend_app.core.authenticate import Authenticate
 from backend_app.database import AsyncSessionDep, db
 from backend_app.models.user import UserModel
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 class Token:
     secret_key = db.settings.SECRET_JWT_KEY
-    algoritm = "HS256"
+    algorithm = "HS256"
     access_token_expire_minutes = 30
-
-    class TokenResponse(BaseModel):
-        access_token: str
-        token_type: Literal["bearer"]
 
     class TokenData(BaseModel):
         username: str | None = None
@@ -28,36 +23,39 @@ class Token:
     @staticmethod
     def create_access_token(
             data: dict,
-            expires_delta: timedelta | None = None
+            expires_delta: timedelta
     ) -> str:
         to_encode = data.copy()
-        if expires_delta:
-            expire = datetime.now(datetime.UTC) + expires_delta
-        else:
-            expire = datetime.now(datetime.UTC) + timedelta(minutes=15)
+        expire = datetime.now(dt.UTC) + expires_delta
         to_encode.update({"exp": expire})
-        encoded_jwt = jwt.encode(to_encode, Token.secret_key, Token.algoritm)
+        encoded_jwt = jwt.encode(to_encode, Token.secret_key, Token.algorithm)
         return encoded_jwt
 
     @staticmethod
     async def get_current_user(
-        token: Annotated[str, Depends(oauth2_scheme)],
+        access_token: Annotated[str, Cookie()],
         session: AsyncSessionDep    
     ) -> UserModel :
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
-            headers={"WWW-Authenticate": "Bearer"}
+            detail="Could not validate credentials"
         )
+
         try:
-            payload = jwt.decode(token, Token.secret_key, [Token.algoritm])
+            payload = jwt.decode(access_token, Token.secret_key, [Token.algorithm])
             username = payload.get("sub")
+
             if username is None :
                 raise credentials_exception
+            
             token_data = Token.TokenData(username=username)
+
         except InvalidTokenError:
             raise credentials_exception
-        user = await Authenticate.get_user(token_data.username, session )
+
+        user = await Authenticate.get_user(token_data.username, session)
+
         if not user:
             raise credentials_exception
+
         return user
