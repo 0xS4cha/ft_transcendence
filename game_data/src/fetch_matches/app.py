@@ -66,7 +66,7 @@ def find_player(match, puuid):
             return participant
     return None
 
-def process_last_ten_games(n, output_data, games, players, GAME_NAME, TAG_LINE):
+def process_last_ten_games(n, output_data, games, players, per_day_stats, GAME_NAME, TAG_LINE):
     if not API_KEYS:
         print("ERROR: RIOT_API_KEYS environment variable is not set.")
         
@@ -112,6 +112,15 @@ def process_last_ten_games(n, output_data, games, players, GAME_NAME, TAG_LINE):
             info["game_datetime"] / 1000,
             pytz.utc
         ).date()
+        gamedate_str = game_datetime.strftime('%y-%m-%d')
+        print(gamedate_str)
+        if gamedate_str not in per_day_stats:
+            per_day_stats[gamedate_str] = {}
+        per_day_stats[gamedate_str] = {
+            "goldWasted": per_day_stats[gamedate_str].get("goldWasted", 0) + sum([p.get("gold_left", 0) for p in info['participants']]),
+            "totalGames": per_day_stats[gamedate_str].get("totalGames", 0) + 1,
+            "totalGameLength": per_day_stats[gamedate_str].get("totalGameLength", 0) + info.get("game_length", 0)
+        }
 
         # game data
         print(f"{index}. {match_id}")
@@ -151,16 +160,18 @@ def process_last_ten_games(n, output_data, games, players, GAME_NAME, TAG_LINE):
             else:
                 continue
             time.sleep(0.5)
-            process_last_ten_games([n[0] - 1], output_data, games, players, participant['riotIdGameName'], participant['riotIdTagline'])
+            process_last_ten_games([n[0] - 1], output_data, games, players, per_day_stats, participant['riotIdGameName'], participant['riotIdTagline'])
     print("Could not find a match")
 
 if __name__ == "__main__":
     output_file = "data.json"
     game_file = "games.json"
     players_file = "players.json"
+    per_day_stats_file = "per_day_stats.json"
     data = {}
     games = []
     players = []
+    per_day_stats = {}
     n = [100000] # number of tries
     try:
         with open(output_file, 'r') as f:
@@ -169,10 +180,12 @@ if __name__ == "__main__":
             games = json.load(f)
         with open(players_file, 'r') as f:
             players = json.load(f)
+        with open(per_day_stats_file, 'r') as f:
+            per_day_stats = json.load(f)
     except Exception:  # noqa: BLE001
         print("An exception occurred while fetching matches")
     try:
-        process_last_ten_games(n, data, games, players, "fandel", "kahn")
+        process_last_ten_games(n, data, games, players, per_day_stats, "fandel", "kahn")
     except KeyboardInterrupt:
         pass
     except Exception as e:  # noqa: BLE001
@@ -183,3 +196,5 @@ if __name__ == "__main__":
         json.dump(games, f)
     with open(players_file, 'w') as f:
         json.dump(players, f)
+    with open(per_day_stats_file, 'w') as f:
+        json.dump(per_day_stats, f)

@@ -1,15 +1,14 @@
 import time
 from datetime import datetime, timedelta, timezone
-from uuid import uuid4
-from fastapi import APIRouter, Response, status
-from sqlalchemy import func, select, update
-from sqlalchemy.dialects.postgresql import insert
 
+from fastapi import APIRouter, Response, status
+from sqlalchemy import func, select
+from sqlalchemy.dialects.postgresql import insert
 
 from backend_app.database import AsyncSessionDep
 from backend_app.models.user import UserModel
 from backend_app.models.visit import VisitModel
-from shared.models import ProcessedGame, PerDayStats
+from shared.models import PerDayStats, ProcessedGame
 
 router = APIRouter()
 REFRESH_DELTA_SECONDS    = 3
@@ -81,7 +80,6 @@ async def visits(session: AsyncSessionDep):
 
 
 async def home(session: AsyncSessionDep):
-    today = datetime.now(timezone.utc).date()
     visits_data = await visits(session)
     daily_data = await get_per_day_stats(session)
 

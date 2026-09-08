@@ -1,7 +1,9 @@
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import Integer, Date
-from backend_app.database import Base
 from datetime import date
+
+from sqlalchemy import Date, Integer
+from sqlalchemy.orm import Mapped, mapped_column
+
+from backend_app.database import Base
 
 
 class   VisitModel(Base):
