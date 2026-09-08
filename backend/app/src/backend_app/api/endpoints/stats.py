@@ -9,7 +9,7 @@ from sqlalchemy import func, select
 from backend_app.database import AsyncSessionDep
 from backend_app.models.user import UserModel
 from backend_app.models.visit import VisitModel
-from shared.models import ProcessedGame
+from shared.models import ProcessedGame, PerDayStats
 
 router = APIRouter()
 REFRESH_DELTA_SECONDS    = 3
@@ -29,6 +29,16 @@ async def processed_game_calc(session: AsyncSessionDep):
 async def created_accounts(session: AsyncSessionDep):
     total = int(await session.scalar(select(func.count()).select_from(UserModel))) or 0
     return {'count': total}
+
+async def total_gold(session: AsyncSessionDep):
+    total = int(await session.scalar(select(func.sum(PerDayStats.goldWasted).label("gold_wasted"))
+                                     .select_from(PerDayStats))) or 0
+    return {'count': total}
+
+#async def total_gold(session: AsyncSessionDep):
+#    total = int(await session.scalar(select(func.sum(PerDayStats.goldWasted).label("gold_wasted"))
+#                                     .select_from(PerDayStats))) or 0
+#    return {'count': total}
 
 async def visits(session: AsyncSessionDep):
     today = datetime.now(tz=pytz.utc).isoformat()
@@ -55,6 +65,7 @@ endpoints = {
     "processed_game": {"cache": True, "function": processed_game_calc, "last": 0.0},
     "accounts_created": {"cache": False, "function": created_accounts, "last": 0.0},
     "visits": {"cache": False, "function": visits, "last": 0.0},
+    "total_gold": {"cache": True, "function": total_gold, "last": 0.0},
 }
 @router.get("/{name}")
 async def stats_dispatcher(name: str, response: Response, session: AsyncSessionDep):
