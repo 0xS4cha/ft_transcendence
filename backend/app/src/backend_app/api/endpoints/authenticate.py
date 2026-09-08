@@ -4,7 +4,7 @@ from sqlalchemy import select
 from backend_app.core.security import password
 from backend_app.database import AsyncSessionDep
 from backend_app.models.user import UserModel
-from backend_app.schemas.user import UserCreate, UserPublic, UserLogin
+from backend_app.schemas.user import UserCreate, UserLogin, UserPublic
 
 router = APIRouter()
 

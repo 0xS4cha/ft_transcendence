@@ -1,22 +1,22 @@
-from datetime import date, timedelta
 import time
-
-from fastapi import APIRouter
-from shared.models import ProcessedGame
-from backend_app.models.user import UserModel
-from backend_app.models.visit import VisitModel
-from backend_app.database import AsyncSessionDep
-from sqlalchemy import select, func
-from fastapi import Response, status
+from datetime import datetime, timedelta
 from uuid import uuid4
 
+import pytz
+from fastapi import APIRouter, Response, status
+from sqlalchemy import func, select
+
+from backend_app.database import AsyncSessionDep
+from backend_app.models.user import UserModel
+from backend_app.models.visit import VisitModel
+from shared.models import ProcessedGame
 
 router = APIRouter()
 REFRESH_DELTA_SECONDS    = 3
 
 stats_cache = {}
 async def get_cache(name, calc_function, session: AsyncSessionDep, force_update = False):
-    if name in stats_cache.keys() and not force_update:
+    if name in stats_cache and not force_update:
         return stats_cache.get(name)
     stats_cache[name] = await calc_function(session)
     return stats_cache[name]
@@ -31,7 +31,7 @@ async def created_accounts(session: AsyncSessionDep):
     return {'count': total}
 
 async def visits(session: AsyncSessionDep):
-    today = date.today().isoformat()
+    today = datetime.now(tz=pytz.utc).isoformat()
     session.add(
         VisitModel(
             id=uuid4().hex,
@@ -44,7 +44,7 @@ async def visits(session: AsyncSessionDep):
         int(await session.scalar(
             select(func.count())
             .select_from(VisitModel)
-            .where(VisitModel.date == (date.today() - timedelta(days=i)).isoformat())
+            .where(VisitModel.date == (datetime.now(tz=pytz.utc) - timedelta(days=i)).isoformat())
         ) or 0) for i in range(10)
     ]
 
@@ -58,7 +58,7 @@ endpoints = {
 }
 @router.get("/{name}")
 async def stats_dispatcher(name: str, response: Response, session: AsyncSessionDep):
-    if name in endpoints.keys():
+    if name in endpoints:
         force_update = time.time() - endpoints[name].get("last", 0) > REFRESH_DELTA_SECONDS
         if endpoints[name].get("cache", False) is True:
             result = await get_cache(name, endpoints[name].get("function", default), session, force_update)

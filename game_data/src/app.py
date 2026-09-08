@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 
 import requests
-import sys
-import time
-
-
-from .classes import ChampionSummaryItem, DetailedChampion
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from .shared.models import Base, Champion, champion_from_payload
+from .classes import ChampionSummaryItem, DetailedChampion
 from .fetch_matches.load_in_db import load_units_in_db
+from .shared.models import Base, Champion, champion_from_payload
 
 
 def main() -> None:
@@ -42,12 +39,12 @@ def main() -> None:
     # try to load computed matches stats into memory
     try:
         load_units_in_db(engine)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"Could not load computed games in database: {e}")
 
 if __name__ == "__main__":
     try:
         main()
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"\033[31mERROR\033[0m: {e.args[0] if e.args else e.with_traceback(None)}", file=sys.stderr)
         sys.exit(1)
