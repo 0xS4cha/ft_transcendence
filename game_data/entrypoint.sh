@@ -4,7 +4,7 @@ set -e
 
 echo "Running initial character set update..."
 cd /opt
-python -m game_data.app
+python -m game_data.app || exit 1
 
 echo "Starting cron..."
 exec /usr/sbin/crond -f

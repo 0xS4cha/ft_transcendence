@@ -1,7 +1,3 @@
-import pandas as pd
-from sklearn.ensemble import GradientBoostingRegressor
-import numpy as np
-from sklearn.model_selection import Rige
 
 
 

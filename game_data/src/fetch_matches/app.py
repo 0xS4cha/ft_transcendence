@@ -1,11 +1,10 @@
 import datetime
 import json
 import os
-import random
-import sys
 import time
-import requests
 
+import pytz
+import requests
 
 API_KEYS = [
     key.strip()
@@ -39,10 +38,9 @@ def riot_get(url, params=None):
             except ConnectionAbortedError:
                 print("Sleeping for 2min to reset rate limit...")
                 time.sleep(120)
-                pass
-        raise Exception(f"Riot API error")
+        raise Exception("Riot API error")  # noqa: TRY002
     except KeyboardInterrupt:
-        raise Exception("Keyboard Interrupt")
+        raise Exception("Keyboard Interrupt")  # noqa: TRY002
 
 
 def get_account(GAME_NAME, TAG_LINE):
@@ -79,15 +77,12 @@ def process_last_ten_games(n, output_data, games, players, GAME_NAME, TAG_LINE):
     
     time.sleep(1)
 
-    print(f"Looking up {GAME_NAME}#{TAG_LINE}...")
-    print()
+    print(f"Looking up {GAME_NAME}#{TAG_LINE}...\n")
 
     account = get_account(GAME_NAME, TAG_LINE)
     puuid = account["puuid"]
-
     print(f"Riot ID : {account['gameName']}#{account['tagLine']}")
-    print(f"PUUID   : {puuid}")
-    print()
+    print(f"PUUID   : {puuid}\n")
 
     match_ids = get_match_ids(puuid)
     if not match_ids:
@@ -113,23 +108,21 @@ def process_last_ten_games(n, output_data, games, players, GAME_NAME, TAG_LINE):
             print(f"{index}. {match_id}: player not found")
             continue
 
-        game_datetime = datetime.date.fromtimestamp(
-            info["game_datetime"] / 1000
-        )
+        game_datetime = datetime.datetime.fromtimestamp(
+            info["game_datetime"] / 1000,
+            pytz.utc
+        ).date()
 
-        participants = [f"{participant['puuid']}   win: {participant["win"]}" for participant in info['participants']]
-
+        # game data
         print(f"{index}. {match_id}")
         print(f"   Date       : {game_datetime}")
         print(f"   Placement  : #{player['placement']}")
         print(f"   Level      : {player['level']}")
-        print(f"   Last round : {player['last_round']}")
-        print(f"   Players    : \n\t{'\n\t'.join(participants)}")
-        print()
+        print(f"   Last round : {player['last_round']}\n")
 
         for unit in player['units']:
             unit_name = unit['character_id']
-            if not unit_name in output_data.keys():
+            if not unit_name in output_data:
                 output_data[unit_name] = {
                     "unit": unit_name,
                     "count": 0,
@@ -147,7 +140,7 @@ def process_last_ten_games(n, output_data, games, players, GAME_NAME, TAG_LINE):
                 output_data[unit_name]['top4'] += 1
 
             for item in unit['itemNames']:
-                if not item in output_data[unit_name]['items'].keys():
+                if not item in output_data[unit_name]['items']:
                     output_data[unit_name]['items'][item] = 1
                 else:
                     output_data[unit_name]['items'][item] += 1
@@ -168,7 +161,7 @@ if __name__ == "__main__":
     data = {}
     games = []
     players = []
-    n = [100000]
+    n = [100000] # number of tries
     try:
         with open(output_file, 'r') as f:
             data = json.load(f)
@@ -176,13 +169,13 @@ if __name__ == "__main__":
             games = json.load(f)
         with open(players_file, 'r') as f:
             players = json.load(f)
-    except Exception:
-        pass
+    except Exception:  # noqa: BLE001
+        print("An exception occurred while fetching matches")
     try:
         process_last_ten_games(n, data, games, players, "fandel", "kahn")
     except KeyboardInterrupt:
         pass
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(e.with_traceback(None))
     with open(output_file, 'w') as f:
         json.dump(data, f)
