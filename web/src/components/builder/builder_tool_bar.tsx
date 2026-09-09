@@ -4,7 +4,7 @@ import { Camera, Copy, Download } from "lucide-react";
 
 export default function BuilderToolBar() {
   return (
-    <div className="flex shrink-0 items-center justify-between gap-2 rounded-xl border border-white/10 bg-[#171717] px-3 py-2">
+    <div className="flex shrink-0 items-center justify-between gap-2 rounded-xl border border-white/10 px-3 py-2 bg-[#202020]">
       <div className="w-[120px] xl:w-[180px]">
         <SelectDemo/>
       </div>

@@ -12,17 +12,17 @@ export default function Builder() {
           <BuilderTraitsBar />
         </div>
         <div className="flex flex-col gap-4 min-w-0 min-h-0">
-          <div className="flex items-center justify-center rounded-xl border border-white/10 bg-[#171717] min-w-0 min-h-0 flex-1">
+          <div className="flex items-center justify-center rounded-xl border border-white/10  min-w-0 min-h-0 flex-1">
               <BuilderBoard />
           </div>
           <div className="block lg:hidden">
             <BuilderTraitsBarMobile />
           </div>
         </div>
-        <div className="hidden lg:flex flex-col rounded-xl border border-white/10 bg-[#171717] min-w-0 min-h-0">
+        <div className="hidden lg:flex flex-col rounded-xl border border-white/10  min-w-0 min-h-0">
         </div>
       </div>
-      <div className="h-[28%] shrink-0 rounded-xl border border-white/10 bg-[#171717] min-h-0">
+      <div className="h-[28%] shrink-0 rounded-xl border border-white/10  min-h-0">
       </div>
     </div>
   );

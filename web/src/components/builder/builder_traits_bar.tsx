@@ -31,7 +31,7 @@ function calculateTier(currentUnits: number, breakpoints: number[]): number {
 
 export default function BuilderTraitsBar() {
   return (
-    <div className="flex h-full w-full flex-col rounded-xl border border-white/10 bg-[#171717] px-2 py-3">
+    <div className="flex h-full w-full flex-col rounded-xl border border-white/10 px-2 py-3 bg-[#202020]">
       <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-neutral-400">
         traits
       </h3>

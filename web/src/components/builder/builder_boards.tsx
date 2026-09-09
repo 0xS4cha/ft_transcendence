@@ -67,10 +67,10 @@ export default function BuilderBoard()
   // REACT S'OCCUPE NATIVEMENT DE TRAITER LE CONTENU JS ET DE L'AFFICHER A L'INTERIEUR DE LA BALISE SVG (SCALABLE VECTOR GRAPHIQUE)
   // PAS DE PIXEL C'EST DES MATHS
 	return (
-    <div className="flex h-full w-full items-center justify-center p-4">
+    <div className="flex h-full w-full items-center justify-center p-4 bg-[#202020] rounded-xl">
       <svg
         viewBox={`0 0 ${boardWidth} ${boardHeight}`}
-        className="max-h-full max-w-full drop-shadow-xl">
+        className="max-h-full max-w-full drop-shadow-xl ">
         {hexes}
       </svg>
     </div>

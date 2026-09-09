@@ -27,8 +27,8 @@ function calculateTier(currentUnits: number, breakpoints: number[]): number {
 
 export default function BuilderTraitsBarMobile() {
   return (
-    <div className="flex w-full items-center gap-2 overflow-x-auto custom-scrollbar rounded-xl border border-white/10 bg-[#171717] px-3 py-2.5">
-      <span className="shrink-0 mr-2 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
+    <div className="flex w-full items-center gap-2 overflow-x-auto custom-scrollbar rounded-xl border border-white/10 px-3 py-2.5 bg-[#202020]">
+      <span className="shrink-0 mr-2 text-[10px] font-semibold uppercase tracking-wider text-neutral-400 ">
         Traits
       </span>
       {FAKE_TRAITS.map((trait) => {
