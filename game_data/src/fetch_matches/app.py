@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+import random
 import time
 
 import pytz
@@ -36,8 +37,8 @@ def riot_get(url, params=None):
                     raise ConnectionAbortedError()
                 return response.json()
             except ConnectionAbortedError:
-                print("Sleeping for 2min to reset rate limit...")
-                time.sleep(120)
+                print("Sleeping for 30s to reset rate limit...")
+                time.sleep(30)
         raise Exception("Riot API error")  # noqa: TRY002
     except KeyboardInterrupt:
         raise Exception("Keyboard Interrupt")  # noqa: TRY002
@@ -51,7 +52,7 @@ def get_match_ids(puuid):
         f"/tft/match/v1/matches/by-puuid/{puuid}/ids",
         params={
             "start": 0,
-            "count": 10,
+            "count": 30,
         },
     )
 
@@ -69,13 +70,14 @@ def find_player(match, puuid):
 def process_last_ten_games(n, output_data, games, players, per_day_stats, GAME_NAME, TAG_LINE):
     if not API_KEYS:
         print("ERROR: RIOT_API_KEYS environment variable is not set.")
+        return
         
     global current_api_key
     current_api_key += 1
     if current_api_key >= len(API_KEYS) - 1:
         current_api_key = 0
     
-    time.sleep(1)
+    time.sleep(0.5)
 
     print(f"Looking up {GAME_NAME}#{TAG_LINE}...\n")
 
@@ -91,6 +93,7 @@ def process_last_ten_games(n, output_data, games, players, per_day_stats, GAME_N
 
     print(f"Found {len(match_ids)} matches.")
     print("=" * 80)
+    random.shuffle(match_ids)
 
     for index, match_id in enumerate(match_ids, start=1):
         if match_id in games:
@@ -113,7 +116,6 @@ def process_last_ten_games(n, output_data, games, players, per_day_stats, GAME_N
             pytz.utc
         ).date()
         gamedate_str = game_datetime.strftime('%y-%m-%d')
-        print(gamedate_str)
         if gamedate_str not in per_day_stats:
             per_day_stats[gamedate_str] = {}
         per_day_stats[gamedate_str] = {
@@ -189,7 +191,7 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         pass
     except Exception as e:  # noqa: BLE001
-        print(e.with_traceback(None))
+        print(f"error: {e.with_traceback(None)}")
     with open(output_file, 'w') as f:
         json.dump(data, f)
     with open(game_file, 'w') as f:
