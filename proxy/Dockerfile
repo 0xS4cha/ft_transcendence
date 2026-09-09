@@ -7,8 +7,6 @@ RUN apk update && apk upgrade && apk add --no-cache openssl apache2-utils
 
 RUN mkdir /etc/nginx/ssl
 
-RUN htpasswd -cb /etc/nginx/.htpasswd ${PROMETHEUS_ADMIN_USER} ${PROMETHEUS_ADMIN_PASSWORD}
-
 RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
                 -out /etc/nginx/ssl/ft_transcendance.crt \
                 -keyout /etc/nginx/ssl/ft_transcendance.key \
@@ -16,4 +14,7 @@ RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-CMD ["nginx", "-g", "daemon off;"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
