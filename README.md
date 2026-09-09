@@ -17,4 +17,5 @@ Transcendence - Milestone 6 - 42 CC
 | CONSTANT_CASE  | constants                                                                                                              |
 
 # TODO
-remove db port expose in compose 
+- [ ] remove db port expose in compose 
+- [ ] foutre des healthcheck de partout dans le compose.yaml
