@@ -20,10 +20,7 @@ export default function Home() {
     visitsCount: 0,
     goldCount: 0,
     matchCount: 0,
-    history: [
-      { date: "2026-02-11", gold_wasted_avg: 11, time_elapsed_avg: 123.2},
-      { date: "2026-04-1", gold_wasted_avg: 123.2, time_elapsed_avg: 11}
-    ]
+    history: []
   });
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +30,7 @@ export default function Home() {
         if (!response.ok) {
           toast.add({
             type: "error",
-            title: "Failed to fetch units",
+            title: "Failed to fetch home",
           });
           return;
         }
