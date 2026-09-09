@@ -113,6 +113,26 @@ services:
         condition: service_healthy
     networks:
       - localnet_transcendence
+    
+  grafana:
+    image: grafana/grafana:latest
+    container_name: transcendence-grafana
+    restart: unless-stopped
+    environment:
+      GF_SERVER_ROOT_URL: "https://localhost:8443/grafana/"
+      GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana_transcendence:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    expose:
+      - "3000"
+    depends_on:
+      - prometheus
+    networks:
+      - localnet_transcendence
 
 volumes:
   pgdata_transcendence:
