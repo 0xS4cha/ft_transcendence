@@ -43,15 +43,18 @@ def load_units_in_db(engine):
 				)
 			).scalars().all()
 		)
-
+		i = 0
 		for match_id in game_list:
 			if match_id not in existing_ids:
 				session.add(ProcessedGame(
 					match_id=match_id
 				))
+				i+=1
 		session.commit()
+		print(f"Saved {i} matches in db")
 
 		# add per day stats
+		i = 0
 		for date, v in per_game_stats.items():
 			stats = session.execute(
 				select(PerDayStats).where(
@@ -72,4 +75,6 @@ def load_units_in_db(engine):
 						totalGameLength=v.get("totalGameLength", 0)
 					)
 				)
+			i+=1
 		session.commit()
+		print(f"Saved {i} days stats in db")
