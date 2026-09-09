@@ -53,7 +53,6 @@ export function AppSidebar() {
   const { state, toggleSidebar } = useSidebar();
   const isCollapsed = state === 'collapsed';
   console.log(isCollapsed);
-
   return (
     <Sidebar
       collapsible="icon"
@@ -127,7 +126,7 @@ export function AppSidebar() {
 
       <SidebarFooter className="border-t border-white/5 p-2">
         <Link
-          to="/authenticate"
+          to="/profile"
           className="flex h-10 items-center gap-3 rounded-md px-2 text-neutral-400 transition-colors hover:bg-white/[0.04] hover:text-white group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
         >
           <div className="h-6 w-6 shrink-0 rounded-full border border-white/10 bg-neutral-800" />
