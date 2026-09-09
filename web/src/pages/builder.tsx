@@ -1,3 +1,4 @@
+import BuilderBoard from "@/components/builder/builder_boards"
 import BuilderToolBar from "@/components/builder/builder_tool_bar";
 import BuilderTraitsBar from "@/components/builder/builder_traits_bar";
 import BuilderTraitsBarMobile from "@/components/builder/builder_traits_bar_mobile";
@@ -12,7 +13,7 @@ export default function Builder() {
         </div>
         <div className="flex flex-col gap-4 min-w-0 min-h-0">
           <div className="flex items-center justify-center rounded-xl border border-white/10 bg-[#171717] min-w-0 min-h-0 flex-1">
-              <svg viewBox="0 0 900 500" className="w-full h-full"></svg>
+              <BuilderBoard />
           </div>
           <div className="block lg:hidden">
             <BuilderTraitsBarMobile />
