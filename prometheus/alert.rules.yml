@@ -1,0 +1,28 @@
+groups:
+  - name: transcendence-alerts
+    rules:
+      - alert: HighCPUUsage
+        expr: rate(process_cpu_seconds_total[5m]) > 0.8
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU usage high on {{ $labels.instance }}"
+          description: "CPU > 80% since 2 minutes."
+
+      - alert: BackendDown
+        expr: up{job="backend"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Backend not healthy"
+          description: "Prometheus cannot scrap backend."
+
+      - alert: PostgresDown
+        expr: up{job="postgres-exporter"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "PostgreSQL not healthy"
