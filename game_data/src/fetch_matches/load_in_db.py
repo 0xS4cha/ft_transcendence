@@ -2,7 +2,7 @@ import json
 
 from sqlalchemy.orm import Session
 
-from ..shared.models import ProcessedGame, UnitStat
+from ..shared.models import PerDayStats, ProcessedGame, UnitStat
 
 
 def load_units_in_db(engine):
@@ -12,6 +12,9 @@ def load_units_in_db(engine):
 	game_list = []
 	with open("/opt/game_data/fetch_matches/games.json", 'r') as f:
 		game_list = json.load(f)
+	per_game_stats = []
+	with open("/opt/game_data/fetch_matches/per_day_stats.json", 'r') as f:
+		per_game_stats = json.load(f)
 	i = 0
 	with Session(engine) as session:
 		for unit_name, unit_data in game_data.items():
@@ -35,5 +38,15 @@ def load_units_in_db(engine):
 		for match_id in game_list:
 			session.add(ProcessedGame(
 				match_id=match_id
+			))
+		session.commit()
+
+		# add per day stats
+		for date, v in per_game_stats.items():
+			session.add(PerDayStats(
+				date=date,
+				goldWasted=v.get("goldWasted", 0),
+				totalGames=v.get("totalGames", 0),
+				totalGameLength=v.get("totalGameLength", 0)
 			))
 		session.commit()

@@ -1,18 +1,18 @@
 import time
-from datetime import datetime, timedelta
-from uuid import uuid4
+from datetime import UTC, datetime, timedelta
 
-import pytz
 from fastapi import APIRouter, Response, status
+from shared.models import PerDayStats, ProcessedGame
 from sqlalchemy import func, select
+from sqlalchemy.dialects.postgresql import insert
 
 from backend_app.database import AsyncSessionDep
 from backend_app.models.user import UserModel
 from backend_app.models.visit import VisitModel
-from shared.models import ProcessedGame
 
 router = APIRouter()
 REFRESH_DELTA_SECONDS    = 3
+VISITOR_LIST_RANGE_DAY   = 90
 
 stats_cache = {}
 async def get_cache(name, calc_function, session: AsyncSessionDep, force_update = False):
@@ -30,23 +30,66 @@ async def created_accounts(session: AsyncSessionDep):
     total = int(await session.scalar(select(func.count()).select_from(UserModel))) or 0
     return {'count': total}
 
+async def get_per_day_stats(session: AsyncSessionDep):
+    today = datetime.now(UTC).date()
+    per_day_stats: list[PerDayStats] = (await session.scalars(select(PerDayStats))).all()
+    
+    return {
+        'total': {
+            "gold_wasted": sum([s.goldWasted for s in per_day_stats]),
+            "total_game_length": sum([s.totalGameLength for s in per_day_stats]),
+            "total_games": sum([s.totalGames for s in per_day_stats]),
+        },
+        'daily': [
+            {
+                "date": str(today - timedelta(days=i)),
+                "gold_wasted_avg": (per_day_stats[i].goldWasted / per_day_stats[i].totalGames) if per_day_stats[i].totalGames > 0 else 0,
+                "time_elapsed_avg": (per_day_stats[i].totalGameLength / per_day_stats[i].totalGames) if per_day_stats[i].totalGames > 0 else 0,
+            } for i in range(VISITOR_LIST_RANGE_DAY) if i < len(per_day_stats)
+        ]
+    }
+
 async def visits(session: AsyncSessionDep):
-    today = datetime.now(tz=pytz.utc).isoformat()
-    session.add(
-        VisitModel(
-            id=uuid4().hex,
-            date=today,
-        )
+    today = datetime.now(UTC).date()
+
+    stmt = insert(VisitModel).values(
+        date=today,
+        count=1,
     )
+
+    stmt = stmt.on_conflict_do_update(
+        index_elements=[VisitModel.date],
+        set_={
+            "count": VisitModel.count + 1,
+        },
+    )
+
+    await session.execute(stmt)
     await session.commit()
-    # return count
-    return [
-        int(await session.scalar(
-            select(func.count())
-            .select_from(VisitModel)
-            .where(VisitModel.date == (datetime.now(tz=pytz.utc) - timedelta(days=i)).isoformat())
-        ) or 0) for i in range(10)
-    ]
+
+    total = int(
+        await session.scalar(
+            select(func.sum(VisitModel.count))
+        )
+        or 0
+    )
+
+    return {
+        "count": total,
+    }
+
+
+async def home(session: AsyncSessionDep):
+    visits_data = await visits(session)
+    daily_data = await get_per_day_stats(session)
+
+    return {
+        "visitsCount": visits_data.get("count", 0),
+        "goldCount": daily_data.get("total", {}).get("gold_wasted", 0),
+        "matchCount": daily_data.get("total", {}).get("total_games", 0),
+        "history": list(daily_data.get("daily", []))
+    }
+
 
 async def default(session: AsyncSessionDep):
     return {'count': 0}
@@ -55,6 +98,8 @@ endpoints = {
     "processed_game": {"cache": True, "function": processed_game_calc, "last": 0.0},
     "accounts_created": {"cache": False, "function": created_accounts, "last": 0.0},
     "visits": {"cache": False, "function": visits, "last": 0.0},
+    "daily_stats": {"cache": True, "function": get_per_day_stats, "last": 0.0},
+    "home": {"cache": True, "function": home, "last": 0.0},
 }
 @router.get("/{name}")
 async def stats_dispatcher(name: str, response: Response, session: AsyncSessionDep):
