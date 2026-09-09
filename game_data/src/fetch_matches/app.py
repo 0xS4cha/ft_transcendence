@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+import random
 import time
 
 import pytz
@@ -36,8 +37,8 @@ def riot_get(url, params=None):
                     raise ConnectionAbortedError()
                 return response.json()
             except ConnectionAbortedError:
-                print("Sleeping for 2min to reset rate limit...")
-                time.sleep(120)
+                print("Sleeping for 30s to reset rate limit...")
+                time.sleep(30)
         raise Exception("Riot API error")  # noqa: TRY002
     except KeyboardInterrupt:
         raise Exception("Keyboard Interrupt")  # noqa: TRY002
@@ -51,7 +52,7 @@ def get_match_ids(puuid):
         f"/tft/match/v1/matches/by-puuid/{puuid}/ids",
         params={
             "start": 0,
-            "count": 10,
+            "count": 30,
         },
     )
 
@@ -66,16 +67,17 @@ def find_player(match, puuid):
             return participant
     return None
 
-def process_last_ten_games(n, output_data, games, players, GAME_NAME, TAG_LINE):
+def process_last_ten_games(n, output_data, games, players, per_day_stats, GAME_NAME, TAG_LINE):
     if not API_KEYS:
         print("ERROR: RIOT_API_KEYS environment variable is not set.")
+        return
         
     global current_api_key
     current_api_key += 1
     if current_api_key >= len(API_KEYS) - 1:
         current_api_key = 0
     
-    time.sleep(1)
+    time.sleep(0.5)
 
     print(f"Looking up {GAME_NAME}#{TAG_LINE}...\n")
 
@@ -91,6 +93,7 @@ def process_last_ten_games(n, output_data, games, players, GAME_NAME, TAG_LINE):
 
     print(f"Found {len(match_ids)} matches.")
     print("=" * 80)
+    random.shuffle(match_ids)
 
     for index, match_id in enumerate(match_ids, start=1):
         if match_id in games:
@@ -112,6 +115,14 @@ def process_last_ten_games(n, output_data, games, players, GAME_NAME, TAG_LINE):
             info["game_datetime"] / 1000,
             pytz.utc
         ).date()
+        gamedate_str = game_datetime.strftime('%y-%m-%d')
+        if gamedate_str not in per_day_stats:
+            per_day_stats[gamedate_str] = {}
+        per_day_stats[gamedate_str] = {
+            "goldWasted": per_day_stats[gamedate_str].get("goldWasted", 0) + sum([p.get("gold_left", 0) for p in info['participants']]),
+            "totalGames": per_day_stats[gamedate_str].get("totalGames", 0) + 1,
+            "totalGameLength": per_day_stats[gamedate_str].get("totalGameLength", 0) + info.get("game_length", 0)
+        }
 
         # game data
         print(f"{index}. {match_id}")
@@ -151,16 +162,18 @@ def process_last_ten_games(n, output_data, games, players, GAME_NAME, TAG_LINE):
             else:
                 continue
             time.sleep(0.5)
-            process_last_ten_games([n[0] - 1], output_data, games, players, participant['riotIdGameName'], participant['riotIdTagline'])
+            process_last_ten_games([n[0] - 1], output_data, games, players, per_day_stats, participant['riotIdGameName'], participant['riotIdTagline'])
     print("Could not find a match")
 
 if __name__ == "__main__":
     output_file = "data.json"
     game_file = "games.json"
     players_file = "players.json"
+    per_day_stats_file = "per_day_stats.json"
     data = {}
     games = []
     players = []
+    per_day_stats = {}
     n = [100000] # number of tries
     try:
         with open(output_file, 'r') as f:
@@ -169,17 +182,21 @@ if __name__ == "__main__":
             games = json.load(f)
         with open(players_file, 'r') as f:
             players = json.load(f)
+        with open(per_day_stats_file, 'r') as f:
+            per_day_stats = json.load(f)
     except Exception:  # noqa: BLE001
         print("An exception occurred while fetching matches")
     try:
-        process_last_ten_games(n, data, games, players, "fandel", "kahn")
+        process_last_ten_games(n, data, games, players, per_day_stats, "fandel", "kahn")
     except KeyboardInterrupt:
         pass
     except Exception as e:  # noqa: BLE001
-        print(e.with_traceback(None))
+        print(f"error: {e.with_traceback(None)}")
     with open(output_file, 'w') as f:
         json.dump(data, f)
     with open(game_file, 'w') as f:
         json.dump(games, f)
     with open(players_file, 'w') as f:
         json.dump(players, f)
+    with open(per_day_stats_file, 'w') as f:
+        json.dump(per_day_stats, f)

@@ -19,7 +19,8 @@ from shared.models.champions import (
 
 from shared.models.unit_games import (
     ProcessedGame,
-    UnitStat
+    UnitStat,
+    PerDayStats
 )
 
 __all__ = [
@@ -40,5 +41,6 @@ __all__ = [
     "SpellEffectAmounts",
     "SpellAmmo",
     "ProcessedGame",
-    "UnitStat"
+    "UnitStat",
+    "PerDayStats"
 ]

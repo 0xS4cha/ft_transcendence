@@ -41,6 +41,7 @@ def main() -> None:
         load_units_in_db(engine)
     except Exception as e:  # noqa: BLE001
         print(f"Could not load computed games in database: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     try:

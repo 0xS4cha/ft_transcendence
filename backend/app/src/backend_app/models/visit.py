@@ -1,9 +1,13 @@
-from shared.models.champions import Base
+import datetime
+
+from sqlalchemy import Date, Integer
 from sqlalchemy.orm import Mapped, mapped_column
+
+from shared.models.champions import Base
 
 
 class   VisitModel(Base):
     __tablename__ = "visit_model"
 
-    id: Mapped[str] = mapped_column("id", primary_key=True)
-    date: Mapped[str] = mapped_column(index=True)
+    date: Mapped[datetime.date] = mapped_column(Date, primary_key=True)
+    count: Mapped[int] = mapped_column(Integer, default=0)

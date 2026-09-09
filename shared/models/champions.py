@@ -232,9 +232,6 @@ class SpellAmmo(Base):
     ammo_recharge_time: Mapped[list[float]] = mapped_column("ammoRechargeTime", JSON)
     max_ammo: Mapped[list[float]] = mapped_column("maxAmmo", JSON)
 
-
-
-
 def champion_from_payload(payload: DetailedChampion) -> Champion:
     champion = Champion(
         id=payload.id, content_id=payload.contentId, name=payload.name, alias=payload.alias,
