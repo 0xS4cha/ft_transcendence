@@ -1,5 +1,6 @@
 import { NavLink, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useAppSelector } from "@/store/hooks";
 
 interface NavItem {
   readonly label: string;
@@ -17,6 +18,8 @@ const NAV_ITEMS: readonly NavItem[] = [
 ] as const;
 
 export function Navbar() {
+  const { isAuthenticated, email } = useAppSelector(state => state.user);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#07070B]/80 backdrop-blur">
       <div className="flex h-16 w-full items-center justify-between px-8 ">
@@ -43,11 +46,11 @@ export function Navbar() {
           ))}
         </nav>
         <Link
-          to="/profile"
+          to={isAuthenticated ? "/profile" : "/authenticate"}
           className="flex items-center gap-2.5 text-sm font-normal text-neutral-400 transition-colors hover:text-white"
         >
           <div className="h-7 w-7 rounded-full border border-white/10 bg-neutral-800" />
-          <span>user</span>
+          <span>{isAuthenticated ? email : "Guest"}</span>
         </Link>
       </div>
     </header>
