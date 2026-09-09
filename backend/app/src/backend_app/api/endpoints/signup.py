@@ -8,7 +8,7 @@ from backend_app.schemas.user import UserCreate, UserPublic
 
 router = APIRouter()
 
-@router.post("/signup", response_model=UserPublic)
+@router.post("/", response_model=UserPublic)
 async def signup(
     user_data: UserCreate,
     session: AsyncSessionDep

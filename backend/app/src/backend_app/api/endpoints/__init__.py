@@ -5,5 +5,6 @@ from backend_app.api.endpoints.prometheus_metrics import (
 )
 from backend_app.api.endpoints.signup import router as signup_router
 from backend_app.api.endpoints.stats import router as stats_router
+from backend_app.api.endpoints.search import router as search_user_router
 
-__all__ = ["champions_router", "login_router", "prometheus_metrics_router", "signup_router", "stats_router"]
+__all__ = ["champions_router", "login_router", "prometheus_metrics_router", "signup_router", "stats_router", "search_user_router"]

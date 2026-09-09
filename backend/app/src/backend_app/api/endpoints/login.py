@@ -40,7 +40,6 @@ async def login_for_access_token(
         httponly=True,
         samesite="lax"
     )
-
     return {"message": "Successfully logged in"}
 
 @router.get("/users/me", response_model=UserPublic)

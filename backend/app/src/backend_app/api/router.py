@@ -6,6 +6,7 @@ from backend_app.api.endpoints import (
     prometheus_metrics_router,
     signup_router,
     stats_router,
+	search_user_router
 )
 
 api_router = APIRouter(prefix="/api")
@@ -38,4 +39,10 @@ api_router.include_router(
     prometheus_metrics_router,
     tags=["Prometheus Metrics"],
     prefix="/prometheus/metrics",
+)
+
+api_router.include_router(
+	search_user_router,
+	tags=["Seach User"],
+	prefix="/search/user"
 )
