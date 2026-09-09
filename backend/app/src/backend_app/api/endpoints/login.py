@@ -26,20 +26,7 @@ async def login_for_access_token(
             detail="Incorrect username or password"
         )
 
-    access_token_expires = timedelta(minutes=Token.access_token_expire_minutes)
-    access_token = Token.create_access_token(
-        data={"sub": user.email},
-        expires_delta=access_token_expires
-    )
-    
-    response.set_cookie(
-        key="access_token",
-        value=access_token,
-        max_age=Token.access_token_expire_minutes*60,
-        secure=True,
-        httponly=True,
-        samesite="lax"
-    )
+    Token.generate_token(user.email, "login", response)
 
     return user
 

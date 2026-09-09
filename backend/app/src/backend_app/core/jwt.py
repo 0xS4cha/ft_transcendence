@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from typing import Annotated
 
 import jwt
-from fastapi import Cookie, HTTPException, status
+from fastapi import Cookie, HTTPException, Response, status
 from jwt.exceptions import InvalidTokenError
 from pydantic import BaseModel
 
@@ -59,3 +59,24 @@ class Token:
             raise credentials_exception
 
         return user
+
+    @staticmethod
+    def generate_token(
+        email: str,
+        token_type: str,
+        response : Response
+    ):
+        access_token_expires = timedelta(minutes=Token.access_token_expire_minutes)
+        access_token = Token.create_access_token(
+            data={"sub": email},
+            expires_delta=access_token_expires
+        )
+        
+        response.set_cookie(
+            key=token_type+"_access_token",
+            value=access_token,
+            max_age=Token.access_token_expire_minutes*60,
+            secure=True,
+            httponly=True,
+            samesite="lax"
+        )
