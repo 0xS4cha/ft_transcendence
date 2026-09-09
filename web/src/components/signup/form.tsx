@@ -14,6 +14,9 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "@/components/ui/toast";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setEmail, setId, setLogin } from "@/store/reducers/userSlice";
 
 type SignupFormProps = React.ComponentProps<"form"> & {
   func: (type: boolean) => void;
@@ -27,6 +30,8 @@ export function SignupForm({
   const [viewPassword, setViewPassword] = useState(true);
   const [viewConfirmPassword, setViewConfirmPassword] = useState(true);
   const [formData, setFormData] = useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target;
@@ -35,7 +40,7 @@ export function SignupForm({
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    fetch("/signup", {
+    fetch("/api/auth/signup/signup", {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
@@ -48,7 +53,10 @@ export function SignupForm({
       }
       return response.json();
     }).then(userData => {
-      console.log(userData);
+      dispatch(setEmail(userData.email));
+      dispatch(setId(userData.id));
+      dispatch(setLogin(true));
+      navigate("/profile");
       toast.add({
         type: "info",
         title: "Sign up successfully",
@@ -70,6 +78,10 @@ export function SignupForm({
             Enter your email below to signup your account
           </p>
         </div>
+        <Field>
+          <FieldLabel htmlFor="email">Username</FieldLabel>
+          <Input id="username" name="username" type="username" placeholder="Xx_tft_player_xX" required onChange={handleChange}/>
+        </Field>
         <Field>
           <FieldLabel htmlFor="email">Email</FieldLabel>
           <Input id="email" name="email" type="email" placeholder="m@example.com" required onChange={handleChange}/>
