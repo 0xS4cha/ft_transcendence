@@ -1,5 +1,6 @@
 import json
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from ..shared.models import PerDayStats, ProcessedGame, UnitStat
@@ -35,18 +36,45 @@ def load_units_in_db(engine):
 		session.commit()
 
 		# add processed game list
+		existing_ids = set(
+			session.execute(
+				select(ProcessedGame.match_id).where(
+					ProcessedGame.match_id.in_(game_list)
+				)
+			).scalars().all()
+		)
+		i = 0
 		for match_id in game_list:
-			session.add(ProcessedGame(
-				match_id=match_id
-			))
+			if match_id not in existing_ids:
+				session.add(ProcessedGame(
+					match_id=match_id
+				))
+				i+=1
 		session.commit()
+		print(f"Saved {i} matches in db")
 
 		# add per day stats
+		i = 0
 		for date, v in per_game_stats.items():
-			session.add(PerDayStats(
-				date=date,
-				goldWasted=v.get("goldWasted", 0),
-				totalGames=v.get("totalGames", 0),
-				totalGameLength=v.get("totalGameLength", 0)
-			))
+			stats = session.execute(
+				select(PerDayStats).where(
+					PerDayStats.date == date
+				)
+			).scalar_one_or_none()
+
+			if stats:
+				stats.goldWasted = v.get("goldWasted", 0)
+				stats.totalGames = v.get("totalGames", 0)
+				stats.totalGameLength = v.get("totalGameLength", 0)
+			else:
+				session.add(
+					PerDayStats(
+						date=date,
+						goldWasted=v.get("goldWasted", 0),
+						totalGames=v.get("totalGames", 0),
+						totalGameLength=v.get("totalGameLength", 0)
+					)
+				)
+			i+=1
 		session.commit()
+		print(f"Saved {i} days stats in db")
