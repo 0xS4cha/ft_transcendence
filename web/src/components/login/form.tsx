@@ -13,8 +13,8 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "@/components/ui/toast";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setEmail, setId, setLogin } from "@/store/reducers/userSlice";
+import { useAppDispatch } from "@/store/hooks";
+import { loginUser } from "@/store/reducers/userSlice";
 
 type LoginFormProps = React.ComponentProps<"form"> & {
   func: (type: boolean) => void;
@@ -26,7 +26,7 @@ export function LoginForm({
   ...props
 }: LoginFormProps) {
   const [viewPassword, setViewPassword] = useState(true);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -42,53 +42,24 @@ export function LoginForm({
     }));
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const body = new URLSearchParams({
-      username: formData.email,
-      password: formData.password,
-    });
-
-    fetch("/api/auth/login/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      credentials: "include",
-      body: body.toString(),
-    })
-      .then(async response => {
-        const data = await response.json();
-
-        if (!response.ok) {
-          console.error(data);
-          throw new Error("Login failed");
-        }
-
-        return data;
-      })
-      .then(userData => {
-        dispatch(setEmail(userData.email));
-        dispatch(setId(userData.id));
-        dispatch(setLogin(true));
-
-        navigate("/profile");
-
-        toast.add({
-          type: "info",
-          title: "Login successfully",
-        });
-      })
-      .catch(error => {
-        console.error(error);
-
-        toast.add({
-          type: "error",
-          title: "Login failed",
-        });
+    try {
+      await dispatch(loginUser(formData)).unwrap();
+      navigate("/profile");
+      toast.add({
+        type: "info",
+        title: "Login successfully",
       });
+    } catch {
+      toast.add({
+        type: "error",
+        title: "Login failed",
+      });
+    }
   }
+
   return (
     <form className={cn("flex flex-col gap-6", className)} onSubmit={handleSubmit} {...props}>
       <FieldGroup>

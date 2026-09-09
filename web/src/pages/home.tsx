@@ -6,6 +6,7 @@ import { ChartHistory } from "@/components/home/chart";
 import { useEffect, useState } from "react";
 import { toast } from "@/components/ui/toast";
 import { type HomeDataProps } from "@/types/home";
+import { getHomeStats } from "@/services/statsService";
 
 const container = {
   hidden: { opacity: 0 },
@@ -22,26 +23,12 @@ export default function Home() {
     matchCount: 0,
     history: []
   });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/stats/home", { method: "GET" });
-
-        if (!response.ok) {
-          toast.add({
-            type: "error",
-            title: "Failed to fetch home",
-          });
-          return;
-        }
-
-        const result = await response.json();
+        const result = await getHomeStats();
         setData(result);
-
-        toast.add({
-          type: "info",
-          title: "Welcome !",
-        });
       } catch (error) {
         toast.add({
           type: "error",
