@@ -32,6 +32,6 @@ async def signup(
     await session.commit()
     await session.refresh(new_user)
 
-    Token.generate_token(user_data.email, "signup", response)
+    Token.generate_token(user_data.email, response)
 
     return new_user

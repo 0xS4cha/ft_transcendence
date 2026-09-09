@@ -63,7 +63,6 @@ class Token:
     @staticmethod
     def generate_token(
         email: str,
-        token_type: str,
         response : Response
     ):
         access_token_expires = timedelta(minutes=Token.access_token_expire_minutes)
@@ -73,9 +72,10 @@ class Token:
         )
         
         response.set_cookie(
-            key=token_type+"_access_token",
+            key="access_token",
             value=access_token,
             max_age=Token.access_token_expire_minutes*60,
+            path="/",
             secure=True,
             httponly=True,
             samesite="lax"
