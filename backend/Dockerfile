@@ -25,6 +25,8 @@ RUN     apt-get update && \
         apt-get install -y --no-install-recommends wget && \
         rm -rf /var/lib/apt/lists/*
 
+COPY    --from=builder /bin/uv /bin/uvx /bin/
+        
 WORKDIR /app
 
 COPY    --from=builder /app/.venv /app/.venv
@@ -34,6 +36,5 @@ COPY    --from=builder /app/pyproject.toml /app/pyproject.toml
 ENV     PATH="/app/.venv/bin:$PATH" \
         PYTHONPATH=/app/src
 
-
-CMD     ["fastapi", "dev", "--host", "0.0.0.0", "--port", "3000"]
-#dev command
+CMD     fastapi dev --host 0.0.0.0 --port 3000
+#dev command uv run alembic upgrade head && 

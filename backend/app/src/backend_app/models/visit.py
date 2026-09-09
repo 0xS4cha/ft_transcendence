@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column
 
-from backend_app.database import Base
+from shared.models.champions import Base
 
 
 class   VisitModel(Base):

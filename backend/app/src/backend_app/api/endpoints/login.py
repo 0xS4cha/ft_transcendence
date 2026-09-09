@@ -12,7 +12,7 @@ from backend_app.schemas.user import UserPublic
 
 router = APIRouter()
 
-@router.post("/token")
+@router.post("/token", response_model=UserPublic)
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session: AsyncSessionDep,
@@ -41,7 +41,7 @@ async def login_for_access_token(
         samesite="lax"
     )
 
-    return {"message": "Successfully logged in"}
+    return user
 
 @router.get("/users/me", response_model=UserPublic)
 async def read_users_me(current_user: Annotated[UserModel, Depends(Token.get_current_user)]) -> UserModel:

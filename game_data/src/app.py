@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from .classes import ChampionSummaryItem, DetailedChampion
 from .fetch_matches.load_in_db import load_units_in_db
-from .shared.models import Base, Champion, champion_from_payload
+from .shared.models.champions import Base, Champion, champion_from_payload
 
 
 def main() -> None:

@@ -3,7 +3,7 @@ from sqlalchemy import inspect, select
 from sqlalchemy.orm import selectinload
 
 from backend_app.database import AsyncSessionDep
-from shared.models import Champion
+from shared.models.champions import Champion
 
 router = APIRouter()
 

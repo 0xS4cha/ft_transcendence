@@ -2,7 +2,7 @@ import json
 
 from sqlalchemy.orm import Session
 
-from ..shared.models import ProcessedGame, UnitStat
+from ..shared.models.unit_games import ProcessedGame, UnitStat
 
 
 def load_units_in_db(engine):

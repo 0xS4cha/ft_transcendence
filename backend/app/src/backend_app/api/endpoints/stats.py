@@ -9,7 +9,7 @@ from sqlalchemy import func, select
 from backend_app.database import AsyncSessionDep
 from backend_app.models.user import UserModel
 from backend_app.models.visit import VisitModel
-from shared.models import ProcessedGame
+from shared.models.unit_games import ProcessedGame
 
 router = APIRouter()
 REFRESH_DELTA_SECONDS    = 3
