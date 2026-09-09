@@ -1,62 +1,40 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { toast } from "@/components/ui/toast";
-import { useAppSelector } from '@/store/hooks';
-import { type User } from "@/types/user";
-import { useDispatch } from "react-redux";
-import { setEmail, setId, setLogin } from "@/store/reducers/userSlice";
+import { createContext, useContext, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { initializeSession, logoutUser } from "@/store/reducers/userSlice";
+import { type UserPublic } from "@/types/user";
 
 interface AuthContextType {
-  user: User | null;
+  user: UserPublic | null;
   loading: boolean;
+  isAuthenticated: boolean;
   login: () => Promise<boolean>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const user = useAppSelector((state) => state.user);
-//   const [loading, setLoading] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const { id, email, isAuthenticated, status } = useAppSelector((state) => state.user);
 
   useEffect(() => {
-    const checkUser = async () => {
-      try {
-        const response = await fetch("/api/auth/login/users/me", { method: "GET" });
+    dispatch(initializeSession());
+  }, [dispatch]);
 
-        if (!response.ok) {
-            // setLoading(true);
-          toast.add({
-            type: "error",
-            title: "Failed to fetch you",
-          });
-          return;
-        }
-
-        const result = await response.json();
-        dispatch(setEmail(result.email));
-        dispatch(setId(result.id));
-        dispatch(setLogin(true));
-        setLoading(false);
-      } catch (error) {
-        // setLoading(true);
-        toast.add({
-          type: "error",
-          title: `Fetch failed: ${error}`,
-        });
-      }
-    };
-
-    checkUser();
-  }, []);
+  const user = isAuthenticated ? { id, email } : null;
+  const loading = status !== "ready";
 
   const login = async () => {
-    window.location.href=import.meta.env.VITE_AUTH42;
+    window.location.href = import.meta.env.VITE_AUTH42;
     return false;
   };
 
+  const logout = async () => {
+    await dispatch(logoutUser()).unwrap();
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login }}>
+    <AuthContext.Provider value={{ user, loading, isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -6,8 +6,8 @@ interface Props {
 }
 
 export function ProtectedRoute({ children }: Props) {
-    const { user, loading } = useAuth();
-    if (loading) return null;
-    if (!user || !user.login) return <Navigate to="/authenticate" replace />;
-    return children;
+  const { isAuthenticated, loading } = useAuth();
+  if (loading) return null;
+  if (!isAuthenticated) return <Navigate to="/authenticate" replace />;
+  return children;
 }

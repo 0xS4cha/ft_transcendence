@@ -1,9 +1,8 @@
-import { type User } from "@/types/user";
+import { type UserState } from "@/types/user";
 
-export const initialState: User = {
-    login: false,
-    email: "",
-    id: 0,
-    username: "",
-    picture: undefined
-}
+export const initialState: UserState = {
+  id: 0,
+  email: "",
+  isAuthenticated: false,
+  status: "idle",
+};
