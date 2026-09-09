@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from backend_app.api.endpoints import (
     champions_router,
     login_router,
+    prometheus_metrics_router,
     signup_router,
     stats_router,
 )
@@ -31,4 +32,10 @@ api_router.include_router(
     stats_router,
     tags=["Stats"],
     prefix="/stats",
+)
+
+api_router.include_router(
+    prometheus_metrics_router,
+    tags=["Prometheus Metrics"],
+    prefix="/prometheus/metrics",
 )
