@@ -1,9 +1,9 @@
 from fastapi import APIRouter
+from shared.models.champions import Champion
 from sqlalchemy import inspect, select
 from sqlalchemy.orm import selectinload
 
 from backend_app.database import AsyncSessionDep
-from shared.models.champions import Champion
 
 router = APIRouter()
 
