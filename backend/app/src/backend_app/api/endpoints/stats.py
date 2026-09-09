@@ -1,5 +1,5 @@
 import time
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from fastapi import APIRouter, Response, status
 from shared.models import PerDayStats, ProcessedGame
@@ -31,7 +31,7 @@ async def created_accounts(session: AsyncSessionDep):
     return {'count': total}
 
 async def get_per_day_stats(session: AsyncSessionDep):
-    today = datetime.now(timezone.utc).date()
+    today = datetime.now(UTC).date()
     per_day_stats: list[PerDayStats] = (await session.scalars(select(PerDayStats))).all()
     
     return {
@@ -50,7 +50,7 @@ async def get_per_day_stats(session: AsyncSessionDep):
     }
 
 async def visits(session: AsyncSessionDep):
-    today = datetime.now(timezone.utc).date()
+    today = datetime.now(UTC).date()
 
     stmt = insert(VisitModel).values(
         date=today,
