@@ -16,6 +16,7 @@ class   Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
+    SECRET_JWT_KEY: str
     POSTGRES_PORT: int = 5432
     POSTGRES_HOST: str = "postgres"
     DEBUG_HOST: str = "localhost"
@@ -61,5 +62,5 @@ class   Database:
         yield
         await self.engine.dispose()
 
-db = Database();
+db = Database()
 type AsyncSessionDep = Annotated[AsyncSession, Depends(db.get_async_session)]

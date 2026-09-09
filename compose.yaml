@@ -20,6 +20,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+      SECRET_JWT_KEY: ${SECRET_JWT_KEY}
       DATABASE_URL: ${DATABASE_URL}
     volumes:
       - ./shared/:/app/src/shared/
@@ -82,6 +83,9 @@ services:
     ports:
       - "8080:80"
       - "8443:443"
+    environment:
+      PROMETHEUS_ADMIN_USER: ${PROMETHEUS_ADMIN_USER}
+      PROMETHEUS_ADMIN_PASSWORD: ${PROMETHEUS_ADMIN_PASSWORD}
     depends_on:
       web:
         condition: service_healthy
@@ -89,9 +93,112 @@ services:
         condition: service_healthy
     networks:
       - localnet_transcendence
+  
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: transcendence-prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml:ro
+      - prometheus_transcendence:/prometheus
+    expose:
+      - "9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.external-url=https://localhost:8443/prometheus/'
+      - '--web.route-prefix=/prometheus/'
+    depends_on:
+      web:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+    networks:
+      - localnet_transcendence
+    
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: transcendence-alertmanager
+    restart: unless-stopped
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    expose:
+      - "9093"
+    networks:
+      - localnet_transcendence
+    
+  grafana:
+    image: grafana/grafana:latest
+    container_name: transcendence-grafana
+    restart: unless-stopped
+    environment:
+      GF_SERVER_ROOT_URL: "https://localhost:8443/grafana/"
+      GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana_transcendence:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    expose:
+      - "3000"
+    depends_on:
+      - prometheus
+    networks:
+      - localnet_transcendence
+    
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: transcendence-node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    expose:
+      - "9100"
+    networks:
+      - localnet_transcendence
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: transcendence-cadvisor
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    expose:
+      - "8080"
+    networks:
+      - localnet_transcendence
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:latest
+    container_name: transcendence-postgres-exporter
+    restart: unless-stopped
+    environment:
+      DATA_SOURCE_NAME: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    expose:
+      - "9187"
+    networks:
+      - localnet_transcendence
 
 volumes:
   pgdata_transcendence:
+  prometheus_transcendence:
+  grafana_transcendence:
 
 networks:
   localnet_transcendence:

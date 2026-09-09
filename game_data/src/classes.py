@@ -1,5 +1,5 @@
-from typing import List
-from pydantic import Field, BaseModel
+
+from pydantic import BaseModel, Field
 
 
 class ChampionSummaryItem(BaseModel):
@@ -9,7 +9,7 @@ class ChampionSummaryItem(BaseModel):
     alias: str
     contentId: str
     squarePortraitPath: str
-    roles: List[str]
+    roles: list[str]
 
 class SkinLine(BaseModel):
     id: int
@@ -33,10 +33,10 @@ class Chroma(BaseModel):
     skinClassification: str
     chromaPath: str
     tilePath: str
-    colors: List[str]
-    descriptions: List[SkinDescription]
+    colors: list[str]
+    descriptions: list[SkinDescription]
     description: str
-    rarities: List[SkinRarity]
+    rarities: list[SkinRarity]
 
 
 class Skin(BaseModel):
@@ -61,13 +61,13 @@ class Skin(BaseModel):
     featuresText: str | None = None
 
     chromaPath: str | None = None
-    chromas: List[Chroma] = []
+    chromas: list[Chroma] = []
 
     emblems: str | None = None
     regionRarityId: int
     rarityGemPath: str | None = None
 
-    skinLines: List[SkinLine] | None = []
+    skinLines: list[SkinLine] | None = []
     description: str | None
 
 
@@ -77,21 +77,21 @@ class SpellCoefficients(BaseModel):
 
 
 class SpellEffectAmounts(BaseModel):
-    Effect1Amount: List[float]
-    Effect2Amount: List[float]
-    Effect3Amount: List[float]
-    Effect4Amount: List[float]
-    Effect5Amount: List[float]
-    Effect6Amount: List[float]
-    Effect7Amount: List[float]
-    Effect8Amount: List[float]
-    Effect9Amount: List[float]
-    Effect10Amount: List[float]
+    Effect1Amount: list[float]
+    Effect2Amount: list[float]
+    Effect3Amount: list[float]
+    Effect4Amount: list[float]
+    Effect5Amount: list[float]
+    Effect6Amount: list[float]
+    Effect7Amount: list[float]
+    Effect8Amount: list[float]
+    Effect9Amount: list[float]
+    Effect10Amount: list[float]
 
 
 class SpellAmmo(BaseModel):
-    ammoRechargeTime: List[float]
-    maxAmmo: List[float]
+    ammoRechargeTime: list[float]
+    maxAmmo: list[float]
 
 
 class Spell(BaseModel):
@@ -105,9 +105,9 @@ class Spell(BaseModel):
     description: str
     dynamicDescription: str
 
-    range: List[float]
-    costCoefficients: List[float]
-    cooldownCoefficients: List[float]
+    range: list[float]
+    costCoefficients: list[float]
+    cooldownCoefficients: list[float]
 
     coefficients: SpellCoefficients
     effectAmounts: SpellEffectAmounts
@@ -162,11 +162,11 @@ class DetailedChampion(BaseModel):
     chooseVoPath: str
     banVoPath: str
 
-    roles: List[str]
-    recommendedItemDefaults: List[str]
+    roles: list[str]
+    recommendedItemDefaults: list[str]
 
-    skins: List[Skin] = Field(default_factory=list)
+    skins: list[Skin] = Field(default_factory=list)
 
     passive: ChampionPassive
 
-    spells: List[Spell] = Field(default_factory=list)
+    spells: list[Spell] = Field(default_factory=list)

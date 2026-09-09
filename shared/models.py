@@ -1,13 +1,14 @@
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, ForeignKey, Integer, JSON, String
+from sqlalchemy import JSON, Boolean, ForeignKey, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
     from classes import DetailedChampion
 
-
+ 
 class Base(DeclarativeBase):
     pass
 
@@ -232,6 +233,29 @@ class SpellAmmo(Base):
     spell_id: Mapped[int] = mapped_column(ForeignKey("spells.id"), primary_key=True)
     ammo_recharge_time: Mapped[list[float]] = mapped_column("ammoRechargeTime", JSON)
     max_ammo: Mapped[list[float]] = mapped_column("maxAmmo", JSON)
+
+class ProcessedGame(Base):
+    __tablename__ = "processed_game"
+
+    match_id: Mapped[str] = mapped_column("match_id", primary_key=True)
+
+class PerDayStats(Base):
+    __tablename__ = "per_day_stats"
+
+    date: Mapped[str] = mapped_column("date", primary_key=True)
+    goldWasted: Mapped[int] = mapped_column()
+    totalGames: Mapped[int] = mapped_column()
+    totalGameLength: Mapped[float] = mapped_column()
+
+class UnitStat(Base):
+    __tablename__ = "unit_stat"
+
+    unit: Mapped[str] = mapped_column("unit", primary_key=True)
+    count: Mapped[int] = mapped_column()
+    place: Mapped[int] = mapped_column()
+    wins: Mapped[int] = mapped_column()
+    top4: Mapped[int] = mapped_column()
+    items: Mapped[dict[str, int]] = mapped_column("items", JSON)
 
 
 def champion_from_payload(payload: DetailedChampion) -> Champion:

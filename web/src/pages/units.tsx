@@ -5,5 +5,5 @@ export default function Units() {
     <div className="relative w-full min-h-screen">
       <UnitsOverview />
     </div>
-  )
+  );
 }
