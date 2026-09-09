@@ -25,6 +25,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
+import { useAppSelector } from '@/store/hooks';
 
 import {
   InputGroup,
@@ -52,6 +53,7 @@ const NAV_ITEMS: readonly NavItem[] = [
 export function AppSidebar() {
   const { state, toggleSidebar } = useSidebar();
   const isCollapsed = state === 'collapsed';
+  const { isAuthenticated, email } = useAppSelector(state => state.user);
   console.log(isCollapsed);
   return (
     <Sidebar
@@ -126,16 +128,16 @@ export function AppSidebar() {
 
       <SidebarFooter className="border-t border-white/5 p-2">
         <Link
-          to="/profile"
+          to={isAuthenticated ? "/profile" : "/authenticate"}
           className="flex h-10 items-center gap-3 rounded-md px-2 text-neutral-400 transition-colors hover:bg-white/[0.04] hover:text-white group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
         >
           <div className="h-6 w-6 shrink-0 rounded-full border border-white/10 bg-neutral-800" />
           <div className="flex flex-col overflow-hidden text-left group-data-[collapsible=icon]:hidden">
             <span className="truncate text-xs font-medium text-neutral-200">
-              user
+              {isAuthenticated ? email : "Guest"}
             </span>
             <span className="truncate text-[10px] text-neutral-500">
-              See my profile
+              {isAuthenticated ? "See my profile" : "Log in"}
             </span>
           </div>
         </Link>
