@@ -31,6 +31,8 @@ pythonpath = ["src"]
 [tool.fastapi]
 entrypoint = "backend_app.main:app"
 
+[tool.ruff.lint.isort]
+known-first-party = ["shared", "backend_app"]
 
 [tool.alembic]
 

@@ -1,7 +1,6 @@
 import asyncio
 from logging.config import fileConfig
 
-from shared.models.champions import Base
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
@@ -10,6 +9,7 @@ import backend_app.models  # noqa: F401
 import shared.models  # noqa: F401
 from alembic import context
 from backend_app.database import db
+from shared.models.champions import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

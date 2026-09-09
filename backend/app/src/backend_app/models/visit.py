@@ -1,8 +1,9 @@
 import datetime
 
-from shared.models.champions import Base
 from sqlalchemy import Date, Integer
 from sqlalchemy.orm import Mapped, mapped_column
+
+from shared.models.champions import Base
 
 
 class   VisitModel(Base):
