@@ -136,6 +136,23 @@ services:
       - prometheus
     networks:
       - localnet_transcendence
+    
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: transcendence-node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    expose:
+      - "9100"
+    networks:
+      - localnet_transcendence
 
 volumes:
   pgdata_transcendence:
