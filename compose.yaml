@@ -100,6 +100,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml:ro
       - prometheus_transcendence:/prometheus
     expose:
       - "9090"
@@ -114,6 +115,17 @@ services:
         condition: service_healthy
       backend:
         condition: service_healthy
+    networks:
+      - localnet_transcendence
+    
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: transcendence-alertmanager
+    restart: unless-stopped
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    expose:
+      - "9093"
     networks:
       - localnet_transcendence
     
