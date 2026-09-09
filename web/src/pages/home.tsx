@@ -2,9 +2,10 @@ import { ChartSpline, Coins, User } from "lucide-react";
 import { motion } from "motion/react";
 import { Separator } from "@/components/ui/separator";
 import { BreakdownCard } from "@/components/home/breakdowncard";
-import { ChartAreaInteractive } from "@/components/home/chart_test";
+import { ChartHistory } from "@/components/home/chart";
 import { useEffect, useState } from "react";
 import { toast } from "@/components/ui/toast";
+import { type HomeDataProps } from "@/types/home";
 
 const container = {
   hidden: { opacity: 0 },
@@ -14,25 +15,15 @@ const container = {
   },
 };
 
-interface HistoryChartProps {
-  date: string;
-  coins_avg: number;
-  time_elapsed_avg: number;
-}
-
-interface HomeDataProps {
-  visitsCount: number;
-  coinsCount: number;
-  matchCount: number;
-  history: HistoryChartProps[];
-}
-
 export default function Home() {
   const [data, setData] = useState<HomeDataProps>({
     visitsCount: 0,
-    coinsCount: 0,
+    goldCount: 0,
     matchCount: 0,
-    history: []
+    history: [
+      { date: "2026-02-11", gold_wasted_avg: 11, time_elapsed_avg: 123.2},
+      { date: "2026-04-1", gold_wasted_avg: 123.2, time_elapsed_avg: 11}
+    ]
   });
   useEffect(() => {
     const fetchData = async () => {
@@ -64,9 +55,10 @@ export default function Home() {
 
     fetchData();
   }, []);
+
   const stats = [
     { Icon: User, title: "Visits", count: data.visitsCount },
-    { Icon: Coins, title: "Coins wasted", count: data.coinsCount },
+    { Icon: Coins, title: "Gold wasted", count: data.goldCount },
     { Icon: ChartSpline, title: "Matches analyzed", count: data.matchCount },
   ];
 
@@ -107,7 +99,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.35, ease: "easeOut" }}
         >
-          <ChartAreaInteractive />
+          <ChartHistory data={data.history} />
         </motion.div>
       </div>
     </div>
