@@ -83,6 +83,9 @@ services:
     ports:
       - "8080:80"
       - "8443:443"
+    environment:
+      PROMETHEUS_ADMIN_USER: ${PROMETHEUS_ADMIN_USER}
+      PROMETHEUS_ADMIN_PASSWORD: ${PROMETHEUS_ADMIN_PASSWORD}
     depends_on:
       web:
         condition: service_healthy
