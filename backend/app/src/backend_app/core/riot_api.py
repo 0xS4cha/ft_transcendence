@@ -2,7 +2,7 @@ import time
 
 import requests
 
-from backend_app.database import db as database
+from shared.database import db as database
 
 
 class RIOTApi:
