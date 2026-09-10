@@ -1,6 +1,8 @@
-from .champions import Base
-from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import JSON
+from sqlalchemy.orm import Mapped, mapped_column
+
+from .champions import Base
+
 
 class ProcessedGame(Base):
     __tablename__ = "processed_game"
