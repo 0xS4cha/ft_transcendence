@@ -3,9 +3,9 @@ from fastapi import APIRouter
 from backend_app.api.endpoints import (
     champions_router,
     login_router,
-    search_user_router,
     logout_router,
     prometheus_metrics_router,
+    search_user_router,
     signup_router,
     stats_router,
 )
