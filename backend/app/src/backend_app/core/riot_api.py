@@ -1,7 +1,9 @@
 import time
 
 import requests
+
 from backend_app.database import db as database
+
 
 class RIOTApi:
     def __init__(self, api_key: str):
@@ -23,10 +25,10 @@ class RIOTApi:
                     timeout=10,
                 )
                 if response.status_code == 403:
-                    raise Exception("403 Forbidden: your Riot API key is invalid or expired.")
+                    raise Exception("403 Forbidden: your Riot API key is invalid or expired.") #noqa: TRY002
 
                 if response.status_code == 404:
-                    raise Exception(f"404 Not Found: {url}")
+                    raise Exception(f"404 Not Found: {url}") #noqa: TRY002
 
                 if response.status_code == 429:
                     raise ConnectionAbortedError("429 Rate Limited: too many requests.")

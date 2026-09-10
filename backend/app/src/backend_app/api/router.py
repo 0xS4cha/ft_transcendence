@@ -4,9 +4,9 @@ from backend_app.api.endpoints import (
     champions_router,
     login_router,
     prometheus_metrics_router,
+    search_user_router,
     signup_router,
     stats_router,
-	search_user_router
 )
 
 api_router = APIRouter(prefix="/api")

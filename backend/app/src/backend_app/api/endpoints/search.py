@@ -1,8 +1,9 @@
 from enum import Enum
 
 from fastapi import APIRouter, HTTPException, status
-from backend_app.database import AsyncSessionDep
+
 from backend_app.core.riot_api import riot_api
+from backend_app.database import AsyncSessionDep
 
 router = APIRouter()
 
@@ -76,6 +77,7 @@ async def query_user_profile(query_username: str, server: Platform):
 # unit, user, item
 @router.get("/{query_type}/{query}")
 async def search(query_type: str, query: str, session: AsyncSessionDep):
+	return {'message': 'TODO'}
 	query = query.strip()
 	try:
 		final = {}
@@ -86,7 +88,7 @@ async def search(query_type: str, query: str, session: AsyncSessionDep):
 		else:
 			search_type = SearchType(query_type)
 		return final
-	except Exception as e:
+	except Exception as e: # noqa: BLE001
 		raise HTTPException(
 			status_code=status.HTTP_400_BAD_REQUEST,
 			detail=f"Incorrect username or password {e}"
