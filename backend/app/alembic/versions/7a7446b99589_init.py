@@ -1,21 +1,21 @@
-"""first migration, create tables
+"""init
 
-Revision ID: 4db0e1fba8b1
+Revision ID: 7a7446b99589
 Revises: 
-Create Date: 2026-09-09 14:07:27.912205
+Create Date: 2026-09-10 13:44:23.852953
 
 """
-from collections.abc import Sequence
-
-import sqlalchemy as sa
+from typing import Sequence, Union
 
 from alembic import op
+import sqlalchemy as sa
+
 
 # revision identifiers, used by Alembic.
-revision: str = '4db0e1fba8b1'
-down_revision: str | Sequence[str] | None = None
-branch_labels: str | Sequence[str] | None = None
-depends_on: str | Sequence[str] | None = None
+revision: str = '7a7446b99589'
+down_revision: Union[str, Sequence[str], None] = None
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
@@ -34,6 +34,13 @@ def upgrade() -> None:
     sa.Column('chooseVoPath', sa.String(), nullable=False),
     sa.Column('banVoPath', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('per_day_stats',
+    sa.Column('date', sa.String(), nullable=False),
+    sa.Column('goldWasted', sa.Integer(), nullable=False),
+    sa.Column('totalGames', sa.Integer(), nullable=False),
+    sa.Column('totalGameLength', sa.Float(), nullable=False),
+    sa.PrimaryKeyConstraint('date')
     )
     op.create_table('processed_game',
     sa.Column('match_id', sa.String(), nullable=False),
@@ -56,11 +63,10 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_users_email'), 'users', ['email'], unique=True)
     op.create_table('visit_model',
-    sa.Column('id', sa.String(), nullable=False),
-    sa.Column('date', sa.String(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.Column('date', sa.Date(), nullable=False),
+    sa.Column('count', sa.Integer(), nullable=False),
+    sa.PrimaryKeyConstraint('date')
     )
-    op.create_index(op.f('ix_visit_model_date'), 'visit_model', ['date'], unique=False)
     op.create_table('champion_passives',
     sa.Column('champion_id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
@@ -246,11 +252,11 @@ def downgrade() -> None:
     op.drop_table('champion_recommended_item_defaults')
     op.drop_table('champion_playstyle_info')
     op.drop_table('champion_passives')
-    op.drop_index(op.f('ix_visit_model_date'), table_name='visit_model')
     op.drop_table('visit_model')
     op.drop_index(op.f('ix_users_email'), table_name='users')
     op.drop_table('users')
     op.drop_table('unit_stat')
     op.drop_table('processed_game')
+    op.drop_table('per_day_stats')
     op.drop_table('champions')
     # ### end Alembic commands ###
