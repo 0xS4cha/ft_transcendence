@@ -10,7 +10,8 @@ import {
   PanelLeft,
   ChevronLeft,
   ChevronRight,
-  User
+  User,
+  LogOut
 } from 'lucide-react';
 import { NavLink, Link } from 'react-router-dom';
 
@@ -34,6 +35,16 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group"
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import { useAppDispatch } from "@/store/hooks"
+import { logoutUser } from "@/store/reducers/userSlice";
+
 
 interface NavItem {
   readonly label: string;
@@ -54,9 +65,15 @@ const NAV_ITEMS: readonly NavItem[] = [
 
 export function AppSidebar() {
   const { state, toggleSidebar } = useSidebar();
+  const dispatch = useAppDispatch();
   const isCollapsed = state === 'collapsed';
   const { isAuthenticated, username, picture } = useAppSelector(state => state.user);
   console.log(isCollapsed);
+
+  function handleLogout() {
+    dispatch(logoutUser()).unwrap();
+  };
+
   return (
     <Sidebar
       collapsible="icon"
@@ -127,30 +144,55 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
       <SidebarFooter className="border-t border-white/5 p-2">
-        <Link
-          to={isAuthenticated ? "/profile" : "/authenticate"}
-          className="flex h-10 items-center gap-3 rounded-md px-2 text-neutral-400 transition-colors hover:bg-white/[0.04] hover:text-white group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
-        >
-          <Avatar>
-            <AvatarImage
-              src={picture}
-              alt={username}
-            />
-            <AvatarFallback>
-              <User/>
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col overflow-hidden text-left group-data-[collapsible=icon]:hidden">
-            <span className="truncate text-xs font-medium text-neutral-200">
-              {isAuthenticated ? username : "Guest"}
-            </span>
-            <span className="truncate text-[10px] text-neutral-500">
-              {isAuthenticated ? "See my profile" : "Log in"}
-            </span>
-          </div>
-        </Link>
+        <DropdownMenu>
+          <DropdownMenuTrigger render={
+            <button
+              className="flex h-10 w-full items-center gap-3 rounded-md px-2 text-neutral-400 transition-colors hover:bg-white/[0.04] hover:text-white group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
+            >
+              <Avatar>
+                <AvatarImage src={picture} alt={username} />
+                <AvatarFallback>
+                  <User />
+                </AvatarFallback>
+              </Avatar>
+
+              <div className="flex flex-col overflow-hidden text-left group-data-[collapsible=icon]:hidden">
+                <span className="truncate text-xs font-medium text-neutral-200">
+                  {isAuthenticated ? username : "Guest"}
+                </span>
+
+                <span className="truncate text-[10px] text-neutral-500">
+                  {isAuthenticated ? username : "Log in"}
+                </span>
+              </div>
+            </button>
+          }/>
+
+          <DropdownMenuContent
+            side="top"
+            align="start"
+            className="w-52"
+          >
+            {isAuthenticated ? (
+              <>
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={handleLogout}
+                >
+                  <LogOut />
+                  Logout
+                </DropdownMenuItem>
+              </>
+            ) : (
+              <DropdownMenuItem render={
+                <Link to="/authenticate">
+                  Log in
+                </Link>
+              }/>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </SidebarFooter>
     </Sidebar>
   );
