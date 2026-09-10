@@ -1,4 +1,5 @@
 import BuilderBoard from "@/components/builder/builder_boards"
+import BuilderChampionsBar from "@/components/builder/builder_champions_bar";
 import BuilderToolBar from "@/components/builder/builder_tool_bar";
 import BuilderTraitsBar from "@/components/builder/builder_traits_bar";
 import BuilderTraitsBarMobile from "@/components/builder/builder_traits_bar_mobile";
@@ -23,6 +24,7 @@ export default function Builder() {
         </div>
       </div>
       <div className="h-[28%] shrink-0 rounded-xl border border-white/10  min-h-0">
+        <BuilderChampionsBar />
       </div>
     </div>
   );
