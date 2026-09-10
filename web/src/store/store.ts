@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-// import inputReducer from '@/store/features/inputSlice'
+import userReducer from '@/store/reducers/userSlice'
 
 export const store = configureStore({
   reducer: {
-    // user_input: inputReducer,
+    user: userReducer,
   },
 });
 

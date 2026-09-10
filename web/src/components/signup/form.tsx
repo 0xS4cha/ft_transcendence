@@ -14,6 +14,10 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "@/components/ui/toast";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/store/hooks";
+import { signupUser } from "@/store/reducers/userSlice";
+import { type SignupPayload } from "@/types/user";
 
 type SignupFormProps = React.ComponentProps<"form"> & {
   func: (type: boolean) => void;
@@ -26,39 +30,35 @@ export function SignupForm({
 }: SignupFormProps) {
   const [viewPassword, setViewPassword] = useState(true);
   const [viewConfirmPassword, setViewConfirmPassword] = useState(true);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState<SignupPayload>({
+    email: "",
+    password: "",
+    confirm_password: "",
+  });
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-        const { name, value } = event.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = event.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    fetch("/signup", {
-      method: "POST",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    }).then(response => {
-      if (!response.ok) {
-        toast.add({
-          type: "error",
-          title: "Sign up failed",
-        });
-      }
-      return response.json();
-    }).then(userData => {
-      console.log(userData);
+
+    try {
+      await dispatch(signupUser(formData)).unwrap();
+      navigate("/profile");
       toast.add({
         type: "info",
         title: "Sign up successfully",
       });
-    }).catch(() => {
+    } catch {
       toast.add({
         type: "error",
-        title: "Sign up failed (INTERNAL)",
+        title: "Sign up failed",
       });
-    });
+    }
   }
 
   return (
@@ -71,25 +71,29 @@ export function SignupForm({
           </p>
         </div>
         <Field>
+          <FieldLabel htmlFor="username">Username</FieldLabel>
+          <Input id="username" name="username" type="text" placeholder="Xx_tft_player_xX" required onChange={handleChange}/>
+        </Field>
+        <Field>
           <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input id="email" name="email" type="email" placeholder="m@example.com" required onChange={handleChange}/>
+          <Input id="email" name="email" type="email" placeholder="m@example.com" required value={formData.email} onChange={handleChange}/>
         </Field>
         <Field>
           <div className="flex items-center">
             <FieldLabel htmlFor="password">Password</FieldLabel>
           </div>
           <ButtonGroup>
-            <Input id="password" name="password" type={viewPassword ? "password" : "text"} required onChange={handleChange}/>
-            <Button variant={viewPassword ? "outline" : "default"} onClick={() => setViewPassword(!viewPassword)}><Eye/></Button>
+            <Input id="password" name="password" type={viewPassword ? "password" : "text"} required value={formData.password} onChange={handleChange}/>
+            <Button type="button" variant={viewPassword ? "outline" : "default"} onClick={() => setViewPassword(!viewPassword)}><Eye/></Button>
           </ButtonGroup>
         </Field>
         <Field>
           <div className="flex items-center">
-            <FieldLabel htmlFor="password">Confirm your password</FieldLabel>
+            <FieldLabel htmlFor="confirm_password">Confirm your password</FieldLabel>
           </div>
           <ButtonGroup>
-            <Input id="password" name="confirm_password" type={viewConfirmPassword ? "password" : "text"} required onChange={handleChange}/>
-            <Button variant={viewConfirmPassword ? "outline" : "default"} onClick={() => setViewConfirmPassword(!viewConfirmPassword)}><Eye/></Button>
+            <Input id="confirm_password" name="confirm_password" type={viewConfirmPassword ? "password" : "text"} required value={formData.confirm_password} onChange={handleChange}/>
+            <Button type="button" variant={viewConfirmPassword ? "outline" : "default"} onClick={() => setViewConfirmPassword(!viewConfirmPassword)}><Eye/></Button>
           </ButtonGroup>
         </Field>
           <Field orientation="horizontal">
@@ -120,4 +124,4 @@ export function SignupForm({
       </FieldGroup>
     </form>
   );
-};
+}

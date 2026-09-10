@@ -123,12 +123,12 @@ export function DataTable({
             />
           </div>
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger render={
               <Button variant="outline" size="sm">
                 <ArrowUpDown />
                 Sort
-              </Button>
-            </DropdownMenuTrigger>
+              </Button>}
+              />
             <DropdownMenuContent align="end">
               <DropdownMenuRadioGroup
                 value={sortValue}
