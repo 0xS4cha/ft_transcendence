@@ -1,5 +1,6 @@
 import json
 
+import aiofiles
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -10,14 +11,14 @@ async def load_units_in_db(
 		session: AsyncSession
 ):
 	game_data = {}
-	with open("/opt/game_data/fetch_matches/data.json", 'r') as f:
-		game_data = json.load(f)
+	async with aiofiles.open("/opt/game_data/fetch_matches/data.json", 'r') as f:
+		game_data = json.loads(await f.read())
 	game_list = []
-	with open("/opt/game_data/fetch_matches/games.json", 'r') as f:
-		game_list = json.load(f)
+	async with aiofiles.open("/opt/game_data/fetch_matches/games.json", 'r') as f:
+		game_list = json.loads(await f.read())
 	per_game_stats = []
-	with open("/opt/game_data/fetch_matches/per_day_stats.json", 'r') as f:
-		per_game_stats = json.load(f)
+	async with aiofiles.open("/opt/game_data/fetch_matches/per_day_stats.json", 'r') as f:
+		per_game_stats = json.loads(await f.read())
 	i = 0
 	
 	for unit_name, unit_data in game_data.items():
