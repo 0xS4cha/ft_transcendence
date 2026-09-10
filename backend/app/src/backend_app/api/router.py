@@ -3,8 +3,9 @@ from fastapi import APIRouter
 from backend_app.api.endpoints import (
     champions_router,
     login_router,
-    prometheus_metrics_router,
     search_user_router,
+    logout_router,
+    prometheus_metrics_router,
     signup_router,
     stats_router,
 )
@@ -21,6 +22,12 @@ api_router.include_router(
     login_router,
     tags=["Authentication"],
     prefix="/auth/login"
+)
+
+api_router.include_router(
+    logout_router,
+    tags=["Authentication"],
+    prefix="/auth/logout"
 )
 
 api_router.include_router(
