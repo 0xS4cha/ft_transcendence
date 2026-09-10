@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy import JSON, Boolean, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from ..database import Base
 
 if TYPE_CHECKING:

@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..shared.models.unit_games import PerDayStats, ProcessedGame, UnitStat
 
+
 async def load_units_in_db(
 		session: AsyncSession
 ):

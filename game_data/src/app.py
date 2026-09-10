@@ -8,8 +8,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from .classes import ChampionSummaryItem, DetailedChampion
 from .fetch_matches.load_in_db import load_units_in_db
-from .shared.models.champions import Champion, champion_from_payload
 from .shared.database import db
+from .shared.models.champions import Champion, champion_from_payload
+
 
 async def main(
         session: AsyncSession
