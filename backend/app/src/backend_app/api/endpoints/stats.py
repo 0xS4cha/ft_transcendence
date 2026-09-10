@@ -5,7 +5,7 @@ from fastapi import APIRouter, Response, status
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert
 
-from backend_app.database import AsyncSessionDep
+from shared.database import AsyncSessionDep
 from backend_app.models.user import UserModel
 from backend_app.models.visit import VisitModel
 from shared.models.unit_games import PerDayStats, ProcessedGame

@@ -3,7 +3,7 @@ from functools import lru_cache
 from pwdlib import PasswordHash
 
 from backend_app.core.authenticate import Authenticate
-from backend_app.database import AsyncSessionDep
+from shared.database import AsyncSessionDep
 from backend_app.models.user import UserModel
 
 

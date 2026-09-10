@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 import backend_app.models  # noqa: F401
 from backend_app.api.router import api_router
-from backend_app.database import db
+from shared.database import db
 
 app = FastAPI(lifespan=db.lifespan)
 

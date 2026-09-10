@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column
 
-from shared.models.champions import Base
+from shared.database import Base
 
 
 class   UserModel(Base):

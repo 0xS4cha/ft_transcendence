@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from backend_app.core.jwt import Token
 from backend_app.core.security import Password
-from backend_app.database import AsyncSessionDep
+from shared.database import AsyncSessionDep
 from backend_app.models.user import UserModel
 from backend_app.schemas.user import UserPublic
 
