@@ -11,7 +11,7 @@ services:
       test: ["CMD-SHELL", "wget --spider -q http://localhost:3000/health || exit 1"]
       interval: 5s
       timeout: 3s
-      retries: 2 #change back to 10 later
+      retries: 10
       start_period: 10s
     depends_on:
       postgres:
@@ -22,9 +22,12 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       SECRET_JWT_KEY: ${SECRET_JWT_KEY}
       DATABASE_URL: ${DATABASE_URL}
+      RIOT_API_KEY: ${RIOT_API_KEY}
     volumes:
-      - ./shared/:/app/src/shared/
+      - ./shared/models:/app/src/shared/models
       - ./backend/app/src:/app/src #dev env, change when prod
+      - ./backend/app/alembic:/app/alembic #dev env, change when prod
+      - ./backend/app/alembic.ini:/app/alembic.ini #dev env, change when prod
     networks:
       - localnet_transcendence
 

@@ -6,17 +6,14 @@ from fastapi import Depends, FastAPI
 from pydantic import PostgresDsn
 from pydantic_settings import BaseSettings
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase
 
-
-class   Base(DeclarativeBase):
-    pass
 
 class   Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
     SECRET_JWT_KEY: str
+    RIOT_API_KEY: str
     POSTGRES_PORT: int = 5432
     POSTGRES_HOST: str = "postgres"
     DEBUG_HOST: str = "localhost"
@@ -57,8 +54,6 @@ class   Database:
 
     @asynccontextmanager
     async def lifespan(self, _app: FastAPI) -> AsyncGenerator[None]:
-        async with self.engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
         yield
         await self.engine.dispose()
 

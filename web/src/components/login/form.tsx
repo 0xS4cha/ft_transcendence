@@ -12,6 +12,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "@/components/ui/toast";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/store/hooks";
+import { loginUser } from "@/store/reducers/userSlice";
 
 type LoginFormProps = React.ComponentProps<"form"> & {
   func: (type: boolean) => void;
@@ -23,40 +26,40 @@ export function LoginForm({
   ...props
 }: LoginFormProps) {
   const [viewPassword, setViewPassword] = useState(true);
-  const [formData, setFormData] = useState({});
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-        const { name, value } = event.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = event.target;
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    fetch("/login", {
-      method: "POST",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    }).then(response => {
-      if (!response.ok) {
-        toast.add({
-          type: "error",
-          title: "Login failed",
-        });
-      }
-      return response.json();
-    }).then(userData => {
-      console.log(userData);
+
+    try {
+      await dispatch(loginUser(formData)).unwrap();
+      navigate("/profile");
       toast.add({
         type: "info",
         title: "Login successfully",
       });
-    }).catch(() => {
+    } catch {
       toast.add({
         type: "error",
-        title: "Login failed (INTERNAL)",
+        title: "Login failed",
       });
-    });
-  };
+    }
+  }
+
   return (
     <form className={cn("flex flex-col gap-6", className)} onSubmit={handleSubmit} {...props}>
       <FieldGroup>
@@ -68,15 +71,36 @@ export function LoginForm({
         </div>
         <Field>
           <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input id="email" type="email" placeholder="m@example.com" required onChange={handleChange}/>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="m@example.com"
+            required
+            value={formData.email}
+            onChange={handleChange}
+          />
         </Field>
         <Field>
           <div className="flex items-center">
             <FieldLabel htmlFor="password">Password</FieldLabel>
           </div>
           <ButtonGroup>
-            <Input id="password" type={viewPassword ? "password" : "text"} required onChange={handleChange}/>
-            <Button variant={viewPassword ? "outline" : "default"} onClick={() => setViewPassword(!viewPassword)}><Eye/></Button>
+            <Input
+              id="password"
+              name="password"
+              type={viewPassword ? "password" : "text"}
+              required
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <Button
+              type="button"
+              variant={viewPassword ? "outline" : "default"}
+              onClick={() => setViewPassword(!viewPassword)}
+            >
+              <Eye />
+            </Button>
           </ButtonGroup>
           <a
             href="#"
@@ -92,11 +116,11 @@ export function LoginForm({
         <Field>
           <div className="grid grid-cols-2 gap-2 w-full">
             <Button variant="outline" type="button" className="w-full">
-                <img src="/42.svg" className="w-4"/>
+              <img src="/42.svg" className="w-4" />
               Login with 42
             </Button>
             <Button variant="outline" type="button" className="w-full">
-              <img src="/riot.svg" className="w-4"/>
+              <img src="/riot.svg" className="w-4" />
               Login with Riot
             </Button>
           </div>
@@ -110,4 +134,4 @@ export function LoginForm({
       </FieldGroup>
     </form>
   );
-};
+}

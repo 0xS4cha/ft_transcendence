@@ -6,6 +6,7 @@ import { ChartHistory } from "@/components/home/chart";
 import { useEffect, useState } from "react";
 import { toast } from "@/components/ui/toast";
 import { type HomeDataProps } from "@/types/home";
+import { getHomeStats } from "@/services/statsService";
 
 const container = {
   hidden: { opacity: 0 },
@@ -20,31 +21,14 @@ export default function Home() {
     visitsCount: 0,
     goldCount: 0,
     matchCount: 0,
-    history: [
-      { date: "2026-02-11", gold_wasted_avg: 11, time_elapsed_avg: 123.2},
-      { date: "2026-04-1", gold_wasted_avg: 123.2, time_elapsed_avg: 11}
-    ]
+    history: []
   });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/stats/home", { method: "GET" });
-
-        if (!response.ok) {
-          toast.add({
-            type: "error",
-            title: "Failed to fetch units",
-          });
-          return;
-        }
-
-        const result = await response.json();
+        const result = await getHomeStats();
         setData(result);
-
-        toast.add({
-          type: "info",
-          title: "Welcome !",
-        });
       } catch (error) {
         toast.add({
           type: "error",

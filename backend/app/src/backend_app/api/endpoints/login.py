@@ -1,4 +1,3 @@
-from datetime import timedelta
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Response, status
@@ -12,7 +11,7 @@ from backend_app.schemas.user import UserPublic
 
 router = APIRouter()
 
-@router.post("/token")
+@router.post("/token", response_model=UserPublic)
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session: AsyncSessionDep,
@@ -26,22 +25,9 @@ async def login_for_access_token(
             detail="Incorrect username or password"
         )
 
-    access_token_expires = timedelta(minutes=Token.access_token_expire_minutes)
-    access_token = Token.create_access_token(
-        data={"sub": user.email},
-        expires_delta=access_token_expires
-    )
-    
-    response.set_cookie(
-        key="access_token",
-        value=access_token,
-        max_age=Token.access_token_expire_minutes*60,
-        secure=True,
-        httponly=True,
-        samesite="lax"
-    )
+    Token.generate_token(user.email, response)
 
-    return {"message": "Successfully logged in"}
+    return user
 
 @router.get("/users/me", response_model=UserPublic)
 async def read_users_me(current_user: Annotated[UserModel, Depends(Token.get_current_user)]) -> UserModel:

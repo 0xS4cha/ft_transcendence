@@ -10,6 +10,8 @@ import {
   PanelLeft,
   ChevronLeft,
   ChevronRight,
+  User,
+  LogOut
 } from 'lucide-react';
 import { NavLink, Link } from 'react-router-dom';
 
@@ -25,11 +27,23 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
+import { useAppSelector } from '@/store/hooks';
 
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   InputGroup,
   InputGroupInput,
 } from "@/components/ui/input-group"
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import { useAppDispatch } from "@/store/hooks"
+import { logoutUser } from "@/store/reducers/userSlice";
 
 
 interface NavItem {
@@ -51,13 +65,19 @@ const NAV_ITEMS: readonly NavItem[] = [
 
 export function AppSidebar() {
   const { state, toggleSidebar } = useSidebar();
+  const dispatch = useAppDispatch();
   const isCollapsed = state === 'collapsed';
+  const { isAuthenticated, username, picture } = useAppSelector(state => state.user);
   console.log(isCollapsed);
+
+  function handleLogout() {
+    dispatch(logoutUser()).unwrap();
+  };
 
   return (
     <Sidebar
       collapsible="icon"
-      className="text-neutral-300"
+      className="text-neutral-300 bg-background py-8"
       variant="floating"
     >
       <SidebarHeader className="flex h-14 flex-row items-center justify-between border-b border-white/5 px-3 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
@@ -124,22 +144,55 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
       <SidebarFooter className="border-t border-white/5 p-2">
-        <Link
-          to="/authenticate"
-          className="flex h-10 items-center gap-3 rounded-md px-2 text-neutral-400 transition-colors hover:bg-white/[0.04] hover:text-white group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
-        >
-          <div className="h-6 w-6 shrink-0 rounded-full border border-white/10 bg-neutral-800" />
-          <div className="flex flex-col overflow-hidden text-left group-data-[collapsible=icon]:hidden">
-            <span className="truncate text-xs font-medium text-neutral-200">
-              user
-            </span>
-            <span className="truncate text-[10px] text-neutral-500">
-              See my profile
-            </span>
-          </div>
-        </Link>
+        <DropdownMenu>
+          <DropdownMenuTrigger render={
+            <button
+              className="flex h-10 w-full items-center gap-3 rounded-md px-2 text-neutral-400 transition-colors hover:bg-white/[0.04] hover:text-white group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
+            >
+              <Avatar>
+                <AvatarImage src={picture} alt={username} />
+                <AvatarFallback>
+                  <User />
+                </AvatarFallback>
+              </Avatar>
+
+              <div className="flex flex-col overflow-hidden text-left group-data-[collapsible=icon]:hidden">
+                <span className="truncate text-xs font-medium text-neutral-200">
+                  {isAuthenticated ? username : "Guest"}
+                </span>
+
+                <span className="truncate text-[10px] text-neutral-500">
+                  {isAuthenticated ? username : "Log in"}
+                </span>
+              </div>
+            </button>
+          }/>
+
+          <DropdownMenuContent
+            side="top"
+            align="start"
+            className="w-52"
+          >
+            {isAuthenticated ? (
+              <>
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={handleLogout}
+                >
+                  <LogOut />
+                  Logout
+                </DropdownMenuItem>
+              </>
+            ) : (
+              <DropdownMenuItem render={
+                <Link to="/authenticate">
+                  Log in
+                </Link>
+              }/>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </SidebarFooter>
     </Sidebar>
   );
