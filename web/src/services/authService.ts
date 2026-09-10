@@ -18,5 +18,5 @@ export function getCurrentUser(): Promise<UserPublic> {
 }
 
 export function logout(): Promise<void> {
-  return apiPost<void>("/api/auth/logout", {});
+  return apiPost<void>("/api/auth/logout/logout", {});
 }
