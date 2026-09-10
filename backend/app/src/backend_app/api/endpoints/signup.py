@@ -1,6 +1,7 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Response
 
 from backend_app.core.authenticate import Authenticate
+from backend_app.core.jwt import Token
 from backend_app.core.security import Password
 from backend_app.database import AsyncSessionDep
 from backend_app.models.user import UserModel
@@ -8,10 +9,11 @@ from backend_app.schemas.user import UserCreate, UserPublic
 
 router = APIRouter()
 
-@router.post("/signup", response_model=UserPublic)
+@router.post("/", response_model=UserPublic)
 async def signup(
     user_data: UserCreate,
-    session: AsyncSessionDep
+    session: AsyncSessionDep,
+    response: Response
 ):
     user = await Authenticate.get_user(user_data.email, session)
 
@@ -29,5 +31,7 @@ async def signup(
     session.add(new_user)
     await session.commit()
     await session.refresh(new_user)
+
+    Token.generate_token(user_data.email, response)
 
     return new_user
