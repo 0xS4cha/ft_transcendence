@@ -1,11 +1,15 @@
 export interface UserPublic {
   id: number;
   email: string;
+  username: string;
+  picture?: string;
 }
 
 export interface UserState {
   id: number;
   email: string;
+  username: string;
+  picture?: string;
   isAuthenticated: boolean;
   status: "idle" | "loading" | "ready";
 }

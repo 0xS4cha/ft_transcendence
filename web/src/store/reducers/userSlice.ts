@@ -6,6 +6,8 @@ import { type SignupPayload, type UserPublic } from "@/types/user";
 function applyUser(state: typeof initialState, user: UserPublic) {
   state.id = user.id;
   state.email = user.email;
+  state.username = user.username;
+  state.picture = user.picture ? user.picture : undefined;
   state.isAuthenticated = true;
 }
 
@@ -87,6 +89,7 @@ export const userSlice = createSlice({
       .addCase(logoutUser.fulfilled, () => ({
         id: 0,
         email: "",
+        username: "",
         isAuthenticated: false,
         status: "ready" as const,
       }))

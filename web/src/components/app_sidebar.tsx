@@ -10,6 +10,7 @@ import {
   PanelLeft,
   ChevronLeft,
   ChevronRight,
+  User
 } from 'lucide-react';
 import { NavLink, Link } from 'react-router-dom';
 
@@ -27,6 +28,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useAppSelector } from '@/store/hooks';
 
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   InputGroup,
   InputGroupInput,
@@ -53,7 +55,7 @@ const NAV_ITEMS: readonly NavItem[] = [
 export function AppSidebar() {
   const { state, toggleSidebar } = useSidebar();
   const isCollapsed = state === 'collapsed';
-  const { isAuthenticated, email } = useAppSelector(state => state.user);
+  const { isAuthenticated, username, picture } = useAppSelector(state => state.user);
   console.log(isCollapsed);
   return (
     <Sidebar
@@ -131,10 +133,18 @@ export function AppSidebar() {
           to={isAuthenticated ? "/profile" : "/authenticate"}
           className="flex h-10 items-center gap-3 rounded-md px-2 text-neutral-400 transition-colors hover:bg-white/[0.04] hover:text-white group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
         >
-          <div className="h-6 w-6 shrink-0 rounded-full border border-white/10 bg-neutral-800" />
+          <Avatar>
+            <AvatarImage
+              src={picture}
+              alt={username}
+            />
+            <AvatarFallback>
+              <User/>
+            </AvatarFallback>
+          </Avatar>
           <div className="flex flex-col overflow-hidden text-left group-data-[collapsible=icon]:hidden">
             <span className="truncate text-xs font-medium text-neutral-200">
-              {isAuthenticated ? email : "Guest"}
+              {isAuthenticated ? username : "Guest"}
             </span>
             <span className="truncate text-[10px] text-neutral-500">
               {isAuthenticated ? "See my profile" : "Log in"}
