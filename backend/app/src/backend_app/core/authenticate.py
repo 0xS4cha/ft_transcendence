@@ -1,7 +1,7 @@
 from sqlalchemy import select
 
-from backend_app.database import AsyncSessionDep
 from backend_app.models.user import UserModel
+from shared.database import AsyncSessionDep
 
 
 class Authenticate:

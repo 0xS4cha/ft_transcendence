@@ -3,7 +3,7 @@ from enum import Enum
 from fastapi import APIRouter, HTTPException, status
 
 from backend_app.core.riot_api import riot_api
-from backend_app.database import AsyncSessionDep
+from shared.database import AsyncSessionDep
 
 router = APIRouter()
 

@@ -3,13 +3,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from sqlalchemy import JSON, Boolean, ForeignKey, Integer, String
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from ..database import Base
 
 if TYPE_CHECKING:
     from classes import DetailedChampion
  
-class Base(DeclarativeBase):
-    pass
 
 class Champion(Base):
     __tablename__ = "champions"
