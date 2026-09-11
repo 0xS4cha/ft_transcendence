@@ -18,6 +18,8 @@ jobs:
         run: make build
 
   lint-whole:
+    runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v7
