@@ -11,8 +11,8 @@ from shared.database import AsyncSessionDep
 
 router = APIRouter()
 
-@router.post("/token", response_model=UserPublic)
-async def login_for_access_token(
+@router.post("/", response_model=UserPublic)
+async def login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session: AsyncSessionDep,
     response : Response
@@ -29,6 +29,8 @@ async def login_for_access_token(
 
     return user
 
+
 @router.get("/users/me", response_model=UserPublic)
 async def read_users_me(current_user: Annotated[UserModel, Depends(Token.get_current_user)]) -> UserModel:
     return current_user
+
