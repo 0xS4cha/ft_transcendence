@@ -1,9 +1,9 @@
 import secrets
+from urllib.parse import urlencode
 
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse, RedirectResponse
 from httpx2 import AsyncClient
-from urllib.parse import urlencode
 
 from backend_app.core.jwt import Token
 from shared.database import db
