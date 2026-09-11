@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { useDroppable } from "@dnd-kit/core";
 
 const ROWS = 4;
 const COLS = 7;
@@ -10,7 +11,26 @@ const HEX_HEIGHT = 2 * HEX_SIZE;
 const ROW_HEIGHT = 1.5 * HEX_SIZE;
 
 
-export default function BuilderBoard()
+function HexagonCell({ id, cx, cy, points, championId }: {id: string, cx: number, cy: number, points: string, championId?: string}){
+  const {isOver, setNodeRef} = useDroppable( {id} );
+  return (
+    <g ref={setNodeRef as any}>
+      <polygon
+      points={points}
+      className={cn(
+        "stroke-[grey]/75 stroke-[2px] transition-colors cursor-pointer",
+        isOver ? "fill-blue-500/50" : "fill-[#2A2A2A]"
+      )}/>
+      {championId && (
+        <text x={cx} y={cy} textAnchor="middle" alignmentBaseline="middle" fill="white" fontSize="10px">
+          {championId}
+        </text>
+      )}
+    </g>
+  )
+}
+
+export default function BuilderBoard({ boardState }: { boardState: Record<string, string> })
 {
   // UN CERCLE COMPLET FAIT 360 DEGREE IL Y A 6 POINTS A DESSINER POUR L'HEXAGONE
   // ON RECUPERE LE RADIAN AU LIEU DE L'ANGLE (-30 POUR LA ROTATION EN HAUT)
@@ -48,13 +68,15 @@ export default function BuilderBoard()
 			const cx = (col * HEX_WIDTH) + xOffSet + (HEX_WIDTH / 2);
       const cy =(row * ROW_HEIGHT) + (HEX_HEIGHT / 2);
 
+      const hexId = `hex-${row}-${col}`;
 			hexes.push(
-				<polygon
-				  key={`${row}-${col}`}
-				  points={getHexagonPoints(cx, cy)}
-				  className={cn(
-            "fill-[#2A2A2A] stroke-[grey]/75 stroke-[2px]",
-				  )}
+				<HexagonCell
+          key={hexId}
+          id={hexId}
+          cx={cx}
+          cy={cy}
+          points={getHexagonPoints(cx, cy)}
+          championId={boardState[hexId]}
         />
       );
 		}
