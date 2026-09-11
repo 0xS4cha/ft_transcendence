@@ -1,10 +1,11 @@
 import secrets
 
 from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import RedirectResponse, JSONResponse
-from shared.database import db
-from backend_app.core.jwt import Token
+from fastapi.responses import JSONResponse, RedirectResponse
 from httpx2 import AsyncClient
+
+from backend_app.core.jwt import Token
+from shared.database import db
 
 router = APIRouter()
 

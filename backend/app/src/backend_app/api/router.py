@@ -5,6 +5,7 @@ from backend_app.api.endpoints import (
     login_router,
     login_with_42_router,
     logout_router,
+    me_router,
     prometheus_metrics_router,
     search_user_router,
     signup_router,
@@ -17,6 +18,12 @@ api_router.include_router(
     signup_router,
     tags=["Authentication"],
     prefix="/auth/signup"
+)
+
+api_router.include_router(
+    me_router,
+    tags=["Authentication"],
+    prefix="/auth/me"
 )
 
 api_router.include_router(
