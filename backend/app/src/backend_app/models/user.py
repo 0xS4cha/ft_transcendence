@@ -15,4 +15,4 @@ class   UserModel(Base):
     )
     hashed_password: Mapped[str] = mapped_column()
     username: Mapped[str] = mapped_column()
-    picture: Mapped[str | None] = mapped_column(default=None)
+    picture: Mapped[str | None] = mapped_column()
