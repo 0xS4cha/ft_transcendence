@@ -13,7 +13,7 @@ AUTHORIZE_URL = "https://api.intra.42.fr/oauth/authorize"
 TOKEN_URL = "https://api.intra.42.fr/oauth/token"
 ME_URL = "https://api.intra.42.fr/v2/me"
 
-@router.post("/")
+@router.get("/")
 async def login_with_42(
 ):
     state = secrets.token_urlsafe(32)
@@ -38,7 +38,7 @@ async def login_with_42(
 
     return response
 
-@router.post("/callback")
+@router.get("/callback")
 async def callback(
     request: Request,
     code: str | None = None,
