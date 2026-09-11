@@ -3,6 +3,7 @@ import secrets
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse, RedirectResponse
 from httpx2 import AsyncClient
+from urllib.parse import urlencode
 
 from backend_app.core.jwt import Token
 from shared.database import db
@@ -18,11 +19,14 @@ async def login_with_42(
 ):
     state = secrets.token_urlsafe(32)
 
-    url = (f"{AUTHORIZE_URL}"
-           f"?client_id={db.settings.FORTYTWO_CLIENT_ID}"
-           f"&redirect_uri={db.settings.FORTYTWO_REDIRECT_URI}"
-           f"&response_type=code&state={state}"
-    )
+    params = {
+           "client_id": db.settings.FORTYTWO_CLIENT_ID,
+           "redirect_uri": db.settings.FORTYTWO_REDIRECT_URI,
+           "response_type": "code",
+           "state": state
+    }
+
+    url = f"{AUTHORIZE_URL}?{urlencode(params)}"
 
     response = RedirectResponse(url=url)
 
