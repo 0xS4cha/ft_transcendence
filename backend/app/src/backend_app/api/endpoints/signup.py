@@ -9,7 +9,7 @@ from shared.database import AsyncSessionDep
 
 router = APIRouter()
 
-@router.post("/signup", response_model=UserPublic)
+@router.post("/", response_model=UserPublic)
 async def signup(
     user_data: UserCreate,
     session: AsyncSessionDep,

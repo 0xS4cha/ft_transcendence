@@ -5,14 +5,13 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from backend_app.core.jwt import Token
 from backend_app.core.security import Password
-from backend_app.models.user import UserModel
 from backend_app.schemas.user import UserPublic
 from shared.database import AsyncSessionDep
 
 router = APIRouter()
 
-@router.post("/token", response_model=UserPublic)
-async def login_for_access_token(
+@router.post("/", response_model=UserPublic)
+async def login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session: AsyncSessionDep,
     response : Response
@@ -28,7 +27,3 @@ async def login_for_access_token(
     Token.generate_token(user.email, response)
 
     return user
-
-@router.get("/users/me", response_model=UserPublic)
-async def read_users_me(current_user: Annotated[UserModel, Depends(Token.get_current_user)]) -> UserModel:
-    return current_user
