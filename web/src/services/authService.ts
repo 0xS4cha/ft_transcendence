@@ -6,17 +6,17 @@ export function login(email: string, password: string): Promise<UserPublic> {
     username: email,
     password,
   });
-  return apiPostForm<UserPublic>("/api/auth/login/token", body);
+  return apiPostForm<UserPublic>("/api/auth/login", body);
 }
 
 export function signup(data: SignupPayload): Promise<UserPublic> {
-  return apiPost<UserPublic>("/api/auth/signup/signup", data);
+  return apiPost<UserPublic>("/api/auth/signup", data);
 }
 
 export function getCurrentUser(): Promise<UserPublic> {
-  return apiGet<UserPublic>("/api/auth/login/users/me");
+  return apiGet<UserPublic>("/api/auth/me");
 }
 
 export function logout(): Promise<void> {
-  return apiPost<void>("/api/auth/logout/logout", {});
+  return apiPost<void>("/api/auth/logout", {});
 }

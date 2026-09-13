@@ -23,6 +23,8 @@ class   Settings(BaseSettings):
 
     DEBUG: bool = False
 
+    FRONTEND_URL: str = "https://localhost:8443"
+
     SECRET_JWT_KEY: str
     RIOT_API_KEY: str
 

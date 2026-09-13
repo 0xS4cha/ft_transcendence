@@ -76,7 +76,7 @@ class Token:
             value=access_token,
             max_age=Token.access_token_expire_minutes*60,
             path="/",
-            secure=True,
+            secure=db.settings.FRONTEND_URL.startswith("https"),
             httponly=True,
             samesite="lax"
         )
