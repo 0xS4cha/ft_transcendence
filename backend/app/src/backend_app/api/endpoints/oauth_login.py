@@ -2,7 +2,7 @@ import secrets
 from urllib.parse import urlencode
 
 from fastapi import APIRouter, HTTPException, Request, Response
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import RedirectResponse
 from httpx2 import AsyncClient
 
 from backend_app.core.authenticate import Authenticate
