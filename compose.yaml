@@ -17,6 +17,7 @@ services:
       postgres:
         condition: service_healthy
     environment:
+      CONTAINER_NAME: backend
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
@@ -60,8 +61,19 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      backend:
+        condition: service_healthy
     environment:
+      CONTAINER_NAME: game_data
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
       DATABASE_URL: ${DATABASE_URL}
+      SECRET_JWT_KEY: ${SECRET_JWT_KEY}
+      RIOT_API_KEY: ${RIOT_API_KEY}
+      FORTYTWO_CLIENT_ID: ${FORTYTWO_CLIENT_ID}
+      FORTYTWO_CLIENT_SECRET: ${FORTYTWO_CLIENT_SECRET}
+      FORTYTWO_REDIRECT_URI: ${FORTYTWO_REDIRECT_URI}
     volumes:
       - ./shared/:/opt/game_data/shared/
     networks:
