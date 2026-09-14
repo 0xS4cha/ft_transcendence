@@ -1,12 +1,15 @@
 import secrets
 from urllib.parse import urlencode
 
-from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi import APIRouter, HTTPException, Request, Response
+from fastapi.responses import RedirectResponse
 from httpx2 import AsyncClient
 
+from backend_app.core.authenticate import Authenticate
 from backend_app.core.jwt import Token
-from shared.database import db
+from backend_app.core.security import Password
+from backend_app.models.user import UserModel
+from shared.database import AsyncSessionDep, db
 
 router = APIRouter()
 
@@ -35,7 +38,7 @@ async def login_with_42(
         value=state,
         max_age=Token.access_token_expire_minutes*60,
         path="/",
-        secure=True,
+        secure=db.settings.FORTYTWO_REDIRECT_URI.scheme == "https",
         httponly=True,
         samesite="lax"
     )
@@ -45,9 +48,10 @@ async def login_with_42(
 @router.get("/callback")
 async def callback(
     request: Request,
+    session: AsyncSessionDep,
     code: str | None = None,
     state: str | None = None 
-) -> JSONResponse:
+) -> Response:
     saved_state = request.cookies.get("oauth_state")
 
     if not code:
@@ -96,9 +100,24 @@ async def callback(
             detail=me_response.text
         )
 
-    user = me_response.json()
+    user_data = me_response.json()
+    email = user_data.get("email")
+    if not email:
+        raise HTTPException(status_code=400, detail="No email provided by 42 API")
 
-    return JSONResponse({
-        "message": "Successfully logged in with 42",
-        "user": user
-    })
+    user = await Authenticate.get_user(email, session)
+    if not user:
+        random_password = secrets.token_urlsafe(32)
+        new_user = UserModel(
+            email=email,
+            hashed_password=Password.hash_password(random_password)
+        )
+        session.add(new_user)
+        await session.commit()
+        await session.refresh(new_user)
+
+    redirect_url = f"{db.settings.FRONTEND_URL.rstrip('/')}/profile"
+    redirect = RedirectResponse(url=redirect_url)
+    Token.generate_token(email, redirect)
+
+    return redirect
