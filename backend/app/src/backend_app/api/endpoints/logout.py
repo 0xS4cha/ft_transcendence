@@ -2,7 +2,7 @@ from fastapi import APIRouter, Response
 
 router = APIRouter()
 
-@router.post("/")
+@router.post("/logout")
 async def logout(
     response: Response
 ) -> None:
