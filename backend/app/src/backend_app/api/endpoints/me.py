@@ -8,6 +8,6 @@ from backend_app.schemas.user import UserPublic
 
 router = APIRouter()
 
-@router.get("", response_model=UserPublic)
+@router.get("/me", response_model=UserPublic)
 async def read_me(current_user: Annotated[UserModel, Depends(Token.get_current_user)]) -> UserModel:
     return current_user

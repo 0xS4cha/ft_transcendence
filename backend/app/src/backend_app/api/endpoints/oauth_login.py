@@ -17,7 +17,7 @@ AUTHORIZE_URL = "https://api.intra.42.fr/oauth/authorize"
 TOKEN_URL = "https://api.intra.42.fr/oauth/token"
 ME_URL = "https://api.intra.42.fr/v2/me"
 
-@router.get("/")
+@router.get("/login_with_42")
 async def login_with_42(
 ):
     state = secrets.token_urlsafe(32)
@@ -45,7 +45,7 @@ async def login_with_42(
 
     return response
 
-@router.get("/callback")
+@router.get("/login_with_42/callback")
 async def callback(
     request: Request,
     session: AsyncSessionDep,
@@ -105,12 +105,18 @@ async def callback(
     if not email:
         raise HTTPException(status_code=400, detail="No email provided by 42 API")
 
+    login = user_data.get("login", email.split('@')[0])
+    
+    medium_img = user_data.get("image", {}).get("versions", {}).get("medium")
+
     user = await Authenticate.get_user(email, session)
     if not user:
         random_password = secrets.token_urlsafe(32)
         new_user = UserModel(
             email=email,
-            hashed_password=Password.hash_password(random_password)
+            hashed_password=Password.hash_password(random_password),
+            username=login,
+            picture=medium_img
         )
         session.add(new_user)
         await session.commit()

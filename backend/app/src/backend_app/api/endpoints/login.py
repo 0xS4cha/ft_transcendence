@@ -10,7 +10,7 @@ from shared.database import AsyncSessionDep
 
 router = APIRouter()
 
-@router.post("/", response_model=UserPublic)
+@router.post("/login", response_model=UserPublic)
 async def login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session: AsyncSessionDep,
