@@ -107,7 +107,7 @@ async def search(query_type: str, query: str, session: AsyncSessionDep):
 			selected_search_type = SearchType(search_type)
 			selected_platform = Platform(platform)
 			if selected_search_type != SearchType.player:
-				raise Exception("Invalid search type, only players are located using platform")
+				raise Exception("Invalid search type, only players are located using platform") #noqa: TRY002
 			final["user"] = await query_user_profile(query.strip(), selected_platform)
 		else:
 			search_type = SearchType(query_type)
