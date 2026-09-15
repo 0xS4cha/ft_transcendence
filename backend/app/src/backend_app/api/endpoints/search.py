@@ -1,9 +1,11 @@
 from enum import Enum
 
 from fastapi import APIRouter, HTTPException, status
+from sqlalchemy import select
 
 from backend_app.core.riot_api import riot_api
 from shared.database import AsyncSessionDep
+from shared.models.champions import Champion
 
 router = APIRouter()
 
@@ -70,7 +72,6 @@ async def query_user_profile(query_username: str, server: Platform):
 		
 		username = f"{account.get('gameName')}#{account.get('tagLine')}"
 		searched_user_cache[username] = {
-			'id': summoner.get('id'),
 			'puuid': summoner.get('puuid'),
 			'profileIconId': summoner.get('profileIconId'),
 			'summonerLevel': summoner.get('summonerLevel'),
@@ -88,7 +89,11 @@ async def query_user_profile(query_username: str, server: Platform):
 		return searched_user_cache[username]
 	else:
 		return {}
-	
+
+async def query_unit(query: str, session: AsyncSessionDep):
+	async with session:
+		champion_list = (await session.execute(select(Champion))).scalars().all()
+		return {champion.id: champion for champion in champion_list if query.lower().strip() in champion.name.lower().strip()}
 	
 
 # unit, user, item
@@ -106,6 +111,7 @@ async def search(query_type: str, query: str, session: AsyncSessionDep):
 			final["user"] = await query_user_profile(query.strip(), selected_platform)
 		else:
 			search_type = SearchType(query_type)
+		final["unit"] = await query_unit(query.strip(), session)
 		return final
 	except Exception as e: # noqa: BLE001
 		raise HTTPException(
