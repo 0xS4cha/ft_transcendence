@@ -14,8 +14,6 @@ from .shared.models.items import Item
 #wr number of 1st places compared to number of all places
 #frequency number of all places compared to number of all places of all items
 
-#popular_units
-
 def get_all_items_use(
         items: list
 ) -> int:
@@ -72,6 +70,30 @@ def create_item(
     )
     return item
 
+def get_name(
+    name: str
+) -> str:
+    true_name = name.replace("DA", "")
+    true_name = true_name.replace("18", "")
+    true_name = true_name.replace("_", "")
+    true_name = true_name.replace("Emblem", "")
+    true_name = true_name.replace("Radiant", "")
+    true_name = true_name.replace("Artifact", "")
+    true_name = true_name.replace("Component", "")
+
+    for index, char in enumerate(true_name):
+        if char.isupper() and not true_name[index + 1].isupper():
+            true_name = true_name.replace(char, " " + char)
+
+
+    #string to list
+    #only replace current char not all occurences
+    #no need to increment index, just append " "+_char in one element
+    #list to string
+
+    true_name = true_name.strip()
+    
+    return true_name
 
 async def main(
         session: AsyncSession
@@ -89,7 +111,7 @@ async def main(
         avg_place = get_avg_place(places, total_item_use)
         winrate = get_winrate(places, total_item_use)
         frequency = get_frequency(total_item_use, all_items_use)
-        name = item["itemName"]
+        name = get_name(id)
 
         existing = await session.get(Item, id)
         if existing is not None:
