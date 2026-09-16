@@ -10,6 +10,7 @@ from backend_app.api.endpoints import (
     search_user_router,
     signup_router,
     stats_router,
+    items_data_router,
 )
 
 api_router = APIRouter(prefix="/api")
@@ -48,6 +49,12 @@ api_router.include_router(
     champions_router,
     tags=["Champions"],
     prefix="/game_data/champions",
+)
+
+api_router.include_router(
+    items_data_router,
+    tags=["Items"],
+    prefix="/game_data",
 )
 
 api_router.include_router(
