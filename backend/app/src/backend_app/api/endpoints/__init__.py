@@ -9,5 +9,7 @@ from backend_app.api.endpoints.prometheus_metrics import (
 from backend_app.api.endpoints.search import router as search_user_router
 from backend_app.api.endpoints.signup import router as signup_router
 from backend_app.api.endpoints.stats import router as stats_router
+from backend_app.api.endpoints.chat import router as chat_router
+from backend_app.api.endpoints.websocket import router as websocket_router
 
-__all__ = ["champions_router", "login_router", "login_with_42_router", "logout_router", "me_router", "prometheus_metrics_router", "search_user_router", "signup_router", "stats_router"]
+__all__ = ["champions_router", "login_router", "login_with_42_router", "logout_router", "me_router", "prometheus_metrics_router", "search_user_router", "signup_router", "stats_router", "chat_router", "websocket_router"]

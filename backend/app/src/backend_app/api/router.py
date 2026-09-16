@@ -10,6 +10,8 @@ from backend_app.api.endpoints import (
     search_user_router,
     signup_router,
     stats_router,
+	chat_router,
+	websocket_router
 )
 
 api_router = APIRouter(prefix="/api")
@@ -66,4 +68,16 @@ api_router.include_router(
 	search_user_router,
 	tags=["Seach User"],
 	prefix="/search/user"
+)
+
+api_router.include_router(
+	chat_router,
+	tags=["Chat"],
+	prefix="/chat"
+)
+
+api_router.include_router(
+	websocket_router,
+	tags=["WebSocket"],
+	prefix="/websocket"
 )
