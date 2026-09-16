@@ -1,8 +1,10 @@
-from fastapi import APIRouter
-from shared.database import AsyncSessionDep
 from typing import Any
+
+from fastapi import APIRouter
+from sqlalchemy import inspect, select
+
+from shared.database import AsyncSessionDep
 from shared.models.items import Item
-from sqlalchemy import select, inspect
 
 
 def model_to_dict(
