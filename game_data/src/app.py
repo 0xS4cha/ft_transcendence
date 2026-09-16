@@ -17,7 +17,7 @@ async def fetch_champions(
         champion_id: int,
         sem: asyncio.Semaphore
 ) -> DetailedChampion:
-    # asynchronously get a champion and return a valid DetailedChampion model
+    # async get a champion and return a valid DetailedChampion model
     async with sem:
         resp = await client.get(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champions/{champion_id}.json")
         resp.raise_for_status()
@@ -32,11 +32,11 @@ async def main(
     # 15 requests at a time
     sem = asyncio.Semaphore(15)
 
-    # get champion summary list
+    # get champion list
     # use their id to fetch the details on each champion
     async with AsyncClient(timeout=10) as client:
         resp = await client.get("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json")
-        champion_summary = [ChampionSummaryItem.model_validate(item) for item in resp.json]
+        champion_summary = [ChampionSummaryItem.model_validate(item) for item in resp.json()]
 
         # creates a list of c tasks, then asyncio runs them asynchronously
         details = await asyncio.gather(*[
@@ -71,5 +71,5 @@ if __name__ == "__main__":
     try:
         asyncio.run(run())
     except Exception as e:  # noqa: BLE001
-        print(f"\033[31mERROR\033[0m: {e.args[0] if e.args else e.with_traceback(None)}", file=sys.stderr)
+        print(f"\033[31mERROR\033[0m: {e}", file=sys.stderr)
         sys.exit(1)

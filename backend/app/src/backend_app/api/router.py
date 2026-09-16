@@ -3,7 +3,9 @@ from fastapi import APIRouter
 from backend_app.api.endpoints import (
     champions_router,
     login_router,
+    login_with_42_router,
     logout_router,
+    me_router,
     prometheus_metrics_router,
     search_user_router,
     signup_router,
@@ -15,19 +17,31 @@ api_router = APIRouter(prefix="/api")
 api_router.include_router(
     signup_router,
     tags=["Authentication"],
-    prefix="/auth/signup"
+    prefix="/auth"
+)
+
+api_router.include_router(
+    me_router,
+    tags=["Authentication"],
+    prefix="/auth"
 )
 
 api_router.include_router(
     login_router,
     tags=["Authentication"],
-    prefix="/auth/login"
+    prefix="/auth"
+)
+
+api_router.include_router(
+    login_with_42_router,
+    tags=["Authentication"],
+    prefix="/auth"
 )
 
 api_router.include_router(
     logout_router,
     tags=["Authentication"],
-    prefix="/auth/logout"
+    prefix="/auth"
 )
 
 api_router.include_router(
@@ -45,7 +59,7 @@ api_router.include_router(
 api_router.include_router(
     prometheus_metrics_router,
     tags=["Prometheus Metrics"],
-    prefix="/prometheus/metrics",
+    prefix="/prometheus",
 )
 
 api_router.include_router(

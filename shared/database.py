@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from typing import Annotated
 
 from fastapi import Depends, FastAPI
-from pydantic import PostgresDsn
+from pydantic import HttpUrl, PostgresDsn
 from pydantic_settings import BaseSettings
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
@@ -16,13 +16,21 @@ class   Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
-    SECRET_JWT_KEY: str
-    RIOT_API_KEY: str
     POSTGRES_PORT: int = 5432
     POSTGRES_HOST: str = "postgres"
     DEBUG_HOST: str = "localhost"
     SCHEME: str = "postgresql+asyncpg"
+
     DEBUG: bool = False
+
+    FRONTEND_URL: str = "https://localhost:8443"
+
+    SECRET_JWT_KEY: str
+    RIOT_API_KEY: str
+
+    FORTYTWO_CLIENT_ID: str
+    FORTYTWO_CLIENT_SECRET: str
+    FORTYTWO_REDIRECT_URI: HttpUrl
 
     @property
     def database_url(self) -> str:

@@ -25,7 +25,9 @@ async def signup(
 
     new_user = UserModel(
         email=user_data.email,
-        hashed_password=Password.hash_password(user_data.password)
+        hashed_password=Password.hash_password(user_data.password),
+        username=user_data.username,
+        picture=None
     )
 
     session.add(new_user)

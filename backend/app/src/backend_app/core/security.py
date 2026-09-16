@@ -34,12 +34,12 @@ class   Password:
 
     @staticmethod
     async def authenticate_user(
-        username: str,
+        email: str,
         password: str,
         session: AsyncSessionDep
     ) -> UserModel:
 
-        user = await Authenticate.get_user(username, session)
+        user = await Authenticate.get_user(email, session)
 
         dummy_hash = Password.get_dummy_hash()
 
