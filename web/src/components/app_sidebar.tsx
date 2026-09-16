@@ -85,7 +85,7 @@ export function AppSidebar() {
           to="/"
           className="flex items-center px-2 group-data-[collapsible=icon]:hidden"
         >
-          <span className="bg-gradient-to-r from-[#4E80EE] via-[#38E1FF] to-[#70A6FF] bg-clip-text text-lg font-bold tracking-wide text-transparent">
+          <span className="bg-linear-to-r from-[#4E80EE] via-[#38E1FF] to-[#70A6FF] bg-clip-text text-lg font-bold tracking-wide text-transparent">
             tactyx
           </span>
         </Link>
@@ -104,7 +104,7 @@ export function AppSidebar() {
           onClick={toggleSidebar}
           className="group/reopen relative hidden h-8 w-8 items-center justify-center rounded-md transition-colors hover:bg-white/10 group-data-[collapsible=icon]:flex"
         >
-          <span className="bg-gradient-to-r from-[#4E80EE] via-[#38E1FF] to-[#70A6FF] bg-clip-text font-mono text-[11px] font-black tracking-tighter text-transparent transition-opacity duration-150 group-hover/reopen:opacity-0">
+          <span className="bg-linear-to-r from-[#4E80EE] via-[#38E1FF] to-[#70A6FF] bg-clip-text font-mono text-[11px] font-black tracking-tighter text-transparent transition-opacity duration-150 group-hover/reopen:opacity-0">
             TACTYX
           </span>
           <ChevronRight className="absolute h-4 w-4 translate-x-0.5 text-neutral-200 opacity-0 transition-all duration-150 group-hover/reopen:opacity-100" />
