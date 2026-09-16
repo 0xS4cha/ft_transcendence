@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
+import { getChampionById } from '@/lib/champion';
 
 const ROWS = 4;
 const COLS = 7;
@@ -13,18 +14,49 @@ const ROW_HEIGHT = 1.5 * HEX_SIZE;
 
 function HexagonCell({ id, cx, cy, points, championId }: {id: string, cx: number, cy: number, points: string, championId?: string}){
   const {isOver, setNodeRef} = useDroppable( {id} );
+  const champion = championId ? getChampionById(championId) : null;
+  const clipPathId = `clip-${id}`;
   return (
     <g ref={setNodeRef as any}>
+      <defs>
+        <clipPath id={clipPathId}>
+          <polygon points={points}/>
+        </clipPath>
+      </defs>
       <polygon
       points={points}
       className={cn(
-        "stroke-[grey]/75 stroke-[2px] transition-colors cursor-pointer",
-        isOver ? "fill-blue-500/50" : "fill-[#2A2A2A]"
+        "stroke-[grey]/75 stroke-[2px] transition-colors",
+        isOver ? "fill-[grey]/75" : "fill-[#2A2A2A]"
       )}/>
-      {championId && (
-        <text x={cx} y={cy} textAnchor="middle" alignmentBaseline="middle" fill="white" fontSize="10px">
-          {championId}
-        </text>
+      {champion && (
+        <>
+        <image
+        href={champion.imageUrl}
+        x={cx - 30}
+        y={cy - 30}
+        width ={60}
+        height={60}
+        clipPath={`url(#${clipPathId})`}
+        preserveAspectRatio="xMidYMid slice"
+        className="pointer-events-none"
+        />
+        <text 
+            x={cx} 
+            y={cy + 10} 
+            textAnchor="middle" 
+            alignmentBaseline="middle" 
+            fill="white" 
+            fontSize="5px"
+            fontWeight="bold"
+            stroke="black"
+            strokeWidth="1px"
+            paintOrder="stroke fill"
+            className="pointer-events-none" 
+          >
+            {champion.name}
+          </text>
+        </>
       )}
     </g>
   )
