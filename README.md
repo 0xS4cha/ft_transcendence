@@ -19,3 +19,4 @@ Transcendence - Milestone 6 - 42 CC
 # TODO
 - [ ] remove db port expose in compose 
 - [ ] foutre des healthcheck de partout dans le compose.yaml
+- [ ] rendre le bouton du dashboard 90d - 30d... usable

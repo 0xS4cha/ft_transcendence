@@ -39,15 +39,15 @@ export default function BuilderTraitsBarMobile() {
             key={trait.id}
             className={cn(
               "flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1 shadow-sm",
-              tier === 4 && "bg-gradient-to-r from-[#4E80EE] to-[#38E1FF] text-black",
-              tier === 3 && "bg-gradient-to-r from-yellow-500 to-amber-400 text-black",
-              tier === 2 && "bg-gradient-to-r from-slate-200 to-white text-black",
-              tier === 1 && "bg-gradient-to-r from-amber-700 to-orange-500 text-white"
+              tier === 4 && "bg-linear-to-r from-[#4E80EE] to-[#38E1FF] text-black",
+              tier === 3 && "bg-linear-to-r from-yellow-500 to-amber-400 text-black",
+              tier === 2 && "bg-linear-to-r from-slate-200 to-white text-black",
+              tier === 1 && "bg-linear-to-r from-amber-700 to-orange-500 text-white"
             )}
           >
             <Hexagon className="h-3 w-3 shrink-0 fill-black stroke-black" />
             <span className="text-[10px] font-bold">{trait.currentUnits}</span>
-            <span className="text-[10px] font-bold uppercase tracking-wider truncate max-w-[80px]">
+            <span className="text-[10px] font-bold uppercase tracking-wider truncate max-w-20">
               {trait.name}
             </span>
           </div>

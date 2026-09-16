@@ -129,7 +129,7 @@ export function AppSidebar() {
                         'group/item flex h-8 items-center gap-3 rounded-md px-2.5 text-[13px] font-normal transition-colors group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0',
                         isActive
                           ? 'bg-white/10 font-medium text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]'
-                          : 'text-neutral-400 hover:bg-white/[0.04] hover:text-white',
+                          : 'text-neutral-400 hover:bg-white/4 hover:text-white',
                       )
                     }
                   >
@@ -148,7 +148,7 @@ export function AppSidebar() {
         <DropdownMenu>
           <DropdownMenuTrigger render={
             <button
-              className="flex h-10 w-full items-center gap-3 rounded-md px-2 text-neutral-400 transition-colors hover:bg-white/[0.04] hover:text-white group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
+              className="flex h-10 w-full items-center gap-3 rounded-md px-2 text-neutral-400 transition-colors hover:bg-white/4 hover:text-white group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
             >
               <Avatar>
                 <AvatarImage src={picture} alt={username} />
