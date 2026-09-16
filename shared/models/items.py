@@ -12,3 +12,4 @@ class   Item(Base):
     winrate: Mapped[float] = mapped_column(Float)
     frequency: Mapped[float] = mapped_column(Float)
     name: Mapped[str] = mapped_column(String)
+    type: Mapped[str] = mapped_column(String)

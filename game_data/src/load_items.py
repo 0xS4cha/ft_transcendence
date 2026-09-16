@@ -59,14 +59,16 @@ def create_item(
         avg_place: float,
         winrate: float,
         frequency: float,
-        name: str
+        name: str,
+        type: str
 ) -> Item:
     item = Item(
         id=id,
         avg_place=avg_place,
         winrate=winrate,
         frequency=frequency,
-        name=name
+        name=name,
+        type=type
     )
     return item
 
@@ -95,6 +97,20 @@ def get_name(
     
     return true_name
 
+def get_type(
+        name: str
+) -> str:
+    type = "Normal"
+    to_find = ["Emblem", "Radiant", "Artifact", "Component"]
+
+    for word in to_find:
+        if name.find(word) != -1:
+            type = word
+
+    if name.find("Tactician") != -1:
+        type += "-Component"
+    return type
+
 async def main(
         session: AsyncSession
 ) -> None:
@@ -112,12 +128,13 @@ async def main(
         winrate = get_winrate(places, total_item_use)
         frequency = get_frequency(total_item_use, all_items_use)
         name = get_name(id)
+        type = get_type(id)
 
         existing = await session.get(Item, id)
         if existing is not None:
             await session.delete(existing)
             await session.flush()
-        session.add(create_item(id, avg_place, winrate, frequency, name))
+        session.add(create_item(id, avg_place, winrate, frequency, name, type))
 
         print(f"Saved item \033[35m{name}\033[0m")
     await session.commit()
