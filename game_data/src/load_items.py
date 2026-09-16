@@ -73,25 +73,25 @@ def create_item(
 def get_name(
     name: str
 ) -> str:
-    true_name = name.replace("DA", "")
-    true_name = true_name.replace("18", "")
-    true_name = true_name.replace("_", "")
-    true_name = true_name.replace("Emblem", "")
-    true_name = true_name.replace("Radiant", "")
-    true_name = true_name.replace("Artifact", "")
-    true_name = true_name.replace("Component", "")
 
-    for index, char in enumerate(true_name):
-        if char.isupper() and not true_name[index + 1].isupper():
-            true_name = true_name.replace(char, " " + char)
+    to_replace = ["DA", "18", "_", "Emblem", "Radiant", "Artifact", "Component"]
+    replaced = name
+    for word in to_replace:
+        replaced = replaced.replace(word, "")
 
+    name_list = [ch for ch in replaced]
 
-    #string to list
-    #only replace current char not all occurences
-    #no need to increment index, just append " "+_char in one element
-    #list to string
+    true_name_list = []
+    for index, ch in enumerate(name_list):
+        if ch.isupper():
+            if index+1 < len(name_list) and name_list[index + 1].isupper():
+                true_name_list.append(ch)
+            else:
+                true_name_list.append(" " + ch)
+        else:
+            true_name_list.append(ch)
 
-    true_name = true_name.strip()
+    true_name = "".join(true_name_list).strip()
     
     return true_name
 
