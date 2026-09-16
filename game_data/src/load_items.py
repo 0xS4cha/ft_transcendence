@@ -50,6 +50,9 @@ def get_frequency(
         total_item_use: int,
         all_items_use: int
 ) -> float:
+    if all_items_use == 0:
+        return 0
+
     frequency = (total_item_use / all_items_use) * 100
 
     return (frequency)
