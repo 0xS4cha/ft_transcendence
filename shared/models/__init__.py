@@ -21,6 +21,7 @@ if __env_name:
             SpellEffectAmounts,
             TacticalInfo,
         )
+        from shared.models.items import Item
         from shared.models.unit_games import PerDayStats, ProcessedGame, UnitStat
     else:
         from .champions import (
@@ -41,6 +42,7 @@ if __env_name:
             SpellEffectAmounts,
             TacticalInfo,
         )
+        from .items import Item
         from .unit_games import PerDayStats, ProcessedGame, UnitStat
 
 __all__ = [
@@ -49,6 +51,7 @@ __all__ = [
     "ChampionRole",
     "ChampionTagInfo",
     "Chroma",
+    "Item",
     "PerDayStats",
     "PlaystyleInfo",
     "ProcessedGame",
@@ -62,5 +65,5 @@ __all__ = [
     "SpellCoefficients",
     "SpellEffectAmounts",
     "TacticalInfo",
-    "UnitStat"
+    "UnitStat",
 ]

@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from backend_app.api.endpoints import (
     champions_router,
+    items_data_router,
     login_router,
     login_with_42_router,
     logout_router,
@@ -48,6 +49,12 @@ api_router.include_router(
     champions_router,
     tags=["Champions"],
     prefix="/game_data/champions",
+)
+
+api_router.include_router(
+    items_data_router,
+    tags=["Items"],
+    prefix="/game_data",
 )
 
 api_router.include_router(
