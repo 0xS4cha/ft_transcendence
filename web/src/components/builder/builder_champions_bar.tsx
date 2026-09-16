@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import { useDraggable } from '@dnd-kit/core';
 
 interface Champion {
-  id: string;0
+  id: string;
   name: string;
   cost: number;
   imageUrl: string;
