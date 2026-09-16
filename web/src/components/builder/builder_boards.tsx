@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import { useDroppable } from "@dnd-kit/core";
 import { getChampionById } from '@/lib/champion';
+import { useDroppable, useDraggable } from "@dnd-kit/core";
 
 const ROWS = 4;
 const COLS = 7;
@@ -12,8 +12,14 @@ const HEX_HEIGHT = 2 * HEX_SIZE;
 const ROW_HEIGHT = 1.5 * HEX_SIZE;
 
 
-function HexagonCell({ id, cx, cy, points, championId }: {id: string, cx: number, cy: number, points: string, championId?: string}){
+function HexagonCell({ id, cx, cy, points, championId, onRemove }: {id: string, cx: number, cy: number, points: string, championId?: string, onRemove: (id: string) => void}){
   const {isOver, setNodeRef} = useDroppable( {id} );
+
+  const { attributes, listeners, setNodeRef: setDraggableRef, isDragging } = useDraggable({ 
+    id: id,
+    disabled: !championId
+  });
+
   const champion = championId ? getChampionById(championId) : null;
   const clipPathId = `clip-${id}`;
   return (
@@ -30,18 +36,26 @@ function HexagonCell({ id, cx, cy, points, championId }: {id: string, cx: number
         isOver ? "fill-[grey]/75" : "fill-[#2A2A2A]"
       )}/>
       {champion && (
-        <>
-        <image
-        href={champion.imageUrl}
-        x={cx - 30}
-        y={cy - 30}
-        width ={60}
-        height={60}
-        clipPath={`url(#${clipPathId})`}
-        preserveAspectRatio="xMidYMid slice"
-        className="pointer-events-none"
-        />
-        <text 
+        <g
+        ref={setDraggableRef as any}
+        {...listeners}
+        {...attributes}
+        onClick={() => onRemove(id)}
+        className={cn("cursor-grab hover:opacity-80 transition-opacity focus:outline-none", 
+                  isDragging && "opacity-30")}
+        >
+        <polygon points={points} fill="transparent" />
+          <image
+            href={champion.imageUrl}
+            x={cx - 30}
+            y={cy - 30}
+            width ={60}
+            height={60}
+             clipPath={`url(#${clipPathId})`}
+            preserveAspectRatio="xMidYMid slice"
+            className="pointer-events-none"
+          />
+          <text 
             x={cx} 
             y={cy + 10} 
             textAnchor="middle" 
@@ -56,13 +70,13 @@ function HexagonCell({ id, cx, cy, points, championId }: {id: string, cx: number
           >
             {champion.name}
           </text>
-        </>
+        </g>
       )}
     </g>
   )
 }
 
-export default function BuilderBoard({ boardState }: { boardState: Record<string, string> })
+export default function BuilderBoard({ boardState, onRemoveChampion }: { boardState: Record<string, string>, onRemoveChampion: (id: string) => void })
 {
   // UN CERCLE COMPLET FAIT 360 DEGREE IL Y A 6 POINTS A DESSINER POUR L'HEXAGONE
   // ON RECUPERE LE RADIAN AU LIEU DE L'ANGLE (-30 POUR LA ROTATION EN HAUT)
@@ -109,6 +123,7 @@ export default function BuilderBoard({ boardState }: { boardState: Record<string
           cy={cy}
           points={getHexagonPoints(cx, cy)}
           championId={boardState[hexId]}
+          onRemove={onRemoveChampion}
         />
       );
 		}

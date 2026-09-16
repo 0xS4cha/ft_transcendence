@@ -6,7 +6,8 @@ import {
   DragOverlay,
   useSensor, 
   useSensors, 
-  PointerSensor 
+  PointerSensor,
+  pointerWithin
 } from "@dnd-kit/core";
 import { snapCenterToCursor } from '@dnd-kit/modifiers';
 
@@ -16,11 +17,11 @@ import BuilderToolBar from "@/components/builder/builder_tool_bar";
 import BuilderTraitsBar from "@/components/builder/builder_traits_bar";
 import BuilderTraitsBarMobile from "@/components/builder/builder_traits_bar_mobile";
 import { CHAMPIONS_DB } from "@/lib/champion";
+import { cn } from "@/lib/utils";
 
 export default function Builder() {
 
   const [boardState, setBoardState] = useState<Record<string, string>>({});
-
   const [activeChampionId, setActiveChampionId] = useState<string | null>(null);
 
   const sensors = useSensors(
@@ -37,12 +38,40 @@ export default function Builder() {
   const handleDragEnd = (event: DragEndEvent) => {
     setActiveChampionId(null);
     const { active, over } = event;
-    if (over){
-      setBoardState((prev) => ({
-        ...prev,
-        [over.id]: active.id as string,
-      }))
+    const sourceId = active.id as string;
+    if (over) {
+      const targetId = over.id as string;
+      setBoardState((prev) => {
+        const newState = { ...prev };
+        
+        const champId = sourceId.startsWith('hex-') ? prev[sourceId] : sourceId;
+        if (sourceId.startsWith('hex-') && sourceId !== targetId) {
+          if (newState[targetId]) {
+            newState[sourceId] = newState[targetId];
+          } else {
+            delete newState[sourceId];
+          }
+        }
+        newState[targetId] = champId;
+        return newState;
+      });
+    } else {
+      if (sourceId.startsWith('hex-')) {
+        setBoardState((prev) => {
+          const newState = { ...prev };
+          delete newState[sourceId];
+          return newState;
+        });
+      }
     }
+  };
+
+  const handleRemoveChampion = (hexId: string) => {
+    setBoardState((prev) => {
+      const newState = { ...prev };
+      delete newState[hexId];
+      return newState;
+    });
   };
 
   const handleChampClick = (championId: string) => {
@@ -63,11 +92,18 @@ export default function Builder() {
     }
   };
 
-  const activeChampion = activeChampionId 
-    ? CHAMPIONS_DB.find(c => c.id === activeChampionId) 
-    : null;
+  let draggingChampId = activeChampionId;
+  if (activeChampionId?.startsWith('hex-')) {
+    draggingChampId = boardState[activeChampionId];
+  }
+  const activeChampion = draggingChampId ? CHAMPIONS_DB.find(c => c.id === draggingChampId) : null;
+
   return (
-    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} sensors={sensors}>
+    <DndContext 
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      sensors={sensors}
+      collisionDetection={pointerWithin}>
     <div className="flex h-[calc(100vh-3.9rem)] flex-col gap-4 overflow-hidden">
       <BuilderToolBar />
       <div className="grid grid-cols-1 lg:grid-cols-[195px_1fr_195px] gap-4 min-h-0 flex-1">
@@ -76,7 +112,7 @@ export default function Builder() {
         </div>
         <div className="flex flex-col gap-4 min-w-0 min-h-0">
           <div className="flex items-center justify-center rounded-xl border border-white/10  min-w-0 min-h-0 flex-1">
-              <BuilderBoard boardState={boardState}/>
+              <BuilderBoard boardState={boardState} onRemoveChampion={handleRemoveChampion}/>
           </div>
           <div className="block lg:hidden">
             <BuilderTraitsBarMobile />
@@ -91,7 +127,15 @@ export default function Builder() {
     </div>
     <DragOverlay modifiers={[snapCenterToCursor]} dropAnimation={null}>
       {activeChampion ? (
-        <div className="cursor-pointer flex h-14 w-14 items-center justify-center overflow-hidden bg-neutral-800 shadow-2xl opacity-90 scale-110">
+        <div
+        className={cn(
+            "cursor-pointer flex h-14 w-14 items-center justify-center overflow-hidden bg-neutral-800 scale-175 rounded-md border-2",
+            activeChampion.cost === 1 && "border-slate-500",
+            activeChampion.cost === 2 && "border-emerald-500",
+            activeChampion.cost === 3 && "border-blue-500",
+            activeChampion.cost === 4 && "border-purple-500",
+            activeChampion.cost === 5 && "border-yellow-500"
+          )}>
           <img
               src={activeChampion.imageUrl}
               alt={activeChampion.name}
