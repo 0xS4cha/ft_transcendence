@@ -1,5 +1,6 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from backend_app.models.chat_message import ChatMessage
 from shared.database import Base
 
 
@@ -16,3 +17,6 @@ class   UserModel(Base):
     hashed_password: Mapped[str] = mapped_column()
     username: Mapped[str] = mapped_column()
     picture: Mapped[str | None] = mapped_column()
+    messages: Mapped[list["ChatMessage"]] = relationship(
+        back_populates="owner"
+    )
