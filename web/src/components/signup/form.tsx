@@ -30,6 +30,7 @@ export function SignupForm({
 }: SignupFormProps) {
   const [viewPassword, setViewPassword] = useState(true);
   const [viewConfirmPassword, setViewConfirmPassword] = useState(true);
+  const [checked, setChecked] = useState(false);
   const [formData, setFormData] = useState<SignupPayload>({
     email: "",
     password: "",
@@ -45,7 +46,13 @@ export function SignupForm({
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
+    if (!checked) {
+      toast.add({
+        type: "error",
+        title: "Please check terms of use and condition of use",
+      });
+      return ;
+    };
     try {
       await dispatch(signupUser(formData)).unwrap();
       navigate("/profile");
@@ -100,13 +107,14 @@ export function SignupForm({
           <Checkbox
             id="terms-checkbox-2"
             name="terms-checkbox-2"
-            defaultChecked
+            onCheckedChange={setChecked}
+            checked={checked}
           />
           <FieldLabel htmlFor="terms-checkbox-2">
             Accept
             <Link to="/terms" className="underline underline-offset-4" >terms</Link>
             and
-            <Link to="/condition" className="underline underline-offset-4" >conditions</Link>
+            <Link to="/conditions" className="underline underline-offset-4" >conditions</Link>
           </FieldLabel>
         </Field>
         <Field>

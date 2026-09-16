@@ -9,6 +9,7 @@ COPY ./src/fetch_matches/load_in_db.py ./fetch_matches/
 COPY ./src/fetch_matches/__init__.py ./fetch_matches/
 COPY ./src/fetch_matches/*.json ./fetch_matches/
 COPY ./crontab .
+COPY ./src/*.json ./
 
 RUN /usr/bin/crontab /opt/game_data/crontab
 
