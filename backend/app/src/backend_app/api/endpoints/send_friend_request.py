@@ -15,6 +15,7 @@ def create_friend_request(
 ) -> Friends:
     friend_request = Friends(
         requester=requester_id,
+        requested=requested_id,
         uid1=requester_id,
         uid2=requested_id,
         status=Status.PENDING,
