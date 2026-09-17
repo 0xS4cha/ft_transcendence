@@ -1,8 +1,11 @@
-from shared.database import Base
-from sqlalchemy.orm import Mapped, mapped_column, UniqueConstraint, CheckConstraint
-from sqlalchemy import Integer, ForeignKey
-from sqlalchemy import Enum as SAEnum
 from enum import Enum
+
+from sqlalchemy import CheckConstraint, ForeignKey, Integer, UniqueConstraint
+from sqlalchemy import Enum as SAEnum
+from sqlalchemy.orm import Mapped, mapped_column
+
+from shared.database import Base
+
 
 class   Status(str, Enum):
     PENDING = "pending"
@@ -45,26 +48,6 @@ class   Friends(Base):
     )
 
 
-# CREATE FUNCTION sort_uids()
-# RETURNS TRIGGER
-# LANGUAGE plpgsql
-# AS
-# $$
-# DECLARE
-#     temp1 INTEGER;
-#     temp2 INTEGER;
-# BEGIN
-#     temp1 := NEW.uid1;
-#     temp2 := NEW.uid2;
-
-#     NEW.uid1 := LEAST(temp1, temp2);
-#     NEW.uid2 := GREATEST(temp1, temp2);
-
-#     RETURN NEW;
-# END;
-# $$;
 
 
-# CREATE TRIGGER sort_trigger
-# BEFORE INSERT ON friends
-# FOR EACH ROW EXECUTE FUNCTION sort_uids();
+
