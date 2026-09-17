@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from backend_app.models.chat_message import ChatMessage
 from shared.database import Base
 
 
@@ -18,5 +17,7 @@ class   UserModel(Base):
     username: Mapped[str] = mapped_column()
     picture: Mapped[str | None] = mapped_column()
     messages: Mapped[list["ChatMessage"]] = relationship(
-        back_populates="owner"
+        "ChatMessage",
+        back_populates="owner",
+        cascade="all, delete-orphan",
     )

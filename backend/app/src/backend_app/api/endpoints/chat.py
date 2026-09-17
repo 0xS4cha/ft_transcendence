@@ -1,13 +1,15 @@
 from datetime import UTC, datetime
+import time
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
+from sqlalchemy import select
 from backend_app.models.chat_message import ChatMessage
 from backend_app.models.user import UserModel
 from backend_app.core.jwt import Token 
 from shared.database import AsyncSessionDep
-
+from sqlalchemy.orm import query
 
 router = APIRouter()
 
@@ -30,3 +32,29 @@ async def send_chat(chat_message: ChatMessageForm, current_user: Annotated[UserM
 		))
         await session.commit()
     return {'success': True}
+
+cached_messages = []
+last_refresh_timestamp = 0
+refresh_delta_s = 1
+
+@router.get("/messages")
+async def messages(current_user: Annotated[UserModel, Depends(Token.get_current_user)], session: AsyncSessionDep):
+    global cached_messages
+    global last_refresh_timestamp
+
+    current_time = time.time()
+    print("aaa")
+    if current_time - last_refresh_timestamp > refresh_delta_s:
+        async with session:
+            result = await session.execute(select(ChatMessage, UserModel.username).join(UserModel, UserModel.id == ChatMessage.owner_id))
+            cached_messages = [
+                {
+                    "id": message.id,
+                    "date": message.date,
+                    "content": message.content,
+                    "username": username,
+                }
+                for message, username in result
+            ]
+        last_refresh_timestamp = current_time
+    return cached_messages
