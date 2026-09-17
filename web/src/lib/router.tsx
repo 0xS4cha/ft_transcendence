@@ -76,6 +76,20 @@ export const router = createBrowserRouter([
           return { Component };
         },
       },
+      {
+        path: "terms",
+        lazy: async () => {
+          const { default: Component } = await import("@/pages/terms");
+          return { Component };
+        },
+      },
+      {
+        path: "conditions",
+        lazy: async () => {
+          const { default: Component } = await import("@/pages/conditions");
+          return { Component };
+        },
+      },
     //   {
     //     path: "profile/*",
     //     lazy: async () => {

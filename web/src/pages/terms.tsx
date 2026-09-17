@@ -1,0 +1,35 @@
+import { Card, CardContent, CardTitle, CardHeader, CardDescription } from "@/components/ui/card";
+import { terms } from "@/constants/Terms";
+import { motion } from "motion/react";
+
+export default function Terms() {
+    return (
+    <div className="relative w-full min-h-screen">
+        <Card>
+            <CardHeader>
+                <CardTitle>Terms of use</CardTitle>
+                <CardDescription>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius dignissimos nihil consequuntur eveniet blanditiis sunt sapiente dolorem laboriosam magni porro? Possimus impedit ad similique deleniti, veniam dolore nobis consequatur ea.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="space-y-12 pb-24 text-white/80"
+              >
+                {terms.map((u) => (
+                  <section>
+                    <div className="flex items-center gap-3 mb-4">
+                      <h2 className="text-lg font-semibold text-white">{u.id}. {u.title}</h2>
+                    </div>
+                    <p className="text-xs leading-relaxed text-white/60">
+                      {u.content}
+                    </p>
+                  </section>
+                ))}
+              </motion.div>
+            </CardContent>
+        </Card>
+    </div>
+  );
+}
