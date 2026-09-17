@@ -1,6 +1,6 @@
 from sqlalchemy import select
 
-from backend_app.models.user import UserModel
+from backend_app.models.users import UserModel
 from shared.database import AsyncSessionDep
 
 

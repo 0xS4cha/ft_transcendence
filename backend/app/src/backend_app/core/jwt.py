@@ -8,7 +8,7 @@ from jwt.exceptions import InvalidTokenError
 from pydantic import BaseModel
 
 from backend_app.core.authenticate import Authenticate
-from backend_app.models.user import UserModel
+from backend_app.models.users import UserModel
 from shared.database import AsyncSessionDep, db
 
 
