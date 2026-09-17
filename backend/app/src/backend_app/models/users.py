@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from shared.database import Base
+from backend_app.models.chat_message import ChatMessage
 
 
 class   UserModel(Base):

@@ -8,7 +8,7 @@ from sqlalchemy import select
 
 from backend_app.core.jwt import Token
 from backend_app.models.chat_message import ChatMessage
-from backend_app.models.user import UserModel
+from backend_app.models.users import UserModel
 from shared.database import AsyncSessionDep
 
 router = APIRouter()
