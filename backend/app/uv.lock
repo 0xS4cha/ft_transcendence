@@ -173,6 +173,7 @@ dependencies = [
     { name = "requests" },
     { name = "sqlalchemy" },
     { name = "uuid" },
+    { name = "websockets" },
 ]
 
 [package.dev-dependencies]
@@ -198,6 +199,7 @@ requires-dist = [
     { name = "requests", specifier = ">=2.34.2" },
     { name = "sqlalchemy", specifier = ">=2.0.52" },
     { name = "uuid", specifier = ">=1.30" },
+    { name = "websockets", specifier = ">=17.1" },
 ]
 
 [package.metadata.requires-dev]
