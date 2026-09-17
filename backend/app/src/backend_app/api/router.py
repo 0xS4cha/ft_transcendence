@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from backend_app.api.endpoints import (
     champions_router,
+    send_friend_request_router,
     chat_router,
     items_data_router,
     login_router,
@@ -87,4 +88,10 @@ api_router.include_router(
 	websocket_router,
 	tags=["WebSocket"],
 	prefix="/websocket"
+)
+
+api_router.include_router(
+    send_friend_request_router,
+    tags=["Friend"],
+    prefix="/friends"
 )
