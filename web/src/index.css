@@ -6,7 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 
 body {
-  background-color: #07070B;
+  background-color: oklch(0.2178 0 0);
   color: white;
 }
 :root {
@@ -50,7 +50,7 @@ body {
 .dark {
   --background: oklch(0.2178 0 0);
   --foreground: oklch(0.8853 0 0);
-  --card: oklch(0.2435 0 0);
+  --card: #202020;
   --card-foreground: oklch(0.8853 0 0);
   --popover: oklch(0.2435 0 0);
   --popover-foreground: oklch(0.8853 0 0);
@@ -71,10 +71,10 @@ body {
   --chart-3: oklch(0.5452 0 0);
   --chart-4: oklch(0.4604 0 0);
   --chart-5: oklch(0.3715 0 0);
-  --sidebar: oklch(0.2393 0 0);
+  --sidebar: oklch(0.2435 0 0);
   --sidebar-foreground: oklch(0.8853 0 0);
   --sidebar-primary: oklch(0.7058 0 0);
-  --sidebar-primary-foreground: oklch(0.2178 0 0);
+  --sidebar-primary-foreground: oklch(0.2435 0 0);
   --sidebar-accent: oklch(0.3715 0 0);
   --sidebar-accent-foreground: oklch(0.8853 0 0);
   --sidebar-border: oklch(0.3290 0 0);

@@ -11,7 +11,7 @@ export default function Layout() {
           className="sticky top-0 z-40 
             flex h-14 w-full items-center
             justify-between border-b
-            border-white/5 bg-[#07070B]/80
+            border-white/5 bg-[#07070B]
             px-4 backdrop-blur md:hidden"
             >
           <div className="flex items-center gap-3">
