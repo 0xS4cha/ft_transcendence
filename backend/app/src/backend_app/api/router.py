@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from backend_app.api.endpoints import (
     champions_router,
+    chat_router,
     items_data_router,
     login_router,
     login_with_42_router,
@@ -11,8 +12,7 @@ from backend_app.api.endpoints import (
     search_user_router,
     signup_router,
     stats_router,
-	chat_router,
-	websocket_router
+    websocket_router,
 )
 
 api_router = APIRouter(prefix="/api")
