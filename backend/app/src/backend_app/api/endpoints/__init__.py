@@ -4,6 +4,7 @@ from backend_app.api.endpoints.accept_friend_request import router as accept_fri
 from backend_app.api.endpoints.refuse_friend_request import router as refuse_friend_request_router
 from backend_app.api.endpoints.friend_requests_list import router as friend_requests_list_router
 from backend_app.api.endpoints.friends_list import router as friends_list_router
+from backend_app.api.endpoints.remove_friend import router as remove_friend_router
 from backend_app.api.endpoints.chat import router as chat_router
 from backend_app.api.endpoints.items_data import router as items_data_router
 from backend_app.api.endpoints.login import router as login_router
@@ -22,6 +23,7 @@ __all__ = ["champions_router",
            "refuse_friend_request_router",
            "accept_friend_request_router",
            "send_friend_request_router",
+           "remove_friend_router",
            "chat_router",
            "items_data_router",
            "login_router",

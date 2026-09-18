@@ -7,6 +7,7 @@ from backend_app.api.endpoints import (
     refuse_friend_request_router,
     friend_requests_list_router,
     friends_list_router,
+    remove_friend_router,
     chat_router,
     items_data_router,
     login_router,
@@ -120,6 +121,12 @@ api_router.include_router(
 
 api_router.include_router(
     friends_list_router,
+    tags=["Friend"],
+    prefix="/friends"
+)
+
+api_router.include_router(
+    remove_friend_router,
     tags=["Friend"],
     prefix="/friends"
 )
