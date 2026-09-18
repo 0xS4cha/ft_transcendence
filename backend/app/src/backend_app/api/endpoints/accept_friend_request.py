@@ -27,16 +27,16 @@ async def accept_friend_request(
             detail="The friend request does not exist."
         )
 
+    if current_user.id != existing_request.requested:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You are not the requested user."
+            )
+
     if existing_request.status != Status.PENDING:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="The user is already your friend."
-        )
-
-    if current_user.id != existing_request.requested:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You are not the requested user."
         )
 
     existing_requester = await session.scalar(
