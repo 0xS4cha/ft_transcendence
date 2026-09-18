@@ -1,17 +1,11 @@
 from typing import Any
 
 from fastapi import APIRouter
-from sqlalchemy import inspect, select
+from sqlalchemy import select
 
 from shared.database import AsyncSessionDep
 from shared.models.items import Item
-
-
-def model_to_dict(
-        obj
-) -> dict[str, Any]:
-    return {c.key: getattr(obj, c.key) for c in inspect(obj).mapper.column_attrs}
-
+from backend_app.core.model_to_dict import model_to_dict
 
 router = APIRouter()
 

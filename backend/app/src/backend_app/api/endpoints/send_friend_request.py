@@ -54,6 +54,9 @@ async def send_friend_request(
     smallest_id = min(requester_id, requested_id)
     largest_id = max(requester_id, requested_id)
 
+    print(f"smallest id:{smallest_id}")
+    print(f"largest id:{largest_id}")
+
     existing_request = await session.scalar(
         select(Friends)
         .where(Friends.uid1 == smallest_id)
