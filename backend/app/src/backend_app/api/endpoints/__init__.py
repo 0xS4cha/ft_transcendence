@@ -3,6 +3,7 @@ from backend_app.api.endpoints.send_friend_request import router as send_friend_
 from backend_app.api.endpoints.accept_friend_request import router as accept_friend_request_router
 from backend_app.api.endpoints.refuse_friend_request import router as refuse_friend_request_router
 from backend_app.api.endpoints.friend_requests_list import router as friend_requests_list_router
+from backend_app.api.endpoints.friends_list import router as friends_list_router
 from backend_app.api.endpoints.chat import router as chat_router
 from backend_app.api.endpoints.items_data import router as items_data_router
 from backend_app.api.endpoints.login import router as login_router
@@ -17,6 +18,7 @@ from backend_app.api.endpoints.websocket import router as websocket_router
 
 __all__ = ["champions_router",
            "friend_requests_list_router",
+           "friends_list_router",
            "refuse_friend_request_router",
            "accept_friend_request_router",
            "send_friend_request_router",
