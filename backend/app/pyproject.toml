@@ -19,6 +19,7 @@ dependencies = [
     "requests>=2.34.2",
     "sqlalchemy>=2.0.52",
     "uuid>=1.30",
+    "websockets>=17.1",
 ]
 
 [dependency-groups]
