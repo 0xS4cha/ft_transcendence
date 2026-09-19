@@ -35,6 +35,10 @@ export default function Builder() {
     setActiveChampionId(event.active.id as string );
   };
 
+  const handleClearBoard = () => {
+    setBoardState({});
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     setActiveChampionId(null);
     const { active, over } = event;
