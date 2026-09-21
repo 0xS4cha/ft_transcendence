@@ -4,6 +4,8 @@ from backend_app.api.endpoints import (
     accept_friend_request_router,
     champions_router,
     chat_router,
+    friend_requests_list_router,
+    friends_list_router,
     items_data_router,
     login_router,
     login_with_42_router,
@@ -91,9 +93,6 @@ api_router.include_router(
 	websocket_router,
 	tags=["WebSocket"],
 	prefix="/websocket"
-<<<<<<< HEAD
-)
-=======
 )
 
 api_router.include_router(
@@ -131,4 +130,3 @@ api_router.include_router(
     tags=["Friend"],
     prefix="/friends"
 )
->>>>>>> main
