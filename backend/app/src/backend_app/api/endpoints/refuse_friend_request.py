@@ -8,7 +8,7 @@ from sqlalchemy import select
 
 router = APIRouter()
 
-@router.post(
+@router.delete(
     "/refuse_friend_request/{friend_request_id}"
 )
 async def refuse_friend_request(
@@ -37,17 +37,6 @@ async def refuse_friend_request(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="The user is already your friend."
-        )
-
-    existing_requester = await session.scalar(
-        select(UserModel)
-        .where(UserModel.id == existing_request.requester)
-    )
-
-    if existing_requester is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="The user that originated the friend request does not exist."
         )
 
     await session.delete(existing_request)

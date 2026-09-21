@@ -9,7 +9,7 @@ from sqlalchemy import select
 
 router = APIRouter()
 
-@router.get(
+@router.delete(
     "/remove_friend/{friend_request_id}"
 )
 async def remove_friend(
@@ -22,15 +22,9 @@ async def remove_friend(
         .where(Friends.id == friend_request_id)
     )
 
-    if existing_friendship is None:
+    if existing_friendship is None or existing_friendship.status != Status.ACCEPTED:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="The friendship does not exist."
-        )
-
-    if existing_friendship.status != Status.ACCEPTED:
-        raise HTTPException(
-            status_code=status.HTTP_404_BAD_REQUEST,
             detail="The friendship does not exist."
         )
 
@@ -38,21 +32,6 @@ async def remove_friend(
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="The friendship is not yours."
-        )
-
-    friend_id = existing_friendship.requested
-    if current_user.id == existing_friendship.requested:
-        friend_id = existing_friendship.requester
-    
-    existing_friend = await session.scalar(
-            select(UserModel)
-            .where(UserModel.id == friend_id)
-        )
-
-    if existing_friend is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Your friend does not exist."
         )
     
     await session.delete(existing_friendship)

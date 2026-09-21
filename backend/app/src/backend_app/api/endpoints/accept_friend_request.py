@@ -39,17 +39,6 @@ async def accept_friend_request(
             detail="The user is already your friend."
         )
 
-    existing_requester = await session.scalar(
-        select(UserModel)
-        .where(UserModel.id == existing_request.requester)
-    )
-
-    if existing_requester is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="The user that originated the friend request does not exist."
-        )
-
     existing_request.status = Status.ACCEPTED
 
     await session.commit()
