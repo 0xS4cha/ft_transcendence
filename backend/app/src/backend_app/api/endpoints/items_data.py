@@ -3,9 +3,9 @@ from typing import Any
 from fastapi import APIRouter
 from sqlalchemy import select
 
+from backend_app.core.model_to_dict import model_to_dict
 from shared.database import AsyncSessionDep
 from shared.models.items import Item
-from backend_app.core.model_to_dict import model_to_dict
 
 router = APIRouter()
 

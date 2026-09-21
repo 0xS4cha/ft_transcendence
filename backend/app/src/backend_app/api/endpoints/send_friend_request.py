@@ -1,11 +1,12 @@
-from typing import Any, Annotated
-from fastapi import APIRouter, Depends, HTTPException, status
-from backend_app.core.jwt import Token
-from backend_app.models.users import UserModel
-from backend_app.models.friends import Friends, Status
-from shared.database import AsyncSessionDep
+from typing import Annotated, Any
 
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
+
+from backend_app.core.jwt import Token
+from backend_app.models.friends import Friends, Status
+from backend_app.models.users import UserModel
+from shared.database import AsyncSessionDep
 
 router = APIRouter()
     
