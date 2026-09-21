@@ -63,7 +63,8 @@ def create_item(
         winrate: float,
         frequency: float,
         name: str,
-        type: str
+        type: str,
+        icon: str
 ) -> Item:
     item = Item(
         id=id,
@@ -71,7 +72,8 @@ def create_item(
         winrate=winrate,
         frequency=frequency,
         name=name,
-        type=type
+        type=type,
+        icon=icon
     )
     return item
 
@@ -123,6 +125,7 @@ async def main(
 
     items = item_data["results"]
     all_items_use = get_all_items_use(items)
+
     for item in items:
         id = item["itemName"]
         places = item["places"]
@@ -132,12 +135,14 @@ async def main(
         frequency = get_frequency(total_item_use, all_items_use)
         name = get_name(id)
         type = get_type(id)
+        icon = "https://cdn.metatft.com/cdn-cgi/image/width=64,height=64,format=auto/https://cdn.metatft.com/file/metatft/items/" + id.lower() + ".png"
 
         existing = await session.get(Item, id)
         if existing is not None:
             await session.delete(existing)
             await session.flush()
-        session.add(create_item(id, avg_place, winrate, frequency, name, type))
+        
+        session.add(create_item(id, avg_place, winrate, frequency, name, type, icon))
 
         print(f"Saved item \033[35m{name}\033[0m")
     await session.commit()

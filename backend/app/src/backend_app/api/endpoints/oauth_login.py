@@ -8,7 +8,7 @@ from httpx2 import AsyncClient
 from backend_app.core.authenticate import Authenticate
 from backend_app.core.jwt import Token
 from backend_app.core.security import Password
-from backend_app.models.user import UserModel
+from backend_app.models.users import UserModel
 from shared.database import AsyncSessionDep, db
 
 router = APIRouter()
