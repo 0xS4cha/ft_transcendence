@@ -66,7 +66,7 @@ function initialsOf(username: string) {
   return username.slice(0, 2).toUpperCase();
 }
 
-/** Consecutive messages from the same user are collapsed into one BubbleGroup. */
+
 function groupMessages(messages: ChatDataProps[]) {
   return messages.reduce<ChatDataProps[][]>((groups, message) => {
     const last = groups.at(-1);
