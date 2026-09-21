@@ -7,10 +7,10 @@ from pydantic import BaseModel
 from sqlalchemy import select
 
 from backend_app.core.jwt import Token
+from backend_app.core.websocket import WSbroadcast
 from backend_app.models.chat_message import ChatMessage
 from backend_app.models.user import UserModel
 from shared.database import AsyncSessionDep
-from backend_app.core.websocket import WSbroadcast
 
 router = APIRouter()
 

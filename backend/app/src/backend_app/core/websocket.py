@@ -1,5 +1,7 @@
 import asyncio
+
 from fastapi import WebSocket
+
 
 class WebsocketConnectionManager:
     def __init__(self):
@@ -22,9 +24,8 @@ class WebsocketConnectionManager:
         async def send(websocket: WebSocket):
             try:
                 await websocket.send_json(message)
-            except Exception:
+            except Exception: # noqa: BLE001
                 disconnected.append(websocket)
-
         await asyncio.gather(*(send(ws) for ws in connections))
         for websocket in disconnected:
             await self.disconnect(websocket)
