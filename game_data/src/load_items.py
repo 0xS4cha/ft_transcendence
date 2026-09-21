@@ -135,7 +135,7 @@ async def main(
         frequency = get_frequency(total_item_use, all_items_use)
         name = get_name(id)
         type = get_type(id)
-        icon = "https://cdn.metatft.com/cdn-cgi/image/format=auto/https://cdn.metatft.com/file/metatft/items/" + id.lower() + ".png"
+        icon = "https://cdn.metatft.com/cdn-cgi/image/width=64,height=64,format=auto/https://cdn.metatft.com/file/metatft/items/" + id.lower() + ".png"
 
         existing = await session.get(Item, id)
         if existing is not None:
