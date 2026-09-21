@@ -7,7 +7,6 @@ from backend_app.api.endpoints import (
     friend_requests_list_router,
     friends_list_router,
     items_data_router,
-    units_data_router,
     login_router,
     login_with_42_router,
     logout_router,
@@ -19,6 +18,7 @@ from backend_app.api.endpoints import (
     send_friend_request_router,
     signup_router,
     stats_router,
+    units_data_router,
     websocket_router,
 )
 
