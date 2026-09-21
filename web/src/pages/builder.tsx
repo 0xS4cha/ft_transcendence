@@ -18,6 +18,7 @@ import BuilderTraitsBar from "@/components/builder/builder_traits_bar";
 import BuilderTraitsBarMobile from "@/components/builder/builder_traits_bar_mobile";
 import { CHAMPIONS_DB } from "@/lib/champion";
 import { cn } from "@/lib/utils";
+import BuilderAugmentsBar from "@/components/builder/builder_augment_bar";
 
 export default function Builder() {
 
@@ -123,6 +124,7 @@ export default function Builder() {
           </div>
         </div>
         <div className="hidden lg:flex flex-col rounded-xl border border-white/10  min-w-0 min-h-0">
+          <BuilderAugmentsBar handleClearBoard={handleClearBoard}/>
         </div>
       </div>
       <div className="h-[28%] shrink-0 rounded-xl border border-white/10  min-h-0">

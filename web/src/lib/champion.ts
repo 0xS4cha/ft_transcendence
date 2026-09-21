@@ -18,3 +18,15 @@ export const CHAMPIONS_DB: Champion[] = [
 export const getChampionById = (id: string) => {
   return CHAMPIONS_DB.find((champ) => champ.id === id);
 };
+
+export interface Augment {
+  id: string;
+  name: string;
+  tier: 1 | 2 | 3;
+  imageUrl: string;
+}
+
+export const AUGMENTS_DB: Augment[] = [
+  { id: "aug_1", name: "endless hordes", tier: 2, imageUrl: "https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/augments/hexcore/100-duck-sized-horses-iii.png" },
+  { id: "aug_2", name: "magical roll", tier: 1, imageUrl: "https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/augments/hexcore/a-magical-roll-ii.png" },
+];
