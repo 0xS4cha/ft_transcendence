@@ -8,11 +8,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from .shared.database import db
 from .shared.models.items import Item
 
-#item
-
-#avg place (1*number of 1st place + ... + 8*number of 8th places) / number of places of 1st place + ... + number of 8th places
-#wr number of 1st places compared to number of all places
-#frequency number of all places compared to number of all places of all items
 
 def get_all_items_use(
         items: list
