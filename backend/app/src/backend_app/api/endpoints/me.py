@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from backend_app.core.jwt import Token
-from backend_app.models.user import UserModel
+from backend_app.models.users import UserModel
 from backend_app.schemas.user import UserPublic
 
 router = APIRouter()
