@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { Separator } from "@/components/ui/separator";
 import { BreakdownCard } from "@/components/home/breakdowncard";
 import { ChartHistory } from "@/components/home/chart";
+import { Chat } from "@/components/home/chat"
 import { useEffect, useState } from "react";
 import { toast } from "@/components/ui/toast";
 import { type HomeDataProps } from "@/types/home";
@@ -82,7 +83,9 @@ export default function Home() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.35, ease: "easeOut" }}
+          className="grid grid-cols-1 gap-6 md:grid-cols-2"
         >
+          <Chat />
           <ChartHistory data={data.history} />
         </motion.div>
       </div>
