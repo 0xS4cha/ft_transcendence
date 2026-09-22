@@ -38,6 +38,8 @@ class WebsocketConnectionManager:
 wsConnectionManager = WebsocketConnectionManager()
 
 async def WSbroadcast(type: str, data: dict, user_ids: list[int] | None = None,) -> int:
+    print("CONNECTIONS:", len(wsConnectionManager.connections))
+    print("CONNECTIONS DATA:", wsConnectionManager.connections)
     await wsConnectionManager.broadcast(
         {
             "type": type,
