@@ -39,9 +39,10 @@ async def main(
         champion_summary = [ChampionSummaryItem.model_validate(item) for item in resp.json()]
 
         # creates a list of c tasks, then asyncio runs them asynchronously
-        details = await asyncio.gather(*[
-            fetch_champions(client, c.id, sem) for c in champion_summary
-        ])
+        details = await asyncio.gather(
+            *(fetch_champions(client, c.id, sem)
+              for c in champion_summary)
+        )
 
     # if champion already exists, delete and add fresh one, if not just add 
     for detailed_champion_detail in details:
