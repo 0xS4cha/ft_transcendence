@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { initialState } from "@/constants/User";
+import { initialState } from "@/constants/user";
 import * as authService from "@/services/authService";
 import { type SignupPayload, type UserPublic } from "@/types/user";
 import { type ChatDataProps } from "@/types/chat";
