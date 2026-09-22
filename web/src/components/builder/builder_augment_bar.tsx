@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AUGMENTS_DB } from "@/lib/champion";
 import { cn } from "@/lib/utils";
 
 export default function BuilderAugmentsBar({ handleClearBoard }: { handleClearBoard: () => void }) {
   const [augments, setAugments] = useState<(string | null)[]>([null, null, null]);
-  
+
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
 
   const openModal = (index: number) => setSelectedSlot(index);
@@ -20,6 +20,24 @@ export default function BuilderAugmentsBar({ handleClearBoard }: { handleClearBo
       closeModal();
     }
   };
+
+  const handleClearAugments = () => {
+    setAugments([null, null, null]);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    };
+    if (selectedSlot !== null) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedSlot]);
 
   return (
     <div className="flex flex-col gap-4 py-4 px-4 bg-[#202020] h-full w-full rounded-xl border border-white/10">
@@ -55,9 +73,19 @@ export default function BuilderAugmentsBar({ handleClearBoard }: { handleClearBo
           );
         })}
       </div>
+      <button
+        onClick={handleClearAugments}
+        className="w-full rounded-md
+         bg-gray-400/10 px-4 py-3 text-sm font-medium 
+         text-white transition-colors hover:bg-gray-400/20 
+         active:scale-95">
+        Clear augments
+      </button>
       {selectedSlot !== null && (
-        <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-          <div className="flex max-h-[80vh] w-full max-w-2xl flex-col rounded-xl border border-white/10 bg-[#202020] p-6 shadow-2xl">
+        <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+        onClick={closeModal}>
+          <div className="flex max-h-[80vh] w-full max-w-2xl flex-col rounded-xl border border-white/10 bg-[#202020] p-6 shadow-2xl"
+          onClick={(e) => e.stopPropagation()}>
             <div className="mb-6 flex items-center justify-between">
               <h2 className="text-xl font-bold text-white">Choose an augment</h2>
               <button
