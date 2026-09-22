@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useAppDispatch } from "@/store/hooks"
 import { addChatContent } from "@/store/reducers/userSlice";
+import { type ChatDataProps } from "@/types/chat"
 
 export function useWSConnection(url: string = 'ws://127.0.0.1:8080') {
   const [isConnected, setIsConnected] = useState(false);
@@ -35,10 +36,14 @@ export function useWSConnection(url: string = 'ws://127.0.0.1:8080') {
         reconnectAttempt.current = 0;
       };
 
-      ws.onmessage = (event) => {
-        // messageBuffer.push(event.data);
-        dispatch(addChatContent(event.data));
-      };
+    ws.onmessage = (event) => {
+    try {
+        const parsed: ChatDataProps = JSON.parse(event.data);
+        dispatch(addChatContent(parsed));
+    } catch (err) {
+        console.error("WS message parsing failed:", err);
+    }
+    };
 
       ws.onerror = () => {
         ws.close();
