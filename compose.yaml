@@ -16,6 +16,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       CONTAINER_NAME: backend
       POSTGRES_USER: ${POSTGRES_USER}
@@ -34,6 +36,12 @@ services:
       - ./backend/app/alembic.ini:/app/alembic.ini #dev env, change when prod
     networks:
       - localnet_transcendence
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
 
   postgres:
     image: postgres:15
