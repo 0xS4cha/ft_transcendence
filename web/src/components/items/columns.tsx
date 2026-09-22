@@ -1,7 +1,6 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { Subscribe } from "@tanstack/react-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { dataTableFeatures } from "@/lib/data-table-features";
 import type { ItemRow } from "@/components/items/schema";
@@ -9,7 +8,7 @@ import type { ItemRow } from "@/components/items/schema";
 export const ItemsColumns: ColumnDef<typeof dataTableFeatures, ItemRow>[] = [
   {
     id: "search",
-    accessorFn: (row) => `${row.itemName}`,
+    accessorFn: (row) => `${row.name} ${row.id}`,
     filterFn: "includesString",
     enableHiding: true,
   },
@@ -28,7 +27,7 @@ export const ItemsColumns: ColumnDef<typeof dataTableFeatures, ItemRow>[] = [
             <Checkbox
               checked={Boolean(checked)}
               onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-              aria-label="Select all units on this page"
+              aria-label="Select all items on this page"
             />
           )}
         </Subscribe>
@@ -44,7 +43,7 @@ export const ItemsColumns: ColumnDef<typeof dataTableFeatures, ItemRow>[] = [
             <Checkbox
               checked={checked}
               onCheckedChange={(value) => row.toggleSelected(!!value)}
-              aria-label={`Select ${row.original.itemName}`}
+              aria-label={`Select ${row.original.id}`}
             />
           )}
         </Subscribe>
@@ -53,19 +52,19 @@ export const ItemsColumns: ColumnDef<typeof dataTableFeatures, ItemRow>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "itemName",
+    accessorKey: "name",
     header: "Item",
     cell: ({ row }: any) => (
       <div className="flex items-center gap-2">
           <Avatar>
-            <AvatarImage src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/items/icons2d/096_eye_of_the_observer.png"/>
-            <AvatarFallback>{row.original.itemName}</AvatarFallback>
+            <AvatarImage src={row.original.icon}/>
+            <AvatarFallback>{row.original.name}</AvatarFallback>
           </Avatar>
         <div className="min-w-0 flex-1">
           <div className="flex items-end justify-between gap-3">
             <div className="grid min-w-0 gap-0.5">
-              <span className="truncate font-medium text-sm leading-none">{row.original.itemName}</span>
-              <span className="truncate text-muted-foreground text-xs leading-none">#{row.original.count}</span>
+              <span className="truncate font-medium text-sm leading-none">{row.original.name}</span>
+              <span className="truncate text-muted-foreground text-xs leading-none">#{row.original.id}</span>
             </div>
           </div>
         </div>
@@ -74,34 +73,19 @@ export const ItemsColumns: ColumnDef<typeof dataTableFeatures, ItemRow>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "tier",
-    header: "Tier",
-    filterFn: "equalsString",
-    cell: () => (
-      <Badge className="bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300">
-        S
-      </Badge>
-    ),
-  },
-  {
     accessorKey: "place",
     header: "Place change (avg.)",
     filterFn: "equalsString",
-    cell: ({ row }: any) => <span className="text-sm">{row.original.avg}</span>
+    cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.avg_place).toFixed(2)}</span>
   },
   {
     accessorKey: "wr",
     header: "WR",
-    cell: ({ row }: any) => <span className="text-sm">{row.original.avg}%</span>,
+    cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.winrate).toFixed(2)}%</span>,
   },
   {
     accessorKey: "frequency",
     header: "Frequency",
-    cell: ({ row }: any) => <span className="text-sm">{row.original.pick}</span>,
-  },
-  {
-    accessorKey: "units",
-    header: "Popular units",
-    cell: () => {},
+    cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.frequency).toFixed(2)}</span>,
   },
 ];

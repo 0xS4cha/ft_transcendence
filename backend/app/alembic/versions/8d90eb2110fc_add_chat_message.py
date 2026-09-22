@@ -22,7 +22,7 @@ def upgrade() -> None:
     op.create_table(
         'chat_message',
         sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-        sa.Column('date', sa.Date(), nullable=False),
+        sa.Column('date', sa.BigInteger(), nullable=False),
         sa.Column('owner_id', sa.Integer(), nullable=False),
         sa.Column('content', sa.String(), nullable=False),
         sa.ForeignKeyConstraint(['owner_id'], ['users.id']),

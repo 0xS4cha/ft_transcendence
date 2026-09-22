@@ -1,5 +1,5 @@
 import { Card, CardContent, CardTitle, CardHeader, CardDescription } from "@/components/ui/card";
-import { terms } from "@/constants/Terms";
+import { terms } from "@/constants/terms";
 import { motion } from "motion/react";
 
 export default function Terms() {

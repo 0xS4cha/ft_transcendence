@@ -1,7 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { initialState } from "@/constants/User";
+import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { initialState } from "@/constants/user";
 import * as authService from "@/services/authService";
 import { type SignupPayload, type UserPublic } from "@/types/user";
+import { type ChatDataProps } from "@/types/chat";
 
 function applyUser(state: typeof initialState, user: UserPublic) {
   state.id = user.id;
@@ -9,6 +10,7 @@ function applyUser(state: typeof initialState, user: UserPublic) {
   state.username = user.username;
   state.picture = user.picture ? user.picture : undefined;
   state.isAuthenticated = true;
+  state.chat = user.chat && user.chat.length > 0 ? user.chat : [];
 }
 
 export const initializeSession = createAsyncThunk(
@@ -49,6 +51,25 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     clearUser: () => initialState,
+    setChat: (state, action: PayloadAction<ChatDataProps[]>) => {
+      state.chat = action.payload;
+    },
+    addChatContent: (state, action: PayloadAction<ChatDataProps>) => {
+      if (state.chat.some((item) => item.date === action.payload.date)) return;
+      state.chat.push(action.payload);
+    },
+    updateChatContent: (
+      state,
+      action: PayloadAction<{ id: number; message: ChatDataProps }>,
+    ) => {
+      const index = state.chat.findIndex((item) => item.id === action.payload.id);
+      if (index !== -1) {
+        state.chat[index] = action.payload.message;
+      }
+    },
+    removeChatContent: (state, action: PayloadAction<number>) => {
+      state.chat = state.chat.filter((item) => item.id !== action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -91,14 +112,15 @@ export const userSlice = createSlice({
         email: "",
         username: "",
         isAuthenticated: false,
+        chat: [],
         status: "ready" as const,
       }))
       .addCase(logoutUser.rejected, (state) => {
         state.status = "ready";
-      });
+      })
   },
 });
 
-export const { clearUser } = userSlice.actions;
+export const { clearUser, addChatContent, updateChatContent, removeChatContent, setChat } = userSlice.actions;
 
 export default userSlice.reducer;

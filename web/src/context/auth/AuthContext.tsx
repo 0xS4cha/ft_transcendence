@@ -15,13 +15,13 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
-  const { id, email, username, picture, isAuthenticated, status } = useAppSelector((state) => state.user);
+  const { id, email, username, picture, isAuthenticated, status, chat } = useAppSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(initializeSession());
   }, [dispatch]);
 
-  const user = isAuthenticated ? { id, email, username, picture } : null;
+  const user = isAuthenticated ? { id, email, username, picture, chat } : null;
   const loading = status !== "ready";
 
   const login = async () => {
