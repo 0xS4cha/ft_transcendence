@@ -22,7 +22,7 @@ async def send_chat(chat_message: ChatMessageForm, current_user: Annotated[UserM
     if not chat_message.content:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials"
+            detail="Could not send empty message"
         )
     current_date = datetime.now(UTC).date()
     async with session:
@@ -38,6 +38,7 @@ async def send_chat(chat_message: ChatMessageForm, current_user: Annotated[UserM
         "date": current_date,
         "content": chat_message.content,
         "username": current_user.username,
+        "picture": current_user.picture,
     }
     await WSbroadcast("chat.msg", data)
     return data
@@ -53,15 +54,16 @@ async def messages(current_user: Annotated[UserModel, Depends(Token.get_current_
     current_time = time.time()
     if current_time - last_refresh_timestamp > refresh_delta_s:
         async with session:
-            result = await session.execute(select(ChatMessage, UserModel.username).join(UserModel, UserModel.id == ChatMessage.owner_id))
+            result = await session.execute(select(ChatMessage, UserModel.username, UserModel.picture).join(UserModel, UserModel.id == ChatMessage.owner_id))
             cached_messages = [
                 {
                     "id": message.id,
                     "date": message.date,
                     "content": message.content,
                     "username": username,
+                    "picture": picture
                 }
-                for message, username in result
+                for message, username, picture in result
             ]
         last_refresh_timestamp = current_time
     return cached_messages
