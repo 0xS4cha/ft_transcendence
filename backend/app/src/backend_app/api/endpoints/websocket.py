@@ -1,10 +1,8 @@
-from typing import Annotated
 
-from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect, Cookie
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from backend_app.core.jwt import Token
 from backend_app.core.websocket import wsConnectionManager
-from backend_app.models.users import UserModel
 from shared.database import AsyncSessionDep
 
 router = APIRouter()
@@ -18,7 +16,7 @@ async def websocket_endpoint(websocket: WebSocket, session: AsyncSessionDep):
 
     try:
         current_user = await Token.get_current_user(token, session)
-    except Exception:
+    except Exception: # noqa: BLE001
         await websocket.close(code=1008)
         return
 
