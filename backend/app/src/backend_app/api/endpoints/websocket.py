@@ -14,4 +14,4 @@ async def websocket_endpoint(websocket: WebSocket, current_user: Annotated[UserM
         while True:
             await websocket.receive_text()
     except WebSocketDisconnect:
-        await wsConnectionManager.disconnect(websocket)
+        await wsConnectionManager.disconnect(websocket, current_user.id)

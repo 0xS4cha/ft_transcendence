@@ -5,30 +5,30 @@ from fastapi import WebSocket
 
 class WebsocketConnectionManager:
     def __init__(self):
-        self.connections: set[WebSocket] = set()
+        self.connections: set[tuple[int, WebSocket]] = set()
         self.lock = asyncio.Lock()
 
-    async def connect(self, websocket: WebSocket, int client_id):
+    async def connect(self, websocket: WebSocket, client_id: int):
         await websocket.accept()
         async with self.lock:
-            self.connections.add(websocket)
+            self.connections.add((client_id, websocket))
 
-    async def disconnect(self, websocket: WebSocket):
+    async def disconnect(self, websocket: WebSocket, client_id: int):
         async with self.lock:
-            self.connections.discard(websocket)
+            self.connections.discard((client_id, websocket))
 
-    async def broadcast(self, message: dict):
+    async def broadcast(self, message: dict, user_ids: list[int] | None = None):
         async with self.lock:
             connections = list(self.connections)
         disconnected = []
-        async def send(websocket: WebSocket):
+        async def send(websocket: WebSocket, user_id: int):
             try:
                 await websocket.send_json(message)
             except Exception: # noqa: BLE001
-                disconnected.append(websocket)
-        await asyncio.gather(*(send(ws) for ws in connections))
-        for websocket in disconnected:
-            await self.disconnect(websocket)
+                disconnected.append((user_id, websocket))
+        await asyncio.gather(*(send(ws, user_id) for user_id, ws in connections if user_id in (user_ids or [k for k, _ in connections])))
+        for user_id, websocket in disconnected:
+            await self.disconnect(websocket, user_id)
 
 
 wsConnectionManager = WebsocketConnectionManager()
