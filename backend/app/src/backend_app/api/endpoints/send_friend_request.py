@@ -22,12 +22,6 @@ def create_friend_request(
         uid2=requested_id,
         status=Status.PENDING,
     )
-    await WSbroadcast("friend.request", {
-        "id": current_user.id,
-        "date": current_date,
-        "content": chat_message.content,
-        "username": current_user.username,
-    })
 
     return friend_request
 
@@ -51,7 +45,7 @@ async def send_friend_request(
             detail="The requested user does not exist."
         )
     
-    requester_id = current_user.id;
+    requester_id = current_user.id
 
     if requester_id == requested_id:
         raise HTTPException(
@@ -85,6 +79,10 @@ async def send_friend_request(
     session.add(friend_request)
     await session.commit()
     await session.refresh(friend_request)
+
+    await WSbroadcast("friend.request", {
+        "requester_username": current_user.username
+    }, [requested_id])
 
     return {
         "message": "Friend request successfully sent."

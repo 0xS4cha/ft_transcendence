@@ -33,17 +33,9 @@ class WebsocketConnectionManager:
 
 wsConnectionManager = WebsocketConnectionManager()
 
-async def WSbroadcast(type: str, data: dict) -> int:
+async def WSbroadcast(type: str, data: dict, user_ids: list[int] | None = None) -> int:
     await wsConnectionManager.broadcast({
-        "type": type,
-        "data": data,
-    })
-    return len(wsConnectionManager.connections) # total active connections
-
-async def WSbroadcastToClientList(type: str, data: dict, user_ids: list[int]) -> int:
-    for client_id in user_ids:
-        await wsConnectionManager.broadcast({
             "type": type,
             "data": data,
-        })
-    return len(user_ids) # total active connections
+        }, user_ids)
+    return len(user_ids) if user_ids else len(wsConnectionManager.connections) # total active connections
