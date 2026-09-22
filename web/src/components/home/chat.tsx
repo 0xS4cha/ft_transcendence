@@ -38,7 +38,7 @@ import { cn } from "@/lib/utils";
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { type ChatDataProps } from "@/types/chat";
 import { getChatHistory, sendChatMessage } from "@/services/chatService";
-import { addChatContent, removeChatContent, setChat, updateChatContent } from "@/store/reducers/userSlice"
+import { setChat } from "@/store/reducers/userSlice"
 import { useWSConnection } from "@/lib/websocket"
 
 const MAX_LENGTH = 2000;
@@ -198,15 +198,9 @@ export function Chat({ currentUser, isAuthenticated }: { currentUser: string, is
     setMessage("");
     setSending(true);
     setPendingIds((current) => new Set(current).add(tempId));
-    dispatch(
-      addChatContent({ id: tempId, date: new Date().toISOString(), content: draft, username: currentUser }),
-    );
-
     try {
-      const saved = await sendChatMessage(draft);
-      dispatch(updateChatContent({ id: tempId, message: saved }));
+      sendChatMessage(draft);
     } catch (error) {
-      dispatch(removeChatContent(tempId));
       setMessage(draft);
       toast.add({
         type: "error",

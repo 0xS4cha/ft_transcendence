@@ -1,7 +1,6 @@
 import time
 from typing import Annotated
 
-import ciso8601
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy import select
@@ -58,7 +57,7 @@ async def messages(current_user: Annotated[UserModel, Depends(Token.get_current_
             cached_messages = [
                 {
                     "id": message.id,
-                    "date": ciso8601.parse_datetime(message.date),
+                    "date": message.date,
                     "content": message.content,
                     "username": username,
                     "picture": picture
