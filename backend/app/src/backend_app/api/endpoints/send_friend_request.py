@@ -22,7 +22,6 @@ def create_friend_request(
         uid2=requested_id,
         status=Status.PENDING,
     )
-
     return friend_request
 
 @router.post(
