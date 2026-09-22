@@ -1,9 +1,10 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
+
 from backend_app.core.jwt import Token
 from backend_app.core.websocket import wsConnectionManager
-from typing import Annotated
 from backend_app.models.users import UserModel
-from fastapi import APIRouter, Depends
 
 router = APIRouter()
 

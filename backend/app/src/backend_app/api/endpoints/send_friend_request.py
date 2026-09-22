@@ -4,10 +4,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 
 from backend_app.core.jwt import Token
+from backend_app.core.websocket import WSbroadcast
 from backend_app.models.friends import Friends, Status
 from backend_app.models.users import UserModel
 from shared.database import AsyncSessionDep
-from backend_app.core.websocket import WSbroadcast
 
 router = APIRouter()
     
