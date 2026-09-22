@@ -8,7 +8,7 @@ class WebsocketConnectionManager:
         self.connections: set[WebSocket] = set()
         self.lock = asyncio.Lock()
 
-    async def connect(self, websocket: WebSocket):
+    async def connect(self, websocket: WebSocket, int client_id):
         await websocket.accept()
         async with self.lock:
             self.connections.add(websocket)
@@ -39,3 +39,11 @@ async def WSbroadcast(type: str, data: dict) -> int:
         "data": data,
     })
     return len(wsConnectionManager.connections) # total active connections
+
+async def WSbroadcastToClientList(type: str, data: dict, user_ids: list[int]) -> int:
+    for client_id in user_ids:
+        await wsConnectionManager.broadcast({
+            "type": type,
+            "data": data,
+        })
+    return len(user_ids) # total active connections

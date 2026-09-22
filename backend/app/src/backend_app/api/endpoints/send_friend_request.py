@@ -7,6 +7,7 @@ from backend_app.core.jwt import Token
 from backend_app.models.friends import Friends, Status
 from backend_app.models.users import UserModel
 from shared.database import AsyncSessionDep
+from backend_app.core.websocket import WSbroadcast
 
 router = APIRouter()
     
@@ -21,6 +22,12 @@ def create_friend_request(
         uid2=requested_id,
         status=Status.PENDING,
     )
+    await WSbroadcast("friend.request", {
+        "id": current_user.id,
+        "date": current_date,
+        "content": chat_message.content,
+        "username": current_user.username,
+    })
 
     return friend_request
 
