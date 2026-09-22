@@ -18,7 +18,7 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "@/components/ui/input-group";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
@@ -95,6 +95,7 @@ function MessageGroup({
   return (
     <div className={cn("flex items-end gap-2", mine ? "flex-row-reverse" : "flex-row")}>
       <Avatar className="size-8 shrink-0">
+        <AvatarImage src={first.picture}/>
         <AvatarFallback className="text-xs">{initialsOf(first.username)}</AvatarFallback>
       </Avatar>
 
@@ -154,13 +155,12 @@ export function Chat({ currentUser, isAuthenticated }: { currentUser: string, is
   const messages = useAppSelector((state) => state.user.chat);
   const [pendingIds, setPendingIds] = useState<Set<number>>(new Set());
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
   const { isConnected, isActive, startConnection, stopConnection } = useWSConnection("/api/websocket/ws");
   console.log(isAuthenticated, isConnected, isActive, stopConnection);
-  startConnection();
   const viewportRef = useRef<HTMLDivElement>(null);
-
+  
   const loadHistory = useCallback(async () => {
     setLoading(true);
     try {
@@ -175,9 +175,12 @@ export function Chat({ currentUser, isAuthenticated }: { currentUser: string, is
       setLoading(false);
     }
   }, [dispatch]);
-
-
+  
+  
   useEffect(() => {
+    if (!isActive) {
+      startConnection();
+    }
     viewportRef.current?.scrollTo({
       top: viewportRef.current.scrollHeight,
       behavior: "smooth",

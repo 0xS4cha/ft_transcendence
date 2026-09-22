@@ -3,4 +3,5 @@ export interface ChatDataProps {
     date: string,
     content: string,
     username: string,
+    picture?: string
 }

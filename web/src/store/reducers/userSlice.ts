@@ -10,7 +10,7 @@ function applyUser(state: typeof initialState, user: UserPublic) {
   state.username = user.username;
   state.picture = user.picture ? user.picture : undefined;
   state.isAuthenticated = true;
-  state.chat = user.chat.length > 0 ? user.chat : [];
+  state.chat = user.chat && user.chat.length > 0 ? user.chat : [];
 }
 
 export const initializeSession = createAsyncThunk(
@@ -55,6 +55,7 @@ export const userSlice = createSlice({
       state.chat = action.payload;
     },
     addChatContent: (state, action: PayloadAction<ChatDataProps>) => {
+      if (state.chat.some((item) => item.id === action.payload.id)) return;
       state.chat.push(action.payload);
     },
     updateChatContent: (
