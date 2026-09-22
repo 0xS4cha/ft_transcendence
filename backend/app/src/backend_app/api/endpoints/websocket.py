@@ -27,3 +27,4 @@ async def websocket_endpoint(websocket: WebSocket, session: AsyncSessionDep):
             await websocket.receive_text()
     except WebSocketDisconnect:
         await wsConnectionManager.disconnect(websocket, current_user.id)
+    print("WEBSOCKET DISCONNECTED")
