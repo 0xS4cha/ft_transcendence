@@ -33,8 +33,14 @@ async def send_chat(chat_message: ChatMessageForm, current_user: Annotated[UserM
 		))
         await session.commit()
     # broadcast message sent to all users
-    await WSbroadcast("chat.msg", {"author_id": current_user.id, "author_name": current_user.username, "message": chat_message.content, "date": current_date})
-    return {'success': True}
+    data = {
+        "id": current_user.id,
+        "date": current_date,
+        "content": chat_message.content,
+        "username": current_user.username,
+    }
+    await WSbroadcast("chat.msg", data)
+    return data
 
 cached_messages = []
 last_refresh_timestamp = 0

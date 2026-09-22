@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 
 from backend_app.core.jwt import Token
+from backend_app.core.websocket import WSbroadcast
 from backend_app.models.friends import Friends, Status
 from backend_app.models.users import UserModel
 from shared.database import AsyncSessionDep
@@ -44,7 +45,7 @@ async def send_friend_request(
             detail="The requested user does not exist."
         )
     
-    requester_id = current_user.id;
+    requester_id = current_user.id
 
     if requester_id == requested_id:
         raise HTTPException(
@@ -78,6 +79,10 @@ async def send_friend_request(
     session.add(friend_request)
     await session.commit()
     await session.refresh(friend_request)
+
+    await WSbroadcast("friend.request", {
+        "requester_username": current_user.username
+    }, [requested_id])
 
     return {
         "message": "Friend request successfully sent."
