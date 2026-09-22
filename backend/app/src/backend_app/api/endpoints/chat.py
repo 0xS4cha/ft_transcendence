@@ -2,6 +2,7 @@ import time
 from datetime import UTC, datetime
 from typing import Annotated
 
+import ciso8601
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy import select
@@ -35,7 +36,7 @@ async def send_chat(chat_message: ChatMessageForm, current_user: Annotated[UserM
     # broadcast message sent to all users
     data = {
         "id": current_user.id,
-        "date": current_date.isoformat(),
+        "date": ciso8601.parse_datetime(current_date),
         "content": chat_message.content,
         "username": current_user.username,
         "picture": current_user.picture,
@@ -58,7 +59,7 @@ async def messages(current_user: Annotated[UserModel, Depends(Token.get_current_
             cached_messages = [
                 {
                     "id": message.id,
-                    "date": message.date.isoformat(),
+                    "date": ciso8601.parse_datetime(message.date),
                     "content": message.content,
                     "username": username,
                     "picture": picture
