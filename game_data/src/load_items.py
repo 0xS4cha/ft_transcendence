@@ -115,7 +115,7 @@ async def main(
         session: AsyncSession
 ) -> None:
     item_data = {}
-    async with aiofiles.open("/opt/game_data/items.json", 'r') as f:
+    async with aiofiles.open("/opt/game_data/items_matches.json", 'r') as f:
         item_data = json.loads(await f.read())
 
     items = item_data["results"]
