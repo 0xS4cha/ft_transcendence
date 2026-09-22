@@ -1,12 +1,10 @@
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
-from shared.database import AsyncSessionDep
-
 router = APIRouter()
 
 @router.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket, session: AsyncSessionDep):
+async def websocket_endpoint(websocket: WebSocket):#, session: AsyncSessionDep):
     await websocket.accept()
 
     print("WEBSOCKET CONNECTED")
