@@ -35,7 +35,7 @@ async def send_chat(chat_message: ChatMessageForm, current_user: Annotated[UserM
     # broadcast message sent to all users
     data = {
         "id": current_user.id,
-        "date": current_date,
+        "date": current_date.isoformat(),
         "content": chat_message.content,
         "username": current_user.username,
         "picture": current_user.picture,
@@ -58,7 +58,7 @@ async def messages(current_user: Annotated[UserModel, Depends(Token.get_current_
             cached_messages = [
                 {
                     "id": message.id,
-                    "date": message.date,
+                    "date": message.date.isoformat(),
                     "content": message.content,
                     "username": username,
                     "picture": picture

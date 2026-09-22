@@ -38,7 +38,7 @@ class WebsocketConnectionManager:
         async with self.lock:
             self.connections.discard((client_id, websocket))
 
-    async def broadcast(self, message: dict, user_ids: list[int] | None = None,):
+    async def broadcast(self, message: dict, user_ids: list[int] | None = None):
         payload = {
             "message": message,
             "user_ids": user_ids,
@@ -95,7 +95,7 @@ class WebsocketConnectionManager:
             return len(self.connections)
 
 
-wsConnectionManager = WebsocketConnectionManager("redis://redis:6378")
+wsConnectionManager = WebsocketConnectionManager("redis://redis:6379")
 
 async def WSbroadcast(type: str, data: dict, user_ids: list[int] | None = None) -> int:
     await wsConnectionManager.broadcast(
