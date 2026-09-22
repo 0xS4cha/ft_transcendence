@@ -91,7 +91,6 @@ function MessageGroup({
   pendingIds: Set<number>;
 }) {
   const [first] = messages;
-
   return (
     <div className={cn("flex items-end gap-2", mine ? "flex-row-reverse" : "flex-row")}>
       <Avatar className="size-8 shrink-0">

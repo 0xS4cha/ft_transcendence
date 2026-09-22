@@ -55,7 +55,7 @@ export const userSlice = createSlice({
       state.chat = action.payload;
     },
     addChatContent: (state, action: PayloadAction<ChatDataProps>) => {
-      if (state.chat.some((item) => item.id === action.payload.id)) return;
+      if (state.chat.some((item) => item.date === action.payload.date)) return;
       state.chat.push(action.payload);
     },
     updateChatContent: (
