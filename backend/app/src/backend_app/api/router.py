@@ -18,6 +18,7 @@ from backend_app.api.endpoints import (
     send_friend_request_router,
     signup_router,
     stats_router,
+    units_data_router,
     websocket_router,
 )
 
@@ -62,6 +63,12 @@ api_router.include_router(
 api_router.include_router(
     items_data_router,
     tags=["Items"],
+    prefix="/game_data",
+)
+
+api_router.include_router(
+    units_data_router,
+    tags=["Units"],
     prefix="/game_data",
 )
 

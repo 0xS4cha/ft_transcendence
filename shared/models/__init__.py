@@ -23,6 +23,7 @@ if __env_name:
         )
         from shared.models.items import Item
         from shared.models.unit_games import PerDayStats, ProcessedGame, UnitStat
+        from shared.models.units import Unit
     else:
         from .champions import (
             Champion,
@@ -44,6 +45,7 @@ if __env_name:
         )
         from .items import Item
         from .unit_games import PerDayStats, ProcessedGame, UnitStat
+        from .units import Unit
 
 __all__ = [
     "Champion",
@@ -65,5 +67,6 @@ __all__ = [
     "SpellCoefficients",
     "SpellEffectAmounts",
     "TacticalInfo",
+    "Unit",
     "UnitStat",
 ]

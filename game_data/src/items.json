@@ -710,23 +710,5 @@
             "places":[363,659,490,420,357,296,254,262],
             "itemName":"DA_ManaPotion18_Radiant"
         }
-    ],
-
-    "games":
-    [
-        {
-            "patch":"18.2",
-            "b_patch_version":"",
-            "count":27226204
-        },
-        {
-            "patch":"18.1",
-            "b_patch_version":"d",
-            "count":8774406
-        }
-    ],
-    
-    "updated":1789465362072,
-    "tft_set":"TFTSet18",
-    "queue_id":1100
+    ]
 }

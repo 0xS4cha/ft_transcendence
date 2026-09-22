@@ -25,6 +25,7 @@ from backend_app.api.endpoints.send_friend_request import (
 )
 from backend_app.api.endpoints.signup import router as signup_router
 from backend_app.api.endpoints.stats import router as stats_router
+from backend_app.api.endpoints.units_data import router as units_data_router
 from backend_app.api.endpoints.websocket import router as websocket_router
 
 __all__ = ["accept_friend_request_router",
@@ -44,5 +45,6 @@ __all__ = ["accept_friend_request_router",
            "send_friend_request_router",
            "signup_router",
            "stats_router",
+           "units_data_router",
            "websocket_router",
 ]
