@@ -1,8 +1,6 @@
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
-from backend_app.core.jwt import Token
-from backend_app.core.websocket import wsConnectionManager
 from shared.database import AsyncSessionDep
 
 router = APIRouter()
@@ -30,7 +28,7 @@ async def websocket_endpoint(websocket: WebSocket, session: AsyncSessionDep):
 
     #try:
     #    current_user = await Token.get_current_user(token, session)
-    #except Exception: # noqa: BLE001
+    #except Exception:
     #    await websocket.close(code=1008)
     #    return
 
