@@ -95,7 +95,7 @@ class WebsocketConnectionManager:
             return len(self.connections)
 
 
-wsConnectionManager = WebsocketConnectionManager("redis://redis:6379")
+wsConnectionManager = WebsocketConnectionManager("redis://redis:6378")
 
 async def WSbroadcast(type: str, data: dict, user_ids: list[int] | None = None) -> int:
     await wsConnectionManager.broadcast(

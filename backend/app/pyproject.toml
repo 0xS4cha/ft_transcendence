@@ -16,6 +16,7 @@ dependencies = [
     "pydantic-settings>=2.15.0",
     "pyjwt>=2.13.0",
     "pytz>=2026.3.post1",
+    "redis>=8.1.0",
     "requests>=2.34.2",
     "sqlalchemy>=2.0.52",
     "uuid>=1.30",
