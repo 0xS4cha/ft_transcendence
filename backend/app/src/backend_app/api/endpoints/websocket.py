@@ -9,11 +9,13 @@ router = APIRouter()
 
 @router.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket, session: AsyncSessionDep):
+    print("WEBSOCKET CONNECTED")
+    print(websocket.cookies)
+
     token = websocket.cookies.get("access_token")
     if not token:
         await websocket.close(code=1008)
         return
-
     try:
         current_user = await Token.get_current_user(token, session)
     except Exception: # noqa: BLE001
@@ -26,3 +28,4 @@ async def websocket_endpoint(websocket: WebSocket, session: AsyncSessionDep):
             await websocket.receive_text()
     except WebSocketDisconnect:
         await wsConnectionManager.disconnect(websocket, current_user.id)
+    print("WEBSOCKET DISCONNECTED")
