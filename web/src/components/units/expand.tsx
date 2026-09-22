@@ -13,7 +13,7 @@ interface UnitsExpandProps {
 }
 
 export function UnitsExpand({ unit, columns }: UnitsExpandProps) {
-  const { unit: name, avg, pick, count, items } = unit.original;
+  const { id: name, avg_place, frequency, winrate } = unit.original;
   const colSpan = unit.getVisibleCells?.().length ?? columns.length;
 
   return (
@@ -37,17 +37,12 @@ export function UnitsExpand({ unit, columns }: UnitsExpandProps) {
             </Canvas>
           </div>
           <div className="flex flex-col gap-5">
-            <div>
-              <h3 className="font-semibold text-base leading-none">{name}</h3>
-              <p className="mt-1 text-muted-foreground text-xs">
-                {count} game{count > 1 ? "s" : ""} played{count > 1 ? "s" : ""}
-              </p>
-            </div>
+            <h3 className="font-semibold text-base leading-none">{name}</h3>
 
             <div className="grid grid-cols-3 gap-4 border-y py-3">
               <div className="grid gap-0.5">
                 <span className="font-medium text-base leading-none tabular-nums">
-                  {avg}%
+                  {avg_place.toFixed(2)}%
                 </span>
                 <span className="text-muted-foreground text-xs">
                   Avg place
@@ -55,7 +50,7 @@ export function UnitsExpand({ unit, columns }: UnitsExpandProps) {
               </div>
               <div className="grid gap-0.5">
                 <span className="font-medium text-base leading-none tabular-nums">
-                  {pick}%
+                  {frequency.toFixed(2)}%
                 </span>
                 <span className="text-muted-foreground text-xs">
                   Pick rate
@@ -63,32 +58,10 @@ export function UnitsExpand({ unit, columns }: UnitsExpandProps) {
               </div>
               <div className="grid gap-0.5">
                 <span className="font-medium text-base leading-none tabular-nums">
-                  {count}
+                  {winrate.toFixed(2)}%
                 </span>
-                <span className="text-muted-foreground text-xs">Games</span>
+                <span className="text-muted-foreground text-xs">Winrate</span>
               </div>
-            </div>
-
-            <div className="grid gap-2">
-              <span className="text-muted-foreground text-xs">
-                Popular items
-              </span>
-              {items.length ? (
-                <div className="flex flex-wrap gap-1.5">
-                  {items.map((item, index) => (
-                    <span
-                      key={`${item.itemName}-${index}`}
-                      className="rounded-md border bg-background px-2 py-1 text-xs"
-                    >
-                      {item.itemName}
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                <span className="text-muted-foreground text-xs">
-                  No popular items
-                </span>
-              )}
             </div>
           </div>
         </div>

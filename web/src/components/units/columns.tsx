@@ -1,8 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { Subscribe } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { dataTableFeatures } from "@/lib/data-table-features";
 import type { UnitRow } from "@/components/units/schema";
@@ -32,7 +31,7 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
   },
   {
     id: "search",
-    accessorFn: (row) => `${row.unit}`,
+    accessorFn: (row) => `${row.name}`,
     filterFn: "includesString",
     enableHiding: true,
   },
@@ -78,17 +77,16 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
     cell: ({ row }: any) => (
       <div className="flex items-center gap-2 cursor-pointer">
         <Avatar>
-          <AvatarImage src="https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/134.png" />
-          <AvatarFallback>{row.original.unit}</AvatarFallback>
+          <AvatarImage src={row.original.icon}/>
         </Avatar>
         <div className="min-w-0 flex-1">
           <div className="flex items-end justify-between gap-3">
             <div className="grid min-w-0 gap-0.5">
               <span className="truncate font-medium text-sm leading-none">
-                {row.original.unit}
+                {row.original.name}
               </span>
               <span className="truncate text-muted-foreground text-xs leading-none">
-                #{row.original.count}
+                #{row.original.id}
               </span>
             </div>
           </div>
@@ -99,34 +97,19 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "tier",
-    header: "Tier",
-    filterFn: "equalsString",
-    cell: () => (
-      <Badge className="bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300">
-        S
-      </Badge>
-    ),
-  },
-  {
     accessorKey: "place",
-    header: "Avg. place",
+    header: "Place place (avg.)",
     filterFn: "equalsString",
-    cell: ({ row }: any) => <span className="text-sm">{row.original.avg}%</span>
+    cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.avg_place).toFixed(2)}</span>
   },
   {
     accessorKey: "wr",
     header: "WR",
-    cell: ({ row }: any) => <span className="text-sm">{row.original.avg}%</span>,
+    cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.winrate).toFixed(2)}%</span>,
   },
   {
     accessorKey: "frequency",
     header: "Frequency",
-    cell: ({ row }: any) => <span className="text-sm">{row.original.pick}</span>,
-  },
-  {
-    accessorKey: "items",
-    header: "Popular items",
-    cell: () => {},
+    cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.frequency).toFixed(2)}</span>,
   },
 ];

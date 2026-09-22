@@ -1,6 +1,7 @@
 import { apiGet } from "@/lib/api";
 import { type HomeDataProps } from "@/types/home";
 import { type Item } from "@/types/item"
+import { type Unit } from "@/types/unit"
 
 export function getHomeStats(): Promise<HomeDataProps> {
   return apiGet<HomeDataProps>("/api/stats/home");
