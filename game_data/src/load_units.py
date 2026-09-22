@@ -87,6 +87,9 @@ def get_name(
     
     return replaced
 
+
+
+
 async def main(
         session: AsyncSession
 ) -> None:
@@ -98,6 +101,8 @@ async def main(
     all_units_use = get_all_units_use(units)
 
     for unit in units:
+        if (unit["unit"].find("TFT") != -1):
+            continue
         id = unit["unit"]
         places = unit["places"]
         total_unit_use = sum(places)
