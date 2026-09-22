@@ -31,7 +31,7 @@ class WebsocketConnectionManager:
         async def send(user_id: int, websocket: WebSocket):
             try:
                 await websocket.send_json(message)
-            except Exception:
+            except Exception: # noqa: BLE001
                 await self.disconnect(websocket, user_id)
 
         await asyncio.gather(*(send(user_id, websocket) for user_id, websocket in connections))
