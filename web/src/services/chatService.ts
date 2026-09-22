@@ -5,6 +5,6 @@ export function getChatHistory(): Promise<ChatDataProps[]> {
   return apiGet<ChatDataProps[]>("/api/chat/messages");
 }
 
-export function sendChatMessage(message: string): Promise<undefined> {
-  return apiPost<undefined>("/api/chat/send", message);
+export function sendChatMessage(message: string): Promise<ChatDataProps> {
+  return apiPost<ChatDataProps>("/api/chat/send", message);
 }

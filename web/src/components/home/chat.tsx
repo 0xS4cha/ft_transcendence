@@ -35,9 +35,11 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
-
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { type ChatDataProps } from "@/types/chat";
 import { getChatHistory, sendChatMessage } from "@/services/chatService";
+import { addChatContent, removeChatContent, setChat, updateChatContent } from "@/store/reducers/userSlice"
+import { useWSConnection } from "@/lib/websocket"
 
 const MAX_LENGTH = 2000;
 
@@ -147,19 +149,22 @@ function MessagesSkeleton() {
   );
 }
 
-export function Chat({ currentUser }: { currentUser: string }) {
-  const [messages, setMessages] = useState<ChatDataProps[]>([]);
+export function Chat({ currentUser, isAuthenticated }: { currentUser: string, isAuthenticated: boolean }) {
+  const dispatch = useAppDispatch();
+  const messages = useAppSelector((state) => state.user.chat);
   const [pendingIds, setPendingIds] = useState<Set<number>>(new Set());
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
-
+  const { isConnected, isActive, startConnection, stopConnection } = useWSConnection("/api/websocket/ws");
+  console.log(isAuthenticated, isConnected, isActive, stopConnection);
+  startConnection();
   const viewportRef = useRef<HTMLDivElement>(null);
 
   const loadHistory = useCallback(async () => {
     setLoading(true);
     try {
-      setMessages(await getChatHistory());
+      dispatch(setChat(await getChatHistory()));
     } catch (error) {
       toast.add({
         type: "error",
@@ -169,11 +174,7 @@ export function Chat({ currentUser }: { currentUser: string }) {
     } finally {
       setLoading(false);
     }
-  }, []);
-
-  useEffect(() => {
-    void loadHistory();
-  }, [loadHistory]);
+  }, [dispatch]);
 
 
   useEffect(() => {
@@ -190,22 +191,20 @@ export function Chat({ currentUser }: { currentUser: string }) {
     if (!canSend) return;
 
     const draft = trimmed;
-
     const tempId = -Date.now();
 
     setMessage("");
     setSending(true);
     setPendingIds((current) => new Set(current).add(tempId));
-    setMessages((current) => [
-      ...current,
-      { id: tempId, date: new Date().toISOString(), content: draft, username: currentUser },
-    ]);
+    dispatch(
+      addChatContent({ id: tempId, date: new Date().toISOString(), content: draft, username: currentUser }),
+    );
 
     try {
       const saved = await sendChatMessage(draft);
-      setMessages((current) => current.map((item) => (item.id === tempId ? saved : item)));
+      dispatch(updateChatContent({ id: tempId, message: saved }));
     } catch (error) {
-      setMessages((current) => current.filter((item) => item.id !== tempId));
+      dispatch(removeChatContent(tempId));
       setMessage(draft);
       toast.add({
         type: "error",
@@ -232,7 +231,7 @@ export function Chat({ currentUser }: { currentUser: string }) {
   const groups = groupMessages(messages);
 
   return (
-    <Card className="flex h-[36rem] w-full max-w-2xl flex-col overflow-hidden">
+    <Card className="flex h-[36rem] w-full  flex-col overflow-hidden">
       <CardHeader className="border-b">
         <CardTitle>Global chat</CardTitle>
         <CardDescription>Everyone in the workspace can read this.</CardDescription>
@@ -251,52 +250,54 @@ export function Chat({ currentUser }: { currentUser: string }) {
       </CardHeader>
 
       <CardContent className="min-h-0 flex-1 p-0">
-        <ScrollArea className="h-full" viewportRef={viewportRef}>
-          <div
-            className="flex flex-col gap-6 p-6"
-            role="log"
-            aria-live="polite"
-            aria-busy={loading}
-          >
-            {loading ? (
-              <MessagesSkeleton />
-            ) : groups.length === 0 ? (
-              <Empty>
-                <EmptyHeader>
-                  <EmptyMedia variant="icon">
-                    <MessagesSquareIcon />
-                  </EmptyMedia>
-                  <EmptyTitle>No messages yet</EmptyTitle>
-                  <EmptyDescription>
-                    Say hello and start the conversation.
-                  </EmptyDescription>
-                </EmptyHeader>
-              </Empty>
-            ) : (
-              groups.map((group, index) => {
-                const previous = groups[index - 1];
-                const showDay =
-                  !previous ||
-                  formatDay(previous[0].date) !== formatDay(group[0].date);
+        <ScrollArea className="h-full">
+           <div ref={viewportRef}>
+            <div
+              className="flex flex-col gap-6 p-6"
+              role="log"
+              aria-live="polite"
+              aria-busy={loading}
+            >
+              {loading ? (
+                <MessagesSkeleton />
+              ) : groups.length === 0 ? (
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyMedia variant="icon">
+                      <MessagesSquareIcon />
+                    </EmptyMedia>
+                    <EmptyTitle>No messages yet</EmptyTitle>
+                    <EmptyDescription>
+                      Say hello and start the conversation.
+                    </EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
+              ) : (
+                groups.map((group, index) => {
+                  const previous = groups[index - 1];
+                  const showDay =
+                    !previous ||
+                    formatDay(previous[0].date) !== formatDay(group[0].date);
 
-                return (
-                  <Fragment key={`${group[0].username}-${group[0].id}`}>
-                    {showDay && formatDay(group[0].date) && (
-                      <div className="flex items-center justify-center">
-                        <Badge variant="outline" className="bg-card">
-                          {formatDay(group[0].date)}
-                        </Badge>
-                      </div>
-                    )}
-                    <MessageGroup
-                      messages={group}
-                      mine={group[0].username === currentUser}
-                      pendingIds={pendingIds}
-                    />
-                  </Fragment>
-                );
-              })
-            )}
+                  return (
+                    <Fragment key={`${group[0].username}-${group[0].id}`}>
+                      {showDay && formatDay(group[0].date) && (
+                        <div className="flex items-center justify-center">
+                          <Badge variant="outline" className="bg-card">
+                            {formatDay(group[0].date)}
+                          </Badge>
+                        </div>
+                      )}
+                      <MessageGroup
+                        messages={group}
+                        mine={group[0].username === currentUser}
+                        pendingIds={pendingIds}
+                      />
+                    </Fragment>
+                  );
+                })
+              )}
+            </div>
           </div>
         </ScrollArea>
       </CardContent>

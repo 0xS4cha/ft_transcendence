@@ -6,4 +6,5 @@ export const initialState: UserState = {
   username: "",
   isAuthenticated: false,
   status: "idle",
+  chat: []
 };
