@@ -64,7 +64,7 @@ class WebsocketConnectionManager:
                 )
 
         except asyncio.CancelledError:
-            raise
+            raise asyncio.CancelledError()
 
         finally:
             await pubsub.unsubscribe(self.REDIS_CHANNEL)

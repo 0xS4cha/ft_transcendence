@@ -4,8 +4,9 @@ from fastapi import FastAPI
 
 import backend_app.models  # noqa: F401
 from backend_app.api.router import api_router
-from shared.database import db
 from backend_app.core.websocket import wsConnectionManager
+from shared.database import db
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
