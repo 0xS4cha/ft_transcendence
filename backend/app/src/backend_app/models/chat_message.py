@@ -1,7 +1,6 @@
-import datetime
-
-from sqlalchemy import Date, ForeignKey
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import BigInteger
 
 from shared.database import Base
 
@@ -13,7 +12,7 @@ class ChatMessage(Base):
         primary_key=True,
         autoincrement=True,
     )
-    date: Mapped[datetime.date] = mapped_column(Date)
+    date: Mapped[int] = mapped_column(BigInteger)
     owner_id: Mapped[int] = mapped_column(
         ForeignKey("users.id")
     )
