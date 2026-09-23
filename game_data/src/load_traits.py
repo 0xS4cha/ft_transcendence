@@ -1,15 +1,96 @@
 import asyncio
 import json
 import sys
-
 from typing import Any
 
 import aiofiles
-from sqlalchemy.ext.asyncio import AsyncSession
 from httpx2 import AsyncClient
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from .shared.database import db
 from .shared.models.traits import Trait
+
+
+class Switch:
+    def __init__(self):
+        self.unique = "https://cdn.metatft.com/file/metatft/traits/unique.png"
+        self.plat = "https://cdn.metatft.com/file/metatft/traits/plat.png"
+        self.gold = "https://cdn.metatft.com/file/metatft/traits/gold.png"
+        self.silver = "https://cdn.metatft.com/file/metatft/traits/silver.png"
+        self.bronze = "https://cdn.metatft.com/file/metatft/traits/bronze.png"
+        self.none = "None"
+
+    def case_0(self, name):
+        return self.unique
+
+    def case_1(self, name):
+        if "Flora" in name:
+            return self.bronze
+        elif "Rival" in name:
+            if id[-1] == "2":
+                return self.bronze
+            return self.gold
+        else:
+            return self.unique
+
+    def case_2(self, name):
+        if "Flora" in name or "Rival" in name:
+            return self.gold
+        else:
+            return self.bronze
+
+    def case_3(self, name):
+        if "Summoner" in name or "Solar" in name:
+            return self.gold
+        elif "Riftbeast" in name \
+            or "Edlerwood" in name \
+            or "Sprykin" in name \
+            or "Blossom" in name \
+            or "Coven" in name:
+            return self.bronze
+        else:
+            return self.silver
+
+    def case_4(self, name):
+        if "Executioner" in name \
+            or "Primal" in name \
+            or "Adaptor" in name \
+            or "Fae" in name:
+            return self.gold
+        else:
+            return self.silver
+
+    def case_5(self, name):
+        if "Riftbeast" in name \
+            or "Edlerwood" in name \
+            or "Sprykin" in name \
+            or "Blossom" in name \
+            or "Coven" in name:
+            return self.silver
+        else:
+            return self.gold
+
+    def case_6(self, name):
+        return self.gold
+
+    def case_7(self, name):
+        return self.gold
+
+    def case_9(self, name):
+        return self.gold
+
+    def case_10(self, name):
+        return self.gold
+
+    def case_11(self, name):
+        return self.gold
+
+    def default(self):
+        return self.none
+
+    def switch(self, value, name):
+        return getattr(self, f"case_{value}", self.default)(name)
+
 
 def get_all_traits_use(
         traits: list
@@ -99,73 +180,11 @@ def get_breakpoints(
 
 
 def get_background_icon(
-    id: str,
     name: str,
     breakpoint: str
 ) -> str:
-    unique = "https://cdn.metatft.com/file/metatft/traits/unique.png"
-    plat = "https://cdn.metatft.com/file/metatft/traits/plat.png"
-    gold = "https://cdn.metatft.com/file/metatft/traits/gold.png"
-    silver = "https://cdn.metatft.com/file/metatft/traits/silver.png"
-    bronze = "https://cdn.metatft.com/file/metatft/traits/bronze.png"
-
-    #adapt to class
-    match breakpoint:
-        case "0":
-            return unique
-        
-        case "1":
-            if "Flora" in name:
-                return bronze
-            elif "Rival" in name:
-                if id[-1] == "2":
-                    return bronze
-                return gold
-            else:
-                return unique
-
-        case "2":
-            if "Flora" in name or "Rival" in name:
-                return gold
-            else:
-                return bronze
-
-        case "3":
-            if "Summoner" in name or "Solar" in name:
-                return gold
-            elif "Riftbeast" in name \
-                or "Edlerwood" in name \
-                or "Sprykin" in name \
-                or "Blossom" in name \
-                or "Coven" in name:
-                return bronze
-            else:
-                return silver
-
-        case "4":
-            if "Executioner" in name \
-                or "Primal" in name \
-                or "Adaptor" in name \
-                or "Fae" in name:
-                return gold
-            else:
-                return silver
-
-        case "5":
-            if "Riftbeast" in name \
-                or "Edlerwood" in name \
-                or "Sprykin" in name \
-                or "Blossom" in name \
-                or "Coven" in name:
-                return silver
-            else:
-                return gold
-
-        case "6" | "7" | "9" | "10":
-            return gold
-
-        case "11":
-            return plat
+    obj = Switch()
+    return (obj.switch(breakpoint, name))
 
 
 async def add_trait(
@@ -189,7 +208,7 @@ async def add_trait(
     breakpoint = breakpoints[int(id[-1]) - 1]
 
     icon = "https://cdn.metatft.com/file/metatft/traits/" + id.lower() + ".png"
-    background_icon = get_background_icon(id, name, breakpoint)
+    background_icon = get_background_icon(name, breakpoint)
 
     existing = await session.get(Trait, id)
     if existing is not None:

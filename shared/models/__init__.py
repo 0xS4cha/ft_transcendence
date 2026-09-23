@@ -22,8 +22,8 @@ if __env_name:
             TacticalInfo,
         )
         from shared.models.items import Item
-        from shared.models.unit_games import PerDayStats, ProcessedGame, UnitStat
         from shared.models.traits import Trait
+        from shared.models.unit_games import PerDayStats, ProcessedGame, UnitStat
         from shared.models.units import Unit
     else:
         from .champions import (
@@ -45,8 +45,8 @@ if __env_name:
             TacticalInfo,
         )
         from .items import Item
-        from .unit_games import PerDayStats, ProcessedGame, UnitStat
         from .traits import Trait
+        from .unit_games import PerDayStats, ProcessedGame, UnitStat
         from .units import Unit
 
 __all__ = [
