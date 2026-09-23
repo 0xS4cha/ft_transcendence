@@ -1,0 +1,245 @@
+import asyncio
+import json
+import sys
+
+from typing import Any
+
+import aiofiles
+from sqlalchemy.ext.asyncio import AsyncSession
+from httpx2 import AsyncClient
+
+from .shared.database import db
+from .shared.models.traits import Trait
+
+def get_all_traits_use(
+        traits: list
+) -> int:
+    total = 0
+
+    for trait in traits:
+        total += sum(trait["places"])
+
+    return (total)
+
+
+def get_avg_place(
+        places: list,
+        total_trait_use: int
+) -> float:
+    weighted = 0
+
+    for rank, count in enumerate(places, start=1):
+        weighted += rank * count
+
+    weighted /= total_trait_use
+
+    return (weighted)
+
+
+def get_winrate(
+        places: list,
+        total_trait_use: int
+) -> float:
+    winrate = (places[0] / total_trait_use) * 100
+
+    return (winrate)
+
+
+def get_frequency(
+        total_trait_use: int,
+        all_traits_use: int
+) -> float:
+    if all_traits_use == 0:
+        return 0
+
+    frequency = (total_trait_use / all_traits_use) * 100
+
+    return (frequency)
+
+
+def create_trait(
+        id: str,
+        avg_place: float,
+        winrate: float,
+        frequency: float,
+        name: str,
+        breakpoint: str,
+        breakpoints: list[str],
+        icon: str,
+        background_icon: str
+) -> Trait:
+    trait = Trait(
+        id=id,
+        avg_place=avg_place,
+        winrate=winrate,
+        frequency=frequency,
+        name=name,
+        breakpoint=breakpoint,
+        breakpoints=breakpoints,
+        icon=icon,
+        background_icon=background_icon,
+    )
+
+    return trait
+
+
+def get_breakpoints(
+    unit_trait_info: dict[str, Any]
+) -> list[str]:
+    effects = unit_trait_info["effects"]
+
+    breakpoints = []
+    for breakpoint in effects:
+        if str(breakpoint["minUnits"]) == "None":
+            breakpoints.append("0")
+        else:
+            breakpoints.append(str(breakpoint["minUnits"]))
+
+    return breakpoints
+
+
+def get_background_icon(
+    id: str,
+    name: str,
+    breakpoint: str
+) -> str:
+    unique = "https://cdn.metatft.com/file/metatft/traits/unique.png"
+    plat = "https://cdn.metatft.com/file/metatft/traits/plat.png"
+    gold = "https://cdn.metatft.com/file/metatft/traits/gold.png"
+    silver = "https://cdn.metatft.com/file/metatft/traits/silver.png"
+    bronze = "https://cdn.metatft.com/file/metatft/traits/bronze.png"
+
+    #adapt to class
+    match breakpoint:
+        case "0":
+            return unique
+        
+        case "1":
+            if "Flora" in name:
+                return bronze
+            elif "Rival" in name:
+                if id[-1] == "2":
+                    return bronze
+                return gold
+            else:
+                return unique
+
+        case "2":
+            if "Flora" in name or "Rival" in name:
+                return gold
+            else:
+                return bronze
+
+        case "3":
+            if "Summoner" in name or "Solar" in name:
+                return gold
+            elif "Riftbeast" in name \
+                or "Edlerwood" in name \
+                or "Sprykin" in name \
+                or "Blossom" in name \
+                or "Coven" in name:
+                return bronze
+            else:
+                return silver
+
+        case "4":
+            if "Executioner" in name \
+                or "Primal" in name \
+                or "Adaptor" in name \
+                or "Fae" in name:
+                return gold
+            else:
+                return silver
+
+        case "5":
+            if "Riftbeast" in name \
+                or "Edlerwood" in name \
+                or "Sprykin" in name \
+                or "Blossom" in name \
+                or "Coven" in name:
+                return silver
+            else:
+                return gold
+
+        case "6" | "7" | "9" | "10":
+            return gold
+
+        case "11":
+            return plat
+
+
+async def add_trait(
+    session: AsyncSession,
+    trait: dict[str, Any],
+    all_traits_use: int,
+    trait_info: list[dict[str, Any]]
+) -> None:
+    id = trait["trait"]
+    places = trait["places"]
+
+    total_trait_use = sum(places)
+    avg_place = get_avg_place(places, total_trait_use)
+    winrate = get_winrate(places, total_trait_use)
+    frequency = get_frequency(total_trait_use, all_traits_use)
+
+    unit_trait_info = next(entry for entry in trait_info if entry["apiName"] == id[:-2])
+    name = unit_trait_info["name"]
+
+    breakpoints = get_breakpoints(unit_trait_info)
+    breakpoint = breakpoints[int(id[-1]) - 1]
+
+    icon = "https://cdn.metatft.com/file/metatft/traits/" + id.lower() + ".png"
+    background_icon = get_background_icon(id, name, breakpoint)
+
+    existing = await session.get(Trait, id)
+    if existing is not None:
+        await session.delete(existing)
+        await session.flush()
+    
+    session.add(create_trait(
+        id,
+        avg_place,
+        winrate,
+        frequency,
+        name,
+        breakpoint,
+        breakpoints,
+        icon,
+        background_icon)
+    )
+
+    print(f"Saved trait \033[35m{name}\033[0m")
+
+
+async def main(
+    session: AsyncSession
+) -> None:
+    trait_data = {}
+    async with aiofiles.open("/opt/game_data/traits.json", 'r') as f:
+        trait_data = json.loads(await f.read())
+
+    async with AsyncClient(timeout=10) as client:
+        resp = await client.get("https://raw.communitydragon.org/latest/cdragon/tft/en_us.json")
+        resp.raise_for_status()
+        trait_info = next(entry for entry in resp.json()["setData"] if entry["mutator"] == "TFTSet18")["traits"]
+
+    traits = trait_data["results"]
+    all_traits_use = get_all_traits_use(traits)
+
+    for trait in traits:
+        await add_trait(session, trait, all_traits_use, trait_info)
+        
+    await session.commit()
+
+
+async def run():
+    async with db.async_session_factory() as session:
+        await main(session)
+
+
+if __name__ == "__main__":
+    try:
+        asyncio.run(run())
+    except Exception as e: #noqa BLE001
+        print(f"\033[31mERROR\033[0m: {e}", file=sys.stderr)
+        sys.exit(1)
