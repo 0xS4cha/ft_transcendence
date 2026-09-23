@@ -114,14 +114,10 @@ export function LoginForm({
         </Field>
         <FieldSeparator>Or continue with</FieldSeparator>
         <Field>
-          <div className="grid grid-cols-2 gap-2 w-full">
+          <div className="grid grid-cols-1 gap-2 w-full">
             <Button variant="outline" type="button" className="w-full" onClick={() => window.location.href = "https://localhost:8443/api/auth/login_with_42"}>
               <img src="/42.svg" className="w-4" />
               Login with 42
-            </Button>
-            <Button variant="outline" type="button" className="w-full">
-              <img src="/riot.svg" className="w-4" />
-              Login with Riot
             </Button>
           </div>
           <FieldDescription className="text-center">
