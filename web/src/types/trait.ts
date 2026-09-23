@@ -4,6 +4,8 @@ export interface Trait {
   winrate: number;
   frequency: number;
   name: string;
-  type: string;
+  breakpoint: string;
+  breakpoints: string[];
   icon: string;
+  background_icon: string;
 }
