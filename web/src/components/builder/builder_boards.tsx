@@ -129,8 +129,8 @@ export default function BuilderBoard({ boardState, onRemoveChampion }: { boardSt
 		}
 	}
 
-	const boardWidth = COLS * HEX_WIDTH + (HEX_WIDTH / 2);
-  const boardHeight = (ROWS - 1) * ROW_HEIGHT + HEX_HEIGHT;
+	const boardWidth = (COLS * HEX_WIDTH + (HEX_WIDTH / 2));
+  const boardHeight = ((ROWS - 1) * ROW_HEIGHT + HEX_HEIGHT );
 
   // ON RECUPERE LA HAUTEUR ET LA LARGEUR DU SVG
   // REACT S'OCCUPE NATIVEMENT DE TRAITER LE CONTENU JS ET DE L'AFFICHER A L'INTERIEUR DE LA BALISE SVG (SCALABLE VECTOR GRAPHIQUE)

@@ -14,7 +14,7 @@ function DraggableChampion({ champion, onClick }: { champion: Champion, onClick:
       onClick={onClick}
       title={champion.name}
       className={cn(
-        "relative flex aspect-square items-center justify-center overflow-hidden rounded-md border-2 bg-neutral-800",
+        "relative flex aspect-square items-center justify-center overflow-hidden rounded-md border-2 bg-neutral-800 touch-pan-y",
         isDragging 
           ? "opacity-95" 
           : "cursor-pointer hover:scale-105",
@@ -48,7 +48,7 @@ export default function BuilderChampionsBar({ onAddChampionClick }: { onAddChamp
       </div>
 
       <div className="flex-1 custom-scrollbar pr-2">
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(48px,1fr))] gap-2.5">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(clamp(30px,8vw,70px),1fr))] gap-2.5">
           {CHAMPIONS_DB.map((champ) => (
             <DraggableChampion key={champ.id} champion={champ} onClick={() => onAddChampionClick(champ.id)}/>
           ))}
