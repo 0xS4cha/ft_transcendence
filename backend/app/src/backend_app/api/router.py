@@ -7,6 +7,7 @@ from backend_app.api.endpoints import (
     friend_requests_list_router,
     friends_list_router,
     items_data_router,
+    traits_data_router,
     login_router,
     login_with_42_router,
     logout_router,
@@ -69,6 +70,12 @@ api_router.include_router(
 api_router.include_router(
     units_data_router,
     tags=["Units"],
+    prefix="/game_data",
+)
+
+api_router.include_router(
+    traits_data_router,
+    tags=["Traits"],
     prefix="/game_data",
 )
 
