@@ -27,12 +27,19 @@ export default function Builder() {
   const [activeChampionId, setActiveChampionId] = useState<string | null>(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    useSensor(MouseSensor, {
       activationConstraint: {
         distance: 6,
       },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 50,
+        tolerance: 8,
+      },
     })
   );
+
   const handleDragStart = (event: DragStartEvent) => {
     setActiveChampionId(event.active.id as string );
   };
@@ -136,7 +143,8 @@ export default function Builder() {
       {activeChampion ? (
         <div
         className={cn(
-            "cursor-pointer flex h-14 w-14 items-center justify-center overflow-hidden bg-neutral-800 scale-175 rounded-md border-2",
+            "cursor-pointer flex items-center justify-center overflow-hidden bg-neutral-800 scale-175 rounded-md border-2",
+            "w-[clamp(30px,8vw,70px)] h-[clamp(30px,8vw,70px)]",
             activeChampion.cost === 1 && "border-slate-500",
             activeChampion.cost === 2 && "border-emerald-500",
             activeChampion.cost === 3 && "border-blue-500",
