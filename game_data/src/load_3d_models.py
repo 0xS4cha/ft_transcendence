@@ -29,21 +29,11 @@ async def create_binary_file(
         await f.write(model)
 
 
-async def main(
-    session: AsyncSession
-) -> None:
-
-    sem = asyncio.Semaphore(15)
-
-    names = (await session.scalars(
-        select(Unit.id)
-    )).all()
-
-    if names is None:
-        pass
-
+def parse_names(
+    names: list[str]
+) -> list[str]:
     names_lower = [name.lower() for name in names]
-
+    
     to_change = ["gromp", "raptor", "kogmaw", "nidalee"]
 
     for index, name in enumerate(names_lower):
@@ -53,7 +43,22 @@ async def main(
         if "small" in name:
             names_lower[index] = name.replace("small", "")
 
-    print(len(names_lower))
+    return names_lower
+
+
+async def main(
+    session: AsyncSession
+) -> None:
+
+    sem = asyncio.Semaphore(15)
+
+    units = (await session.scalars(
+        select(Unit)
+    )).all()
+
+    names = [unit.id for unit in units]
+
+    names_lower = parse_names(names)
 
     async with AsyncClient(timeout=10) as client:
         models = await asyncio.gather(
@@ -66,13 +71,16 @@ async def main(
            for model, name in zip(models, names_lower))
     )
 
-    async with aiofiles.open("/opt/game_data/shared/models_3d/model_list.txt", 'w') as f:
-        for name in names_lower:
-            await f.write(f"{name}.glb\n")
+    for unit, name in zip(units, names_lower):
+        unit.model = f"{name}.glb"
+
+    await session.commit()
+
 
 async def run() -> None:
     async with db.async_session_factory() as session:
         await main(session)
+
 
 if __name__ == "__main__":
     try:

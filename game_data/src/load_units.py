@@ -66,7 +66,8 @@ def create_unit(
         winrate=winrate,
         frequency=frequency,
         name=name,
-        icon=icon
+        icon=icon,
+        model=""
     )
     return unit
 

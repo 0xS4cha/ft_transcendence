@@ -20,10 +20,10 @@ class Switch:
         self.bronze = "https://cdn.metatft.com/file/metatft/traits/bronze.png"
         self.none = "None"
 
-    def case_0(self, name):
+    def case_0(self, id, name):
         return self.unique
 
-    def case_1(self, name):
+    def case_1(self, id, name):
         if "Flora" in name:
             return self.bronze
         elif "Rival" in name:
@@ -33,13 +33,13 @@ class Switch:
         else:
             return self.unique
 
-    def case_2(self, name):
+    def case_2(self, id, name):
         if "Flora" in name or "Rival" in name:
             return self.gold
         else:
             return self.bronze
 
-    def case_3(self, name):
+    def case_3(self, id, name):
         if "Summoner" in name or "Solar" in name:
             return self.gold
         elif "Riftbeast" in name \
@@ -51,7 +51,7 @@ class Switch:
         else:
             return self.silver
 
-    def case_4(self, name):
+    def case_4(self, id, name):
         if "Executioner" in name \
             or "Primal" in name \
             or "Adaptor" in name \
@@ -60,7 +60,7 @@ class Switch:
         else:
             return self.silver
 
-    def case_5(self, name):
+    def case_5(self, id, name):
         if "Riftbeast" in name \
             or "Edlerwood" in name \
             or "Sprykin" in name \
@@ -70,26 +70,26 @@ class Switch:
         else:
             return self.gold
 
-    def case_6(self, name):
+    def case_6(self, id, name):
         return self.gold
 
-    def case_7(self, name):
+    def case_7(self, id, name):
         return self.gold
 
-    def case_9(self, name):
+    def case_9(self, id, name):
         return self.gold
 
-    def case_10(self, name):
+    def case_10(self, id, name):
         return self.gold
 
-    def case_11(self, name):
+    def case_11(self, id, name):
         return self.gold
 
     def default(self):
         return self.none
 
-    def switch(self, value, name):
-        return getattr(self, f"case_{value}", self.default)(name)
+    def switch(self, value, id, name):
+        return getattr(self, f"case_{value}", self.default)(id, name)
 
 
 def get_all_traits_use(
@@ -180,11 +180,12 @@ def get_breakpoints(
 
 
 def get_background_icon(
+    id: str,
     name: str,
     breakpoint: str
 ) -> str:
     obj = Switch()
-    return (obj.switch(breakpoint, name))
+    return (obj.switch(breakpoint, id, name))
 
 
 async def add_trait(
@@ -208,7 +209,7 @@ async def add_trait(
     breakpoint = breakpoints[int(id[-1]) - 1]
 
     icon = "https://cdn.metatft.com/file/metatft/traits/" + id.lower() + ".png"
-    background_icon = get_background_icon(name, breakpoint)
+    background_icon = get_background_icon(id, name, breakpoint)
 
     existing = await session.get(Trait, id)
     if existing is not None:

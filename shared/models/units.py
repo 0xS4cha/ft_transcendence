@@ -32,3 +32,7 @@ class   Unit(Base):
         String,
         nullable=False
     )
+    model: Mapped[str] = mapped_column(
+        String,
+        nullable=False
+    )
