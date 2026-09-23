@@ -5,4 +5,5 @@ export interface Unit {
   frequency: number;
   name: string;
   icon: string;
+  model: string;
 }
