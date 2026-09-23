@@ -237,10 +237,10 @@ export function Chat({ currentUser, isAuthenticated }: { currentUser: string, is
             variant="ghost"
             size="icon"
             onClick={() => void loadHistory()}
-            disabled={loading}
+            disabled={loading || !isAuthenticated}
             aria-label="Reload messages"
           >
-            <RefreshCwIcon className={cn(loading && "animate-spin")} />
+            <RefreshCwIcon className={cn((loading || !isAuthenticated) && "animate-spin")} />
           </Button>
         </CardAction>
       </CardHeader>
@@ -252,9 +252,9 @@ export function Chat({ currentUser, isAuthenticated }: { currentUser: string, is
               className="flex flex-col gap-6 p-6"
               role="log"
               aria-live="polite"
-              aria-busy={loading}
+              aria-busy={loading || !isAuthenticated}
             >
-              {loading ? (
+              {loading || !isAuthenticated ? (
                 <MessagesSkeleton />
               ) : groups.length === 0 ? (
                 <Empty>
