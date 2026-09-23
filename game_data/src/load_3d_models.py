@@ -1,9 +1,10 @@
 import asyncio
 import sys
+
 import aiofiles
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
 from httpx2 import AsyncClient
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from .shared.database import db
 from .shared.models import Unit
@@ -65,6 +66,9 @@ async def main(
            for model, name in zip(models, names_lower))
     )
 
+    async with aiofiles.open("/opt/game_data/shared/models_3d/model_list.txt", 'w') as f:
+        for name in names_lower:
+            await f.write(f"{name}\n")
 
 async def run() -> None:
     async with db.async_session_factory() as session:
