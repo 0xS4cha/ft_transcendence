@@ -7,6 +7,7 @@ from backend_app.api.endpoints import (
     friend_requests_list_router,
     friends_list_router,
     items_data_router,
+    leaderboard_router,
     login_router,
     login_with_42_router,
     logout_router,
@@ -52,6 +53,12 @@ api_router.include_router(
     logout_router,
     tags=["Authentication"],
     prefix="/auth"
+)
+
+api_router.include_router(
+	leaderboard_router,
+	tags=["LeaderBoard"],
+	prefix="/leaderboard"
 )
 
 api_router.include_router(
