@@ -21,7 +21,7 @@ export function Navbar() {
   const { isAuthenticated, email } = useAppSelector(state => state.user);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#07070B]/80 backdrop-blur">
+    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#202020] backdrop-blur">
       <div className="flex h-16 w-full items-center justify-between px-8 ">
         <Link
           to="/"
