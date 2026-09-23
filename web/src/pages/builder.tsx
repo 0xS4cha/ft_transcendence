@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { 
   DndContext, 
   type DragEndEvent,
@@ -17,14 +17,29 @@ import BuilderChampionsBar from "@/components/builder/builder_champions_bar";
 import BuilderToolBar from "@/components/builder/builder_tool_bar";
 import BuilderTraitsBar from "@/components/builder/builder_traits_bar";
 import BuilderTraitsBarMobile from "@/components/builder/builder_traits_bar_mobile";
-import { CHAMPIONS_DB } from "@/lib/champion";
 import { cn } from "@/lib/utils";
 import BuilderAugmentsBar from "@/components/builder/builder_augment_bar";
+import type { Unit } from "@/types/unit";
+import { getUnitsStats } from "@/services/statsService";
 
 export default function Builder() {
 
   const [boardState, setBoardState] = useState<Record<string, string>>({});
   const [activeChampionId, setActiveChampionId] = useState<string | null>(null);
+
+  const [champions, setChampions] = useState<Unit[]>([]);
+
+  useEffect(() => {
+    const fetchChampions = async () => {
+      try {
+        const result = await getUnitsStats();
+        setChampions(result);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des champions", error);
+      }
+    };
+    fetchChampions();
+  }, []);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -109,7 +124,7 @@ export default function Builder() {
   if (activeChampionId?.startsWith('hex-')) {
     draggingChampId = boardState[activeChampionId];
   }
-  const activeChampion = draggingChampId ? CHAMPIONS_DB.find(c => c.id === draggingChampId) : null;
+  const activeChampion = draggingChampId ? champions.find(c => c.id === draggingChampId) : null;
 
   return (
     <DndContext 
@@ -138,7 +153,7 @@ export default function Builder() {
           </div>
         </div>
         <div className="flex h-30 lg:h-110 shrink-0 rounded-xl border border-white/10 min-h-0">
-          <BuilderChampionsBar onAddChampionClick={handleChampClick}/>
+          <BuilderChampionsBar champions={champions} onAddChampionClick={handleChampClick}/>
         </div>
       </div>
       <DragOverlay modifiers={[snapCenterToCursor]} dropAnimation={null}>
@@ -147,14 +162,15 @@ export default function Builder() {
           className={cn(
               "cursor-pointer flex items-center justify-center overflow-hidden bg-neutral-800 rounded-md border-2",
               "w-[clamp(35px,5vw,100px)] h-[clamp(35px,5vw,100px)]",
-              activeChampion.cost === 1 && "border-slate-500",
-              activeChampion.cost === 2 && "border-emerald-500",
-              activeChampion.cost === 3 && "border-blue-500",
-              activeChampion.cost === 4 && "border-purple-500",
-              activeChampion.cost === 5 && "border-yellow-500"
+              "border-slate-500"
+              // activeChampion.cost === 1 && "border-slate-500",
+              // activeChampion.cost === 2 && "border-emerald-500",
+              // activeChampion.cost === 3 && "border-blue-500",
+              // activeChampion.cost === 4 && "border-purple-500",
+              // activeChampion.cost === 5 && "border-yellow-500"
             )}>
             <img
-                src={activeChampion.imageUrl}
+                src={activeChampion.icon}
                 alt={activeChampion.name}
                 className="h-full w-full object-cover"
               />
