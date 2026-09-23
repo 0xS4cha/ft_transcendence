@@ -44,11 +44,11 @@ export default function BuilderTraitsBar() {
               key={trait.id}
               className={cn(
                 "relative flex items-center gap-2 overflow-hidden rounded-lg px-2 py-2 shadow-sm transition-all",
-                tier === 4 && "bg-gradient-to-r from-[#4E80EE] to-[#38E1FF] text-black",
-                tier === 3 && "bg-gradient-to-r from-yellow-500 to-amber-400 text-black",
-                tier === 2 && "bg-gradient-to-r from-slate-200 to-white text-black",
-                tier === 1 && "bg-gradient-to-r from-amber-700 to-orange-500 text-white",
-                tier === 10 && "border border-white/5 bg-white/[0.02] text-neutral-400"
+                tier === 4 && "bg-linear-to-r from-[#4E80EE] to-[#38E1FF] text-black",
+                tier === 3 && "bg-linear-to-r from-yellow-500 to-amber-400 text-black",
+                tier === 2 && "bg-linear-to-r from-slate-200 to-white text-black",
+                tier === 1 && "bg-linear-to-r from-amber-700 to-orange-500 text-white",
+                tier === 10 && "border border-white/5 bg-white/2 text-neutral-400"
               )}
             >
               <Hexagon 
