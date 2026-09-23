@@ -68,7 +68,7 @@ async def main(
 
     async with aiofiles.open("/opt/game_data/shared/models_3d/model_list.txt", 'w') as f:
         for name in names_lower:
-            await f.write(f"{name}\n")
+            await f.write(f"{name}.glb\n")
 
 async def run() -> None:
     async with db.async_session_factory() as session:
