@@ -32,7 +32,7 @@ function calculateTier(currentUnits: number, breakpoints: number[]): number {
 export default function BuilderTraitsBar() {
   return (
     <div className="flex h-full w-full flex-col rounded-xl border border-white/10 px-2 py-3 bg-[#202020]">
-      <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-neutral-400">
+      <h3 className="mx-auto mb-4 text-xs font-semibold uppercase tracking-wider text-neutral-400">
         traits
       </h3>
       <ul className="flex flex-col gap-2 overflow-y-auto custom-scrollbar pr-1">
@@ -43,7 +43,7 @@ export default function BuilderTraitsBar() {
             <li
               key={trait.id}
               className={cn(
-                "relative flex items-center gap-2 overflow-hidden rounded-lg px-2 py-2 shadow-sm transition-all",
+                "relative flex items-center gap-2 overflow-hidden rounded-lg px-2 py-2 shadow-sm transition-all lg:w-[80%] mx-auto",
                 tier === 4 && "bg-linear-to-r from-[#4E80EE] to-[#38E1FF] text-black",
                 tier === 3 && "bg-linear-to-r from-yellow-500 to-amber-400 text-black",
                 tier === 2 && "bg-linear-to-r from-slate-200 to-white text-black",

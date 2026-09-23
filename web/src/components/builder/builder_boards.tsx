@@ -32,7 +32,7 @@ function HexagonCell({ id, cx, cy, points, championId, onRemove }: {id: string, 
       <polygon
       points={points}
       className={cn(
-        "stroke-[grey]/75 stroke-[1px] transition-colors",
+        "stroke-[grey]/75 transition-colors",
         isOver ? "fill-[grey]/75" : "fill-[#2A2A2A]"
       )}/>
       {champion && (
@@ -41,19 +41,23 @@ function HexagonCell({ id, cx, cy, points, championId, onRemove }: {id: string, 
         {...listeners}
         {...attributes}
         onClick={() => onRemove(id)}
-        className={cn("cursor-grab hover:opacity-70 transition focus:outline-none stroke-[1px]", 
+        className={cn("cursor-grab hover:opacity-70 transition focus:outline-none", 
                   isDragging && "opacity-30")}
         >
         <polygon points={points} fill="transparent" />
           <image
             href={champion.imageUrl}
-            x={cx - 20}
-            y={cy - 20}
-            width={40}
-            height={40}
+            x={cx - 21}
+            y={cy - 21}
+            width={42}
+            height={42}
             clipPath={`url(#${clipPathId})`}
             preserveAspectRatio="xMidYMid"
             className="pointer-events-none"
+          />
+          <polygon 
+            points={points} 
+            className="fill-none stroke-[grey]/75 stroke-[1px] pointer-events-none" 
           />
           <text 
             x={cx} 
@@ -136,12 +140,13 @@ export default function BuilderBoard({ boardState, onRemoveChampion }: { boardSt
   // REACT S'OCCUPE NATIVEMENT DE TRAITER LE CONTENU JS ET DE L'AFFICHER A L'INTERIEUR DE LA BALISE SVG (SCALABLE VECTOR GRAPHIQUE)
   // PAS DE PIXEL C'EST DES MATHS
 	return (
-    <div className="flex h-full w-full items-center justify-center p-4 bg-[#202020] rounded-xl">
+    <div className="h-full w-full p-2">
       <svg
         viewBox={`0 0 ${boardWidth} ${boardHeight}`}
-        className="w-full max-h-full drop-shadow-xl md:w-[85%] lg:w-[85%]">
+        className="w-full h-full drop-shadow-xl"
+      >
         {hexes}
       </svg>
     </div>
-	)
+  )
 }

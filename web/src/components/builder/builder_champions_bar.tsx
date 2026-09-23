@@ -42,13 +42,13 @@ function DraggableChampion({ champion, onClick }: { champion: Champion, onClick:
 
 export default function BuilderChampionsBar({ onAddChampionClick }: { onAddChampionClick: (id: string) => void }) {
   return (
-    <div className="flex h-full w-full flex-col p-4 bg-[#202020]">
+    <div className="flex h-full w-full flex-col p-4 bg-[#202020]  rounded-xl border border-white/10 min-h-0">
       <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-neutral-400">
         Champions
       </div>
 
       <div className="flex-1 custom-scrollbar pr-2">
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(clamp(30px,8vw,75px),1fr))] gap-2.5">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(clamp(30px,4vw,70px),1fr))] gap-2.5">
           {CHAMPIONS_DB.map((champ) => (
             <DraggableChampion key={champ.id} champion={champ} onClick={() => onAddChampionClick(champ.id)}/>
           ))}
