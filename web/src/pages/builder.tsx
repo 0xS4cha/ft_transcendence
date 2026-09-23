@@ -6,7 +6,8 @@ import {
   DragOverlay,
   useSensor, 
   useSensors, 
-  PointerSensor,
+  MouseSensor,
+  TouchSensor,
   pointerWithin
 } from "@dnd-kit/core";
 import { snapCenterToCursor } from '@dnd-kit/modifiers';
