@@ -1,8 +1,10 @@
 import asyncio
 import json
 import sys
+from typing import Any
 
 import aiofiles
+from httpx2 import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .shared.database import db
@@ -52,12 +54,15 @@ def get_frequency(
 
     return (frequency)
 
+
 def create_unit(
         id: str,
         avg_place: float,
         winrate: float,
         frequency: float,
         name: str,
+        cost: int,
+        traits: list[str],
         icon: str
 ) -> Unit:
     unit = Unit(
@@ -66,28 +71,54 @@ def create_unit(
         winrate=winrate,
         frequency=frequency,
         name=name,
+        cost=cost,
+        traits=traits,
         icon=icon,
         model=""
     )
     return unit
 
-def get_name(
-    name: str
-) -> str:
 
-    to_replace = ["DA", "18", "_", "AP", "AD", "Small"]
-    replaced = name
-    for word in to_replace:
-        replaced = replaced.replace(word, "")
+async def add_unit(
+    session: AsyncSession,
+    unit: dict[str, Any],
+    all_units_use: int,
+    champions_info: list[dict[str, Any]] 
+) -> None:
+    if (unit["unit"].find("TFT") != -1):
+        return
+    id = unit["unit"]
+    places = unit["places"]
 
-    if replaced == "CrimsonRaptor":
-        replaced = "MamaBeak"
+    total_unit_use = sum(places)
+    avg_place = get_avg_place(places, total_unit_use)
+    winrate = get_winrate(places, total_unit_use)
+    frequency = get_frequency(total_unit_use, all_units_use)
 
-    if replaced == "Sentry":
-            replaced = "Pebbles"
+    champion_info = next(entry for entry in champions_info if entry["apiName"] == id)
+    name = champion_info["name"]
+    cost = champion_info["cost"]
+    traits = [trait for trait in champion_info["traits"]]
+
+    icon = "https://cdn.metatft.com/cdn-cgi/image/width=64,height=64,format=auto/https://cdn.metatft.com/file/metatft/champions/tft18_" + name.lower() + ".png"
+
+    existing = await session.get(Unit, id)
+    if existing is not None:
+        await session.delete(existing)
+        await session.flush()
     
-    return replaced
+    session.add(create_unit(
+        id,
+        avg_place,
+        winrate,
+        frequency,
+        name,
+        cost,
+        traits,
+        icon)
+    )
 
+    print(f"Saved unit \033[35m{name}\033[0m")
 
 
 
@@ -98,31 +129,18 @@ async def main(
     async with aiofiles.open("/opt/game_data/units.json", 'r') as f:
         units_data = json.loads(await f.read())
 
+    async with AsyncClient(timeout=10) as client:
+            resp = await client.get("https://raw.communitydragon.org/latest/cdragon/tft/en_us.json")
+            resp.raise_for_status()
+            champions_info = next(entry for entry in resp.json()["setData"] if entry["mutator"] == "TFTSet18")["champions"]
+
     units = units_data["results"]
     all_units_use = get_all_units_use(units)
 
     for unit in units:
-        if (unit["unit"].find("TFT") != -1):
-            continue
-        id = unit["unit"]
-        places = unit["places"]
-        total_unit_use = sum(places)
-        avg_place = get_avg_place(places, total_unit_use)
-        winrate = get_winrate(places, total_unit_use)
-        frequency = get_frequency(total_unit_use, all_units_use)
-        name = get_name(id)
-        icon = "https://cdn.metatft.com/cdn-cgi/image/width=64,height=64,format=auto/https://cdn.metatft.com/file/metatft/champions/tft18_" + name.lower() + ".png"
-
-        existing = await session.get(Unit, id)
-        if existing is not None:
-            await session.delete(existing)
-            await session.flush()
+        await add_unit(session, unit, all_units_use, champions_info)
         
-        session.add(create_unit(id, avg_place, winrate, frequency, name, icon))
-
-        print(f"Saved unit \033[35m{name}\033[0m")
     await session.commit()
-
 
 
 async def run():
