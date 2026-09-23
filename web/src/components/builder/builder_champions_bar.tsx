@@ -48,7 +48,7 @@ export default function BuilderChampionsBar({ onAddChampionClick }: { onAddChamp
       </div>
 
       <div className="flex-1 custom-scrollbar pr-2">
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(clamp(30px,8vw,70px),1fr))] gap-2.5">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(clamp(30px,8vw,75px),1fr))] gap-2.5">
           {CHAMPIONS_DB.map((champ) => (
             <DraggableChampion key={champ.id} champion={champ} onClick={() => onAddChampionClick(champ.id)}/>
           ))}

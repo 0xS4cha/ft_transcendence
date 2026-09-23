@@ -38,7 +38,7 @@ export default function BuilderTraitsBarMobile() {
           <div
             key={trait.id}
             className={cn(
-              "flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1 shadow-sm",
+              "flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1 shadow-sm ",
               tier === 4 && "bg-linear-to-r from-[#4E80EE] to-[#38E1FF] text-black",
               tier === 3 && "bg-linear-to-r from-yellow-500 to-amber-400 text-black",
               tier === 2 && "bg-linear-to-r from-slate-200 to-white text-black",

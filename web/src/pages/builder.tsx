@@ -35,7 +35,7 @@ export default function Builder() {
     useSensor(TouchSensor, {
       activationConstraint: {
         delay: 50,
-        tolerance: 8,
+        tolerance: 5,
       },
     })
   );
@@ -119,7 +119,7 @@ export default function Builder() {
       collisionDetection={pointerWithin}>
     <div className="flex h-[calc(100vh-3.9rem)] flex-col gap-4 overflow-hidden">
       <BuilderToolBar />
-      <div className="grid grid-cols-1 lg:grid-cols-[195px_1fr_195px] gap-4 min-h-0 flex-1">
+      <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr_260px] gap-4 min-h-0 flex-1">
         <div className="hidden lg:block min-w-0">
           <BuilderTraitsBar />
         </div>
@@ -143,8 +143,8 @@ export default function Builder() {
       {activeChampion ? (
         <div
         className={cn(
-            "cursor-pointer flex items-center justify-center overflow-hidden bg-neutral-800 scale-175 rounded-md border-2",
-            "w-[clamp(30px,8vw,70px)] h-[clamp(30px,8vw,70px)]",
+            "cursor-pointer flex items-center justify-center overflow-hidden bg-neutral-800 rounded-md border-2",
+            "w-[clamp(35px,8vw,120px)] h-[clamp(35px,8vw,120px)]",
             activeChampion.cost === 1 && "border-slate-500",
             activeChampion.cost === 2 && "border-emerald-500",
             activeChampion.cost === 3 && "border-blue-500",

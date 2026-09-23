@@ -4,8 +4,8 @@ import { useDroppable, useDraggable } from "@dnd-kit/core";
 
 const ROWS = 4;
 const COLS = 7;
-const HEX_SIZE = 30; // TAILLE QUI M'A L'AIR RAISONNABLE
-const HEX_GAP = 5;
+const HEX_SIZE = 24; // TAILLE QUI M'A L'AIR RAISONNABLE
+const HEX_GAP = 4;
 
 const HEX_WIDTH = Math.sqrt(3) * HEX_SIZE; // FORMULE MATHEMATIQUE DE LA LARGEUR TOTALE D'UN HEXAGONE
 const HEX_HEIGHT = 2 * HEX_SIZE;
@@ -32,7 +32,7 @@ function HexagonCell({ id, cx, cy, points, championId, onRemove }: {id: string, 
       <polygon
       points={points}
       className={cn(
-        "stroke-[grey]/75 stroke-[2px] transition-colors",
+        "stroke-[grey]/75 stroke-[1px] transition-colors",
         isOver ? "fill-[grey]/75" : "fill-[#2A2A2A]"
       )}/>
       {champion && (
@@ -41,18 +41,18 @@ function HexagonCell({ id, cx, cy, points, championId, onRemove }: {id: string, 
         {...listeners}
         {...attributes}
         onClick={() => onRemove(id)}
-        className={cn("cursor-grab hover:opacity-80 transition-opacity focus:outline-none", 
+        className={cn("cursor-grab hover:opacity-70 transition focus:outline-none stroke-[1px]", 
                   isDragging && "opacity-30")}
         >
         <polygon points={points} fill="transparent" />
           <image
             href={champion.imageUrl}
-            x={cx - 30}
-            y={cy - 30}
-            width ={60}
-            height={60}
-             clipPath={`url(#${clipPathId})`}
-            preserveAspectRatio="xMidYMid slice"
+            x={cx - 20}
+            y={cy - 20}
+            width={40}
+            height={40}
+            clipPath={`url(#${clipPathId})`}
+            preserveAspectRatio="xMidYMid"
             className="pointer-events-none"
           />
           <text 
@@ -139,7 +139,7 @@ export default function BuilderBoard({ boardState, onRemoveChampion }: { boardSt
     <div className="flex h-full w-full items-center justify-center p-4 bg-[#202020] rounded-xl">
       <svg
         viewBox={`0 0 ${boardWidth} ${boardHeight}`}
-        className="max-h-full max-w-full drop-shadow-xl ">
+        className="w-full max-h-full drop-shadow-xl md:w-[85%] lg:w-[85%]">
         {hexes}
       </svg>
     </div>
