@@ -8,6 +8,7 @@ from backend_app.api.endpoints.friend_requests_list import (
 )
 from backend_app.api.endpoints.friends_list import router as friends_list_router
 from backend_app.api.endpoints.items_data import router as items_data_router
+from backend_app.api.endpoints.leaderboard import router as leaderboard_router
 from backend_app.api.endpoints.traits_data import router as traits_data_router
 from backend_app.api.endpoints.login import router as login_router
 from backend_app.api.endpoints.logout import router as logout_router
@@ -35,6 +36,7 @@ __all__ = ["accept_friend_request_router",
            "friend_requests_list_router",
            "friends_list_router",
            "items_data_router",
+           "leaderboard_router",
            "traits_data_router",
            "login_router",
            "login_with_42_router",

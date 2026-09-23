@@ -3,10 +3,12 @@ import { motion } from "motion/react";
 import { Separator } from "@/components/ui/separator";
 import { BreakdownCard } from "@/components/home/breakdowncard";
 import { ChartHistory } from "@/components/home/chart";
+import { Chat } from "@/components/home/chat"
 import { useEffect, useState } from "react";
 import { toast } from "@/components/ui/toast";
 import { type HomeDataProps } from "@/types/home";
 import { getHomeStats } from "@/services/statsService";
+import { useAppSelector } from '@/store/hooks';
 
 const container = {
   hidden: { opacity: 0 },
@@ -23,7 +25,7 @@ export default function Home() {
     matchCount: 0,
     history: []
   });
-
+  const { isAuthenticated, username } = useAppSelector(state => state.user);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -82,7 +84,9 @@ export default function Home() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.35, ease: "easeOut" }}
+          className="grid grid-cols-1 gap-6 md:grid-cols-2"
         >
+          <Chat currentUser={username} isAuthenticated={isAuthenticated} />
           <ChartHistory data={data.history} />
         </motion.div>
       </div>

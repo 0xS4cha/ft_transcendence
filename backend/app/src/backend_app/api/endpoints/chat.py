@@ -1,5 +1,4 @@
 import time
-from datetime import UTC, datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -24,18 +23,18 @@ async def send_chat(chat_message: ChatMessageForm, current_user: Annotated[UserM
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not send empty message"
         )
-    current_date = datetime.now(UTC).date()
+    current_time = round(time.time() * 1000)
     async with session:
         session.add(ChatMessage(
             content=chat_message.content,
-            date=current_date,
+            date=current_time,
             owner=current_user
 		))
         await session.commit()
     # broadcast message sent to all users
     data = {
         "id": current_user.id,
-        "date": current_date,
+        "date": current_time,
         "content": chat_message.content,
         "username": current_user.username,
         "picture": current_user.picture,

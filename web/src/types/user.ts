@@ -1,15 +1,14 @@
+import { type ChatDataProps } from "@/types/chat";
+
 export interface UserPublic {
   id: number;
   email: string;
   username: string;
   picture?: string;
+  chat: ChatDataProps[];
 }
 
-export interface UserState {
-  id: number;
-  email: string;
-  username: string;
-  picture?: string;
+export interface UserState extends UserPublic {
   isAuthenticated: boolean;
   status: "idle" | "loading" | "ready";
 }

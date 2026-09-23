@@ -1,5 +1,5 @@
 import { Card, CardContent, CardTitle, CardHeader, CardDescription } from "@/components/ui/card";
-import { conditions } from "@/constants/Conditions";
+import { conditions } from "@/constants/conditions";
 import { motion } from "motion/react";
 
 export default function Terms() {
