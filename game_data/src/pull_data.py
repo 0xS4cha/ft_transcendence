@@ -9,8 +9,7 @@ from httpx2 import AsyncClient
 paths = [
     "https://api-hc.metatft.com/tft-stat-api/units",
     "https://api-hc.metatft.com/tft-stat-api/items_matches",
-    "https://api-hc.metatft.com/tft-stat-api/traits",
-    "https://api-hc.metatft.com/tft-stat-api/augments_tiers",
+    "https://api-hc.metatft.com/tft-stat-api/traits"
 ]
 
 async def fetch_data(
