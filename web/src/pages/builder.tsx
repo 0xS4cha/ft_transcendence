@@ -12,15 +12,16 @@ import {
 } from "@dnd-kit/core";
 import { snapCenterToCursor } from '@dnd-kit/modifiers';
 
+import { cn } from "@/lib/utils";
+import type { Unit } from "@/types/unit";
+import type { Item } from "@/types/item";
 import BuilderBoard from "@/components/builder/builder_boards"
-import BuilderChampionsBar from "@/components/builder/builder_champions_bar";
 import BuilderToolBar from "@/components/builder/builder_tool_bar";
 import BuilderTraitsBar from "@/components/builder/builder_traits_bar";
-import BuilderTraitsBarMobile from "@/components/builder/builder_traits_bar_mobile";
-import { cn } from "@/lib/utils";
+import { getItemsStats, getUnitsStats } from "@/services/statsService";
 import BuilderAugmentsBar from "@/components/builder/builder_augment_bar";
-import type { Unit } from "@/types/unit";
-import { getUnitsStats } from "@/services/statsService";
+import BuilderChampionsBar from "@/components/builder/builder_champions_bar";
+import BuilderTraitsBarMobile from "@/components/builder/builder_traits_bar_mobile";
 
 export default function Builder() {
 
@@ -28,12 +29,25 @@ export default function Builder() {
   const [activeChampionId, setActiveChampionId] = useState<string | null>(null);
 
   const [champions, setChampions] = useState<Unit[]>([]);
+  const [items, setItems] = useState<Item[]>([]);
 
   useEffect(() => {
     const fetchChampions = async () => {
       try {
         const result = await getUnitsStats();
         setChampions(result);
+      } catch (error) {
+        console.error("Error while fetching champs", error);
+      }
+    };
+    fetchChampions();
+  }, []);
+
+  useEffect(() => {
+    const fetchChampions = async () => {
+      try {
+        const result = await getItemsStats();
+        setItems(result);
       } catch (error) {
         console.error("Error while fetching champs", error);
       }
@@ -143,7 +157,7 @@ export default function Builder() {
             <div className="flex items-center justify-center rounded-xl border border-white/10 flex-1 bg-[#202020]">
                 <BuilderBoard boardState={boardState}  champions={champions} onRemoveChampion={handleRemoveChampion}/>
             </div>
-            <div className="block lg:hidden">
+            <div className="block lg:hidden ">
               <BuilderTraitsBarMobile />
             </div>
           </div>
@@ -153,7 +167,7 @@ export default function Builder() {
           </div>
         </div>
         <div className="flex rounded-xl border border-white/10">
-          <BuilderChampionsBar champions={champions} onAddChampionClick={handleChampClick}/>
+          <BuilderChampionsBar champions={champions}  items={items} onAddChampionClick={handleChampClick}/>
         </div>
       </div>
       <DragOverlay modifiers={[snapCenterToCursor]} dropAnimation={null}>
@@ -161,7 +175,7 @@ export default function Builder() {
           <div
           className={cn(
               "cursor-pointer flex items-center justify-center overflow-hidden bg-neutral-800 rounded-md border-2",
-              "w-[clamp(35px,5vw,100px)] h-[clamp(35px,5vw,100px)]",
+              "w-[clamp(40px,8vw,100px)] h-[clamp(40px,8vw,100px)]",
               "border-slate-500"
               // activeChampion.cost === 1 && "border-slate-500",
               // activeChampion.cost === 2 && "border-emerald-500",
