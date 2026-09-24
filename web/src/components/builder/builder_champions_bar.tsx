@@ -40,12 +40,11 @@ function DraggableChampion({ champion, onClick }: { champion: Unit, onClick: () 
 
 export default function BuilderChampionsBar({ champions, onAddChampionClick }: { champions: Unit[], onAddChampionClick: (id: string) => void }) {
   return (
-    <div className="flex h-full w-full flex-col p-4 bg-[#202020]">
+    <div className="flex h-full w-full flex-col horizontal p-4 bg-[#202020]">
       <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-neutral-400">
         Champions
       </div>
-      <div className="flex-1 custom-scrollbar pr-2 overflow-y-auto">
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(clamp(40px,8vw,70px),1fr))] gap-2.5">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(clamp(30px,8vw,60px),1fr))] gap-2.5">
           {champions.map((champ) => (
             <DraggableChampion 
               key={champ.id} 
@@ -54,7 +53,18 @@ export default function BuilderChampionsBar({ champions, onAddChampionClick }: {
             />
           ))}
         </div>
+        <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-neutral-400">
+        Items
       </div>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(clamp(30px,8vw,60px),1fr))] gap-2.5">
+          {champions.map((champ) => (
+            <DraggableChampion 
+              key={champ.id} 
+              champion={champ} 
+              onClick={() => onAddChampionClick(champ.id)}
+            />
+          ))}
+        </div>
     </div>
   );
 }
