@@ -1,4 +1,4 @@
-from sqlalchemy import Float, String
+from sqlalchemy import ARRAY, Float, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from ..database import Base
@@ -30,6 +30,10 @@ class   Item(Base):
     )
     type: Mapped[str] = mapped_column(
         String,
+        nullable=False
+    )
+    composition: Mapped[list[str]] = mapped_column(
+        ARRAY(String),
         nullable=False
     )
     icon: Mapped[str] = mapped_column(

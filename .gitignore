@@ -23,3 +23,5 @@ backend/app/tests/__pycache__
 game_data/shared/
 game_data/src/shared/
 backend/app/src/shared/
+
+shared/models_3d/
