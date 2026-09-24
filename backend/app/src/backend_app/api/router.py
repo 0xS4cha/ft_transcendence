@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from backend_app.api.endpoints import (
     accept_friend_request_router,
+    augments_data_router,
     champions_router,
     chat_router,
     friend_requests_list_router,
@@ -19,6 +20,7 @@ from backend_app.api.endpoints import (
     send_friend_request_router,
     signup_router,
     stats_router,
+    traits_data_router,
     units_data_router,
     websocket_router,
 )
@@ -69,13 +71,25 @@ api_router.include_router(
 
 api_router.include_router(
     items_data_router,
-    tags=["Items"],
+    tags=["Game Data"],
     prefix="/game_data",
 )
 
 api_router.include_router(
     units_data_router,
-    tags=["Units"],
+    tags=["Game Data"],
+    prefix="/game_data",
+)
+
+api_router.include_router(
+    traits_data_router,
+    tags=["Game Data"],
+    prefix="/game_data",
+)
+
+api_router.include_router(
+    augments_data_router,
+    tags=["Game Data"],
     prefix="/game_data",
 )
 
