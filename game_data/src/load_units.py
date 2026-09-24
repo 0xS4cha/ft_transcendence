@@ -100,7 +100,7 @@ async def add_unit(
     cost = champion_info["cost"]
     traits = [trait for trait in champion_info["traits"]]
 
-    icon = "https://cdn.metatft.com/cdn-cgi/image/width=64,height=64,format=auto/https://cdn.metatft.com/file/metatft/champions/tft18_" + name.lower() + ".png"
+    icon = "https://cdn.metatft.com/cdn-cgi/image/width=128,height=128,format=auto/https://cdn.metatft.com/file/metatft/champions/tft18_" + name.lower() + ".png"
 
     existing = await session.get(Unit, id)
     if existing is not None:
