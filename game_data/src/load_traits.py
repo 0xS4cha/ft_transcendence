@@ -208,7 +208,7 @@ async def add_trait(
     breakpoints = get_breakpoints(unit_trait_info)
     breakpoint = breakpoints[int(id[-1]) - 1]
 
-    icon = "https://cdn.metatft.com/file/metatft/traits/" + id.lower() + ".png"
+    icon = "https://cdn.metatft.com/file/metatft/traits/" + id[:-2].lower() + ".png"
     background_icon = get_background_icon(id, name, breakpoint)
 
     existing = await session.get(Trait, id)

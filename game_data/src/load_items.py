@@ -1,7 +1,9 @@
 import asyncio
 import json
 import sys
+from typing import Any
 
+from httpx2 import AsyncClient
 import aiofiles
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -19,6 +21,7 @@ def get_all_items_use(
 
     return (total)
 
+
 def get_avg_place(
         places: list,
         total_item_use: int
@@ -31,6 +34,7 @@ def get_avg_place(
     weighted /= total_item_use
 
     return (weighted)
+
 
 def get_winrate(
         places: list,
@@ -52,6 +56,7 @@ def get_frequency(
 
     return (frequency)
 
+
 def create_item(
         id: str,
         avg_place: float,
@@ -59,6 +64,7 @@ def create_item(
         frequency: float,
         name: str,
         type: str,
+        composition: list[str],
         icon: str
 ) -> Item:
     item = Item(
@@ -68,34 +74,11 @@ def create_item(
         frequency=frequency,
         name=name,
         type=type,
+        composition=composition,
         icon=icon
     )
     return item
 
-def get_name(
-    name: str
-) -> str:
-
-    to_replace = ["DA", "18", "_", "Emblem", "Radiant", "Artifact", "Component"]
-    replaced = name
-    for word in to_replace:
-        replaced = replaced.replace(word, "")
-
-    name_list = [ch for ch in replaced]
-
-    true_name_list = []
-    for index, ch in enumerate(name_list):
-        if ch.isupper():
-            if index+1 < len(name_list) and name_list[index + 1].isupper():
-                true_name_list.append(ch)
-            else:
-                true_name_list.append(" " + ch)
-        else:
-            true_name_list.append(ch)
-
-    true_name = "".join(true_name_list).strip()
-    
-    return true_name
 
 def get_type(
         name: str
@@ -111,6 +94,46 @@ def get_type(
         type += "-Component"
     return type
 
+
+async def add_item(
+    session: AsyncSession,
+    item: dict[str, Any],
+    all_items_use: int,
+    items_compo: dict[str, Any]
+) -> None:
+    id = item["itemName"]
+    places = item["places"]
+
+    total_item_use = sum(places)
+    avg_place = get_avg_place(places, total_item_use)
+    winrate = get_winrate(places, total_item_use)
+    frequency = get_frequency(total_item_use, all_items_use)
+
+    name = next(entry["name"] for entry in items_compo if entry["apiName"] == id)
+    type = get_type(id)
+    composition = next(entry["composition"] for entry in items_compo if entry["apiName"] == id)
+
+    icon = "https://cdn.metatft.com/cdn-cgi/image/width=64,height=64,format=auto/https://cdn.metatft.com/file/metatft/items/" + id.lower() + ".png"
+
+    existing = await session.get(Item, id)
+    if existing is not None:
+        await session.delete(existing)
+        await session.flush()
+    
+    session.add(create_item(
+        id,
+        avg_place,
+        winrate,
+        frequency, 
+        name,
+        type,
+        composition,
+        icon)
+    )
+
+    print(f"Saved item \033[35m{name}\033[0m")
+
+
 async def main(
         session: AsyncSession
 ) -> None:
@@ -118,30 +141,18 @@ async def main(
     async with aiofiles.open("/opt/game_data/items_matches.json", 'r') as f:
         item_data = json.loads(await f.read())
 
+    async with AsyncClient(timeout=10) as client:
+        resp = await client.get("https://data.metatft.com/lookups/TFTSet18_latest_en_us.json")
+        resp.raise_for_status()
+        items_compo = resp.json()["items"]
+
     items = item_data["results"]
     all_items_use = get_all_items_use(items)
 
     for item in items:
-        id = item["itemName"]
-        places = item["places"]
-        total_item_use = sum(places)
-        avg_place = get_avg_place(places, total_item_use)
-        winrate = get_winrate(places, total_item_use)
-        frequency = get_frequency(total_item_use, all_items_use)
-        name = get_name(id)
-        type = get_type(id)
-        icon = "https://cdn.metatft.com/cdn-cgi/image/width=64,height=64,format=auto/https://cdn.metatft.com/file/metatft/items/" + id.lower() + ".png"
-
-        existing = await session.get(Item, id)
-        if existing is not None:
-            await session.delete(existing)
-            await session.flush()
+        await add_item(session, item, all_items_use, items_compo)
         
-        session.add(create_item(id, avg_place, winrate, frequency, name, type, icon))
-
-        print(f"Saved item \033[35m{name}\033[0m")
     await session.commit()
-
 
 
 async def run():
