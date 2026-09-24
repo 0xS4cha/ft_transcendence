@@ -1,5 +1,4 @@
 import asyncio
-import json
 import sys
 from typing import Any
 

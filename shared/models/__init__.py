@@ -3,6 +3,7 @@ import os
 __env_name = os.getenv("CONTAINER_NAME")
 if __env_name:
     if __env_name == "backend":
+        from shared.models.augments import Augment
         from shared.models.champions import (
             Champion,
             ChampionPassive,
@@ -21,12 +22,12 @@ if __env_name:
             SpellEffectAmounts,
             TacticalInfo,
         )
-        from shared.models.augments import Augment
         from shared.models.items import Item
         from shared.models.traits import Trait
         from shared.models.unit_games import PerDayStats, ProcessedGame, UnitStat
         from shared.models.units import Unit
     else:
+        from .augments import Augment
         from .champions import (
             Champion,
             ChampionPassive,
@@ -45,7 +46,6 @@ if __env_name:
             SpellEffectAmounts,
             TacticalInfo,
         )
-        from .augments import Augment
         from .items import Item
         from .traits import Trait
         from .unit_games import PerDayStats, ProcessedGame, UnitStat
