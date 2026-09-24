@@ -121,7 +121,6 @@ async def add_unit(
     print(f"Saved unit \033[35m{name}\033[0m")
 
 
-
 async def main(
         session: AsyncSession
 ) -> None:

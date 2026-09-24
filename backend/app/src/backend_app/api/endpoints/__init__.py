@@ -1,6 +1,7 @@
 from backend_app.api.endpoints.accept_friend_request import (
     router as accept_friend_request_router,
 )
+from backend_app.api.endpoints.augments_data import router as augments_data_router
 from backend_app.api.endpoints.champions import router as champions_router
 from backend_app.api.endpoints.chat import router as chat_router
 from backend_app.api.endpoints.friend_requests_list import (
@@ -31,6 +32,7 @@ from backend_app.api.endpoints.units_data import router as units_data_router
 from backend_app.api.endpoints.websocket import router as websocket_router
 
 __all__ = ["accept_friend_request_router",
+           "augments_data_router",
            "champions_router",
            "chat_router",
            "friend_requests_list_router",
