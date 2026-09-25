@@ -50,13 +50,13 @@ function DraggableItem({ item, onClick }: { item: Item, onClick: () => void }) {
       onClick={onClick}
       title={item.name}
       className={cn(
-        "relative flex aspect-square items-center justify-center overflow-hidden rounded-md border-4 bg-neutral-800 touch-pan-y",
+        "relative flex aspect-square items-center justify-center overflow-hidden rounded-md bg-neutral-800 touch-pan-y",
         isDragging 
           ? "opacity-95" 
           : "cursor-pointer hover:scale-105",
         item.type === "Artifact" ? "border border-red-600" :
         item.type === "Radiant"  ? "border border-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.5)]" :
-        "border"
+        null
       )}
     >
       <img

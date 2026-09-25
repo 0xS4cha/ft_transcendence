@@ -208,7 +208,10 @@ export default function Builder() {
         {activeItem ? (
           <div className={cn(
             "w-[clamp(20px,8vw,35px)] h-[clamp(20px,8vw,35px)]",
-            "cursor-pointer flex items-center justify-center overflow-hidden bg-neutral-800 rounded-md "
+            "cursor-pointer flex items-center justify-center overflow-hidden bg-neutral-800 rounded-md",
+            activeItem.type === "Artifact" ? "border border-red-600" :
+            activeItem.type === "Radiant"  ? "border border-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.5)]" :
+            null
           )}>
             <img src={activeItem.icon} alt={activeItem.name} className="h-full w-full object-cover" />
           </div>
