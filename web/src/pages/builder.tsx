@@ -170,7 +170,7 @@ export default function Builder() {
           </div>
           <div className="flex flex-col gap-3 min-w-0 min-h-0">
             <div className="flex items-center justify-center rounded-xl border border-white/10 flex-1 bg-[#202020]">
-                <BuilderBoard boardState={boardState} champions={champions} onRemoveChampion={handleRemoveChampion}/>
+                <BuilderBoard boardState={boardState} champions={champions} onRemoveChampion={handleRemoveChampion} boardStateItem={boardItems}/>
             </div>
             <div className="block lg:hidden ">
               <BuilderTraitsBarMobile boardState={boardState} champions={champions} traits={traits} />

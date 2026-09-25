@@ -81,7 +81,7 @@ function HexagonCell({ id, cx, cy, points, champion, onRemove }: {id: string, cx
   )
 }
 
-export default function BuilderBoard({ boardState, champions, onRemoveChampion }: { boardState: Record<string, string>, champions: Unit[], onRemoveChampion: (id: string) => void })
+export default function BuilderBoard({ boardState, champions, onRemoveChampion, boardItems }: { boardState: Record<string, string>, champions: Unit[], onRemoveChampion: (id: string) => void , boardItems: })
 {
   const getHexagonPoints = (cx: number, cy: number) =>
   {

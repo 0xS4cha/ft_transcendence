@@ -39,7 +39,7 @@ function DraggableChampion({ champion, onClick }: { champion: Unit, onClick: () 
   );
 }
 
-function DraggableItem({ item, onClick }: { item: Item, onClick: () => void }) {
+function DraggableItem({ item}: { item: Item}) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: item.id });
 
   return (
@@ -47,7 +47,6 @@ function DraggableItem({ item, onClick }: { item: Item, onClick: () => void }) {
       ref={setNodeRef as any}
       {...listeners}
       {...attributes}
-      onClick={onClick}
       title={item.name}
       className={cn(
         "relative flex aspect-square items-center justify-center overflow-hidden rounded-md bg-neutral-800 touch-pan-y",
@@ -133,7 +132,6 @@ export default function BuilderChampionsBar({ champions, items ,onAddChampionCli
                     <DraggableItem
                       key={`item-${item.id}`} 
                       item={item} 
-                      onClick={() => onAddChampionClick(item.id)} 
                     />
                   ))}
                 </div>
