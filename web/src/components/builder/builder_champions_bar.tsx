@@ -89,7 +89,7 @@ export default function BuilderChampionsBar({ champions, items ,onAddChampionCli
                 key={`champ-${champ.id}`} 
                 champion={champ} 
                 onClick={() => onAddChampionClick(champ.id)}
-              />
+                />
             ))}
           </div>
         </div>
