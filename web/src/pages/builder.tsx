@@ -15,6 +15,7 @@ import { snapCenterToCursor } from '@dnd-kit/modifiers';
 import { cn } from "@/lib/utils";
 import type { Unit } from "@/types/unit";
 import type { Item } from "@/types/item";
+import type { Trait } from "@/types/trait";
 import BuilderBoard from "@/components/builder/builder_boards"
 import BuilderToolBar from "@/components/builder/builder_tool_bar";
 import BuilderTraitsBar from "@/components/builder/builder_traits_bar";
@@ -26,7 +27,8 @@ import BuilderTraitsBarMobile from "@/components/builder/builder_traits_bar_mobi
 export default function Builder() {
 
   const [boardState, setBoardState] = useState<Record<string, string>>({});
-  const [activeChampionId, setActiveChampionId] = useState<string | null>(null);
+  const [activeDragId, setActiveDragId] = useState<string | null>(null);
+  const [boardItems, setBoardItems] = useState<Record<string, string[]>>({});
 
   const [champions, setChampions] = useState<Unit[]>([]);
   const [items, setItems] = useState<Item[]>([]);
@@ -83,7 +85,7 @@ export default function Builder() {
   );
 
   const handleDragStart = (event: DragStartEvent) => {
-    setActiveChampionId(event.active.id as string );
+    setActiveDragId(event.active.id as string );
   };
 
   const handleClearBoard = () => {
@@ -91,7 +93,7 @@ export default function Builder() {
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
-    setActiveChampionId(null);
+    setActiveDragId(null);
     const { active, over } = event;
     const sourceId = active.id as string;
     if (over) {
@@ -147,12 +149,12 @@ export default function Builder() {
     }
   };
 
-  let draggingChampId = activeChampionId;
-  if (activeChampionId?.startsWith('hex-')) {
-    draggingChampId = boardState[activeChampionId];
+  let draggingChampId = activeDragId;
+  if (activeDragId?.startsWith('hex-')) {
+    draggingChampId = boardState[activeDragId];
   }
   const activeChampion = draggingChampId ? champions.find(c => c.id === draggingChampId) : null;
-
+  const activeItem = activeDragId ? items.find(i => i.id === activeDragId) : null
   return (
     <DndContext 
       onDragStart={handleDragStart}
@@ -201,6 +203,14 @@ export default function Builder() {
                 alt={activeChampion.name}
                 className="h-full w-full object-cover"
               />
+          </div>
+        ) : null}
+        {activeItem ? (
+          <div className={cn(
+            "w-[clamp(20px,8vw,35px)] h-[clamp(20px,8vw,35px)]",
+            "cursor-pointer flex items-center justify-center overflow-hidden bg-neutral-800 rounded-md "
+          )}>
+            <img src={activeItem.icon} alt={activeItem.name} className="h-full w-full object-cover" />
           </div>
         ) : null}
       </DragOverlay>
