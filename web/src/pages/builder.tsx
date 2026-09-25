@@ -151,11 +151,11 @@ export default function Builder() {
         <BuilderToolBar />
         <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_3.3fr_0.8fr] gap-3 min-h-0 flex-1">
           <div className="hidden lg:block min-w-0">
-            <BuilderTraitsBar />
+            <BuilderTraitsBar boardState={boardState}/>
           </div>
           <div className="flex flex-col gap-3 min-w-0 min-h-0">
             <div className="flex items-center justify-center rounded-xl border border-white/10 flex-1 bg-[#202020]">
-                <BuilderBoard boardState={boardState}  champions={champions} onRemoveChampion={handleRemoveChampion}/>
+                <BuilderBoard boardState={boardState} champions={champions} onRemoveChampion={handleRemoveChampion}/>
             </div>
             <div className="block lg:hidden ">
               <BuilderTraitsBarMobile />

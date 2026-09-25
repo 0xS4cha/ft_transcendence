@@ -29,7 +29,7 @@ function calculateTier(currentUnits: number, breakpoints: number[]): number {
   return 10; 
 }
 
-export default function BuilderTraitsBar() {
+export default function BuilderTraitsBar({ boardState }: {boardState: Record<string, string>}) {
   return (
     <div className="flex h-full w-full flex-col rounded-xl border border-white/10 py-3 bg-[#202020]">
       <h3 className="mx-auto px-2 mb-4 text-xs font-semibold uppercase tracking-wider text-neutral-400">
