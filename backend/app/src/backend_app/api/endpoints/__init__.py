@@ -1,6 +1,7 @@
 from backend_app.api.endpoints.accept_friend_request import (
     router as accept_friend_request_router,
 )
+from backend_app.api.endpoints.augments_data import router as augments_data_router
 from backend_app.api.endpoints.champions import router as champions_router
 from backend_app.api.endpoints.chat import router as chat_router
 from backend_app.api.endpoints.friend_requests_list import (
@@ -26,28 +27,30 @@ from backend_app.api.endpoints.send_friend_request import (
 )
 from backend_app.api.endpoints.signup import router as signup_router
 from backend_app.api.endpoints.stats import router as stats_router
+from backend_app.api.endpoints.traits_data import router as traits_data_router
 from backend_app.api.endpoints.units_data import router as units_data_router
 from backend_app.api.endpoints.websocket import router as websocket_router
 
-__all__ = [
-    "accept_friend_request_router",
-    "champions_router",
-    "chat_router",
-    "friend_requests_list_router",
-    "friends_list_router",
-    "items_data_router",
-    "leaderboard_router",
-    "login_router",
-    "login_with_42_router",
-    "logout_router",
-    "me_router",
-    "prometheus_metrics_router",
-    "refuse_friend_request_router",
-    "remove_friend_router",
-    "search_user_router",
-    "send_friend_request_router",
-    "signup_router",
-    "stats_router",
-    "units_data_router",
-    "websocket_router"
+__all__ = ["accept_friend_request_router",
+           "augments_data_router",
+           "champions_router",
+           "chat_router",
+           "friend_requests_list_router",
+           "friends_list_router",
+           "items_data_router",
+           "leaderboard_router",
+           "login_router",
+           "login_with_42_router",
+           "logout_router",
+           "me_router",
+           "prometheus_metrics_router",
+           "refuse_friend_request_router",
+           "remove_friend_router",
+           "search_user_router",
+           "send_friend_request_router",
+           "signup_router",
+           "stats_router",
+           "traits_data_router",
+           "units_data_router",
+           "websocket_router",
 ]
