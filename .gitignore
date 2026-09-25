@@ -24,4 +24,4 @@ game_data/shared/
 game_data/src/shared/
 backend/app/src/shared/
 
-shared/models_3d/
+shared/models_3d/*.glb
