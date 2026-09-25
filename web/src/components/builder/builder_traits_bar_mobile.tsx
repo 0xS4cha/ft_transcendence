@@ -1,21 +1,7 @@
 import { cn } from "@/lib/utils";
+import type { Unit } from "@/types/unit";
 import { Hexagon } from "lucide-react";
-
-interface Trait {
-  id: string;
-  name: string;
-  currentUnits: number;
-  breakpoints: number[];
-}
-
-const FAKE_TRAITS: Trait[] = [
-  { id: '1', name: 'selunite', currentUnits: 9, breakpoints: [1, 3, 5, 8, 10] },
-  { id: '2', name: 'avatar', currentUnits: 7, breakpoints: [1, 3, 5, 7] },
-  { id: '3', name: 'fleur spirituel', currentUnits: 5, breakpoints: [1, 3, 5, 7, 9] },
-  { id: '4', name: 'chasseur', currentUnits: 3, breakpoints: [1, 3, 6] },
-  { id: '5', name: 'caustique', currentUnits: 1, breakpoints: [1, 3, 5, 7] },
-  { id: '6', name: 'caca', currentUnits: 0, breakpoints: [3] },
-];
+import type { Trait } from "@/types/trait";
 
 function calculateTier(currentUnits: number, breakpoints: number[]): number {
   if (currentUnits === 0) return 10;
@@ -25,13 +11,35 @@ function calculateTier(currentUnits: number, breakpoints: number[]): number {
   return 10; 
 }
 
-export default function BuilderTraitsBarMobile() {
+export default function BuilderTraitsBarMobile({ boardState , champions, traits }: {boardState: Record<string, string>, champions: Unit[], traits: Trait[]}) {
+  
+  const uniqueChampIds = Array.from(new Set(Object.values(boardState)));
+  const traitCounts: Record<string, number> = {};
+
+  uniqueChampIds.forEach((champId) => {
+    const champ = champions.find((c) => c.id === champId);
+    if (champ && champ.traits) {
+      champ.traits.forEach((traitIdOrName) => {
+        const key = traitIdOrName.toLowerCase(); 
+        traitCounts[key] = (traitCounts[key] || 0) + 1;
+      });
+    }
+  });
+
+  const displayTraits = traits.map((trait) => {
+    return {
+      ...trait,
+      currentUnits: traitCounts[trait.name.toLowerCase()] || 0
+    };
+  }).filter((trait) => trait.currentUnits > 0);
+
+  displayTraits.sort((a, b) => b.currentUnits - a.currentUnits);
   return (
     <div className="flex w-full items-center gap-2 overflow-x-auto custom-scrollbar rounded-xl border border-white/10 px-3 py-2.5 bg-[#202020]">
       <span className="shrink-0 mr-2 text-[10px] font-semibold uppercase tracking-wider text-neutral-400 ">
         Traits
       </span>
-      {FAKE_TRAITS.map((trait) => {
+      {displayTraits.map((trait) => {
         const tier = calculateTier(trait.currentUnits, trait.breakpoints);
         if (tier === 10) return null; 
         return (

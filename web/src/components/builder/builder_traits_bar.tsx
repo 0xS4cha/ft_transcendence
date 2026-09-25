@@ -1,21 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Hexagon } from "lucide-react";
-
-interface Trait {
-  id: string;
-  name: string;
-  currentUnits: number;
-  breakpoints: number[];
-}
-
-const FAKE_TRAITS: Trait[] = [
-  { id: '1', name: 'selunite', currentUnits: 9, breakpoints: [1, 3, 5, 8, 10] },
-  { id: '2', name: 'avatar', currentUnits: 7, breakpoints: [1, 3, 5, 7] },
-  { id: '3', name: 'fleur spirituel', currentUnits: 5, breakpoints: [1, 3, 5, 7, 9] },
-  { id: '4', name: 'chasseur', currentUnits: 3, breakpoints: [1, 3, 6] },
-  { id: '5', name: 'caustique', currentUnits: 1, breakpoints: [1, 3, 5, 7] },
-  { id: '6', name: 'caca', currentUnits: 0, breakpoints: [3] },
-];
+import type { Unit } from "@/types/unit";
+import type { Trait } from "@/types/trait";
 
 function calculateTier(currentUnits: number, breakpoints: number[]): number {
   if (currentUnits === 0)
@@ -29,14 +15,35 @@ function calculateTier(currentUnits: number, breakpoints: number[]): number {
   return 10; 
 }
 
-export default function BuilderTraitsBar({ boardState }: {boardState: Record<string, string>}) {
+export default function BuilderTraitsBar({ boardState , champions, traits }: {boardState: Record<string, string>, champions: Unit[], traits: Trait[]}) {
+  const uniqueChampIds = Array.from(new Set(Object.values(boardState)));
+  const traitCounts: Record<string, number> = {};
+
+  uniqueChampIds.forEach((champId) => {
+    const champ = champions.find((c) => c.id === champId);
+    if (champ && champ.traits) {
+      champ.traits.forEach((traitIdOrName) => {
+        const key = traitIdOrName.toLowerCase(); 
+        traitCounts[key] = (traitCounts[key] || 0) + 1;
+      });
+    }
+  });
+
+  const displayTraits = traits.map((trait) => {
+    return {
+      ...trait,
+      currentUnits: traitCounts[trait.name.toLowerCase()] || 0
+    };
+  }).filter((trait) => trait.currentUnits > 0);
+
+  displayTraits.sort((a, b) => b.currentUnits - a.currentUnits);
   return (
     <div className="flex h-full w-full flex-col rounded-xl border border-white/10 py-3 bg-[#202020]">
       <h3 className="mx-auto px-2 mb-4 text-xs font-semibold uppercase tracking-wider text-neutral-400">
         traits
       </h3>
       <ul className="flex flex-col gap-2 overflow-y-auto custom-scrollbar px-1">
-        {FAKE_TRAITS.map((trait) => {
+        {displayTraits.map((trait) => {
           const tier = calculateTier(trait.currentUnits, trait.breakpoints);
           
           return (
