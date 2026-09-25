@@ -113,7 +113,7 @@ async def add_item(
     type = get_type(id)
     composition = next(entry["composition"] for entry in items_compo if entry["apiName"] == id)
 
-    icon = "https://cdn.metatft.com/cdn-cgi/image/width=64,height=64,format=auto/https://cdn.metatft.com/file/metatft/items/" + id.lower() + ".png"
+    icon = "https://cdn.metatft.com/cdn-cgi/image/width=128,height=128,format=auto/https://cdn.metatft.com/file/metatft/items/" + id.lower() + ".png"
 
     existing = await session.get(Item, id)
     if existing is not None:
