@@ -54,7 +54,6 @@ interface NavItem {
 
 const NAV_ITEMS: readonly NavItem[] = [
   { label: 'Home', href: '/', icon: Home },
-  { label: 'Top comps', href: '/top_comp', icon: TrendingUp },
   { label: 'Units', href: '/units', icon: Sword },
   { label: 'Items', href: '/items', icon: Shield },
   { label: 'Traits', href: '/traits', icon: Layers },
