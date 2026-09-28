@@ -101,6 +101,25 @@ export default function BuilderChampionsBar({ champions, items ,onAddChampionCli
   });
   const displayItemGroups = groupedItems.filter(group => group.items.length > 0);
   
+  const groupedChampions = [
+    { title: "Cost 1", champions: champions.filter(c => c.cost === 1) },
+    { title: "Cost 2", champions: champions.filter(c => c.cost === 2) },
+    { title: "Cost 3", champions: champions.filter(c => c.cost === 3) },
+    { title: "Cost 4", champions: champions.filter(c => c.cost === 4) },
+    { title: "Cost 5", champions: champions.filter(c => c.cost === 5) }
+  ];
+
+  groupedChampions.forEach(group => {
+    group.champions.sort((a, b) => a.name.localeCompare(b.name));
+  });
+
+  const sortedChampions = [...champions].sort((a, b) => {
+    if (a.cost !== b.cost) {
+      return a.cost - b.cost;
+    }
+    return a.name.localeCompare(b.name);
+  })
+
   return (
     <div className="flex h-full w-full flex-row gap-6 p-4 bg-[#202020]">
       <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
@@ -108,22 +127,24 @@ export default function BuilderChampionsBar({ champions, items ,onAddChampionCli
           Champions
         </div>
         <div className="flex-1 custom-scrollbar pr-2 overflow-y-auto min-h-0 p-1">
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(clamp(25px,8vw,45px),1fr))] gap-2.5">
-            {champions.map((champ) => (
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(clamp(25px,8vw,45px),1fr))] gap-2.5 pb-2">
+            {sortedChampions.map((champ) => (
               <DraggableChampion 
                 key={`champ-${champ.id}`} 
                 champion={champ} 
                 onClick={() => onAddChampionClick(champ.id)}
-                />
+              />
             ))}
+            
           </div>
+          
         </div>
       </div>
       <div className="w-0.5 shrink-0 bg-white/10 hidden md:block"></div>
         <div className="flex-1 custom-scrollbar pr-3 overflow-y-auto min-h-0">
           <div className="flex flex-col gap-4 pb-2 pr-1">
             {displayItemGroups.map((group) => (
-              <div key={group.title} className="flex flex-col gap-2">
+              <div key={group.title} className="flex flex-col gap-2 p-1">
                 <div className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 pb-1">
                   {group.title}
                 </div>

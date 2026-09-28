@@ -49,7 +49,16 @@ function HexagonCell({ id, cx, cy, points, champion, itemsOnCell, onRemove }: {i
               clipPath={`url(#${clipPathId})`}
               preserveAspectRatio="xMidYMid"
               className="pointer-events-none" />
-          <polygon points={points} className="fill-none stroke-[grey]/75 stroke-[1px] pointer-events-none" />
+          <polygon
+          points={points}
+          className={cn(
+            "fill-none stroke-[1px] pointer-events-none",
+             champion.cost === 1 && "stroke-slate-500",
+              champion.cost === 2 && "stroke-emerald-500",
+              champion.cost === 3 && "stroke-blue-500",
+              champion.cost === 4 && "stroke-purple-500",
+              champion.cost === 5 && "stroke-yellow-500"
+           )}/>
           <text x={cx} y={cy + 7} textAnchor="middle" alignmentBaseline="middle" fill="white" fontSize="5px" fontWeight="bold" stroke="black" strokeWidth="1px" paintOrder="stroke fill" className="pointer-events-none" >
             {champion.name}
           </text>
@@ -58,16 +67,46 @@ function HexagonCell({ id, cx, cy, points, champion, itemsOnCell, onRemove }: {i
             const itemWidth = 9;
             const totalWidth = (totalItems * itemWidth) + (totalItems - 4);
             const startX = cx - (totalWidth / 2);
+            const itemType = item.type?.toLowerCase() || "";
+            let borderColor = "#475569";
+            if (itemType === "artifact")
+              borderColor = "#dc2626";
+            else if (itemType === "radiant")
+              borderColor = "#facc15";
             return (
-              <image
-                key={`cell-item-${id}-${index}`}
-                href={item.icon}
-                x={startX + (index * (itemWidth))}
-                y={cy + 12}
-                width={itemWidth - 2}
-                height={itemWidth - 2}
-                className="drop-shadow-md"
-              />
+              <g key={`cell-item-${id}-${index}`}>
+                <defs>
+                  <clipPath id={`clip-item-${id}-${index}`}>
+                    <rect
+                      x={startX + (index * itemWidth)}
+                      y={cy + 12}
+                      width={itemWidth - 2}
+                      height={itemWidth - 2}
+                      rx="1"
+                    />
+                  </clipPath>
+                </defs>
+                <image
+                  href={item.icon}
+                  x={startX + (index * itemWidth)}
+                  y={cy + 12}
+                  width={itemWidth - 2}
+                  height={itemWidth - 2}
+                  clipPath={`url(#clip-item-${id}-${index})`}
+                  className="drop-shadow-md pointer-events-none"
+                />
+                <rect
+                  x={startX + (index * itemWidth)}
+                  y={cy + 12}
+                  width={itemWidth - 2}
+                  height={itemWidth - 2}
+                  rx="1"
+                  fill="none"
+                  stroke={borderColor}
+                  strokeWidth="0.5"
+                  className="pointer-events-none"
+                />
+              </g>
             );
           })}
         </g>

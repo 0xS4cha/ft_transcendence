@@ -116,8 +116,6 @@ export default function Builder() {
     }
     if (over) {
       const targetId = over.id as string;
-      
-      // A. On déplace le champion
       setBoardState((prev) => {
         const newState = { ...prev };
         const champId = sourceId.startsWith('hex-') ? prev[sourceId] : sourceId;
@@ -212,7 +210,7 @@ export default function Builder() {
       <div className="flex  w-full max-w-375 mx-auto flex-col gap-3 overflow-hidden">
         <BuilderToolBar />
         <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_3.3fr_0.8fr] gap-3 min-h-0 flex-1">
-          <div className="hidden lg:block min-w-0">
+          <div className="hidden lg:flex flex-col min-w-0 min-h-0 max-h-125">
             <BuilderTraitsBar boardState={boardState} champions={champions} traits={traits} />
           </div>
           <div className="flex flex-col gap-3 min-w-0 min-h-0">
