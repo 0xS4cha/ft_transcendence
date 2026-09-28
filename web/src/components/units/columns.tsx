@@ -112,4 +112,9 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
     header: "Frequency",
     cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.frequency).toFixed(2)}</span>,
   },
+  {
+    accessorKey: "cost",
+    header: "Cost",
+    cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.cost).toFixed(2)}</span>,
+  },
 ];

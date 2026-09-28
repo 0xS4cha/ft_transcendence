@@ -7,7 +7,9 @@ const UnitRow = z.object({
   frequency: z.number(),
   name: z.string(),
   icon: z.string(),
-  model: z.string()
+  model: z.string(),
+  cost: z.number(),
+  traits: z.array(z.string()),
 });
 
 export type UnitRow = z.infer<typeof UnitRow>;
