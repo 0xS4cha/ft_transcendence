@@ -6,7 +6,7 @@ WORKDIR /opt/game_data/
 COPY ./src/*.py .
 COPY ./src/*.json ./
 
-RUN pip install --no-cache-dir requests pydantic SQLAlchemy psycopg2-binary httpx2 aiofiles fastapi pydantic_settings asyncpg greenlet
+RUN pip install --no-cache-dir requests pydantic SQLAlchemy psycopg2-binary httpx2 aiofiles fastapi pydantic_settings asyncpg greenlet sqlalchemy[asyncio]
 
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh

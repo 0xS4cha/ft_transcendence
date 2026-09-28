@@ -156,8 +156,7 @@ export function Chat({ currentUser, isAuthenticated }: { currentUser: string, is
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
-  const { isConnected, isActive, startConnection, stopConnection } = useWSConnection("/api/websocket/ws");
-  console.log(isAuthenticated, isConnected, isActive, stopConnection);
+  const { isActive, startConnection } = useWSConnection("/api/websocket/ws");
   const viewportRef = useRef<HTMLDivElement>(null);
   
   const loadHistory = useCallback(async () => {
@@ -177,7 +176,7 @@ export function Chat({ currentUser, isAuthenticated }: { currentUser: string, is
   
   
   useEffect(() => {
-    if (!isActive) {
+    if (!isActive && isAuthenticated) {
       startConnection();
     }
     viewportRef.current?.scrollTo({
@@ -190,7 +189,7 @@ export function Chat({ currentUser, isAuthenticated }: { currentUser: string, is
   const canSend = trimmed.length > 0 && trimmed.length <= MAX_LENGTH && !sending;
 
   async function handleSubmit() {
-    if (!canSend) return;
+    if (!canSend || !isAuthenticated) return;
 
     const draft = trimmed;
     const tempId = -Date.now();

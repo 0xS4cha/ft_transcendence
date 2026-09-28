@@ -21,7 +21,7 @@ dependencies = [
     "pytz>=2026.3.post1",
     "redis>=8.1.0",
     "requests>=2.34.2",
-    "sqlalchemy>=2.0.52",
+    "sqlalchemy[asyncio]>=2.0.52",
     "uuid>=1.30",
     "websockets>=17.1",
 ]
