@@ -5,7 +5,6 @@ import {
   Layers,
   FileText,
   Hammer,
-  TrendingUp,
   Trophy,
   PanelLeft,
   ChevronLeft,

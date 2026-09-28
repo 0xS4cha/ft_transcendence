@@ -56,10 +56,10 @@ export const TraitsColumns: ColumnDef<typeof dataTableFeatures, TraitRow>[] = [
     header: "Item",
     cell: ({ row }: any) => (
       <div className="flex items-center gap-2">
-          <Avatar>
-            <AvatarImage src={row.original.icon}/>
-            <AvatarFallback>{row.original.name}</AvatarFallback>
-          </Avatar>
+        <Avatar>
+          <AvatarImage src={row.original.icon}/>
+          <AvatarFallback>{row.original.name}</AvatarFallback>
+        </Avatar>
         <div className="min-w-0 flex-1">
           <div className="flex items-end justify-between gap-3">
             <div className="grid min-w-0 gap-0.5">
