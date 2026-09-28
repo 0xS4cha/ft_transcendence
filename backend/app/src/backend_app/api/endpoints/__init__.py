@@ -20,7 +20,7 @@ from backend_app.api.endpoints.refuse_friend_request import (
     router as refuse_friend_request_router,
 )
 from backend_app.api.endpoints.remove_friend import router as remove_friend_router
-from backend_app.api.endpoints.search import router as search_user_router
+from backend_app.api.endpoints.search import router as search_router
 from backend_app.api.endpoints.send_friend_request import (
     router as send_friend_request_router,
 )
@@ -32,7 +32,6 @@ from backend_app.api.endpoints.websocket import router as websocket_router
 
 __all__ = ["accept_friend_request_router",
            "augments_data_router",
-           "champions_router",
            "chat_router",
            "friend_requests_list_router",
            "friends_list_router",
@@ -45,7 +44,7 @@ __all__ = ["accept_friend_request_router",
            "prometheus_metrics_router",
            "refuse_friend_request_router",
            "remove_friend_router",
-           "search_user_router",
+           "search_router",
            "send_friend_request_router",
            "signup_router",
            "stats_router",

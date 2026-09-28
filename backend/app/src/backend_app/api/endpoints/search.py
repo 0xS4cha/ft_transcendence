@@ -43,16 +43,24 @@ class Platform(Enum):
 	
 
 searched_user_cache = {}
-async def query_user_profile(query_username: str, server: Platform):
+async def query_user_profile(query_username: str):
 	if query_username.count('#') == 1:
 		if query_username in searched_user_cache:
 			return {username: data for username, data in searched_user_cache.items() if username == query_username}
 
 		game_name = query_username.split('#')[0].strip()
 		game_tag = query_username.split('#')[1].strip()
-		account = riot_api.get_account(game_name, game_tag, server.get_continent())
+		account = riot_api.get_account(game_name, game_tag, Platform.JP1.get_continent())
 		if not account or not "puuid" in account:
 			return {}
+
+		# get region for player
+		region = riot_api.get_region(account["puuid"])
+		if not region:
+			return {}
+
+		server = Platform(region)
+
 
 		summoner = riot_api.get_summoner(account["puuid"], server.value)
 		if not summoner or not "puuid" in summoner:
@@ -111,8 +119,10 @@ async def search(query: str, session: AsyncSessionDep):
 	query = query.strip()
 	try:
 		final = {}
-		selected_platform = Platform.JP1
-		final["user"] = await query_user_profile(query.strip(), selected_platform)
+		try:
+			final["user"] = await query_user_profile(query.strip())
+		except Exception as e:  # noqa: BLE001
+			final["user"] = {'e': str(e)} # none found
 		final["unit"] = await query_unit(query.strip(), session)
 		final["item"] = await query_item(query.strip(), session)
 		final["trait"] = await query_trait(query.strip(), session)
