@@ -78,7 +78,7 @@ export default function Builder() {
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 50,
+        delay: 100,
         tolerance: 5,
       },
     })
