@@ -6,4 +6,6 @@ export interface Unit {
   name: string;
   icon: string;
   model: string;
+  cost: number;
+  traits: string[];
 }
