@@ -57,6 +57,12 @@ export function apiPost<T>(path: string, body: unknown): Promise<T> {
   });
 }
 
+export function apiPostLink<T>(path: string): Promise<T> {
+  return apiFetch<T>(path, {
+    method: "POST",
+  });
+}
+
 export function apiPostForm<T>(path: string, body: URLSearchParams): Promise<T> {
   return apiFetch<T>(path, {
     method: "POST",
