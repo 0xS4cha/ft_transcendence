@@ -3,7 +3,6 @@ from fastapi import APIRouter
 from backend_app.api.endpoints import (
     accept_friend_request_router,
     augments_data_router,
-    champions_router,
     chat_router,
     friend_requests_list_router,
     friends_list_router,
@@ -61,12 +60,6 @@ api_router.include_router(
 	leaderboard_router,
 	tags=["LeaderBoard"],
 	prefix="/leaderboard"
-)
-
-api_router.include_router(
-    champions_router,
-    tags=["Champions"],
-    prefix="/game_data/champions",
 )
 
 api_router.include_router(
