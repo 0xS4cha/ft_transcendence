@@ -74,6 +74,7 @@ async def query_user_profile(query_username: str):
 		
 		username = f"{account.get('gameName')}#{account.get('tagLine')}"
 		searched_user_cache[username] = {
+			'region': region,
 			'puuid': summoner.get('puuid'),
 			'profileIconId': summoner.get('profileIconId'),
 			'summonerLevel': summoner.get('summonerLevel'),
@@ -122,7 +123,8 @@ async def search(query: str, session: AsyncSessionDep):
 		try:
 			final["user"] = await query_user_profile(query.strip())
 		except Exception as e:  # noqa: BLE001
-			final["user"] = {'e': str(e)} # none found
+			print(e)
+			final["user"] = {} # none found
 		final["unit"] = await query_unit(query.strip(), session)
 		final["item"] = await query_item(query.strip(), session)
 		final["trait"] = await query_trait(query.strip(), session)
