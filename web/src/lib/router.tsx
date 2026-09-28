@@ -34,13 +34,13 @@ export const router = createBrowserRouter([
           return { Component };
         },
       },
-    //   {
-    //     path: "traits",
-    //     lazy: async () => {
-    //       const { default: Component } = await import("@/pages/Traits");
-    //       return { Component };
-    //     },
-    //   },
+      {
+        path: "traits",
+        lazy: async () => {
+          const { default: Component } = await import("@/pages/traits");
+          return { Component };
+        },
+      },
       {
         path: "patch_note",
         lazy: async () => {

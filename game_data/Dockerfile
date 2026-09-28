@@ -13,7 +13,7 @@ COPY ./src/*.json ./
 
 RUN /usr/bin/crontab /opt/game_data/crontab
 
-RUN pip install --no-cache-dir requests pydantic SQLAlchemy psycopg2-binary httpx2 aiofiles fastapi pydantic_settings asyncpg greenlet
+RUN pip install --no-cache-dir requests pydantic SQLAlchemy psycopg2-binary httpx2 aiofiles fastapi pydantic_settings asyncpg sqlalchemy[asyncio]
 
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh

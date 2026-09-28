@@ -13,7 +13,7 @@ interface UnitsExpandProps {
 }
 
 export function UnitsExpand({ unit, columns }: UnitsExpandProps) {
-  const { id: name, avg_place, frequency, winrate } = unit.original;
+  const { id: name, avg_place, frequency, winrate, model } = unit.original;
   const colSpan = unit.getVisibleCells?.().length ?? columns.length;
 
   return (
@@ -26,7 +26,7 @@ export function UnitsExpand({ unit, columns }: UnitsExpandProps) {
                 <ambientLight intensity={0.5} />
                 <directionalLight position={[5, 5, 5]} intensity={1} />
                 <Center disableX disableZ>
-                  <Model url="/ahri.glb" />
+                  <Model url={`/api/public/${model}`} />
                 </Center>
                 <OrbitControls
                   enableZoom={false}

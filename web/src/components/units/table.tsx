@@ -21,7 +21,6 @@ function UnitsExpandRenderer({ unit, columns }: UnitsExpandProps) {
 }
 
 
-
 export function UnitsTable() {
   const [data, setData] = useState<Unit[]>([]);
   useEffect(() => {
