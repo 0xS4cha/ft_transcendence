@@ -102,12 +102,6 @@ export function LoginForm({
               <Eye />
             </Button>
           </ButtonGroup>
-          <a
-            href="#"
-            className="ml-auto text-sm underline-offset-4 hover:underline"
-          >
-            Forgot your password?
-          </a>
         </Field>
         <Field>
           <Button type="submit">Login</Button>
