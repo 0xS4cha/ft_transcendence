@@ -29,6 +29,14 @@ export default function BuilderTraitsBar({ boardState , champions, traits }: {bo
     }
   });
 
+  const uniqueTraitsMap = new Map<string, Trait>();
+  traits.forEach((trait) => {
+    const key = trait.name.toLowerCase();
+    if (!uniqueTraitsMap.has(key)) {
+      uniqueTraitsMap.set(key, trait);
+    }
+  });
+
   const displayTraits = traits.map((trait) => {
     return {
       ...trait,
@@ -44,7 +52,7 @@ export default function BuilderTraitsBar({ boardState , champions, traits }: {bo
       </h3>
       <ul className="flex flex-col gap-2 overflow-y-auto custom-scrollbar px-1">
         {displayTraits.map((trait) => {
-          const tier = calculateTier(trait.currentUnits, trait.breakpoints);
+          const tier = calculateTier(trait.currentUnits, trait.breakpoints.map(Number));
           
           return (
             <li

@@ -18,11 +18,11 @@ function DraggableChampion({ champion, onClick }: { champion: Unit, onClick: () 
         isDragging 
           ? "opacity-95" 
           : "cursor-pointer hover:scale-105",
-        "border-slate-500",
-        // cost === 2 && "border-emerald-500",
-        // cost === 3 && "border-blue-500",
-        // cost === 4 && "border-purple-500",
-        // cost === 5 && "border-yellow-500"
+        champion.cost === 1 && "border-slate-500",
+        champion.cost === 2 && "border-emerald-500",
+        champion.cost === 3 && "border-blue-500",
+        champion.cost === 4 && "border-purple-500",
+        champion.cost === 5 && "border-yellow-500"
       )}
     >
       <img

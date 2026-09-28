@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useDroppable, useDraggable } from "@dnd-kit/core";
-import type { Unit } from "@/types/unit"; // 👈 Nouvel import du type de ton ami
+import type { Unit } from "@/types/unit";
+import type { Item } from "@/types/item"
 
 const ROWS = 4;
 const COLS = 7;
@@ -11,14 +12,12 @@ const HEX_WIDTH = Math.sqrt(3) * HEX_SIZE;
 const HEX_HEIGHT = 2 * HEX_SIZE;
 const ROW_HEIGHT = 1.5 * HEX_SIZE;
 
-function HexagonCell({ id, cx, cy, points, champion, onRemove }: {id: string, cx: number, cy: number, points: string, champion?: Unit | null, onRemove: (id: string) => void}){
+function HexagonCell({ id, cx, cy, points, champion, itemsOnCell, onRemove }: {id: string, cx: number, cy: number, points: string, champion?: Unit | null, itemsOnCell?: Item[], onRemove: (id: string) => void}){
   const {isOver, setNodeRef} = useDroppable( {id} );
-
   const { attributes, listeners, setNodeRef: setDraggableRef, isDragging } = useDraggable({ 
     id: id,
     disabled: !champion
   });
-
   const clipPathId = `clip-${id}`;
   
   return (
@@ -35,53 +34,49 @@ function HexagonCell({ id, cx, cy, points, champion, onRemove }: {id: string, cx
           isOver ? "fill-[grey]/75" : "fill-[#2A2A2A]"
         )}
       />
-      
       {champion && (
         <g
           ref={setDraggableRef as any}
           {...listeners}
           {...attributes}
           onClick={() => onRemove(id)}
-          className={cn("cursor-grab hover:opacity-70 transition focus:outline-none", 
-                    isDragging && "opacity-30")}
+          className={cn("cursor-grab hover:opacity-70 transition focus:outline-none", isDragging && "opacity-30")}
         >
           <polygon points={points} fill="transparent" />
-          <image
-            href={champion.icon}
-            x={cx - 21}
-            y={cy - 21}
-            width={42}
-            height={42}
-            clipPath={`url(#${clipPathId})`}
-            preserveAspectRatio="xMidYMid"
-            className="pointer-events-none"
-          />
-          <polygon 
-            points={points} 
-            className="fill-none stroke-[grey]/75 stroke-[1px] pointer-events-none" 
-          />
-          <text 
-            x={cx} 
-            y={cy + 10} 
-            textAnchor="middle" 
-            alignmentBaseline="middle" 
-            fill="white" 
-            fontSize="5px"
-            fontWeight="bold"
-            stroke="black"
-            strokeWidth="1px"
-            paintOrder="stroke fill"
-            className="pointer-events-none" 
-          >
+          <image href={champion.icon} 
+              x={cx - 21} y={cy - 21} 
+              width={42} height={42} 
+              clipPath={`url(#${clipPathId})`}
+              preserveAspectRatio="xMidYMid"
+              className="pointer-events-none" />
+          <polygon points={points} className="fill-none stroke-[grey]/75 stroke-[1px] pointer-events-none" />
+          <text x={cx} y={cy + 7} textAnchor="middle" alignmentBaseline="middle" fill="white" fontSize="5px" fontWeight="bold" stroke="black" strokeWidth="1px" paintOrder="stroke fill" className="pointer-events-none" >
             {champion.name}
           </text>
+          {itemsOnCell && itemsOnCell.map((item, index) => {
+            const totalItems = itemsOnCell.length;
+            const itemWidth = 9;
+            const totalWidth = (totalItems * itemWidth) + (totalItems - 4);
+            const startX = cx - (totalWidth / 2);
+            return (
+              <image
+                key={`cell-item-${id}-${index}`}
+                href={item.icon}
+                x={startX + (index * (itemWidth))}
+                y={cy + 12}
+                width={itemWidth - 2}
+                height={itemWidth - 2}
+                className="drop-shadow-md"
+              />
+            );
+          })}
         </g>
       )}
     </g>
   )
 }
 
-export default function BuilderBoard({ boardState, champions, onRemoveChampion, boardItems }: { boardState: Record<string, string>, champions: Unit[], onRemoveChampion: (id: string) => void , boardItems: })
+export default function BuilderBoard({ boardState, champions, onRemoveChampion, boardItems , items}: { boardState: Record<string, string>, champions: Unit[], onRemoveChampion: (id: string) => void , boardItems: Record<string, string[]>, items: Item[]})
 {
   const getHexagonPoints = (cx: number, cy: number) =>
   {
@@ -113,7 +108,10 @@ export default function BuilderBoard({ boardState, champions, onRemoveChampion, 
       const hexId = `hex-${row}-${col}`;
       const champId = boardState[hexId];
       const championOnCell = champId ? champions.find((c) => c.id === champId) : null;
-
+      const itemIdsOnCell = boardItems[hexId] || [];
+      const itemsOnCell = itemIdsOnCell
+        .map(itemId => items.find(i => i.id === itemId))
+        .filter((item): item is Item => item !== undefined);
       hexes.push(
         <HexagonCell
           key={hexId}
@@ -122,6 +120,7 @@ export default function BuilderBoard({ boardState, champions, onRemoveChampion, 
           cy={cy}
           points={getHexagonPoints(cx, cy)}
           champion={championOnCell}
+          itemsOnCell={itemsOnCell}
           onRemove={onRemoveChampion}
         />
       );

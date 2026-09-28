@@ -40,7 +40,7 @@ export default function BuilderTraitsBarMobile({ boardState , champions, traits 
         Traits
       </span>
       {displayTraits.map((trait) => {
-        const tier = calculateTier(trait.currentUnits, trait.breakpoints);
+        const tier = calculateTier(trait.currentUnits, trait.breakpoints.map(Number));
         if (tier === 10) return null; 
         return (
           <div
