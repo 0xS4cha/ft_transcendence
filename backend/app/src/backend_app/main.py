@@ -7,16 +7,20 @@ import backend_app.models  # noqa: F401
 from backend_app.api.router import api_router
 from backend_app.core.websocket import wsConnectionManager
 from shared.database import db
+import redis.asyncio as redis
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await wsConnectionManager.start()
-
+    app.state.redis = redis.from_url("redis://redis:6379", decode_responses=True)
+    
     try:
         async with db.lifespan(app):
             yield
+
     finally:
+        await app.state.redis.aclose()
         await wsConnectionManager.stop()
 
 app = FastAPI(lifespan=lifespan)

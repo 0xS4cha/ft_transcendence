@@ -47,11 +47,10 @@ def parse_names(
 
     return names_lower
 
-
 async def fetch_units(
     client: AsyncClient
-) -> list[dict[str, Any]]:
-    resp = await client.get(f"https://api-hc.metatft.com/tft-stat-api/units")
+) -> dict[str, Any] | None:
+    resp = await client.get("https://api-hc.metatft.com/tft-stat-api/units")
     resp.raise_for_status()
 
     return resp.json()["results"]
@@ -71,37 +70,47 @@ async def main(
     sem = asyncio.Semaphore(15)
 
     async with AsyncClient(timeout=10) as client:
-        units = await fetch_units(client)
-
-    units_ids = [unit["unit"] for unit in units if "TFT" not in unit["unit"]]
-
-    async with AsyncClient(timeout=10) as client:
-        set_data = fetch_set_data(client)
-
-    if set_data is None:
-        raise ValueError("Set data for TFTSet18 not found")
-    
-    champions_by_id = {c["apiName"]: c for c in set_data["champions"]}
-
-    names = [champions_by_id[id]["name"] for id in units_ids]
-
-    names_lower = parse_names(names)
-
-    async with AsyncClient(timeout=10) as client:
-        models = await asyncio.gather(
-            *(fetch_model(name, client, sem)
-              for name in names_lower)
+        units, set_data = await asyncio.gather(
+            fetch_units(client),
+            fetch_set_data(client)
         )
 
+        if set_data is None:
+            raise ValueError("Set data not found")
+
+        units_ids = [unit["unit"] for unit in units if "TFT" not in unit["unit"]]
+        
+        champions_by_id = {c["apiName"]: c for c in set_data["champions"]}
+        units_ids = [uid for uid in units_ids if uid in champions_by_id]
+        
+        names_lower = parse_names(units_ids)
+    
+        results = await asyncio.gather(
+            *(fetch_model(name, client, sem)
+              for name in names_lower),
+            return_exceptions=True,
+        )
+
+    ok = []
+
+    for uid, name, res in zip(units_ids, names_lower, results):
+        if isinstance(res, BaseException):
+            print(f"Failed {name}: {res}")
+        else:
+            ok.append((uid, name, res))
+
+    if not ok:
+        raise RuntimeError("No Models Downloaded")
+
     await asyncio.gather(
-         *(create_binary_file(model, name)
-           for model, name in zip(models, names_lower))
+         *(create_binary_file(res, name)
+           for _, name, res in ok)
     )
 
-    model_dict = {id: f"{name}.glb" for id, name in zip(units_ids, names_lower)}
+    model_dict = {uid: f"{name}.glb" for uid, name, _ in ok}
     content = json.dumps(model_dict, indent=2)
 
-    async with aiofiles.open(f"/opt/game_data/shared/models_3d/models_list.json", 'w') as f:
+    async with aiofiles.open("/opt/game_data/shared/models_3d/models_list.json", 'w') as f:
         await f.write(content)
 
 

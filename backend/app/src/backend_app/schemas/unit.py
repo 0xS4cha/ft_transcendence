@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from backend_app.schemas import Trait
+from backend_app.schemas.trait import Trait
 
 class   Unit(BaseModel):
     id: str
