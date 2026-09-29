@@ -5,7 +5,10 @@ from sqlalchemy import select
 
 from backend_app.core.riot_api import riot_api
 from shared.database import AsyncSessionDep
-from shared.models.champions import Champion
+from shared.models.augments import Augment
+from shared.models.items import Item
+from shared.models.traits import Trait
+from shared.models.units import Unit
 
 router = APIRouter()
 
@@ -37,30 +40,29 @@ class Platform(Enum):
 		if self.value in [Platform.LA1, Platform.LA2, Platform.ME1, Platform.NA1]: # america
 			return "america"
 		return "europe" # eu by default
-		
-
-
-class SearchType(Enum):
-	unit="UNIT"
-	item="ITEM"
-	trait="TRAIT"
-	player="PLAYER"
 	
 
 searched_user_cache = {}
-async def query_user_profile(query_username: str, server: Platform):
+async def query_user_profile(query_username: str):
 	if query_username.count('#') == 1:
 		if query_username in searched_user_cache:
 			return {username: data for username, data in searched_user_cache.items() if username == query_username}
 
 		game_name = query_username.split('#')[0].strip()
 		game_tag = query_username.split('#')[1].strip()
-		account = riot_api.get_account(game_name, game_tag, server.get_continent())
+		account = riot_api.get_account(game_name, game_tag, Platform.JP1.get_continent())
 		if not account or not "puuid" in account:
 			return {}
 
+		# get region for player
+		region = riot_api.get_region(account["puuid"])
+		if not region:
+			return {}
+
+		server = Platform(region)
+
+
 		summoner = riot_api.get_summoner(account["puuid"], server.value)
-		print(summoner)
 		if not summoner or not "puuid" in summoner:
 			return {}
 
@@ -72,6 +74,7 @@ async def query_user_profile(query_username: str, server: Platform):
 		
 		username = f"{account.get('gameName')}#{account.get('tagLine')}"
 		searched_user_cache[username] = {
+			'region': region,
 			'puuid': summoner.get('puuid'),
 			'profileIconId': summoner.get('profileIconId'),
 			'summonerLevel': summoner.get('summonerLevel'),
@@ -92,26 +95,40 @@ async def query_user_profile(query_username: str, server: Platform):
 
 async def query_unit(query: str, session: AsyncSessionDep):
 	async with session:
-		champion_list = (await session.execute(select(Champion))).scalars().all()
-		return {champion.id: champion for champion in champion_list if query.lower().strip() in champion.name.lower().strip()}
+		unit_list = (await session.execute(select(Unit))).scalars().all()
+		return {unit.id: unit for unit in unit_list if query.lower().strip() in unit.name.lower().strip()}
+
+async def query_item(query: str, session: AsyncSessionDep):
+	async with session:
+		item_list = (await session.execute(select(Item))).scalars().all()
+		return {item.id: item for item in item_list if query.lower().strip() in item.id.lower().strip()}
+
+async def query_trait(query: str, session: AsyncSessionDep):
+	async with session:
+		trait_list = (await session.execute(select(Trait))).scalars().all()
+		return {trait.id: trait for trait in trait_list if query.lower().strip() in trait.name.lower().strip()}
+
+async def query_augment(query: str, session: AsyncSessionDep):
+	async with session:
+		augment_list = (await session.execute(select(Augment))).scalars().all()
+		return {augment.id: augment for augment in augment_list if query.lower().strip() in augment.name.lower().strip()}
 	
 
 # unit, user, item
-@router.get("/{query_type}/{query}")
-async def search(query_type: str, query: str, session: AsyncSessionDep):
+@router.get("/{query}")
+async def search(query: str, session: AsyncSessionDep):
 	query = query.strip()
 	try:
 		final = {}
-		if query_type.count('_') == 1:
-			search_type, platform = tuple(query_type.split('_', 2))
-			selected_search_type = SearchType(search_type)
-			selected_platform = Platform(platform)
-			if selected_search_type != SearchType.player:
-				raise Exception("Invalid search type, only players are located using platform") #noqa: TRY002
-			final["user"] = await query_user_profile(query.strip(), selected_platform)
-		else:
-			search_type = SearchType(query_type)
+		try:
+			final["user"] = await query_user_profile(query.strip())
+		except Exception as e:  # noqa: BLE001
+			print(e)
+			final["user"] = {} # none found
 		final["unit"] = await query_unit(query.strip(), session)
+		final["item"] = await query_item(query.strip(), session)
+		final["trait"] = await query_trait(query.strip(), session)
+		final["augment"] = await query_augment(query.strip(), session)
 		return final
 	except Exception as e: # noqa: BLE001
 		raise HTTPException(

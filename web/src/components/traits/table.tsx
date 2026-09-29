@@ -2,11 +2,11 @@ import { TraitsColumns } from "@/components/traits/columns";
 import { DataTable } from "@/components/data-table/data-table";
 import { useEffect, useState } from "react";
 import { toast } from "@/components/ui/toast";
-import { type Trait } from "@/types/trait";
+import { type TraitRow } from "@/components/traits/schema";
 import { getTraitsStats } from "@/services/statsService";
 
 export function TraitsTable() {
-  const [data, setData] = useState<Trait[]>([]);
+  const [data, setData] = useState<TraitRow[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {

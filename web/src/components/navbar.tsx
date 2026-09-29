@@ -11,6 +11,7 @@ const NAV_ITEMS: readonly NavItem[] = [
   { label: 'units', href: '/units' },
   { label: 'items', href: '/items' },
   { label: 'traits', href: '/traits' },
+  { label: 'augments', href: '/augments' },
   { label: 'patch note', href: '/patch_note' },
   { label: 'builder', href: '/builder' },
   { label: 'meta', href: '/meta' },

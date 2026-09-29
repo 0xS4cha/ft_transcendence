@@ -3,7 +3,6 @@ from fastapi import APIRouter
 from backend_app.api.endpoints import (
     accept_friend_request_router,
     augments_data_router,
-    champions_router,
     chat_router,
     friend_requests_list_router,
     friends_list_router,
@@ -16,7 +15,7 @@ from backend_app.api.endpoints import (
     prometheus_metrics_router,
     refuse_friend_request_router,
     remove_friend_router,
-    search_user_router,
+    search_router,
     send_friend_request_router,
     signup_router,
     stats_router,
@@ -64,12 +63,6 @@ api_router.include_router(
 )
 
 api_router.include_router(
-    champions_router,
-    tags=["Champions"],
-    prefix="/game_data/champions",
-)
-
-api_router.include_router(
     items_data_router,
     tags=["Game Data"],
     prefix="/game_data",
@@ -106,9 +99,9 @@ api_router.include_router(
 )
 
 api_router.include_router(
-	search_user_router,
-	tags=["Seach User"],
-	prefix="/search/user"
+	search_router,
+	tags=["Search"],
+	prefix="/search"
 )
 
 api_router.include_router(

@@ -4,10 +4,9 @@ import { UnitsCostFilter } from "@/components/units/cost_filter";
 import { UnitsExpand } from "@/components/units/expand";
 import type { Row, ColumnDef } from "@tanstack/react-table";
 import type { dataTableFeatures } from "@/lib/data-table-features";
-import type { UnitRow } from "@/components/units/schema";
 import { useEffect, useState } from "react";
 import { toast } from "@/components/ui/toast";
-import { type Unit } from "@/types/unit";
+import { type UnitRow } from "@/components/units/schema";
 import { getUnitsStats } from "@/services/statsService";
 
 
@@ -20,9 +19,8 @@ function UnitsExpandRenderer({ unit, columns }: UnitsExpandProps) {
   return <UnitsExpand unit={unit} columns={columns} />;
 }
 
-
 export function UnitsTable() {
-  const [data, setData] = useState<Unit[]>([]);
+  const [data, setData] = useState<UnitRow[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
