@@ -3,13 +3,9 @@ import sys
 from typing import Any
 
 import aiofiles
+import os
 import json
 from httpx2 import AsyncClient
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from .shared.database import db
-from .shared.models import Unit
 
 
 async def fetch_model(
@@ -27,8 +23,13 @@ async def create_binary_file(
     model: bytes,
     name: str
 ) -> None:
-    async with aiofiles.open(f"/opt/game_data/shared/models_3d/{name}.glb", 'wb') as f:
-        await f.write(model)
+    try:
+        async with aiofiles.open(f"/opt/game_data/shared/models_3d/{name}.glb", 'wb') as f:
+            await f.write(model)
+        return True
+    except Exception as e:
+        print(f"Failed to create file for {name}: {e}")
+        return False
 
 
 def parse_names(
@@ -46,6 +47,7 @@ def parse_names(
             names_lower[index] = name.replace("small", "")
 
     return names_lower
+
 
 async def fetch_units(
     client: AsyncClient
@@ -78,6 +80,9 @@ async def main(
         if set_data is None:
             raise ValueError("Set data not found")
 
+        if units is None:
+            raise ValueError("Unit data not found")
+
         units_ids = [unit["unit"] for unit in units if "TFT" not in unit["unit"]]
         
         champions_by_id = {c["apiName"]: c for c in set_data["champions"]}
@@ -92,26 +97,69 @@ async def main(
         )
 
     ok = []
-
     for uid, name, res in zip(units_ids, names_lower, results):
         if isinstance(res, BaseException):
-            print(f"Failed {name}: {res}")
+            print(f"Download failed {name}: {res}")
         else:
             ok.append((uid, name, res))
 
     if not ok:
-        raise RuntimeError("No Models Downloaded")
+        print("No models downloaded")
+        return
 
-    await asyncio.gather(
-         *(create_binary_file(res, name)
-           for _, name, res in ok)
+
+    write_results = await asyncio.gather(
+        *(create_binary_file(res, name)
+           for _, name, res in ok),
+        return_exceptions=True,
     )
 
-    model_dict = {uid: f"{name}.glb" for uid, name, _ in ok}
+    final_ok = []
+    for (uid, name, _), written in zip(ok, write_results):
+        if written is True:
+            final_ok.append((uid, name))
+
+    if not final_ok:
+        print("No model files created")
+        return
+
+    model_dict = {uid: f"{name}.glb" for uid, name in final_ok}
+    await save_models(model_dict)
+
+
+async def save_models(
+    model_dict: dict[str, str],
+    output_path: str = "/opt/game_data/shared/models_3d/models_list.json"
+) -> None:
+
+    try:
+        parent_dir = os.path.dirname(output_path)
+        if parent_dir:
+            os.makedirs(parent_dir, exist_ok=True)
+                        
+    except Exception as e:
+        print(f"Failed to create directory: {e}")
+        return
+
     content = json.dumps(model_dict, indent=2)
 
-    async with aiofiles.open("/opt/game_data/shared/models_3d/models_list.json", 'w') as f:
-        await f.write(content)
+    temp_path = output_path + '.tmp'
+
+    try:
+        async with aiofiles.open(temp_path, 'w') as f:  
+            await f.write(content)
+
+        os.replace(temp_path, output_path)
+        return
+
+    except Exception as e:
+        print(f"Failed to write models list: {e}")
+        if os.path.exists(temp_path):
+            try:
+                os.remove(temp_path)
+            except Exception:
+                pass
+        return
 
 
 if __name__ == "__main__":

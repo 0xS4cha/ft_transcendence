@@ -11,4 +11,3 @@ class   Unit(BaseModel):
     traits: list[Trait] = []
     icon: str
     model: str
-    
