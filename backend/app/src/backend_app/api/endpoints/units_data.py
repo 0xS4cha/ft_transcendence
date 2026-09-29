@@ -113,7 +113,6 @@ def get_model(
 
     return ""
 
-
 def process_unit(
     unit: dict[str, Any],
     all_units_use: int,
@@ -134,6 +133,10 @@ def process_unit(
     name = champion_info["name"]
     cost = champion_info["cost"]
     traits = [trait for trait in champion_info["traits"]]
+    
+    #GET TRAITS
+    #get the traits data with the same filters (can even cache that, need to separate the route from the service)
+    #from that get only the traits that we need inside that json
 
     icon = "https://cdn.metatft.com/cdn-cgi/image/width=128,height=128,format=auto/https://cdn.metatft.com/file/metatft/champions/tft18_" + name.lower() + ".png"
     model = model_dict.get(id)
@@ -211,7 +214,7 @@ async def fetch_units(
 
 async def fetch_set_data(
     client: AsyncClient
-) -> list[dict[str, Any]]:
+) -> dict[str, Any] | None:
     resp = await client.get("https://raw.communitydragon.org/latest/cdragon/tft/en_us.json")
     resp.raise_for_status()
     
