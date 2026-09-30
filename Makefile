@@ -9,7 +9,7 @@ build:
 up:
 	@docker compose -f compose.yaml up -d $(ARGS)
 
-down: 
+down:
 	@docker compose -f compose.yaml down $(ARGS)
 
 stop: 

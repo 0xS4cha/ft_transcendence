@@ -18,7 +18,6 @@ class   Settings(BaseSettings):
     POSTGRES_DB: str
     POSTGRES_PORT: int = 5432
     POSTGRES_HOST: str = "postgres"
-    DEBUG_HOST: str = "localhost"
     SCHEME: str = "postgresql+asyncpg"
 
     DEBUG: bool = False
@@ -39,7 +38,7 @@ class   Settings(BaseSettings):
                     scheme = self.SCHEME,
                     username = self.POSTGRES_USER,
                     password = self.POSTGRES_PASSWORD,
-                    host = self.DEBUG_HOST if self.DEBUG else self.POSTGRES_HOST,
+                    host = self.POSTGRES_HOST,
                     port = self.POSTGRES_PORT,
                     path = self.POSTGRES_DB
                 )
