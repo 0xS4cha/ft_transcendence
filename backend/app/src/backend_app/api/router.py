@@ -4,6 +4,7 @@ from backend_app.api.endpoints import (
     accept_friend_request_router,
     augments_data_router,
     chat_router,
+    chatbot_router,
     friend_requests_list_router,
     friends_list_router,
     items_data_router,
@@ -48,6 +49,12 @@ api_router.include_router(
     login_with_42_router,
     tags=["Authentication"],
     prefix="/auth"
+)
+
+api_router.include_router(
+	chatbot_router,
+	tags=["Chatbot"],
+	prefix="/chatbot"
 )
 
 api_router.include_router(

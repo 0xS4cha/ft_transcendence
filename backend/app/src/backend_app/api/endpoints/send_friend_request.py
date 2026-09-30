@@ -79,7 +79,7 @@ async def send_friend_request(
     await session.commit()
     await session.refresh(friend_request)
 
-    await WSbroadcast("friend.request", {
+    await WSbroadcast("equefriend.rst", {
         "requester_username": current_user.username
     }, [requested_id])
 
