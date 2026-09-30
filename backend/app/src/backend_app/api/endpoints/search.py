@@ -77,7 +77,7 @@ async def query_user_profile(query_username: str):
 			'username': username,
 			'region': region,
 			'puuid': summoner.get('puuid'),
-			'profileIconId': summoner.get('profileIconId'),
+			'profileIconUrl': f"https://cdn.metatft.com/file/metatft/profileicons/profileicon{summoner.get('profileIconId')}.png",
 			'summonerLevel': summoner.get('summonerLevel'),
 			"queueType": ranked_data.get('queueType'),
 			"tier": ranked_data.get('tier'),
