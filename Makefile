@@ -8,7 +8,7 @@ build:
 
 up:
 	@HOST_IP=$(HOST_IP) docker compose -f compose.yaml up -d $(ARGS)
-	@ollama serve
+	@OLLAMA_HOST=http://0.0.0.0:11434 ollama serve
 
 down:
 	@HOST_IP=$(HOST_IP) docker compose -f compose.yaml down $(ARGS)
