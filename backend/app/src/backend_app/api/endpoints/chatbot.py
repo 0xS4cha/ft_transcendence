@@ -6,7 +6,7 @@ from backend_app.core.jwt import Token
 from backend_app.models.users import UserModel
 
 chatbot = ChatBot(
-	"gemma3:4b",
+	"qwen3:0.6b",
 	"""
 You are a helpful AI assistant for a TFT statistics website.
 Answer users' questions about TFT using the statistics and data provided in your context.

@@ -3,7 +3,7 @@ ARGS	?:
 
 
 build:
-	@ollama pull "gemma3:4b"
+	@ollama pull "qwen3:0.6b"
 	@docker compose -f compose.yaml build $(ARGS)
 
 up:
