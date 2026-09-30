@@ -1,0 +1,269 @@
+import asyncio
+from typing import Any
+
+from httpx2 import AsyncClient, HTTPError
+from backend_app.schemas.trait import Trait
+
+class TraitsUnavailableError(Exception):
+    pass
+
+async def get_traits(
+    queue: str,
+    ranks: str,
+    servers: str
+) -> list[Trait]:
+    async with AsyncClient(timeout=10) as client:
+        try:
+            traits, set_data = await asyncio.gather(
+                fetch_traits(client, queue, ranks, servers),
+                fetch_set_data(client)
+            )
+        except HTTPError as e:
+            raise TraitsUnavailableError("Upstream Error") from e
+
+    if set_data is None:
+        raise TraitsUnavailableError("Set data not found")
+
+    if traits is None:
+        raise TraitsUnavailableError("Traits data not found")
+
+    traits_by_id = {
+        c["apiName"]: c
+        for c in set_data.get("traits", [])
+        if "apiName" in c
+    }
+    if not traits_by_id:
+        raise TraitsUnavailableError("Set data traits api names not found")
+    
+    traits = [trait for trait in traits if trait.get("trait", "")[:-2] in traits_by_id]
+    if not traits:
+        raise TraitsUnavailableError("Traits not found in set data traits")
+
+    all_traits_use = get_all_traits_use(traits)
+    if all_traits_use == 0:
+        raise TraitsUnavailableError("Traits use not found")
+
+    traits_out = [
+        t for trait in traits
+        if (t := process_trait(trait, all_traits_use, traits_by_id)) is not None
+    ]
+
+    return traits_out
+
+
+def process_trait(
+    trait: dict[str, Any],
+    all_traits_use: int,
+    traits_by_id: dict[str, dict[str, Any]]
+) -> Trait | None:
+
+    id = trait.get("trait")
+    places = trait.get("places")
+    if id is None or places is None:
+        return None
+
+    total_trait_use = sum(places)
+    if total_trait_use == 0:
+        return None
+    avg_place = get_avg_place(places, total_trait_use)
+    winrate = get_winrate(places, total_trait_use)
+    frequency = get_frequency(total_trait_use, all_traits_use)
+
+    trait_info = traits_by_id.get(id[:-2])
+    if trait_info is None:
+        return None
+
+    name = trait_info.get("name")
+    if name is None:
+        return None
+    
+    breakpoints = get_breakpoints(trait_info)
+    if breakpoints is None:
+        return None
+
+    breakpoint = safe_get(breakpoints, int(id[-1]) - 1)
+    if breakpoint is None:
+        return None
+
+    icon = "https://cdn.metatft.com/file/metatft/traits/" + id[:-2].lower() + ".png"
+    background_icon = get_background_icon(id, name, breakpoint)
+    if background_icon is None:
+        return None
+
+    return (Trait(
+        id=id,
+        name=name,
+        avg_place=avg_place,
+        winrate=winrate,
+        frequency=frequency,
+        breakpoint=breakpoint,
+        breakpoints=breakpoints,
+        icon=icon,
+        background_icon=background_icon,
+    ))
+
+
+def safe_get[T](
+    lst: list[T],
+    index: int,
+    default: T | None = None
+) -> T | None:
+    return lst[index] if 0 <= index and index < len(lst) else default
+
+
+async def fetch_traits(
+    client: AsyncClient,
+    queue: str,
+    ranks: str,
+    servers: str,
+) -> list[dict[str, Any]] | None:
+    resp = await client.get(f"https://api-hc.metatft.com/tft-stat-api/traits?queue={queue}&rank={ranks}&server={servers}")
+    resp.raise_for_status()
+
+    return resp.json().get("results")
+
+
+async def fetch_set_data(
+    client: AsyncClient
+) -> dict[str, Any] | None:
+    resp = await client.get("https://raw.communitydragon.org/latest/cdragon/tft/en_us.json")
+    resp.raise_for_status()
+    
+    return next((entry for entry in resp.json().get("setData", []) if entry.get("mutator", "") == "TFTSet18"), None)
+
+
+def get_all_traits_use(
+        traits: list
+) -> int:
+    total = 0
+
+    for trait in traits:
+        total += sum(trait.get("places"), 0)
+
+    return (total)
+
+
+def get_avg_place(
+        places: list,
+        total_trait_use: int
+) -> float:
+    weighted = 0
+
+    for rank, count in enumerate(places, start=1):
+        weighted += rank * count
+
+    weighted /= total_trait_use
+
+    return (weighted)
+
+
+def get_winrate(
+        places: list,
+        total_trait_use: int
+) -> float:
+    winrate = (places[0] / total_trait_use) * 100
+
+    return (winrate)
+
+
+def get_frequency(
+        total_trait_use: int,
+        all_traits_use: int
+) -> float:
+    if all_traits_use == 0:
+        return 0
+
+    frequency = (total_trait_use / all_traits_use) * 100
+
+    return (frequency)
+
+
+def get_breakpoints(
+    unit_trait_info: dict[str, Any]
+) -> list[str] | None:
+    effects = unit_trait_info.get("effects")
+    if effects is None:
+        return None
+
+    breakpoints = []
+    for breakpoint in effects:
+        if "minUnits" not in breakpoint:
+            return None
+        elif breakpoint["minUnits"] is None:
+            breakpoints.append("0")
+        else:
+            breakpoints.append(str(breakpoint["minUnits"]))
+
+    return breakpoints
+
+
+def get_background_icon(
+    id: str,
+    name: str,
+    breakpoint: str
+) -> str | None:
+    unique = "https://cdn.metatft.com/file/metatft/traits/unique.png"
+    plat = "https://cdn.metatft.com/file/metatft/traits/plat.png"
+    gold = "https://cdn.metatft.com/file/metatft/traits/gold.png"
+    silver = "https://cdn.metatft.com/file/metatft/traits/silver.png"
+    bronze = "https://cdn.metatft.com/file/metatft/traits/bronze.png"
+
+    match breakpoint:
+        case "0":
+            return unique
+        
+        case "1":
+            if "Flora" in name:
+                return bronze
+            elif "Rival" in name:
+                if id[-1] == "2":
+                    return bronze
+                return gold
+            else:
+                return unique
+
+        case "2":
+            if "Flora" in name or "Rival" in name:
+                return gold
+            else:
+                return bronze
+
+        case "3":
+            if "Summoner" in name or "Solar" in name:
+                return gold
+            elif "Riftbeast" in name \
+                or "Edlerwood" in name \
+                or "Sprykin" in name \
+                or "Blossom" in name \
+                or "Coven" in name:
+                return bronze
+            else:
+                return silver
+
+        case "4":
+            if "Executioner" in name \
+                or "Primal" in name \
+                or "Adaptor" in name \
+                or "Fae" in name:
+                return gold
+            else:
+                return silver
+
+        case "5":
+            if "Riftbeast" in name \
+                or "Edlerwood" in name \
+                or "Sprykin" in name \
+                or "Blossom" in name \
+                or "Coven" in name:
+                return silver
+            else:
+                return gold
+
+        case "6" | "7" | "8" | "9" | "10":
+            return gold
+
+        case "11":
+            return plat
+
+        case _:
+            return None
