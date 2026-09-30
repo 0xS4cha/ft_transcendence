@@ -4,7 +4,6 @@ HOST_IP		= ${shell ip addr | grep "192.168" | cut -d ' ' -f6 | cut -d '/' -f1}
 all: up
 
 build:
-	@ollama pull "qwen3:0.6b"
 	@HOST_IP=$(HOST_IP) docker compose -f compose.yaml build $(ARGS)
 
 up:
