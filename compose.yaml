@@ -19,6 +19,7 @@ services:
       redis:
         condition: service_healthy
     environment:
+      DEBUG: ${DEBUG}
       CONTAINER_NAME: backend
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

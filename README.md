@@ -17,7 +17,16 @@ Transcendence - Milestone 6 - 42 CC
 | CONSTANT_CASE  | constants                                                                                                              |
 
 # TODO
-- [ ] remove db port expose in compose 
+- [x] remove db port expose in compose 
 - [ ] foutre des healthcheck de partout dans le compose.yaml
 - [ ] rendre le bouton du dashboard 90d - 30d... usable
-- [ ] remove /docs of backend fastapi
+- [x] remove /docs of backend fastapi
+- [ ] readme
+- Front
+	- [ ] websocket pour le systeme d'amis
+	- [ ] ranking
+	- [ ] profile
+	- [ ] search bar
+	- [ ] set 18 update
+	- [ ] change "Tactycs" to "Tactyx"
+	- [ ] add multi language support
