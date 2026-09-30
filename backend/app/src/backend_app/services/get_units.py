@@ -5,6 +5,7 @@ from typing import Any
 
 from httpx2 import AsyncClient, HTTPError
 from backend_app.schemas.unit import Unit
+from backend_app.schemas.unit_trait import UnitTrait
 from backend_app.schemas.trait import Trait
 from pydantic import TypeAdapter
 from backend_app.core.utils import safe_get
@@ -95,11 +96,15 @@ def process_unit(
     if name is None or cost is None:
         return None
     
-    traits = [
-        trait for trait_name in champion_info.get("traits", [])
-        for trait in traits_list
-        if trait.name == trait_name
-    ]
+    traits = []
+    seen_names = set()
+
+    for trait_name in champion_info.get("traits", []):
+        for trait in traits_list:
+            if trait.name == trait_name and trait_name not in seen_names:
+                traits.append(UnitTrait.model_validate(trait, from_attributes=True))
+                seen_names.add(trait_name)
+                break
 
     icon = "https://cdn.metatft.com/cdn-cgi/image/width=128,height=128,format=auto/https://cdn.metatft.com/file/metatft/champions/tft18_" + name.lower() + ".png"
     model = model_dict.get(id)

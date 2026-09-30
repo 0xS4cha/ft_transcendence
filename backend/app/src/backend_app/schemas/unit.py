@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from backend_app.schemas.trait import Trait
+from backend_app.schemas.unit_trait import UnitTrait
 
 class   Unit(BaseModel):
     id: str
@@ -8,6 +8,6 @@ class   Unit(BaseModel):
     winrate: float
     frequency: float
     cost: int
-    traits: list[Trait] = []
+    traits: list[UnitTrait] = []
     icon: str
     model: str | None
