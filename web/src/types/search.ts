@@ -25,5 +25,6 @@ export interface search {
     item: ItemRow[];
     augment: AugmentRow[];
     trait: TraitRow[];
-    user: userSearch;
+    user: userSearch[];
+    length: number;
 }
