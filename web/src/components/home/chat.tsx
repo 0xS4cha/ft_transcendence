@@ -39,7 +39,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { type ChatDataProps } from "@/types/chat";
 import { getChatHistory, sendChatMessage } from "@/services/chatService";
 import { setChat } from "@/store/reducers/userSlice"
-import { useWSConnection } from "@/lib/websocket"
+import { initialsOf } from "@/lib/utils";
 
 const MAX_LENGTH = 2000;
 
@@ -63,11 +63,6 @@ function formatDay(value: string) {
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? "" : dayFormatter.format(date);
 }
-
-function initialsOf(username: string) {
-  return username.slice(0, 2).toUpperCase();
-}
-
 
 function groupMessages(messages: ChatDataProps[]) {
   return messages.reduce<ChatDataProps[][]>((groups, message) => {
@@ -151,12 +146,11 @@ function MessagesSkeleton() {
 
 export function Chat({ currentUser, isAuthenticated }: { currentUser: string, isAuthenticated: boolean }) {
   const dispatch = useAppDispatch();
-  const messages = useAppSelector((state) => state.user.chat);
+  const messages = useAppSelector((state) => state.user.chat ? state.user.chat : []);
   const [pendingIds, setPendingIds] = useState<Set<number>>(new Set());
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
-  const { isActive, startConnection } = useWSConnection("/api/websocket/ws");
   const viewportRef = useRef<HTMLDivElement>(null);
   
   const loadHistory = useCallback(async () => {
@@ -176,9 +170,6 @@ export function Chat({ currentUser, isAuthenticated }: { currentUser: string, is
   
   
   useEffect(() => {
-    if (!isActive && isAuthenticated) {
-      startConnection();
-    }
     viewportRef.current?.scrollTo({
       top: viewportRef.current.scrollHeight,
       behavior: "smooth",
