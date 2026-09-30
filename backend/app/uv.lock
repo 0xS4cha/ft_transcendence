@@ -256,7 +256,6 @@ dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "greenlet" },
     { name = "httpx2" },
-    { name = "ollama" },
     { name = "prometheus-client" },
     { name = "pwdlib", extra = ["argon2"] },
     { name = "pydantic-settings" },
@@ -287,7 +286,6 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.141.1" },
     { name = "greenlet", specifier = ">=3.5.5" },
     { name = "httpx2", specifier = ">=2.12.0" },
-    { name = "ollama", specifier = ">=0.6.3" },
     { name = "prometheus-client", specifier = ">=0.26.0" },
     { name = "pwdlib", extras = ["argon2"], specifier = ">=0.3.1" },
     { name = "pydantic-settings", specifier = ">=2.15.0" },
@@ -1047,19 +1045,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/02/8b/b2c2805c3eb6fa4cdf5512fb95ac6174dde71e34dd601c5be52f4df5dc82/multidict-6.9.1-cp315-cp315t-win_amd64.whl", hash = "sha256:e96ca64383efa107262ee3949f047af5ee4f1845ba09463466c04d35a83bd3ec", size = 64984, upload-time = "2026-09-21T17:58:59.446Z" },
     { url = "https://files.pythonhosted.org/packages/fd/34/03f1d204d698c408f4754c969882609b6b7a902c0e3d16a7033f219cdeda/multidict-6.9.1-cp315-cp315t-win_arm64.whl", hash = "sha256:501ed8b02a5990c67a91c732843609d43a6be1f7576fcdfc867331239f37fbd3", size = 58742, upload-time = "2026-09-21T17:59:01.726Z" },
     { url = "https://files.pythonhosted.org/packages/be/59/e26cb779be4c591d1a910f59d29aca9fba4de70349840a833beba2652371/multidict-6.9.1-py3-none-any.whl", hash = "sha256:7bf6478188f4e47bf5686e8a33da4ae28bf43b1b2528d9ee144d28492bfac60b", size = 19176, upload-time = "2026-09-21T17:59:03.501Z" },
-]
-
-[[package]]
-name = "ollama"
-version = "0.6.3"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "httpx" },
-    { name = "pydantic" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/b8/97/eeafe65594e4f4b25e443e068ef7d83aa3105b023e12e1c408c38669fc07/ollama-0.6.3.tar.gz", hash = "sha256:41fc49a8095c4a75939c4c1f8582e4d0671692fb6eac2a5a7ede8c9872b67096", size = 56868, upload-time = "2026-09-29T01:26:51.906Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/4d/64/87505d9e006461233c21c8e66dc1ecee49c996090584b216abd0dd4a8322/ollama-0.6.3-py3-none-any.whl", hash = "sha256:6a20bc42c1a5f889295d7ec490d35e5132fc31f339561530f43a8abd4dbfe508", size = 16603, upload-time = "2026-09-29T01:26:50.451Z" },
 ]
 
 [[package]]
