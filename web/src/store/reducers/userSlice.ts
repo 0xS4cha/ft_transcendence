@@ -55,6 +55,7 @@ export const userSlice = createSlice({
       state.chat = action.payload;
     },
     addChatContent: (state, action: PayloadAction<ChatDataProps>) => {
+      if (!state.chat) return;
       if (state.chat.some((item) => item.date === action.payload.date)) return;
       state.chat.push(action.payload);
     },
@@ -62,12 +63,14 @@ export const userSlice = createSlice({
       state,
       action: PayloadAction<{ id: number; message: ChatDataProps }>,
     ) => {
+      if (!state.chat) return;
       const index = state.chat.findIndex((item) => item.id === action.payload.id);
       if (index !== -1) {
         state.chat[index] = action.payload.message;
       }
     },
     removeChatContent: (state, action: PayloadAction<number>) => {
+      if (!state.chat) return;
       state.chat = state.chat.filter((item) => item.id !== action.payload);
     },
   },
