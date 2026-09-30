@@ -4,11 +4,10 @@ import { type AugmentRow } from "@/components/augments/schema"
 import { type TraitRow } from "@/components/traits/schema"
 
 export interface userSearch {
+    icon: string;
     username: string;
     region: string;
-    icon: string;
     puuid: string;
-    profileIconId: number;
     summonerLevel: number;
     queueType: string;
     tier: string;

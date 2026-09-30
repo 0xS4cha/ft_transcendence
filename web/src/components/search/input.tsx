@@ -137,6 +137,7 @@ export function SearchInput({
     const timeout = setTimeout(async () => {
       try {
         const result = await getSearchFromQuery(trimmed);
+        console.log(trimmed, encodeURI(trimmed), query);
         if (!cancelled) setData({ query: trimmed, result });
       } catch (error) {
         if (!cancelled) {
