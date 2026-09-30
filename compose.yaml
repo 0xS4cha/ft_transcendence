@@ -18,8 +18,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      ollama:
-        condition: service_healthy
     environment:
       DEBUG: ${DEBUG}
       CONTAINER_NAME: backend
@@ -32,6 +30,8 @@ services:
       FORTYTWO_CLIENT_ID: ${FORTYTWO_CLIENT_ID}
       FORTYTWO_CLIENT_SECRET: ${FORTYTWO_CLIENT_SECRET}
       FORTYTWO_REDIRECT_URI: ${FORTYTWO_REDIRECT_URI}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./shared/:/app/src/shared/
       - ./backend/app/src:/app/src #dev env, change when prod
@@ -39,34 +39,6 @@ services:
       - ./backend/app/alembic.ini:/app/alembic.ini #dev env, change when prod
     networks:
       - localnet_transcendence
-
-  ollama:
-    image: ollama/ollama:latest
-    container_name: transcendence-ollama
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama_data:/root/.ollama
-    restart: unless-stopped
-    entrypoint: ["/bin/sh", "-c"]
-    command:
-      - |
-        ollama serve &
-        until ollama list >/dev/null 2>&1; do
-          sleep 1
-        done
-        ollama pull gemma4:e4b
-        wait
-    healthcheck:
-      test: ["CMD", "ollama", "show", "gemma4:e4b"]
-      interval: 5s
-      timeout: 5s
-      retries: 30
-      start_period: 10s
-    networks:
-      - localnet_transcendence
-
-
 
   redis:
     image: redis:7-alpine

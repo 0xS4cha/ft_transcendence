@@ -5,7 +5,7 @@ from shared.database import db
 class ChatBot:
 	def __init__(self, model_name: str, system_prompt: str):
 		self.model_name = model_name
-		self.client = AsyncClient(host="http://ollama:11434")
+		self.client = AsyncClient(host="http://host.docker.internal:11434")
 		self.system_prompt = system_prompt
 
 

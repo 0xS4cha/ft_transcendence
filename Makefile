@@ -1,13 +1,14 @@
 all: up
-ARGS ?:
+ARGS	?:
 
-.PHONY: all up down stop start boom nuke status logs build re
 
 build:
+	@ollama pull "gemma3:4b"
 	@docker compose -f compose.yaml build $(ARGS)
 
 up:
 	@docker compose -f compose.yaml up -d $(ARGS)
+	@ollama serve
 
 down:
 	@docker compose -f compose.yaml down $(ARGS)
@@ -31,3 +32,6 @@ status:
 
 logs:
 	@docker compose -f compose.yaml logs -f $(ARGS)
+
+
+.PHONY: all up down stop start boom nuke status logs build re
