@@ -1,14 +1,15 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
-
+from shared.database import db
 from backend_app.core.chatbot import ChatBot
 from backend_app.core.jwt import Token
 from backend_app.models.users import UserModel
 
 chatbot = ChatBot(
+	db.settings.HOST_IP,
 	"qwen3:0.6b",
-	"""
+"""
 You are a helpful AI assistant for a TFT statistics website.
 Answer users' questions about TFT using the statistics and data provided in your context.
 
@@ -23,7 +24,7 @@ Answer users' questions about TFT using the statistics and data provided in your
 - Use common TFT terminology naturally.
 - If the question is unrelated to TFT, briefly say that you specialize in TFT statistics.
 - Keep responses short unless the user asks for more detail.
-	"""
+"""
 )
 router = APIRouter()
 

@@ -3,7 +3,6 @@ services:
     build: backend
     container_name: transcendence-backend
     restart: unless-stopped
-    network_mode: host
     expose:
       - "3000"
     ports:
@@ -20,6 +19,7 @@ services:
       redis:
         condition: service_healthy
     environment:
+      HOST_IP: ${HOST_IP}
       DEBUG: ${DEBUG}
       CONTAINER_NAME: backend
       POSTGRES_USER: ${POSTGRES_USER}
@@ -38,8 +38,8 @@ services:
       - ./backend/app/src:/app/src #dev env, change when prod
       - ./backend/app/alembic:/app/alembic #dev env, change when prod
       - ./backend/app/alembic.ini:/app/alembic.ini #dev env, change when prod
-    #networks:
-    #  - localnet_transcendence
+    networks:
+      - localnet_transcendence
 
   redis:
     image: redis:7-alpine
@@ -85,6 +85,7 @@ services:
         condition: service_healthy
     environment:
       CONTAINER_NAME: game_data
+      HOST_IP: ${HOST_IP}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
