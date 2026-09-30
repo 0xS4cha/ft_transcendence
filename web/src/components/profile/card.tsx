@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useAppSelector } from '@/store/hooks';
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { initialsOf } from "@/lib/utils";
 
 export function ProfileCard() {
     const { username, picture, email, id } = useAppSelector(state => state.user);
@@ -11,6 +12,7 @@ export function ProfileCard() {
                 <div className="flex flex-col items-center space-y-4">
                     <Avatar>
                         <AvatarImage src={picture} alt={username} />
+                        <AvatarFallback className="text-xs">{initialsOf(username)}</AvatarFallback>
                     </Avatar>
                    <div className="text-center">
                         <h5 className="text-xl font-semibold">{username}</h5>
