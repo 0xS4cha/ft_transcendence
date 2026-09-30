@@ -6,7 +6,7 @@ from backend_app.core.jwt import Token
 from backend_app.models.users import UserModel
 
 chatbot = ChatBot(
-	"google/gemma-4-31b-it:free",
+	"gemma4:e4b",
 	"""
 You are a helpful AI assistant for a TFT statistics website.
 Answer users' questions about TFT using the statistics and data provided in your context.
@@ -29,4 +29,4 @@ router = APIRouter()
 
 @router.get("/ask")
 async def ask_chatbot(message: str, current_user: Annotated[UserModel, Depends(Token.get_current_user)]):
-	return chatbot.ask(message)
+	return await chatbot.ask(message)

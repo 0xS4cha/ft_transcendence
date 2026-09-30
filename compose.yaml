@@ -18,10 +18,11 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      ollama:
+        condition: service_healthy
     environment:
       DEBUG: ${DEBUG}
       CONTAINER_NAME: backend
-      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
@@ -39,9 +40,38 @@ services:
     networks:
       - localnet_transcendence
 
+  ollama:
+    image: ollama/ollama:latest
+    container_name: transcendence-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        ollama serve &
+        until ollama list >/dev/null 2>&1; do
+          sleep 1
+        done
+        ollama pull gemma4:e4b
+        wait
+    healthcheck:
+      test: ["CMD", "ollama", "show", "gemma4:e4b"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+    networks:
+      - localnet_transcendence
+
+
+
   redis:
     image: redis:7-alpine
     restart: unless-stopped
+    container_name: transcendence-redis
     ports:
       - "6378:6379"
     healthcheck:
@@ -234,6 +264,7 @@ volumes:
   pgdata_transcendence:
   prometheus_transcendence:
   grafana_transcendence:
+  ollama_data:
 
 networks:
   localnet_transcendence:
