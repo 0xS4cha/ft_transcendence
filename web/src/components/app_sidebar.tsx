@@ -64,11 +64,9 @@ const NAV_ITEMS: readonly NavItem[] = [
 ] as const;
 
 export function AppSidebar() {
-  const { state, toggleSidebar } = useSidebar();
+  const { toggleSidebar } = useSidebar();
   const dispatch = useAppDispatch();
-  const isCollapsed = state === 'collapsed';
   const { isAuthenticated, username, picture } = useAppSelector(state => state.user);
-  console.log(isCollapsed);
 
   function handleLogout() {
     dispatch(logoutUser()).unwrap();
@@ -176,6 +174,11 @@ export function AppSidebar() {
           >
             {isAuthenticated ? (
               <>
+                <DropdownMenuItem render={
+                  <Link to="/profile">
+                    Profile
+                  </Link>
+                }/>
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={handleLogout}

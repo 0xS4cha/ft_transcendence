@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useAppDispatch } from "@/store/hooks"
 import { addChatContent } from "@/store/reducers/userSlice";
+import { receiveFriendRequest } from "@/services/friendsService"
 
 export function useWSConnection(url: string = 'ws://127.0.0.1:8080') {
   const [isConnected, setIsConnected] = useState(false);
@@ -38,10 +39,17 @@ export function useWSConnection(url: string = 'ws://127.0.0.1:8080') {
     ws.onmessage = (event) => {
     try {
         const parsed = JSON.parse(event.data);
-        dispatch(addChatContent(parsed.data));
-    } catch (err) {
-        console.error("WS message parsing failed:", err);
-    }
+        switch (parsed.type) {
+          case "chat.msg":
+            dispatch(addChatContent(parsed.data));
+            break;
+          case "friend.request":
+            receiveFriendRequest(parsed.data.requester_username);
+            break;
+        }
+      } catch (err) {
+          console.error("WS message parsing failed:", err);
+      }
     };
 
       ws.onerror = () => {
