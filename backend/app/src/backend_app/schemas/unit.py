@@ -10,4 +10,4 @@ class   Unit(BaseModel):
     cost: int
     traits: list[Trait] = []
     icon: str
-    model: str
+    model: str | None

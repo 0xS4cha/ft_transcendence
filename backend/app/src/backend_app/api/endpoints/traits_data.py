@@ -1,13 +1,11 @@
 from fastapi import APIRouter, HTTPException, status
-from pydantic import TypeAdapter
 
 from backend_app.schemas.trait import Trait
 from backend_app.core.dependencies import RedisDep 
 from backend_app.core.cache import build_cache_key, get_or_fetch
-from backend_app.services.get_traits import get_traits, TraitsUnavailableError
+from backend_app.services.get_traits import get_traits, TraitsUnavailableError, traits_adapter
 
 router = APIRouter()
-traits_adapter = TypeAdapter(list[Trait])
 
 QUEUES = {"1100", "1160"}
 RANKS = {"BRONZE", "CHALLENGER", "DIAMOND", "EMERALD", "GOLD", "GRANDMASTER", "IRON", "MASTER", "PLATINUM", "RANKUNKNOWN", "SILVER"}

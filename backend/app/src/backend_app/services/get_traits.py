@@ -3,9 +3,13 @@ from typing import Any
 
 from httpx2 import AsyncClient, HTTPError
 from backend_app.schemas.trait import Trait
+from pydantic import TypeAdapter
+from backend_app.core.utils import safe_get
 
 class TraitsUnavailableError(Exception):
     pass
+
+traits_adapter = TypeAdapter(list[Trait])
 
 async def get_traits(
     queue: str,
@@ -103,14 +107,6 @@ def process_trait(
     ))
 
 
-def safe_get[T](
-    lst: list[T],
-    index: int,
-    default: T | None = None
-) -> T | None:
-    return lst[index] if 0 <= index and index < len(lst) else default
-
-
 async def fetch_traits(
     client: AsyncClient,
     queue: str,
@@ -161,7 +157,7 @@ def get_winrate(
         places: list,
         total_trait_use: int
 ) -> float:
-    winrate = (places[0] / total_trait_use) * 100
+    winrate = (safe_get(places, 0) / total_trait_use) * 100
 
     return (winrate)
 

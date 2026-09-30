@@ -1,7 +1,7 @@
 from typing import Callable, Awaitable
 import redis.exceptions as redis
 from backend_app.core.dependencies import RedisDep
-from pydantic import TypeAdapter
+from pydantic import TypeAdapter, ValidationError
 
 async def get_or_fetch[S](
     r: RedisDep,
@@ -16,12 +16,21 @@ async def get_or_fetch[S](
         cached = None
     
     if cached is not None:
-        return adapter.validate_json(cached)
+        try:
+            return adapter.validate_json(cached)
+        except ValidationError:
+            pass
+
 
     results = await fetch_fn();
 
     try:
-        await r.set(key, adapter.dump_json(results), ex=ttl)
+        adapted = adapter.dump_json(results)
+    except (TypeError, ValidationError):
+        return results
+
+    try:
+        await r.set(key, adapted, ex=ttl)
     except redis.RedisError :
         pass
 
