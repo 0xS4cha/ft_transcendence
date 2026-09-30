@@ -124,7 +124,7 @@ async def add_item(
         id,
         avg_place,
         winrate,
-        frequency, 
+        frequency,
         name,
         type,
         composition,
@@ -136,7 +136,7 @@ async def add_item(
 
 async def main(
         session: AsyncSession
-) -> None:
+) -> None:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
     item_data = {}
     async with aiofiles.open("/opt/game_data/items_matches.json", 'r') as f:
         item_data = json.loads(await f.read())
