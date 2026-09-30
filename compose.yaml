@@ -19,6 +19,7 @@ services:
       redis:
         condition: service_healthy
     environment:
+      HOST_IP: ${HOST_IP}
       DEBUG: ${DEBUG}
       CONTAINER_NAME: backend
       POSTGRES_USER: ${POSTGRES_USER}
@@ -30,6 +31,8 @@ services:
       FORTYTWO_CLIENT_ID: ${FORTYTWO_CLIENT_ID}
       FORTYTWO_CLIENT_SECRET: ${FORTYTWO_CLIENT_SECRET}
       FORTYTWO_REDIRECT_URI: ${FORTYTWO_REDIRECT_URI}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./shared/:/app/src/shared/
       - ./backend/app/src:/app/src #dev env, change when prod
@@ -41,6 +44,7 @@ services:
   redis:
     image: redis:7-alpine
     restart: unless-stopped
+    container_name: transcendence-redis
     ports:
       - "6378:6379"
     healthcheck:
@@ -81,6 +85,7 @@ services:
         condition: service_healthy
     environment:
       CONTAINER_NAME: game_data
+      HOST_IP: ${HOST_IP}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
@@ -233,6 +238,7 @@ volumes:
   pgdata_transcendence:
   prometheus_transcendence:
   grafana_transcendence:
+  ollama_data:
 
 networks:
   localnet_transcendence:

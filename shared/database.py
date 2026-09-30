@@ -31,6 +31,8 @@ class   Settings(BaseSettings):
     FORTYTWO_CLIENT_SECRET: str
     FORTYTWO_REDIRECT_URI: HttpUrl
 
+    HOST_IP: str
+
     @property
     def database_url(self) -> str:
         return (str(
