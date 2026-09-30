@@ -22,6 +22,7 @@ from backend_app.api.endpoints import (
     traits_data_router,
     units_data_router,
     websocket_router,
+    chatbot_router
 )
 
 api_router = APIRouter(prefix="/api")
@@ -48,6 +49,12 @@ api_router.include_router(
     login_with_42_router,
     tags=["Authentication"],
     prefix="/auth"
+)
+
+api_router.include_router(
+	chatbot_router,
+	tags=["Chatbot"],
+	prefix="/chatbot"
 )
 
 api_router.include_router(

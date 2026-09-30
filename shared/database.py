@@ -31,6 +31,8 @@ class   Settings(BaseSettings):
     FORTYTWO_CLIENT_SECRET: str
     FORTYTWO_REDIRECT_URI: HttpUrl
 
+    OPENROUTER_API_KEY: str
+
     @property
     def database_url(self) -> str:
         return (str(
