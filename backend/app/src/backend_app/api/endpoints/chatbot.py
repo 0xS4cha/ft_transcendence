@@ -1,7 +1,8 @@
-from typing import Annotated, Any
+from typing import Annotated
+
+from fastapi import APIRouter, Depends
 
 from backend_app.core.chatbot import ChatBot
-from fastapi import APIRouter, Depends
 from backend_app.core.jwt import Token
 from backend_app.models.users import UserModel
 

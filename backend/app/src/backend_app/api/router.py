@@ -4,6 +4,7 @@ from backend_app.api.endpoints import (
     accept_friend_request_router,
     augments_data_router,
     chat_router,
+    chatbot_router,
     friend_requests_list_router,
     friends_list_router,
     items_data_router,
@@ -22,7 +23,6 @@ from backend_app.api.endpoints import (
     traits_data_router,
     units_data_router,
     websocket_router,
-    chatbot_router
 )
 
 api_router = APIRouter(prefix="/api")

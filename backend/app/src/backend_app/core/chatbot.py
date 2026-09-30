@@ -1,5 +1,4 @@
 from ollama import AsyncClient
-from shared.database import db
 
 
 class ChatBot:
