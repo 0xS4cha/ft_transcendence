@@ -10,6 +10,7 @@ from backend_app.schemas.trait import Trait
 from pydantic import TypeAdapter
 from backend_app.core.utils import safe_get
 from backend_app.services.fetch_game_data import get_game_data, fetch_set_data
+from backend_app.services.get_stats import get_all_datas_use, get_stats
 import redis.asyncio as redis
 
 class UnitsUnavailableError(Exception):
@@ -52,7 +53,7 @@ async def get_units(
     if not units:
         raise UnitsUnavailableError("Units not found in set data units")
 
-    all_units_use = get_all_units_use(units)
+    all_units_use = get_all_datas_use(units)
     if all_units_use == 0:
         raise UnitsUnavailableError("Units use not found")
 
@@ -86,9 +87,7 @@ def process_unit(
     total_unit_use = sum(places)
     if total_unit_use == 0:
         return None
-    avg_place = get_avg_place(places, total_unit_use)
-    winrate = get_winrate(places, total_unit_use)
-    frequency = get_frequency(total_unit_use, all_units_use)
+    avg_place, winrate, frequency = get_stats(places, total_unit_use, all_units_use)
 
     champion_info = champions_by_id.get(id)
     if champion_info is None:

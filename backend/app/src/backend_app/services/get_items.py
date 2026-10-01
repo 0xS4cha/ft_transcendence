@@ -7,6 +7,7 @@ from pydantic import TypeAdapter
 from backend_app.core.utils import safe_get
 from backend_app.services.fetch_game_data import get_game_data, fetch_lookup
 import redis.asyncio as redis
+from backend_app.services.get_stats import get_all_datas_use, get_stats
 
 class ItemsUnavailableError(Exception):
     pass
@@ -51,7 +52,7 @@ async def get_items(
     if not items:
         raise ItemsUnavailableError("Items not found in items compo")
 
-    all_items_use = get_all_items_use(items)
+    all_items_use = get_all_datas_use(items)
     if all_items_use == 0:
         raise ItemsUnavailableError("Items use not found")
 
@@ -77,9 +78,7 @@ def process_item(
     total_item_use = sum(places)
     if total_item_use == 0:
         return None
-    avg_place = get_avg_place(places, total_item_use)
-    winrate = get_winrate(places, total_item_use)
-    frequency = get_frequency(total_item_use, all_items_use)
+    avg_place, winrate, frequency = get_stats(places, total_item_use, all_items_use)
 
     item_info = items_by_id.get(id)
     if item_info is None:

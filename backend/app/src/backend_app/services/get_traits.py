@@ -7,6 +7,8 @@ from pydantic import TypeAdapter
 from backend_app.core.utils import safe_get
 from backend_app.services.fetch_game_data import get_game_data, fetch_set_data
 import redis.asyncio as redis
+from backend_app.services.get_stats import get_all_datas_use, get_stats
+
 
 class TraitsUnavailableError(Exception):
     pass
@@ -46,7 +48,7 @@ async def get_traits(
     if not traits:
         raise TraitsUnavailableError("Traits not found in set data traits")
 
-    all_traits_use = get_all_traits_use(traits)
+    all_traits_use = get_all_datas_use(traits)
     if all_traits_use == 0:
         raise TraitsUnavailableError("Traits use not found")
 
@@ -72,9 +74,7 @@ def process_trait(
     total_trait_use = sum(places)
     if total_trait_use == 0:
         return None
-    avg_place = get_avg_place(places, total_trait_use)
-    winrate = get_winrate(places, total_trait_use)
-    frequency = get_frequency(total_trait_use, all_traits_use)
+    avg_place, winrate, frequency = get_stats(places, total_trait_use, all_traits_use)
 
     trait_info = traits_by_id.get(id[:-2])
     if trait_info is None:
