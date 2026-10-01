@@ -5,6 +5,7 @@ import { UnitsExpand } from "@/components/units/expand";
 import type { Row, ColumnDef } from "@tanstack/react-table";
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { toast } from "@/components/ui/toast";
 import { type UnitRow } from "@/components/units/schema";
 import { getUnitsStats } from "@/services/statsService";
@@ -21,6 +22,9 @@ function UnitsExpandRenderer({ unit, columns }: UnitsExpandProps) {
 
 export function UnitsTable() {
   const [data, setData] = useState<UnitRow[]>([]);
+  const [searchParams] = useSearchParams();
+  const initialSearchQuery = searchParams.get("q")?.trim() ?? "";
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,6 +59,7 @@ export function UnitsTable() {
       searchPlaceholder="Search units..."
       customToolbar={<UnitsCostFilter />}
       onExpand={renderSubComponent}
+      initialSearchQuery={initialSearchQuery}
     />
   );
 }

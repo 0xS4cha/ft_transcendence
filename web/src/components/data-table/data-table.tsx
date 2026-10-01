@@ -1,4 +1,4 @@
-import { useState, useMemo, Fragment } from "react";
+import { useEffect, useState, useMemo, Fragment } from "react";
 import {
   type ColumnFiltersState,
   type ColumnVisibilityState,
@@ -43,6 +43,7 @@ interface DataTableProps {
   getRowId: (originalRow: any, index: number, parent?: any) => string;
   defaultSortId: string;
   searchPlaceholder?: string;
+  initialSearchQuery?: string;
   customToolbar?: React.ReactNode;
   onExpand?: (unit: Row<typeof dataTableFeatures, UnitRow>, columns: unknown[]) => React.ReactNode;
 }
@@ -53,6 +54,7 @@ export function DataTable({
   getRowId,
   defaultSortId,
   searchPlaceholder = "Search...",
+  initialSearchQuery = "",
   onExpand,
   customToolbar,
 }: DataTableProps) {
@@ -72,6 +74,7 @@ export function DataTable({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
 
   const table = useTable({
     features: dataTableFeatures,
@@ -95,7 +98,11 @@ export function DataTable({
     getRowCanExpand: () => true,
   });
 
-  const searchQuery = (table.getColumn("search")?.getFilterValue() as string | undefined) ?? "";
+  useEffect(() => {
+    setSearchQuery(initialSearchQuery);
+    table.getColumn("search")?.setFilterValue(initialSearchQuery || undefined);
+    table.setPageIndex(0);
+  }, [initialSearchQuery]);
 
   const sortValue = useMemo(() => {
     const currentSort = sorting[0];
@@ -117,6 +124,7 @@ export function DataTable({
               placeholder={searchPlaceholder}
               value={searchQuery}
               onChange={(event) => {
+                setSearchQuery(event.target.value);
                 table.getColumn("search")?.setFilterValue(event.target.value || undefined);
                 table.setPageIndex(0);
               }}

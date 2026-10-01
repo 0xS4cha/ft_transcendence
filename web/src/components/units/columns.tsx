@@ -8,7 +8,13 @@ import type { UnitRow } from "@/components/units/schema";
 import { ChevronRight } from "lucide-react";
 
 export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
-    {
+  {
+    id: "search",
+    accessorFn: (row) => `${row.name} ${row.id}`,
+    filterFn: "includesString",
+    enableHiding: true,
+  },
+  {
     id: "expand",
     header: () => null,
     cell: ({ row }: any) => (
@@ -28,12 +34,6 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
     ),
     enableSorting: false,
     enableHiding: false
-  },
-  {
-    id: "search",
-    accessorFn: (row) => `${row.name}`,
-    filterFn: "includesString",
-    enableHiding: true,
   },
   {
     id: "select",
