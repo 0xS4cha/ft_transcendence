@@ -1,13 +1,12 @@
 from contextlib import asynccontextmanager
 
+import redis.asyncio as redis
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-import backend_app.models  # noqa: F401
 from backend_app.api.router import api_router
 from backend_app.core.websocket import wsConnectionManager
 from shared.database import db
-import redis.asyncio as redis
 
 
 @asynccontextmanager

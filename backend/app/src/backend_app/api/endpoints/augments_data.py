@@ -1,9 +1,13 @@
 from fastapi import APIRouter, HTTPException, status
 
+from backend_app.core.dependencies import RedisDep
 from backend_app.schemas.augment import Augment
-from backend_app.core.dependencies import RedisDep 
 from backend_app.services.fetch_game_data import get_or_fetch
-from backend_app.services.get_augments import get_augments, AugmentsUnavailableError, augments_adapter
+from backend_app.services.get_augments import (
+    AugmentsUnavailableError,
+    augments_adapter,
+    get_augments,
+)
 
 router = APIRouter()
 

@@ -1,10 +1,12 @@
 from typing import Any
 
-from httpx2 import AsyncClient, HTTPError
-from backend_app.schemas.augment import Augment
-from pydantic import TypeAdapter
-from backend_app.services.fetch_game_data import get_game_data, fetch_lookup
 import redis.asyncio as redis
+from httpx2 import AsyncClient, HTTPError
+from pydantic import TypeAdapter
+
+from backend_app.schemas.augment import Augment
+from backend_app.services.fetch_game_data import fetch_lookup, get_game_data
+
 
 class AugmentsUnavailableError(Exception):
     pass

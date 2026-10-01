@@ -1,8 +1,12 @@
-from httpx2 import AsyncClient
-from typing import Any, Callable, Awaitable
+from collections.abc import Awaitable, Callable
+from typing import Any
+
 import redis.asyncio as redis
+from httpx2 import AsyncClient
 from pydantic import TypeAdapter, ValidationError
+
 from backend_app.core.dependencies import RedisDep
+
 
 async def get_game_data(
     r: redis.Redis,

@@ -1,5 +1,5 @@
 from backend_app.core.utils import safe_get
-from typing import Tuple
+
 
 def get_all_datas_use(
         data: list
@@ -16,7 +16,7 @@ def get_stats(
     places: list,
     total_data_use: int,
     all_datas_use: int,
-) -> Tuple[float, float, float]:
+) -> tuple[float, float, float]:
     
     weighted = 0
     for rank, count in enumerate(places, start=1):

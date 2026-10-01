@@ -1,6 +1,8 @@
 from typing import Annotated
-from fastapi import Request, Depends
+
 import redis.asyncio as redis
+from fastapi import Depends, Request
+
 
 async def get_redis(
     request: Request

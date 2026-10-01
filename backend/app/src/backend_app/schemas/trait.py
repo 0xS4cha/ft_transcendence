@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class Trait(BaseModel):
     id: str
     name: str

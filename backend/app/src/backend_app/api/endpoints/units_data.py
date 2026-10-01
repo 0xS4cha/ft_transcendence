@@ -1,11 +1,18 @@
 from fastapi import APIRouter, HTTPException, status
-from pydantic import TypeAdapter
 
-from backend_app.schemas.unit import Unit
 from backend_app.core.dependencies import RedisDep
+from backend_app.schemas.unit import Unit
 from backend_app.services.fetch_game_data import build_cache_key, get_or_fetch
-from backend_app.services.get_units import get_units, UnitsUnavailableError, units_adapter
-from backend_app.services.get_traits import get_traits, TraitsUnavailableError, traits_adapter
+from backend_app.services.get_traits import (
+    TraitsUnavailableError,
+    get_traits,
+    traits_adapter,
+)
+from backend_app.services.get_units import (
+    UnitsUnavailableError,
+    get_units,
+    units_adapter,
+)
 
 router = APIRouter()
 

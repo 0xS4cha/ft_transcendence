@@ -1,12 +1,13 @@
 import asyncio
 from typing import Any
 
-from httpx2 import AsyncClient, HTTPError
-from backend_app.schemas.trait import Trait
-from pydantic import TypeAdapter
-from backend_app.core.utils import safe_get
-from backend_app.services.fetch_game_data import get_game_data, fetch_set_data
 import redis.asyncio as redis
+from httpx2 import AsyncClient, HTTPError
+from pydantic import TypeAdapter
+
+from backend_app.core.utils import safe_get
+from backend_app.schemas.trait import Trait
+from backend_app.services.fetch_game_data import fetch_set_data, get_game_data
 from backend_app.services.get_stats import get_all_datas_use, get_stats
 
 

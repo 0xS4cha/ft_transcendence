@@ -1,10 +1,10 @@
 import asyncio
+import json
+import os
 import sys
 from typing import Any
 
 import aiofiles
-import os
-import json
 from httpx2 import AsyncClient
 
 
@@ -27,7 +27,7 @@ async def create_binary_file(
         async with aiofiles.open(f"/opt/game_data/shared/models_3d/{name}.glb", 'wb') as f:
             await f.write(model)
         return True
-    except Exception as e:
+    except OSError as e:
         print(f"Failed to create file for {name}: {e}")
         return False
 
@@ -137,7 +137,7 @@ async def save_models(
         if parent_dir:
             os.makedirs(parent_dir, exist_ok=True)
                         
-    except Exception as e:
+    except OSError as e:
         print(f"Failed to create directory: {e}")
         return
 
@@ -152,19 +152,19 @@ async def save_models(
         os.replace(temp_path, output_path)
         return
 
-    except Exception as e:
+    except OSError as e:
         print(f"Failed to write models list: {e}")
         if os.path.exists(temp_path):
             try:
                 os.remove(temp_path)
-            except Exception:
-                pass
+            except OSError:
+                print(f"Failed to remove the path: {temp_path}")
         return
 
 
 if __name__ == "__main__":
     try:
         asyncio.run(main())
-    except Exception as e: #noqa BLE001
+    except Exception as e: # noqa BLE001
         print(f"\033[31mERROR\033[0m: {e}", file=sys.stderr)
         sys.exit(1)

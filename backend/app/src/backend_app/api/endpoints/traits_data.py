@@ -1,9 +1,13 @@
 from fastapi import APIRouter, HTTPException, status
 
+from backend_app.core.dependencies import RedisDep
 from backend_app.schemas.trait import Trait
-from backend_app.core.dependencies import RedisDep 
 from backend_app.services.fetch_game_data import build_cache_key, get_or_fetch
-from backend_app.services.get_traits import get_traits, TraitsUnavailableError, traits_adapter
+from backend_app.services.get_traits import (
+    TraitsUnavailableError,
+    get_traits,
+    traits_adapter,
+)
 
 router = APIRouter()
 
