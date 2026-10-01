@@ -2,13 +2,9 @@
 
 set -e
 
-echo "Running initial character set update..."
+echo "Running initial 3d model download..."
 cd /opt
-python -m game_data.pull_data || exit 1
-python -m game_data.load_items || exit 1
-python -m game_data.load_units || exit 1
-python -m game_data.load_traits || exit 1
-python -m game_data.load_augments || exit 1
+
 python -m game_data.load_3d_models || exit 1
 
 echo "Finished task..."

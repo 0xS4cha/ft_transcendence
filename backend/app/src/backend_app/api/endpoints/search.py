@@ -72,51 +72,29 @@ async def query_user_profile(query_username: str):
 	if not ranked_data_lst or not isinstance(ranked_data_lst, list) or len(ranked_data_lst) == 0:
 		return None
 
-	ranked_data = next(
-		(queue for queue in ranked_data_lst if queue.get("queueType") == "RANKED_TFT"),
-		ranked_data_lst[0],
-	)
-
-	username = f"{account.get('gameName')}#{account.get('tagLine')}"
-	searched_user_cache[username] = {
-		'id': username,
-		'username': username,
-		'region': region,
-		'puuid': summoner.get('puuid'),
-		'picture': f"https://cdn.metatft.com/file/metatft/profileicons/profileicon{summoner.get('profileIconId')}.png",
-		'icon': f"https://cdn.metatft.com/file/metatft/profileicons/profileicon{summoner.get('profileIconId')}.png",
-		'summonerLevel': summoner.get('summonerLevel'),
-		'source': 'riot',
-		"queueType": ranked_data.get('queueType'),
-		"tier": ranked_data.get('tier'),
-		"rank": ranked_data.get('rank'),
-		"leaguePoints": ranked_data.get('leaguePoints'),
-		"wins": ranked_data.get('wins'),
-		"losses": ranked_data.get('losses'),
-		"hotStreak": ranked_data.get('hotStreak'),
-		"veteran": ranked_data.get('veteran'),
-		"freshBlood": ranked_data.get('freshBlood'),
-		"inactive": ranked_data.get('inactive')
-	}
-	return searched_user_cache[username]
-
-async def query_local_users(query: str, session: AsyncSessionDep):
-	result = await session.execute(
-		select(UserModel)
-		.where(UserModel.username.ilike(f"%{query}%"))
-		.limit(8)
-	)
-	users = result.scalars().all()
-	return [
-		{
-			'id': user.id,
-			'username': user.username,
-			'picture': user.picture,
-			'icon': user.picture,
-			'source': 'local',
+		ranked_data = ranked_data_lst[0]
+		
+		username = f"{account.get('gameName')}#{account.get('tagLine')}"
+		searched_user_cache[username] = {
+			'username': username,
+			'region': region,
+			'puuid': summoner.get('puuid'),
+			'icon': f"https://cdn.metatft.com/file/metatft/profileicons/profileicon{summoner.get('profileIconId')}.png",
+			'summonerLevel': summoner.get('summonerLevel'),
+			"queueType": ranked_data.get('queueType'),
+			"tier": ranked_data.get('tier'),
+			"rank": ranked_data.get('rank'),
+			"leaguePoints": ranked_data.get('leaguePoints'),
+			"wins": ranked_data.get('wins'),
+			"losses": ranked_data.get('losses'),
+			"hotStreak": ranked_data.get('hotStreak'),
+			"veteran": ranked_data.get('veteran'),
+			"freshBlood": ranked_data.get('freshBlood'),
+			"inactive": ranked_data.get('inactive')
 		}
-		for user in users
-	]
+		return searched_user_cache[username]
+	else:
+		return {}
 
 async def query_unit(query: str, session: AsyncSessionDep):
 	result = await session.execute(
