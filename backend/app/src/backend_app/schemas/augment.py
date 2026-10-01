@@ -4,5 +4,5 @@ class Augment(BaseModel):
     id: str
     name: str
     rarity: str
-    round: list[str]
+    rounds: list[str]
     icon: str
