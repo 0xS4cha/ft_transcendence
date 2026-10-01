@@ -22,7 +22,12 @@ async def lifespan(app: FastAPI):
         await app.state.redis.aclose()
         await wsConnectionManager.stop()
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    lifespan=lifespan,
+    docs_url="/docs" if db.settings.DEBUG else None,
+    redoc_url="/redoc" if db.settings.DEBUG else None,
+    openapi_url="/openapi.json" if db.settings.DEBUG else None
+)
 
 print(f"\n\033[1;35mDATABASE_URL: \033[0;35m{db.settings.database_url}\033[0m\n")
 
@@ -37,4 +42,4 @@ async def health():
 
 @app.get("/")
 async def home():
-    return {"message": "First FastAPI app"}
+    return {"message": "Tactyx FastAPI app"}

@@ -2,10 +2,10 @@
 
 set -e
 
-echo "Running initial character set update..."
+echo "Running initial 3d model download..."
 cd /opt
-# python -m game_data.app || exit 1
+
 python -m game_data.load_3d_models || exit 1
 
-echo "Starting cron..."
-exec /usr/sbin/crond -f
+echo "Finished task..."
+tail -f /dev/null

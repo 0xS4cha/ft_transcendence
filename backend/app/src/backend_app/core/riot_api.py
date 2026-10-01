@@ -25,10 +25,10 @@ class RIOTApi:
                     timeout=10,
                 )
                 if response.status_code == 403 or response.status_code == 401:
-                    print(f"https://{server}.api.riotgames.com{url}")
                     raise Exception(f"{response.status_code} Forbidden: your Riot API key is invalid or expired.") #noqa: TRY002
 
                 if response.status_code == 404:
+                    print(f"https://{server}.api.riotgames.com{url}")
                     raise Exception(f"404 Not Found: {url}") #noqa: TRY002
 
                 if response.status_code == 429:
@@ -49,6 +49,12 @@ class RIOTApi:
 
     def get_ranked(self, summoner_id: str, server: str):
         return self.riot_get(f"/tft/league/v1/by-puuid/{summoner_id}", server)
+
+    def get_region(self, puuid: str):
+        response = self.riot_get(f"/riot/account/v1/region/by-game/tft/by-puuid/{puuid}", "europe")
+        if not response or not isinstance(response, dict) or not "region" in response:
+            return None
+        return (response["region"] or "").upper()
         
 
 riot_api = RIOTApi(database.settings.RIOT_API_KEY)

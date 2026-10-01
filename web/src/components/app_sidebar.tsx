@@ -5,6 +5,7 @@ import {
   Layers,
   FileText,
   Hammer,
+  Sparkle,
   Trophy,
   PanelLeft,
   ChevronLeft,
@@ -29,10 +30,6 @@ import { cn } from '@/lib/utils';
 import { useAppSelector } from '@/store/hooks';
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import {
-  InputGroup,
-  InputGroupInput,
-} from "@/components/ui/input-group"
 
 import {
   DropdownMenu,
@@ -43,7 +40,7 @@ import {
 
 import { useAppDispatch } from "@/store/hooks"
 import { logoutUser } from "@/store/reducers/userSlice";
-
+import { SearchInput } from '@/components/search/input';
 
 interface NavItem {
   readonly label: string;
@@ -56,17 +53,16 @@ const NAV_ITEMS: readonly NavItem[] = [
   { label: 'Units', href: '/units', icon: Sword },
   { label: 'Items', href: '/items', icon: Shield },
   { label: 'Traits', href: '/traits', icon: Layers },
+  { label: 'Augments', href: '/augments', icon: Sparkle },
   { label: 'Team builder', href: '/builder', icon: Hammer },
   { label: 'Set 18 update', href: '/patch_note', icon: FileText },
   { label: 'Ranking', href: '/ranking', icon: Trophy },
 ] as const;
 
 export function AppSidebar() {
-  const { state, toggleSidebar } = useSidebar();
+  const { toggleSidebar } = useSidebar();
   const dispatch = useAppDispatch();
-  const isCollapsed = state === 'collapsed';
   const { isAuthenticated, username, picture } = useAppSelector(state => state.user);
-  console.log(isCollapsed);
 
   function handleLogout() {
     dispatch(logoutUser()).unwrap();
@@ -113,9 +109,7 @@ export function AppSidebar() {
         <SidebarGroup className="p-0">
           <SidebarGroupContent>
             <div className="mb-2 py-2 group-data-[collapsible=icon]:hidden">
-             <InputGroup>
-            <InputGroupInput placeholder="Search..." />
-          </InputGroup>
+              <SearchInput />
             </div>
             <SidebarMenu className="gap-2">
               {NAV_ITEMS.map((item) => (
@@ -174,6 +168,11 @@ export function AppSidebar() {
           >
             {isAuthenticated ? (
               <>
+                <DropdownMenuItem render={
+                  <Link to="/profile">
+                    Profile
+                  </Link>
+                }/>
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={handleLogout}

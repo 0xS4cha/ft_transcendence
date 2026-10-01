@@ -5,7 +5,7 @@ export interface UserPublic {
   email: string;
   username: string;
   picture?: string;
-  chat: ChatDataProps[];
+  chat?: ChatDataProps[];
 }
 
 export interface UserState extends UserPublic {
