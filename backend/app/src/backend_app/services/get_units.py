@@ -9,6 +9,8 @@ from backend_app.schemas.unit_trait import UnitTrait
 from backend_app.schemas.trait import Trait
 from pydantic import TypeAdapter
 from backend_app.core.utils import safe_get
+from backend_app.services.fetch_game_data import get_game_data, fetch_set_data
+import redis.asyncio as redis
 
 class UnitsUnavailableError(Exception):
     pass
@@ -16,6 +18,7 @@ class UnitsUnavailableError(Exception):
 units_adapter = TypeAdapter(list[Unit])
 
 async def get_units(
+    r: redis.Redis,
     queue: str,
     ranks: str,
     servers: str,
@@ -25,7 +28,7 @@ async def get_units(
         try:
             units, set_data = await asyncio.gather(
                 fetch_units(client, queue, ranks, servers),
-                fetch_set_data(client)
+                get_game_data(r, "set_data", lambda: fetch_set_data(client))
             )
         except HTTPError as e:
             raise UnitsUnavailableError("Upstream Error") from e
@@ -178,12 +181,3 @@ async def fetch_units(
     resp.raise_for_status()
 
     return resp.json().get("results")
-
-
-async def fetch_set_data(
-    client: AsyncClient
-) -> dict[str, Any] | None:
-    resp = await client.get("https://raw.communitydragon.org/latest/cdragon/tft/en_us.json")
-    resp.raise_for_status()
-    
-    return next((entry for entry in resp.json().get("setData", []) if entry.get("mutator", "") == "TFTSet18"), None)

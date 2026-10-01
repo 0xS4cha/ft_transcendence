@@ -38,7 +38,7 @@ async def get_traits_data(
     key = build_cache_key("traits", queue, ranks_str, servers_str)
 
     try:
-        traits = await get_or_fetch(r, key, traits_adapter, lambda: get_traits(queue, ranks_str, servers_str))
+        traits = await get_or_fetch(r, key, traits_adapter, lambda: get_traits(r, queue, ranks_str, servers_str))
     except TraitsUnavailableError as e:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,

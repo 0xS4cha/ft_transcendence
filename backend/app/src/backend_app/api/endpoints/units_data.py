@@ -41,8 +41,8 @@ async def get_units_data(
     traits_key = build_cache_key("traits", queue, ranks_str, servers_str)
         
     try:
-        traits = await get_or_fetch(r, traits_key, traits_adapter, lambda: get_traits(queue, ranks_str, servers_str))
-        units = await get_or_fetch(r, units_key, units_adapter, lambda: get_units(queue, ranks_str, servers_str, traits))
+        traits = await get_or_fetch(r, traits_key, traits_adapter, lambda: get_traits(r, queue, ranks_str, servers_str))
+        units = await get_or_fetch(r, units_key, units_adapter, lambda: get_units(r, queue, ranks_str, servers_str, traits))
     except (TraitsUnavailableError, UnitsUnavailableError)  as e:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,

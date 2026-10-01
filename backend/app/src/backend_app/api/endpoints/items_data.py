@@ -38,7 +38,7 @@ async def get_items_data(
     key = build_cache_key("items", queue, ranks_str, servers_str)
 
     try:
-        items = await get_or_fetch(r, key, items_adapter, lambda: get_items(queue, ranks_str, servers_str))
+        items = await get_or_fetch(r, key, items_adapter, lambda: get_items(r, queue, ranks_str, servers_str))
     except ItemsUnavailableError as e:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,

@@ -5,6 +5,8 @@ from httpx2 import AsyncClient, HTTPError
 from backend_app.schemas.item import Item
 from pydantic import TypeAdapter
 from backend_app.core.utils import safe_get
+from backend_app.services.fetch_game_data import get_game_data, fetch_lookup
+import redis.asyncio as redis
 
 class ItemsUnavailableError(Exception):
     pass
@@ -12,18 +14,24 @@ class ItemsUnavailableError(Exception):
 items_adapter = TypeAdapter(list[Item])
 
 async def get_items(
+    r: redis.Redis,
     queue: str,
     ranks: str,
     servers: str
 ) -> list[Item]:
     async with AsyncClient(timeout=10) as client:
         try:
-            items, items_compo = await asyncio.gather(
+            items, lookup = await asyncio.gather(
                 fetch_items(client, queue, ranks, servers),
-                fetch_items_compo(client)
+                get_game_data(r, "lookup", lambda: fetch_lookup(client))
             )
         except HTTPError as e:
             raise ItemsUnavailableError("Upstream Error") from e
+
+    if lookup is None:
+        raise ItemsUnavailableError("Lookup data not found")
+
+    items_compo = lookup.get("items") 
 
     if items_compo is None:
         raise ItemsUnavailableError("Set data not found")
@@ -123,15 +131,6 @@ async def fetch_items(
     resp.raise_for_status()
 
     return resp.json().get("results")
-
-
-async def fetch_items_compo(
-    client: AsyncClient
-) -> dict[str, Any] | None:
-    resp = await client.get("https://data.metatft.com/lookups/TFTSet18_latest_en_us.json")
-    resp.raise_for_status()
-    
-    return resp.json().get("items")
 
 
 def get_all_items_use(

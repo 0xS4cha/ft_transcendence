@@ -3,13 +3,13 @@ import redis.exceptions as redis
 from backend_app.core.dependencies import RedisDep
 from pydantic import TypeAdapter, ValidationError
 
-async def get_or_fetch[S](
+async def get_or_fetch[T](
     r: RedisDep,
     key: str,
-    adapter: TypeAdapter[S],
-    fetch_fn: Callable[[], Awaitable[S]],
+    adapter: TypeAdapter[T],
+    fetch_fn: Callable[[], Awaitable[T]],
     ttl: int = 900
-) -> S:
+) -> T:
     try:
         cached  = await r.get(key)
     except redis.RedisError:

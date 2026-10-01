@@ -3,7 +3,8 @@ from typing import Any
 from httpx2 import AsyncClient, HTTPError
 from backend_app.schemas.augment import Augment
 from pydantic import TypeAdapter
-from backend_app.core.utils import safe_get
+from backend_app.services.fetch_game_data import get_game_data, fetch_lookup
+import redis.asyncio as redis
 
 class AugmentsUnavailableError(Exception):
     pass
@@ -11,16 +12,21 @@ class AugmentsUnavailableError(Exception):
 augments_adapter = TypeAdapter(list[Augment])
 
 async def get_augments(
+    r: redis.Redis
 ) -> list[Augment]:
     async with AsyncClient(timeout=10) as client:
         try:
-            augments = fetch_augments(client)
+            lookup = await get_game_data(r, "lookup", lambda: fetch_lookup(client))
         except HTTPError as e:
             raise AugmentsUnavailableError("Upstream Error") from e
 
-    if augments is None:
-        return AugmentsUnavailableError("Augments data not found")
+    if lookup is None:
+        raise AugmentsUnavailableError("Lookup data not found")
 
+    augments =lookup.get("augments")
+
+    if augments is None:
+        raise AugmentsUnavailableError("Augments data not found")
 
     augments_out = [
         a for augment in augments
@@ -30,7 +36,7 @@ async def get_augments(
     return augments_out
 
 
-async def process_augment(
+def process_augment(
     augment: dict[str, Any]
 ) -> Augment | None:
     id = augment.get("apiName")
@@ -55,11 +61,3 @@ async def process_augment(
         rounds=rounds,
         icon=icon
     ))
-
-    
-async def fetch_augments(
-    client: AsyncClient
-) -> list[dict[str, Any]] | None:
-    resp = await client.get("https://data.metatft.com/lookups/TFTSet18_latest_en_us.json")
-    resp.raise_for_status()
-    return resp.json().get("augments")
