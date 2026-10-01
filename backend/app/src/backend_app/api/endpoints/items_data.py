@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status
 
 from backend_app.schemas.item import Item
 from backend_app.core.dependencies import RedisDep 
-from backend_app.core.cache import build_cache_key, get_or_fetch
+from backend_app.services.fetch_game_data import build_cache_key, get_or_fetch
 from backend_app.services.get_items import get_items, ItemsUnavailableError, items_adapter
 
 router = APIRouter()

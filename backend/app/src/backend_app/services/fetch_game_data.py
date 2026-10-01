@@ -1,8 +1,8 @@
 from httpx2 import AsyncClient
 from typing import Any, Callable, Awaitable
 import redis.asyncio as redis
-from pydantic import TypeAdapter
-from backend_app.core.cache import get_or_fetch
+from pydantic import TypeAdapter, ValidationError
+from backend_app.core.dependencies import RedisDep
 
 async def get_game_data(
     r: redis.Redis,
@@ -31,3 +31,44 @@ async def fetch_set_data(
     resp.raise_for_status()
     
     return next((entry for entry in resp.json().get("setData", []) if entry.get("mutator", "") == "TFTSet18"), None)
+
+async def get_or_fetch[T](
+    r: RedisDep,
+    key: str,
+    adapter: TypeAdapter[T],
+    fetch_fn: Callable[[], Awaitable[T]],
+    ttl: int = 900
+) -> T:
+    try:
+        cached  = await r.get(key)
+    except redis.RedisError:
+        cached = None
+    
+    if cached is not None:
+        try:
+            return adapter.validate_json(cached)
+        except ValidationError:
+            pass
+
+
+    results = await fetch_fn();
+
+    try:
+        adapted = adapter.dump_json(results)
+    except (TypeError, ValidationError):
+        return results
+
+    try:
+        await r.set(key, adapted, ex=ttl)
+    except redis.RedisError :
+        pass
+
+    return results
+
+def build_cache_key(
+    id: str,
+    queue: str,
+    ranks: str,
+    servers: str,
+) -> str:
+    return f"metatft:{id}:{queue}:{ranks}:{servers}"
