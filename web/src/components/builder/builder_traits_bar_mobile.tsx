@@ -25,9 +25,13 @@ export default function BuilderTraitsBarMobile({ boardState , champions, traits 
   uniqueChampIds.forEach((champId) => {
     const champ = champions.find((c) => c.id === champId);
     if (champ && champ.traits) {
-      champ.traits.forEach((traitIdOrName) => {
-        const key = traitIdOrName.toLowerCase(); 
-        traitCounts[key] = (traitCounts[key] || 0) + 1;
+      champ.traits.forEach((traitRaw: any) => {
+        if (!traitRaw) return;
+        const traitName = typeof traitRaw === 'string' ? traitRaw : traitRaw.name || traitRaw.id;
+        if (traitName && typeof traitName === 'string') {
+          const key = traitName.toLowerCase(); 
+          traitCounts[key] = (traitCounts[key] || 0) + 1;
+        }
       });
     }
   });

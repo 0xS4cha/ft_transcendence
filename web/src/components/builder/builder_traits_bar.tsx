@@ -24,26 +24,36 @@ export default function BuilderTraitsBar({ boardState, champions, traits }: { bo
 
   uniqueChampIds.forEach((champId) => {
     const champ = champions.find((c) => c.id === champId);
-    if (champ && champ.traits) {
-      champ.traits.forEach((traitIdOrName) => {
-        const key = traitIdOrName.toLowerCase(); 
-        traitCounts[key] = (traitCounts[key] || 0) + 1;
+    if (champ && Array.isArray(champ.traits)) {
+      champ.traits.forEach((traitRaw: any) => {
+        if (!traitRaw) return;
+        const traitName = typeof traitRaw === 'string' ? traitRaw : (traitRaw.name || traitRaw.id);
+        
+        if (traitName) {
+          const key = String(traitName).toLowerCase(); 
+          traitCounts[key] = (traitCounts[key] || 0) + 1;
+        }
       });
     }
   });
 
   const uniqueTraitsMap = new Map<string, TraitRow>();
-  traits.forEach((trait) => {
-    const key = trait.name.toLowerCase();
-    if (!uniqueTraitsMap.has(key)) {
-      uniqueTraitsMap.set(key, trait);
-    }
-  });
+  if (Array.isArray(traits)) {
+    traits.forEach((trait) => {
+      if (!trait || !trait.name) return; 
+      
+      const key = String(trait.name).toLowerCase();
+      if (!uniqueTraitsMap.has(key)) {
+        uniqueTraitsMap.set(key, trait);
+      }
+    });
+  }
 
   const displayTraits = Array.from(uniqueTraitsMap.values()).map((trait) => {
+    const safeName = trait && trait.name ? String(trait.name).toLowerCase() : "";
     return {
       ...trait,
-      currentUnits: traitCounts[trait.name.toLowerCase()] || 0
+      currentUnits: traitCounts[safeName] || 0
     };
   }).filter((trait) => trait.currentUnits > 0);
 

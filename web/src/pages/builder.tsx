@@ -12,8 +12,6 @@ import {
 } from "@dnd-kit/core";
 import { snapCenterToCursor } from '@dnd-kit/modifiers';
 import { cn } from "@/lib/utils";
-import { useRef } from 'react';
-import { toPng } from 'html-to-image'
 import type { ItemRow } from "@/components/items/schema";
 import type { UnitRow } from "@/components/units/schema";
 import type { TraitRow } from "@/components/traits/schema";
@@ -34,8 +32,6 @@ export default function Builder() {
   const [champions, setChampions] = useState<UnitRow[]>([]);
   const [items, setItems] = useState<ItemRow[]>([]);
   const [traits, setTraits] =useState<TraitRow[]>([]);
-
-  const builderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchChampions = async () => {
@@ -234,22 +230,6 @@ export default function Builder() {
     }
   }
 
-  const handleScreenshot = async () => {
-    if (builderRef.current === null)
-      return ;
-    try {
-      const dataUrl =  await toPng(builderRef.current, { cacheBust: true, backgroundColor: '#202020'});
-      const link = document.createElement('a');
-      link.download = 'tft-comp-tactyx.png';
-      link.href = dataUrl;
-      link.click();
-    } catch (error)
-    {
-      console.error("Can't create the screenshot", error);
-      alert("failed to create the screnshot, retry");
-    }
-  }
-
   let draggingChampId = activeDragId;
   if (activeDragId?.startsWith('hex-')) {
     draggingChampId = boardState[activeDragId];
@@ -264,7 +244,7 @@ export default function Builder() {
       collisionDetection={pointerWithin}
     >
       <div className="flex  w-full max-w-375 mx-auto flex-col gap-3 overflow-hidden">
-        <BuilderToolBar onCopyCode={handleCopycode} onImportCode={handleImportCode} onScreenshot={handleScreenshot}/>
+        <BuilderToolBar onCopyCode={handleCopycode} onImportCode={handleImportCode}/>
         <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_3.3fr_0.8fr] gap-3 min-h-0 flex-1">
           <div className="hidden lg:flex flex-col min-w-0 min-h-0 max-h-125">
             <BuilderTraitsBar boardState={boardState} champions={champions} traits={traits} />
