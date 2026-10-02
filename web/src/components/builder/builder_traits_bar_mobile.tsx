@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import type { Unit } from "@/types/unit";
-import type { Trait } from "@/types/trait";
+import type { TraitRow } from "../traits/schema";
+import type { UnitRow } from "../units/schema";
 
 function calculateTier(currentUnits: number, breakpoints: number[]): number {
   if (currentUnits === 0 || breakpoints.length === 0) return 10;
@@ -17,7 +17,7 @@ function calculateTier(currentUnits: number, breakpoints: number[]): number {
   return 10; 
 }
 
-export default function BuilderTraitsBarMobile({ boardState , champions, traits }: {boardState: Record<string, string>, champions: Unit[], traits: Trait[]}) {
+export default function BuilderTraitsBarMobile({ boardState , champions, traits }: {boardState: Record<string, string>, champions: UnitRow[], traits: TraitRow[]}) {
   
   const uniqueChampIds = Array.from(new Set(Object.values(boardState)));
   const traitCounts: Record<string, number> = {};
@@ -32,7 +32,7 @@ export default function BuilderTraitsBarMobile({ boardState , champions, traits 
     }
   });
 
-  const uniqueTraitsMap = new Map<string, Trait>();
+  const uniqueTraitsMap = new Map<string, TraitRow>();
   traits.forEach((trait) => {
     const key = trait.name.toLowerCase();
     if (!uniqueTraitsMap.has(key)) {

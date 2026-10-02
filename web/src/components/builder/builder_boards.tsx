@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useDroppable, useDraggable } from "@dnd-kit/core";
-import type { Unit } from "@/types/unit";
-import type { Item } from "@/types/item"
+import type { UnitRow } from "../units/schema";
+import type { ItemRow } from "../items/schema";
 
 const ROWS = 4;
 const COLS = 7;
@@ -12,7 +12,7 @@ const HEX_WIDTH = Math.sqrt(3) * HEX_SIZE;
 const HEX_HEIGHT = 2 * HEX_SIZE;
 const ROW_HEIGHT = 1.5 * HEX_SIZE;
 
-function HexagonCell({ id, cx, cy, points, champion, itemsOnCell, onRemove }: {id: string, cx: number, cy: number, points: string, champion?: Unit | null, itemsOnCell?: Item[], onRemove: (id: string) => void}){
+function HexagonCell({ id, cx, cy, points, champion, itemsOnCell, onRemove }: {id: string, cx: number, cy: number, points: string, champion?: UnitRow | null, itemsOnCell?: ItemRow[], onRemove: (id: string) => void}){
   const {isOver, setNodeRef} = useDroppable( {id} );
   const { attributes, listeners, setNodeRef: setDraggableRef, isDragging } = useDraggable({ 
     id: id,
@@ -115,7 +115,7 @@ function HexagonCell({ id, cx, cy, points, champion, itemsOnCell, onRemove }: {i
   )
 }
 
-export default function BuilderBoard({ boardState, champions, onRemoveChampion, boardItems , items}: { boardState: Record<string, string>, champions: Unit[], onRemoveChampion: (id: string) => void , boardItems: Record<string, string[]>, items: Item[]})
+export default function BuilderBoard({ boardState, champions, onRemoveChampion, boardItems , items}: { boardState: Record<string, string>, champions: UnitRow[], onRemoveChampion: (id: string) => void , boardItems: Record<string, string[]>, items: ItemRow[]})
 {
   const getHexagonPoints = (cx: number, cy: number) =>
   {
@@ -150,7 +150,7 @@ export default function BuilderBoard({ boardState, champions, onRemoveChampion, 
       const itemIdsOnCell = boardItems[hexId] || [];
       const itemsOnCell = itemIdsOnCell
         .map(itemId => items.find(i => i.id === itemId))
-        .filter((item): item is Item => item !== undefined);
+        .filter((item): item is ItemRow => item !== undefined);
       hexes.push(
         <HexagonCell
           key={hexId}

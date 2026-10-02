@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils';
 import { useDraggable } from '@dnd-kit/core';
-import type { Unit } from '@/types/unit';
-import type { Item } from '@/types/item';
+import type { UnitRow } from '../units/schema';
+import type { ItemRow } from '../items/schema';
 
-function DraggableChampion({ champion, onClick }: { champion: Unit, onClick: () => void }) {
+function DraggableChampion({ champion, onClick }: { champion: UnitRow, onClick: () => void }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: champion.id });
 
   return (
@@ -39,7 +39,7 @@ function DraggableChampion({ champion, onClick }: { champion: Unit, onClick: () 
   );
 }
 
-function DraggableItem({ item}: { item: Item}) {
+function DraggableItem({ item}: { item: ItemRow}) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: item.id });
 
   return (
@@ -72,7 +72,7 @@ function DraggableItem({ item}: { item: Item}) {
   );
 }
 
-export default function BuilderChampionsBar({ champions, items ,onAddChampionClick }: { champions: Unit[], items: Item[], onAddChampionClick: (id: string) => void }) {
+export default function BuilderChampionsBar({ champions, items ,onAddChampionClick }: { champions: UnitRow[], items: ItemRow[], onAddChampionClick: (id: string) => void }) {
   
   const groupedItems = [
     { 

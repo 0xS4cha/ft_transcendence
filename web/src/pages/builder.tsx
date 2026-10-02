@@ -13,16 +13,16 @@ import {
 import { snapCenterToCursor } from '@dnd-kit/modifiers';
 
 import { cn } from "@/lib/utils";
-import type { Unit } from "@/types/unit";
-import type { Item } from "@/types/item";
-import type { Trait } from "@/types/trait";
+import type { ItemRow } from "@/components/items/schema";
+import type { UnitRow } from "@/components/units/schema";
+import type { TraitRow } from "@/components/traits/schema";
 import BuilderBoard from "@/components/builder/builder_boards"
 import BuilderToolBar from "@/components/builder/builder_tool_bar";
 import BuilderTraitsBar from "@/components/builder/builder_traits_bar";
-import { getItemsStats, getTraitsStats, getUnitsStats } from "@/services/statsService";
 import BuilderAugmentsBar from "@/components/builder/builder_augment_bar";
 import BuilderChampionsBar from "@/components/builder/builder_champions_bar";
 import BuilderTraitsBarMobile from "@/components/builder/builder_traits_bar_mobile";
+import { getItemsStats, getTraitsStats, getUnitsStats } from "@/services/statsService";
 
 export default function Builder() {
 
@@ -30,9 +30,9 @@ export default function Builder() {
   const [activeDragId, setActiveDragId] = useState<string | null>(null);
   const [boardItems, setBoardItems] = useState<Record<string, string[]>>({});
 
-  const [champions, setChampions] = useState<Unit[]>([]);
-  const [items, setItems] = useState<Item[]>([]);
-  const [traits, setTraits] =useState<Trait[]>([]);
+  const [champions, setChampions] = useState<UnitRow[]>([]);
+  const [items, setItems] = useState<ItemRow[]>([]);
+  const [traits, setTraits] =useState<TraitRow[]>([]);
 
   useEffect(() => {
     const fetchChampions = async () => {
