@@ -7,7 +7,11 @@ from pydantic import TypeAdapter
 
 from backend_app.core.utils import safe_get
 from backend_app.schemas.trait import Trait
-from backend_app.services.fetch_game_data import fetch_set_data, get_game_data
+from backend_app.services.fetch_game_data import (
+    fetch_results,
+    fetch_set_data,
+    get_game_data,
+)
 from backend_app.services.get_stats import get_all_datas_use, get_stats
 
 
@@ -25,7 +29,7 @@ async def get_traits(
     async with AsyncClient(timeout=10) as client:
         try:
             traits, set_data = await asyncio.gather(
-                fetch_traits(client, queue, ranks, servers),
+                fetch_results(client, "traits", queue, ranks, servers),
                 get_game_data(r, "set_data", lambda: fetch_set_data(client))
             )
         except HTTPError as e:
@@ -109,64 +113,6 @@ def process_trait(
         icon=icon,
         background_icon=background_icon,
     ))
-
-
-async def fetch_traits(
-    client: AsyncClient,
-    queue: str,
-    ranks: str,
-    servers: str,
-) -> list[dict[str, Any]] | None:
-    resp = await client.get(f"https://api-hc.metatft.com/tft-stat-api/traits?queue={queue}&rank={ranks}&server={servers}")
-    resp.raise_for_status()
-
-    return resp.json().get("results")
-
-
-def get_all_traits_use(
-        traits: list
-) -> int:
-    total = 0
-
-    for trait in traits:
-        total += sum(trait.get("places"), 0)
-
-    return (total)
-
-
-def get_avg_place(
-        places: list,
-        total_trait_use: int
-) -> float:
-    weighted = 0
-
-    for rank, count in enumerate(places, start=1):
-        weighted += rank * count
-
-    weighted /= total_trait_use
-
-    return (weighted)
-
-
-def get_winrate(
-        places: list,
-        total_trait_use: int
-) -> float:
-    winrate = (safe_get(places, 0) / total_trait_use) * 100
-
-    return (winrate)
-
-
-def get_frequency(
-        total_trait_use: int,
-        all_traits_use: int
-) -> float:
-    if all_traits_use == 0:
-        return 0
-
-    frequency = (total_trait_use / all_traits_use) * 100
-
-    return (frequency)
 
 
 def get_breakpoints(
