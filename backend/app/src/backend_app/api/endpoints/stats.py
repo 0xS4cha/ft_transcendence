@@ -8,7 +8,7 @@ from sqlalchemy.dialects.postgresql import insert
 from backend_app.models.users import UserModel
 from backend_app.models.visit import VisitModel
 from shared.database import AsyncSessionDep
-from shared.models.unit_games import PerDayStats, ProcessedGame
+from shared.models.home_stats import PerDayStats, ProcessedGame
 
 router = APIRouter()
 REFRESH_DELTA_SECONDS    = 3

@@ -74,9 +74,10 @@ async def query_user_profile(query_username: str):
 		
 		username = f"{account.get('gameName')}#{account.get('tagLine')}"
 		searched_user_cache[username] = {
+			'username': username,
 			'region': region,
 			'puuid': summoner.get('puuid'),
-			'profileIconId': summoner.get('profileIconId'),
+			'icon': f"https://cdn.metatft.com/file/metatft/profileicons/profileicon{summoner.get('profileIconId')}.png",
 			'summonerLevel': summoner.get('summonerLevel'),
 			"queueType": ranked_data.get('queueType'),
 			"tier": ranked_data.get('tier'),
@@ -96,22 +97,22 @@ async def query_user_profile(query_username: str):
 async def query_unit(query: str, session: AsyncSessionDep):
 	async with session:
 		unit_list = (await session.execute(select(Unit))).scalars().all()
-		return {unit.id: unit for unit in unit_list if query.lower().strip() in unit.name.lower().strip()}
+		return [unit for unit in unit_list if query.lower().strip() in unit.name.lower().strip()]
 
 async def query_item(query: str, session: AsyncSessionDep):
 	async with session:
 		item_list = (await session.execute(select(Item))).scalars().all()
-		return {item.id: item for item in item_list if query.lower().strip() in item.id.lower().strip()}
+		return [item for item in item_list if query.lower().strip() in item.id.lower().strip()]
 
 async def query_trait(query: str, session: AsyncSessionDep):
 	async with session:
 		trait_list = (await session.execute(select(Trait))).scalars().all()
-		return {trait.id: trait for trait in trait_list if query.lower().strip() in trait.name.lower().strip()}
+		return [trait for trait in trait_list if query.lower().strip() in trait.name.lower().strip()]
 
 async def query_augment(query: str, session: AsyncSessionDep):
 	async with session:
 		augment_list = (await session.execute(select(Augment))).scalars().all()
-		return {augment.id: augment for augment in augment_list if query.lower().strip() in augment.name.lower().strip()}
+		return [augment for augment in augment_list if query.lower().strip() in augment.name.lower().strip()]
 	
 
 # unit, user, item
@@ -121,10 +122,10 @@ async def search(query: str, session: AsyncSessionDep):
 	try:
 		final = {}
 		try:
-			final["user"] = await query_user_profile(query.strip())
+			final["user"] = [await query_user_profile(query.strip())]
 		except Exception as e:  # noqa: BLE001
 			print(e)
-			final["user"] = {} # none found
+			final["user"] = [] # none found
 		final["unit"] = await query_unit(query.strip(), session)
 		final["item"] = await query_item(query.strip(), session)
 		final["trait"] = await query_trait(query.strip(), session)
