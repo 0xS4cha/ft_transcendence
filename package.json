@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@dnd-kit/modifiers": "^9.0.0"
+    "@dnd-kit/modifiers": "^9.0.0",
+    "html-to-image": "^1.11.13"
   }
 }
