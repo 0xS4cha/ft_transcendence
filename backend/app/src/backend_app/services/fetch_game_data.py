@@ -36,6 +36,18 @@ async def fetch_set_data(
     
     return next((entry for entry in resp.json().get("setData", []) if entry.get("mutator", "") == "TFTSet18"), None)
 
+async def fetch_results(
+    client: AsyncClient,
+    key: str,
+    queue: str,
+    ranks: str,
+    servers: str,
+) -> list[dict[str, Any]] | None:
+    resp = await client.get(f"https://api-hc.metatft.com/tft-stat-api/{key}?queue={queue}&rank={ranks}&server={servers}")
+    resp.raise_for_status()
+
+    return resp.json().get("results")
+
 async def get_or_fetch[T](
     r: RedisDep,
     key: str,
@@ -45,27 +57,29 @@ async def get_or_fetch[T](
 ) -> T:
     try:
         cached  = await r.get(key)
-    except redis.RedisError:
+    except redis.RedisError as e:
+        print(f"[get_or_fetch] Redis GET failed for {key}: {e}")
         cached = None
     
     if cached is not None:
         try:
             return adapter.validate_json(cached)
-        except ValidationError:
-            pass
+        except ValidationError as e:
+            print(f"[get_or_fetch] cache validation failed for {key}, refetching: {e}")
 
 
     results = await fetch_fn();
 
     try:
         adapted = adapter.dump_json(results)
-    except (TypeError, ValidationError):
+    except (TypeError, ValidationError) as e:
+        print(f"[get_or_fetch] serialize failed for {key}, not caching: {e}")
         return results
 
     try:
         await r.set(key, adapted, ex=ttl)
-    except redis.RedisError :
-        pass
+    except redis.RedisError as e:
+        print(f"[get_or_fetch] Redis SET failed for {key}: {e}")
 
     return results
 

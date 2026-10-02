@@ -7,11 +7,14 @@ import redis.asyncio as redis
 from httpx2 import AsyncClient, HTTPError
 from pydantic import TypeAdapter
 
-from backend_app.core.utils import safe_get
 from backend_app.schemas.trait import Trait
 from backend_app.schemas.unit import Unit
 from backend_app.schemas.unit_trait import UnitTrait
-from backend_app.services.fetch_game_data import fetch_set_data, get_game_data
+from backend_app.services.fetch_game_data import (
+    fetch_results,
+    fetch_set_data,
+    get_game_data,
+)
 from backend_app.services.get_stats import get_all_datas_use, get_stats
 
 
@@ -30,7 +33,7 @@ async def get_units(
     async with AsyncClient(timeout=10) as client:
         try:
             units, set_data = await asyncio.gather(
-                fetch_units(client, queue, ranks, servers),
+                fetch_results(client, "units", queue, ranks, servers),
                 get_game_data(r, "set_data", lambda: fetch_set_data(client))
             )
         except HTTPError as e:
@@ -124,61 +127,3 @@ def process_unit(
         icon=icon,
         model=model,
     ))
-
-
-def get_all_units_use(
-        units: list
-) -> int:
-    total = 0
-
-    for unit in units:
-        total += sum(unit.get("places"))
-
-    return (total)
-
-
-def get_avg_place(
-        places: list,
-        total_unit_use: int
-) -> float:
-    weighted = 0
-
-    for rank, count in enumerate(places, start=1):
-        weighted += rank * count
-
-    weighted /= total_unit_use
-
-    return (weighted)
-
-
-def get_winrate(
-        places: list,
-        total_unit_use: int
-) -> float:
-    winrate = (safe_get(places,0) / total_unit_use) * 100
-
-    return (winrate)
-
-
-def get_frequency(
-        total_unit_use: int,
-        all_units_use: int
-) -> float:
-    if all_units_use == 0:
-        return 0
-
-    frequency = (total_unit_use / all_units_use) * 100
-
-    return (frequency)
-
-
-async def fetch_units(
-    client: AsyncClient,
-    queue: str,
-    ranks: str,
-    servers: str,
-) -> list[dict[str, Any]] | None:
-    resp = await client.get(f"https://api-hc.metatft.com/tft-stat-api/units?queue={queue}&rank={ranks}&server={servers}")
-    resp.raise_for_status()
-
-    return resp.json().get("results")

@@ -1,5 +1,11 @@
-ARGS		?=
-HOST_IP		= ${shell ip addr | grep "192.168" | cut -d ' ' -f6 | cut -d '/' -f1}
+ARGS  ?=
+UNAME := $(shell uname -s)
+
+ifeq ($(UNAME),Darwin)
+	HOST_IP = $(shell ipconfig getifaddr en0 || ipconfig getifaddr en1)
+else
+	HOST_IP = $(shell ip addr | grep "192.168" | cut -d ' ' -f6 | cut -d '/' -f1)
+endif
 
 all: up
 
