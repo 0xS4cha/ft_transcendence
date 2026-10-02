@@ -6,6 +6,7 @@ node_modules/
 *.pyc
 *.pyo
 *.pyd
+*.DS_Store
 .venv/
 web/dist
 .~lock.*.csv#

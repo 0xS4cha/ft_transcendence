@@ -5,7 +5,10 @@ from httpx2 import AsyncClient, HTTPError
 from pydantic import TypeAdapter
 
 from backend_app.schemas.augment import Augment
-from backend_app.services.fetch_game_data import fetch_lookup, get_game_data
+from backend_app.services.fetch_game_data import (
+    fetch_lookup,
+    get_game_data,
+)
 
 
 class AugmentsUnavailableError(Exception):

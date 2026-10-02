@@ -5,9 +5,12 @@ import redis.asyncio as redis
 from httpx2 import AsyncClient, HTTPError
 from pydantic import TypeAdapter
 
-from backend_app.core.utils import safe_get
 from backend_app.schemas.item import Item
-from backend_app.services.fetch_game_data import fetch_lookup, get_game_data
+from backend_app.services.fetch_game_data import (
+    fetch_lookup,
+    fetch_results,
+    get_game_data,
+)
 from backend_app.services.get_stats import get_all_datas_use, get_stats
 
 
@@ -25,7 +28,7 @@ async def get_items(
     async with AsyncClient(timeout=10) as client:
         try:
             items, lookup = await asyncio.gather(
-                fetch_items(client, queue, ranks, servers),
+                fetch_results(client, "items_matches", queue, ranks, servers),
                 get_game_data(r, "lookup", lambda: fetch_lookup(client))
             )
         except HTTPError as e:
@@ -120,61 +123,3 @@ def get_type(
             type = word
     
     return type
-
-
-async def fetch_items(
-    client: AsyncClient,
-    queue: str,
-    ranks: str,
-    servers: str,
-) -> list[dict[str, Any]] | None:
-    resp = await client.get(f"https://api-hc.metatft.com/tft-stat-api/items_matches?queue={queue}&rank={ranks}&server={servers}")
-    resp.raise_for_status()
-
-    return resp.json().get("results")
-
-
-def get_all_items_use(
-        items: list
-) -> int:
-    total = 0
-
-    for item in items:
-        total += sum(item.get("places"), 0)
-
-    return (total)
-
-
-def get_avg_place(
-        places: list,
-        total_item_use: int
-) -> float:
-    weighted = 0
-
-    for rank, count in enumerate(places, start=1):
-        weighted += rank * count
-
-    weighted /= total_item_use
-
-    return (weighted)
-
-
-def get_winrate(
-        places: list,
-        total_item_use: int
-) -> float:
-    winrate = (safe_get(places, 0) / total_item_use) * 100
-
-    return (winrate)
-
-
-def get_frequency(
-        total_item_use: int,
-        all_items_use: int
-) -> float:
-    if all_items_use == 0:
-        return 0
-
-    frequency = (total_item_use / all_items_use) * 100
-
-    return (frequency)
