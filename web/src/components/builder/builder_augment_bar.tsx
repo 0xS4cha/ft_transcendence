@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { AUGMENTS_DB } from "@/lib/champion";
 import { cn } from "@/lib/utils";
+import type { AugmentRow } from "../augments/schema";
 
-export default function BuilderAugmentsBar({ handleClearBoard }: { handleClearBoard: () => void }) {
-  const [augments, setAugments] = useState<(string | null)[]>([null, null, null]);
-
+export default function BuilderAugmentsBar({ handleClearBoard, augments }: { handleClearBoard: () => void, augments: AugmentRow[] }) {
+  const [selectedAugments, setSelectedAugments] = useState<(string | null)[]>([null, null, null]);
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
 
   const openModal = (index: number) => setSelectedSlot(index);
@@ -12,7 +11,7 @@ export default function BuilderAugmentsBar({ handleClearBoard }: { handleClearBo
 
   const handleSelectAugment = (augmentId: string) => {
     if (selectedSlot !== null) {
-      setAugments((prev) => {
+      setSelectedAugments((prev) => {
         const newAugments = [...prev];
         newAugments[selectedSlot] = augmentId;
         return newAugments;
@@ -22,7 +21,7 @@ export default function BuilderAugmentsBar({ handleClearBoard }: { handleClearBo
   };
 
   const handleClearAugments = () => {
-    setAugments([null, null, null]);
+    setSelectedAugments([null, null, null]);
   };
 
   useEffect(() => {
@@ -39,6 +38,8 @@ export default function BuilderAugmentsBar({ handleClearBoard }: { handleClearBo
     };
   }, [selectedSlot]);
 
+  const sortedAugments = [...augments].sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <div className="flex flex-col gap-4 py-4 px-4 bg-[#202020] h-full w-full rounded-xl border border-white/10">
       <button
@@ -52,27 +53,36 @@ export default function BuilderAugmentsBar({ handleClearBoard }: { handleClearBo
       <div className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
         Augments
       </div>
+      
       <div className="flex flex-row justify-between gap-2">
-        {augments.map((augmentId, index) => {
-          const augment = augmentId ? AUGMENTS_DB.find((a) => a.id === augmentId) : null;
+        {selectedAugments.map((augmentId, index) => {
+          const augment = augmentId ? augments.find((a) => a.id === augmentId) : null;
           return (
             <button
               key={index}
               onClick={() => openModal(index)}
               className={cn(
-                "relative flex aspect-square flex-1 items-center justify-center rounded-md border-2",
+                "group relative flex aspect-square flex-1 items-center justify-center overflow-hidden rounded-md border-2",
                 augment
                   ? "border-neutral-500 bg-neutral-800"
-                  : "border-dashed border-neutral-700 bg-neutral-800/50 hover:border-neutral-500 hover:bg-neutral-800"
+                  : "border-dashed border-neutral-700 bg-neutral-800/50 hover:border-neutral-500 hover:bg-neutral-800 hover:scale-95 transition-transform"
               )}>
-              {augment ? (<img
-                  src={augment.imageUrl}
+              {augment ? (
+              <>
+                <img
+                  src={augment.icon}
                   alt={augment.name}
-                  className="h-full w-full object-cover p-1"/>) : (<span className="text-xl text-neutral-600">+</span>)}
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-95"
+                />
+                <span className="absolute bottom-1 w-[90%] rounded bg-black/80 px-1 py-0.5 text-center text-[8px] leading-tight font-bold tracking-wider text-white">
+                  {augment.name}
+                </span>
+              </> ) : (<span className="text-xl text-neutral-600">+</span>)}
             </button>
           );
         })}
       </div>
+      
       <button
         onClick={handleClearAugments}
         className="w-full rounded-md
@@ -81,6 +91,7 @@ export default function BuilderAugmentsBar({ handleClearBoard }: { handleClearBo
          active:scale-95">
         Clear augments
       </button>
+
       {selectedSlot !== null && (
         <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
         onClick={closeModal}>
@@ -97,7 +108,7 @@ export default function BuilderAugmentsBar({ handleClearBoard }: { handleClearBo
               </button>
             </div>
             <div className="grid flex-1 grid-cols-4 gap-4 overflow-y-auto custom-scrollbar pr-2 sm:grid-cols-5 md:grid-cols-6">
-              {AUGMENTS_DB.map((aug) => (
+              {sortedAugments.map((aug) => (
                 <button
                   key={aug.id}
                   onClick={() => handleSelectAugment(aug.id)}
@@ -106,12 +117,15 @@ export default function BuilderAugmentsBar({ handleClearBoard }: { handleClearBo
                   hover:scale-95 active:scale-95"
                   title={aug.name}>
                   <img
-                    src={aug.imageUrl}
+                    src={aug.icon}
                     alt={aug.name}
                     className="aspect-square w-full
                     rounded-md border-2 border-transparent
                     object-cover transition-colors
                     group-hover:border-blue-500"/>
+                    <span className="text-center text-xs font-semibold text-neutral-300 transition-colors group-hover:text-white leading-tight">
+                      {aug.name}
+                    </span>
                 </button>
               ))}
             </div>

@@ -15,13 +15,14 @@ import { cn } from "@/lib/utils";
 import type { ItemRow } from "@/components/items/schema";
 import type { UnitRow } from "@/components/units/schema";
 import type { TraitRow } from "@/components/traits/schema";
+import type { AugmentRow } from "@/components/augments/schema";
 import BuilderBoard from "@/components/builder/builder_boards"
 import BuilderToolBar from "@/components/builder/builder_tool_bar";
 import BuilderTraitsBar from "@/components/builder/builder_traits_bar";
 import BuilderAugmentsBar from "@/components/builder/builder_augment_bar";
 import BuilderChampionsBar from "@/components/builder/builder_champions_bar";
 import BuilderTraitsBarMobile from "@/components/builder/builder_traits_bar_mobile";
-import { getItemsStats, getTraitsStats, getUnitsStats } from "@/services/statsService";
+import { getAugmentsStats, getItemsStats, getTraitsStats, getUnitsStats } from "@/services/statsService";
 
 export default function Builder() {
 
@@ -29,6 +30,7 @@ export default function Builder() {
   const [activeDragId, setActiveDragId] = useState<string | null>(null);
   const [boardItems, setBoardItems] = useState<Record<string, string[]>>({});
 
+  const [augments, setAugments] = useState<AugmentRow[]>([]);
   const [champions, setChampions] = useState<UnitRow[]>([]);
   const [items, setItems] = useState<ItemRow[]>([]);
   const [traits, setTraits] =useState<TraitRow[]>([]);
@@ -50,7 +52,8 @@ export default function Builder() {
       try {
         const result = await getItemsStats();
         setItems(result);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error while fetching champs", error);
       }
     };
@@ -67,6 +70,20 @@ export default function Builder() {
       }
     };
     fetchTraits()
+  }, []);
+
+  useEffect(() => {
+    const fetchAugments = async () => {
+      try {
+
+        const result = await getAugmentsStats();
+        setAugments(result);
+      } catch (error)
+      {
+        console.error("Error while fetching augments", error);
+      }
+    };
+    fetchAugments();
   }, []);
 
   const sensors = useSensors(
@@ -259,7 +276,7 @@ export default function Builder() {
           </div>
           
           <div className="hidden lg:flex flex-col rounded-xl border border-white/10 min-w-0 min-h-0">
-            <BuilderAugmentsBar handleClearBoard={handleClearBoard}/>
+            <BuilderAugmentsBar handleClearBoard={handleClearBoard} augments={augments}/>
           </div>
         </div>
         <div className="flex rounded-xl border border-white/10">
