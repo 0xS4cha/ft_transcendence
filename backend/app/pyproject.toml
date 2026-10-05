@@ -11,6 +11,7 @@ dependencies = [
     "annotated>=0.0.2",
     "asyncpg>=0.31.0",
     "ciso8601>=2.3.3",
+    "fastapi-limiter>=0.2.0",
     "fastapi[standard]>=0.141.1",
     "greenlet>=3.5.5",
     "httpx2>=2.12.0",
