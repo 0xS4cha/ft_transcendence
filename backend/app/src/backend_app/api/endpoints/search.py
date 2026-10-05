@@ -1,15 +1,31 @@
 from enum import Enum
 
+import redis.asyncio as redis
 from fastapi import APIRouter, HTTPException, status
-from sqlalchemy import select
 
+from backend_app.core.dependencies import RedisDep
 from backend_app.core.riot_api import riot_api
-from backend_app.models.users import UserModel
-from shared.database import AsyncSessionDep
-from shared.models.augments import Augment
-from shared.models.items import Item
-from shared.models.traits import Trait
-from shared.models.units import Unit
+from backend_app.services.fetch_game_data import build_cache_key, get_or_fetch
+from backend_app.services.get_augments import (
+	AugmentsUnavailableError,
+	augments_adapter,
+	get_augments,
+)
+from backend_app.services.get_items import (
+	ItemsUnavailableError,
+	get_items,
+	items_adapter,
+)
+from backend_app.services.get_traits import (
+	TraitsUnavailableError,
+	get_traits,
+	traits_adapter,
+)
+from backend_app.services.get_units import (
+	UnitsUnavailableError,
+	get_units,
+	units_adapter,
+)
 
 router = APIRouter()
 
@@ -41,7 +57,10 @@ class Platform(Enum):
 		if self.value in [Platform.LA1, Platform.LA2, Platform.ME1, Platform.NA1]: # america
 			return "america"
 		return "europe" # eu by default
-	
+
+queue = "1100"
+ranks = "BRONZE,CHALLENGER,DIAMOND,EMERALD,GOLD,GRANDMASTER,IRON,MASTER,PLATINUM,RANKUNKNOWN,SILVER"
+servers= "BR1,EUN1,EUW1,JP1,KR,LA1,LA2,ME1,NA1,OC1,RU,SG2,TR1,TW2,VN2"	
 
 searched_user_cache = {}
 async def query_user_profile(query_username: str):
@@ -96,63 +115,114 @@ async def query_user_profile(query_username: str):
 	else:
 		return {}
 
-async def query_unit(query: str, session: AsyncSessionDep):
-	result = await session.execute(
-		select(Unit)
-		.where(Unit.name.ilike(f"%{query}%"))
-		.limit(8)
-	)
-	return result.scalars().all()
 
-async def query_item(query: str, session: AsyncSessionDep):
-	result = await session.execute(
-		select(Item)
-		.where((Item.name.ilike(f"%{query}%")) | (Item.id.ilike(f"%{query}%")))
-		.limit(8)
-	)
-	return result.scalars().all()
-
-async def query_trait(query: str, session: AsyncSessionDep):
-	result = await session.execute(
-		select(Trait)
-		.where((Trait.name.ilike(f"%{query}%")) | (Trait.id.ilike(f"%{query}%")))
-		.limit(8)
-	)
-	return result.scalars().all()
-
-async def query_augment(query: str, session: AsyncSessionDep):
-	result = await session.execute(
-		select(Augment)
-		.where((Augment.name.ilike(f"%{query}%")) | (Augment.id.ilike(f"%{query}%")))
-		.limit(8)
-	)
-	return result.scalars().all()
-	
-
-# unit, user, item
-@router.get("/{query}")
-async def search(query: str, session: AsyncSessionDep):
-	query = query.strip()
-	if not query:
-		return {"unit": [], "item": [], "trait": [], "augment": [], "user": []}
+async def query_augment(
+	r: redis.Redis,
+	query: str,
+):
+	key = "metatft:augments"
 
 	try:
-		final = {}
-		users = await query_local_users(query, session)
-		try:
-			riot_user = await query_user_profile(query.strip())
-			if riot_user and not any(user.get("username") == riot_user.get("username") for user in users):
-				users.insert(0, riot_user)
-		except Exception as e:  # noqa: BLE001
-			print(e)
-		final["user"] = users
-		final["unit"] = await query_unit(query.strip(), session)
-		final["item"] = await query_item(query.strip(), session)
-		final["trait"] = await query_trait(query.strip(), session)
-		final["augment"] = await query_augment(query.strip(), session)
-		return final
-	except Exception as e: # noqa: BLE001
+		augments = await get_or_fetch(r, key, augments_adapter, lambda: get_augments(r))
+	except AugmentsUnavailableError as e:
 		raise HTTPException(
-			status_code=status.HTTP_400_BAD_REQUEST,
-			detail=f"{e}"
-		)
+			status_code=status.HTTP_502_BAD_GATEWAY,
+			detail=str(e)
+		) from e
+
+	q = query.lower()
+	return [augment for augment in augments if q in augment.name.lower()]
+
+
+async def query_unit(
+	r: redis.Redis,
+	query: str,
+):
+	units_key = build_cache_key("units", queue, ranks, servers)
+	traits_key = build_cache_key("traits", queue, ranks, servers)
+		
+	try:
+		traits = await get_or_fetch(r, traits_key, traits_adapter, lambda: get_traits(r, queue, ranks, servers))
+		units = await get_or_fetch(r, units_key, units_adapter, lambda: get_units(r, queue, ranks, servers, traits))
+	except (TraitsUnavailableError, UnitsUnavailableError)  as e:
+		raise HTTPException(
+			status_code=status.HTTP_502_BAD_GATEWAY,
+			detail=str(e)
+		) from e
+
+	q = query.lower()
+	return [unit for unit in units if q in unit.name.lower()]
+
+
+async def query_item(
+	r: redis.Redis,
+	query: str
+):
+	key = build_cache_key("items", queue, ranks, servers)
+	
+	try:
+		items = await get_or_fetch(r, key, items_adapter, lambda: get_items(r, queue, ranks, servers))
+	except ItemsUnavailableError as e:
+		raise HTTPException(
+			status_code=status.HTTP_502_BAD_GATEWAY,
+			detail=str(e)
+		) from e
+
+	q = query.lower()
+	return [item for item in items if q in item.name.lower()]
+
+
+async def query_trait(
+	r: redis.Redis,
+	query: str
+):
+	key = build_cache_key("traits", queue, ranks, servers)
+	
+	try:
+		traits = await get_or_fetch(r, key, traits_adapter, lambda: get_traits(r, queue, ranks, servers))
+	except TraitsUnavailableError as e:
+		raise HTTPException(
+			status_code=status.HTTP_502_BAD_GATEWAY,
+			detail=str(e)
+		) from e
+
+	matched = {}
+	q = query.lower()
+
+	for trait in traits:
+		name = trait.name.lower()
+		if q in name and name not in matched:
+			matched[name] = trait
+
+	return list(matched.values())
+
+
+@router.get("/{query}")
+async def search(
+	query: str,
+	r: RedisDep
+):
+	query = query.strip()
+	final = {}
+
+	for key, fn in [
+		("unit", query_unit),
+		("item", query_item),
+		("trait", query_trait),
+		("augment", query_augment),
+	]:
+		try:
+			final[key] = await (fn(r, query))
+		except HTTPException as e:
+			print(f"{key} unavailable: {e.detail}")
+			final[key] = []
+			
+	try:
+		final["user"] = [await query_user_profile(query)]
+	except Exception as e: #noqa
+		print(f"[search] user lookup failed for {query}: {e}")
+		final["user"] = []
+
+	return final
+
+	
