@@ -1,8 +1,7 @@
 from fastapi import APIRouter
-from backend_app.patchnotes import read_patchnote
 from fastapi.responses import HTMLResponse
 
-
+from backend_app.patchnotes import read_patchnote
 
 router = APIRouter()
 
@@ -12,8 +11,6 @@ cached_patchnote = {}
 
 @router.get("/latest", response_class=HTMLResponse)
 def get_patchnote():
-	global cached_patchnote
-
 	if CURRENT_VERSION not in cached_patchnote:
 		cached_patchnote[CURRENT_VERSION] = read_patchnote(CURRENT_VERSION)
 

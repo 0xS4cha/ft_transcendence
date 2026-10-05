@@ -13,6 +13,7 @@ from backend_app.api.endpoints import (
     login_with_42_router,
     logout_router,
     me_router,
+    patchnote_router,
     prometheus_metrics_router,
     refuse_friend_request_router,
     remove_friend_router,
@@ -23,7 +24,6 @@ from backend_app.api.endpoints import (
     traits_data_router,
     units_data_router,
     websocket_router,
-    patchnote_router
 )
 
 api_router = APIRouter(prefix="/api")
