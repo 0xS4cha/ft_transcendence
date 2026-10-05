@@ -50,6 +50,8 @@ interface DataTableProps {
   setFilter: any;
   customToolbar?: React.ReactNode;
   onExpand?: (unit: Row<typeof dataTableFeatures, UnitRow>, columns: unknown[]) => React.ReactNode;
+  hideRankFilter?: boolean;
+  hideQueueFilter?: boolean;
 }
 
 export function DataTable({
@@ -63,6 +65,8 @@ export function DataTable({
   initialSearchQuery = "",
   onExpand,
   customToolbar,
+  hideRankFilter,
+  hideQueueFilter,
 }: DataTableProps) {
   const sortOptionState = useMemo(() => ({
     "name-asc": [{ id: defaultSortId, desc: false }],
@@ -120,7 +124,7 @@ export function DataTable({
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-        <DataTableFilter setFilter={setFilter} filter={filter} />
+        <DataTableFilter setFilter={setFilter} filter={filter} hideRankFilter={hideRankFilter} hideQueueFilter={hideQueueFilter}/>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center xl:w-auto">
           {customToolbar}
           <div className="relative w-full lg:w-80">
