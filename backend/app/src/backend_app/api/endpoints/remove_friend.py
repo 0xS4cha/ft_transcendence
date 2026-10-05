@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select
+from sqlalchemy import select, delete
 
 from backend_app.core.jwt import Token
 from backend_app.models.friends import Friends, Status
@@ -11,31 +11,40 @@ from shared.database import AsyncSessionDep
 router = APIRouter()
 
 @router.delete(
-    "/remove_friend/{friend_request_id}"
+    "/remove_friend/{friend_username}"
 )
 async def remove_friend(
     current_user: Annotated[UserModel, Depends(Token.get_current_user)],
     session: AsyncSessionDep,
-    friend_request_id: int
+    friend_username: str
 ) -> dict[str, str]:
-    existing_friendship = await session.scalar(
-        select(Friends)
-        .where(Friends.id == friend_request_id)
+    friend = await session.scalar(
+        select(UserModel)
+        .where(UserModel.username == friend_username)
     )
-
-    if existing_friendship is None or existing_friendship.status != Status.ACCEPTED:
+    
+    if friend is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="The friendship does not exist."
+            detail=f"User with username {friend_username} does not exist."
         )
 
-    if current_user.id != existing_friendship.requested and current_user.id != existing_friendship.requester:
+    uid1 = min(current_user.id, friend.id)
+    uid2 = max(current_user.id, friend.id)
+
+    result = await session.execute(
+        delete(Friends)
+        .where(Friends.uid1 == uid1)
+        .where(Friends.uid2 == uid2)
+        .where(Friends.status == Status.ACCEPTED)
+    )
+
+    if result.rowcount == 0:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="The friendship is not yours."
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"The user with username {friend_username} is not your friend."
         )
-    
-    await session.delete(existing_friendship)
+
     await session.commit()
 
     return {
