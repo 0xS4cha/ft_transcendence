@@ -29,16 +29,15 @@ async def accept_friend_request(
             detail=f"The requester with username {requester_username} does not exist."
         )
 
-    request = await session.execute(
+    result = await session.execute(
         update(Friends)
         .where(Friends.requested == current_user.id)
         .where(Friends.requester == requester.id)
         .where(Friends.status == Status.PENDING)
         .values(status=Status.ACCEPTED)
-        .returning(Friends.id)
     )
   
-    if request.scalar_one_or_none() is None:
+    if result.rowcount == 0:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="The friend request does not exist."
