@@ -1,4 +1,6 @@
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, HTTPException, Response, status
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 
 from backend_app.core.authenticate import Authenticate
 from backend_app.core.jwt import Token
@@ -18,10 +20,27 @@ async def signup(
     user = await Authenticate.get_user(user_data.email, session)
 
     if user:
-        raise HTTPException(status_code=409, detail="Email is already registered")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Email is already taken"
+        )
+
+    usernames = (await session.scalars(
+        select(UserModel.username)
+        )
+    ).all()
+
+    if user_data.username in usernames:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Username is already taken"
+        )
 
     if user_data.password != user_data.confirm_password:
-        raise HTTPException(status_code=409, detail="Passwords must match")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Passwords don't match"
+        )
 
     new_user = UserModel(
         email=user_data.email,
@@ -31,7 +50,15 @@ async def signup(
     )
 
     session.add(new_user)
-    await session.commit()
+    try:
+        await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Email or username is already taken"
+        )
+    
     await session.refresh(new_user)
 
     Token.generate_token(user_data.email, response)
