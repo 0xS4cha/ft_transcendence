@@ -1,13 +1,14 @@
 import { TraitsColumns } from "@/components/traits/columns";
 import { DataTable } from "@/components/data-table/data-table";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useImperativeHandle } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "@/components/ui/toast";
 import { type TraitRow } from "@/components/traits/schema";
 import { getTraitsStats } from "@/services/statsService";
 import { type FilterType } from "@/types/stats";
+import { downloadJson } from "@/lib/utils";
 
-export function TraitsTable() {
+export function TraitsTable({ ref }: any ) {
   const [filter, setFilter] = useState<FilterType>({
     queue: "1100",
     ranked: "PLATINUM",
@@ -16,6 +17,12 @@ export function TraitsTable() {
   const [data, setData] = useState<TraitRow[]>([]);
   const [searchParams] = useSearchParams();
   const initialSearchQuery = searchParams.get("q")?.trim() ?? "";
+
+  useImperativeHandle(ref, () => ({
+    export() {
+      downloadJson(data, "traits.json")
+    }
+  }));
 
   useEffect(() => {
     const fetchData = async () => {
