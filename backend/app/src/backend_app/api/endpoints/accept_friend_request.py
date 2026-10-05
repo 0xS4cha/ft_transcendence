@@ -32,7 +32,7 @@ async def accept_friend_request(
     if current_user.username == requester_username:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"You cannot accept a friend request from yourself."
+            detail="You cannot accept a friend request from yourself."
         )
 
     result = await session.execute(

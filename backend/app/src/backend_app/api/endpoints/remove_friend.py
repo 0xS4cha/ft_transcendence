@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select, delete
+from sqlalchemy import delete, select
 
 from backend_app.core.jwt import Token
 from backend_app.models.friends import Friends, Status
@@ -32,7 +32,7 @@ async def remove_friend(
     if current_user.username == friend_username:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"You cannot remove yourself from your friends."
+            detail="You cannot remove yourself from your friends."
         )
 
     uid1 = min(current_user.id, friend.id)

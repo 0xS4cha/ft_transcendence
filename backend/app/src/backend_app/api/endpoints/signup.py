@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Response, status
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 
 from backend_app.core.authenticate import Authenticate
 from backend_app.core.jwt import Token
@@ -8,7 +8,6 @@ from backend_app.core.security import Password
 from backend_app.models.users import UserModel
 from backend_app.schemas.user import UserCreate, UserPublic
 from shared.database import AsyncSessionDep
-
 
 router = APIRouter()
 

@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select, delete
+from sqlalchemy import delete, select
 
 from backend_app.core.jwt import Token
 from backend_app.models.friends import Friends, Status
@@ -32,7 +32,7 @@ async def refuse_friend_request(
     if current_user.username == requester_username:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"You cannot refuse a friend request from yourself."
+            detail="You cannot refuse a friend request from yourself."
         )
     
     result = await session.execute(

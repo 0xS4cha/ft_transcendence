@@ -3,13 +3,13 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.exc import IntegrityError
 
 from backend_app.core.jwt import Token
 from backend_app.core.websocket import WSbroadcast
 from backend_app.models.friends import Friends, Status
 from backend_app.models.users import UserModel
 from shared.database import AsyncSessionDep
-from sqlalchemy.exc import IntegrityError
 
 router = APIRouter()
     
@@ -79,14 +79,14 @@ async def send_friend_request(
         print("[send_friend_request] Integrity error while creating friend request")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid friend request"
+            detail=f"Invalid friend request: {e}"
         )
 
     try:
         await WSbroadcast("equefriend.rst", {
             "requester_username": current_user.username
         }, [requested.id])
-    except Exception as e:
+    except Exception as e: #noqa BLE001
         print(f"Failed to broadcast friend request to user with id {requested.id}")
 
     return {

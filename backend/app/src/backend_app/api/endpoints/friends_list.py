@@ -1,10 +1,9 @@
-from typing import Annotated, Any
+from typing import Annotated
 
 from fastapi import APIRouter, Depends
 from sqlalchemy import or_, select
 
 from backend_app.core.jwt import Token
-
 from backend_app.models.friends import Friends, Status
 from backend_app.models.users import UserModel
 from backend_app.schemas.user import UserPublic
