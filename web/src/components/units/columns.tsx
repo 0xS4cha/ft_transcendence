@@ -18,7 +18,7 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
     id: "expand",
     header: () => null,
     cell: ({ row }: any) => (
-      row.model ? (
+      row.original.model ? (
         <Button
           variant="ghost"
           size="sm"
