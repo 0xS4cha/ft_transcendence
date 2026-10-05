@@ -58,7 +58,7 @@ export default function Home() {
           className="space-y-1"
         >
           <h1 className="text-3xl font-semibold tracking-tight">
-            Welcome to Tactycs
+            Welcome to Tactyx
           </h1>
           <p className="text-muted-foreground">
             Here's an overview of your TFT performance and analysis.

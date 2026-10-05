@@ -180,7 +180,7 @@ export function DataTable({
                       </TableCell>
                     ))}
                   </TableRow>
-                 {onExpand && row.getIsExpanded() && (
+                 {onExpand && row.getIsExpanded() && row.model && (
                   <>
                     {onExpand(row, columns)}
                  </>
