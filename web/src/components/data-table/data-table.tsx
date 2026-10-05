@@ -29,8 +29,10 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { dataTableFeatures } from "@/lib/data-table-features";
 
-import { DataTableFilter } from "./data-table-filter";
-import { DataTablePagination } from "./data-table-pagination";
+import { DataTableFilter } from "@/components/data-table/data-table-filter";
+import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+
+import { type FilterType } from "@/types/stats";
 
 const sortOptions = [
   { value: "name-asc", label: "Name A-Z" },
@@ -44,6 +46,8 @@ interface DataTableProps {
   defaultSortId: string;
   searchPlaceholder?: string;
   initialSearchQuery?: string;
+  filter: FilterType;
+  setFilter: any;
   customToolbar?: React.ReactNode;
   onExpand?: (unit: Row<typeof dataTableFeatures, UnitRow>, columns: unknown[]) => React.ReactNode;
 }
@@ -52,6 +56,8 @@ export function DataTable({
   columns,
   data,
   getRowId,
+  setFilter,
+  filter,
   defaultSortId,
   searchPlaceholder = "Search...",
   initialSearchQuery = "",
@@ -114,7 +120,7 @@ export function DataTable({
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-        <DataTableFilter table={table} />
+        <DataTableFilter setFilter={setFilter} filter={filter} />
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center xl:w-auto">
           {customToolbar}
           <div className="relative w-full lg:w-80">

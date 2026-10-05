@@ -2,7 +2,6 @@ import {
   Swords,
   Trophy,
   Globe,
-  RotateCcw,
 } from "lucide-react";
 
 import {
@@ -13,86 +12,65 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Button } from "@/components/ui/button";
+import { type FilterType } from "@/types/stats";
 
 const queueOptions = [
-  { value: "ranked", label: "Ranked" },
-  { value: "doubleup", label: "Double up" },
+  { value: "1100", label: "Ranked" },
+  { value: "1160", label: "Double up" },
 ] as const;
 
 const rankOptions = [
-  { value: "unknown", label: "Unknown" },
-  { value: "iron", label: "Iron" },
-  { value: "bronze", label: "Bronze" },
-  { value: "silver", label: "Silver" },
-  { value: "gold", label: "Gold" },
-  { value: "platinium", label: "Platinium" },
-  { value: "emerald", label: "Emerald" },
-  { value: "diamond", label: "Diamond" },
-  { value: "master", label: "Master" },
-  { value: "grandmaster", label: "Grand Master" },
-  { value: "challenger", label: "Challenger" },
+  { value: "RANKUNKNOWN", label: "Unknown" },
+  { value: "IRON", label: "Iron" },
+  { value: "BRONZE", label: "Bronze" },
+  { value: "SILVER", label: "Silver" },
+  { value: "GOLD", label: "Gold" },
+  { value: "PLATINUM", label: "Platinium" },
+  { value: "EMERALD", label: "Emerald" },
+  { value: "DIAMOND", label: "Diamond" },
+  { value: "MASTER", label: "Master" },
+  { value: "GRANDMASTER", label: "Grand Master" },
+  { value: "CHALLENGER", label: "Challenger" },
 ] as const;
 
 const serverOptions = [
-  { value: "br", label: "BR" },
-  { value: "eue", label: "EUE" },
-  { value: "euw", label: "EUW" },
-  { value: "jp", label: "JP" },
-  { value: "kr", label: "KR" },
-  { value: "lan", label: "LAN" },
-  { value: "las", label: "LAS" },
-  { value: "me", label: "ME" },
-  { value: "na", label: "NA" },
-  { value: "oce", label: "OCE" },
-  { value: "ru", label: "RU" },
-  { value: "sea", label: "SEA" },
-  { value: "tr", label: "TR" },
-  { value: "tw", label: "TW" },
-  { value: "vn", label: "VN" },
+  { value: "BR1", label: "BR" },
+  { value: "EUN1", label: "EUE" },
+  { value: "EUW1", label: "EUW" },
+  { value: "JP1", label: "JP" },
+  { value: "KR", label: "KR" },
+  { value: "LA1", label: "LAN" },
+  { value: "LA2", label: "LAS" },
+  { value: "ME1", label: "ME" },
+  { value: "NA1", label: "NA" },
+  { value: "OC1", label: "OCE" },
+  { value: "RU", label: "RU" },
+  { value: "SG2", label: "SEA" },
+  { value: "TR1", label: "TR" },
+  { value: "TW2", label: "TW" },
+  { value: "VN2", label: "VN" },
 ] as const;
 
-const DEFAULTS = {
-  queue: "ranked",
-  ranked: "platinium",
-  server: "euw",
-} as const;
 
 interface DataTableFilterProps {
-  table: any;
+  filter: FilterType;
+  setFilter: any;
 }
 
-export function DataTableFilter({ table }: DataTableFilterProps) {
-  const queueFilter =
-    (table?.getColumn("queue")?.getFilterValue() as string | undefined) ?? DEFAULTS.queue;
-  const rankFilter =
-    (table?.getColumn("ranked")?.getFilterValue() as string | undefined) ?? DEFAULTS.ranked;
-  const serverFilter =
-    (table?.getColumn("server")?.getFilterValue() as string | undefined) ?? DEFAULTS.server;
-
-  const updateFilter = (columnId: string, value: string, defaultValue: string) => {
-    table?.getColumn(columnId)?.setFilterValue(value === defaultValue ? undefined : value);
-    table?.setPageIndex(0);
-  };
-
-  const hasActiveFilters =
-    queueFilter !== DEFAULTS.queue ||
-    rankFilter !== DEFAULTS.ranked ||
-    serverFilter !== DEFAULTS.server;
-
-  const resetFilters = () => {
-    table?.getColumn("queue")?.setFilterValue(undefined);
-    table?.getColumn("ranked")?.setFilterValue(undefined);
-    table?.getColumn("server")?.setFilterValue(undefined);
-    table?.setPageIndex(0);
+export function DataTableFilter({ filter, setFilter }: DataTableFilterProps) {
+  const updateFilter = (columnId: string, value: string) => {
+    setFilter((prev: FilterType) => ({
+      ...prev,
+      [columnId]: value,
+    }));
   };
 
   return (
     <div className="flex flex-wrap items-center gap-2 rounded-lg">
 
       <Select
-        value={queueFilter}
-        onValueChange={(value) => value ? updateFilter("queue", value, DEFAULTS.queue) : console.log("value is null")}
+        value={filter.queue}
+        onValueChange={(value) => value ? updateFilter("queue", value) : console.log("value is null")}
       >
         <SelectTrigger size="sm" className="w-[130px]">
           <div className="flex items-center gap-1.5 truncate">
@@ -110,8 +88,8 @@ export function DataTableFilter({ table }: DataTableFilterProps) {
       </Select>
 
       <Select
-        value={rankFilter}
-        onValueChange={(value) => value ? updateFilter("ranked", value, DEFAULTS.ranked) : console.log("value is null")}
+        value={filter.ranked}
+        onValueChange={(value) => value ? updateFilter("ranked", value) : console.log("value is null")}
       >
         <SelectTrigger size="sm" className="w-[140px]">
           <div className="flex items-center gap-1.5 truncate">
@@ -129,8 +107,8 @@ export function DataTableFilter({ table }: DataTableFilterProps) {
       </Select>
 
       <Select
-        value={serverFilter}
-        onValueChange={(value) => value ? updateFilter("server", value, DEFAULTS.server) : console.log("value is null")}
+        value={filter.server}
+        onValueChange={(value) => value ? updateFilter("server", value) : console.log("value is null")}
       >
         <SelectTrigger size="sm" className="w-[100px]">
           <div className="flex items-center gap-1.5 truncate">
@@ -146,18 +124,6 @@ export function DataTableFilter({ table }: DataTableFilterProps) {
           ))}
         </SelectContent>
       </Select>
-
-      {hasActiveFilters && (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={resetFilters}
-          className="ml-auto h-8 text-muted-foreground hover:text-foreground"
-        >
-          <RotateCcw className="mr-1 h-3.5 w-3.5" />
-          Reset
-        </Button>
-      )}
     </div>
   );
 }
