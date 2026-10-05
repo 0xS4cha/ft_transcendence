@@ -15,7 +15,9 @@ class   UserModel(Base):
         index=True
     )
     hashed_password: Mapped[str] = mapped_column()
-    username: Mapped[str] = mapped_column()
+    username: Mapped[str] = mapped_column(
+        unique=True
+    )
     picture: Mapped[str | None] = mapped_column()
     messages: Mapped[list[ChatMessage]] = relationship(
         "ChatMessage",
