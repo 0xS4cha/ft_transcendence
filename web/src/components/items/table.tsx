@@ -2,12 +2,16 @@ import { ItemsColumns } from "@/components/items/columns";
 import { DataTable } from "@/components/data-table/data-table";
 import { ItemsTypeFilter } from "@/components/items/type_filter";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { toast } from "@/components/ui/toast";
 import { type ItemRow } from "@/components/items/schema";
 import { getItemsStats } from "@/services/statsService";
 
 export function ItemsTable() {
   const [data, setData] = useState<ItemRow[]>([]);
+  const [searchParams] = useSearchParams();
+  const initialSearchQuery = searchParams.get("q")?.trim() ?? "";
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -31,6 +35,7 @@ export function ItemsTable() {
       getRowId={(row) => row.id}
       defaultSortId="id"
       searchPlaceholder="Search items..."
+      initialSearchQuery={initialSearchQuery}
       customToolbar={<ItemsTypeFilter />}
     />
   );

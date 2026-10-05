@@ -64,31 +64,32 @@ servers= "BR1,EUN1,EUW1,JP1,KR,LA1,LA2,ME1,NA1,OC1,RU,SG2,TR1,TW2,VN2"
 
 searched_user_cache = {}
 async def query_user_profile(query_username: str):
-	if query_username.count('#') == 1:
-		if query_username in searched_user_cache:
-			return {username: data for username, data in searched_user_cache.items() if username == query_username}
+	if query_username.count('#') != 1:
+		return None
 
-		game_name = query_username.split('#')[0].strip()
-		game_tag = query_username.split('#')[1].strip()
-		account = riot_api.get_account(game_name, game_tag, Platform.JP1.get_continent())
-		if not account or not "puuid" in account:
-			return {}
+	if query_username in searched_user_cache:
+		return searched_user_cache[query_username]
 
-		# get region for player
-		region = riot_api.get_region(account["puuid"])
-		if not region:
-			return {}
+	game_name = query_username.split('#')[0].strip()
+	game_tag = query_username.split('#')[1].strip()
+	account = riot_api.get_account(game_name, game_tag, Platform.JP1.get_continent())
+	if not account or not "puuid" in account:
+		return None
 
-		server = Platform(region)
+	# get region for player
+	region = riot_api.get_region(account["puuid"])
+	if not region:
+		return None
 
+	server = Platform(region)
 
-		summoner = riot_api.get_summoner(account["puuid"], server.value)
-		if not summoner or not "puuid" in summoner:
-			return {}
+	summoner = riot_api.get_summoner(account["puuid"], server.value)
+	if not summoner or not "puuid" in summoner:
+		return None
 
-		ranked_data_lst = riot_api.get_ranked(account["puuid"], server.value)
-		if not ranked_data_lst or not isinstance(ranked_data_lst, list) or len(ranked_data_lst) == 0:
-			return {}
+	ranked_data_lst = riot_api.get_ranked(account["puuid"], server.value)
+	if not ranked_data_lst or not isinstance(ranked_data_lst, list) or len(ranked_data_lst) == 0:
+		return None
 
 		ranked_data = ranked_data_lst[0]
 		

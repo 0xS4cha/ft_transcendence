@@ -1,12 +1,13 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "motion/react";
+import { useNavigate } from "react-router-dom";
 import {
-  GemIcon,
-  HexagonIcon,
-  PackageIcon,
+  Sword,
+  Layers,
+  Sparkle,
   SearchIcon,
   SearchXIcon,
-  SwordsIcon,
+  Shield,
   UserIcon,
   XIcon,
   type LucideIcon,
@@ -34,7 +35,7 @@ import {
 import { toast } from "@/components/ui/toast";
 import { cn, initialsOf, errorMessage } from "@/lib/utils";
 import { getSearchFromQuery } from "@/services/searchService";
-import { type search as SearchResult } from "@/types/search";
+import { type SearchResult } from "@/types/search";
 
 
 type SearchEntry = {
@@ -43,16 +44,24 @@ type SearchEntry = {
   username?: string;
   picture?: string;
   icon?: string;
+  source?: "local" | "riot";
+  region?: string;
+  tier?: string;
+  rank?: string;
+  leaguePoints?: number;
+  type?: string;
+  rarity?: string;
+  breakpoint?: string;
 };
 
 type SectionKey = "unit" | "user" | "trait" | "augment" | "item";
 
 const SECTIONS: { key: SectionKey; label: string; icon: LucideIcon }[] = [
-  { key: "unit", label: "Units", icon: SwordsIcon },
+  { key: "unit", label: "Units", icon: Sword },
   { key: "user", label: "Users", icon: UserIcon },
-  { key: "trait", label: "Traits", icon: HexagonIcon },
-  { key: "augment", label: "Augments", icon: GemIcon },
-  { key: "item", label: "Items", icon: PackageIcon },
+  { key: "trait", label: "Traits", icon: Layers },
+  { key: "augment", label: "Augments", icon: Sparkle },
+  { key: "item", label: "Items", icon: Shield },
 ];
 
 const EMPTY_RESULT: SearchResult = {
@@ -68,6 +77,21 @@ const DEBOUNCE_MS = 250;
 
 const labelOf = (entry: SearchEntry) => entry.name ?? entry.username ?? "";
 const imageOf = (entry: SearchEntry) => entry.picture ?? entry.icon;
+
+function subtitleOf(section: SectionKey, entry: SearchEntry): string {
+  if (section === "user") {
+    const rank = [entry.tier, entry.rank].filter(Boolean).join(" ");
+    const lp = entry.leaguePoints != null ? `${entry.leaguePoints} LP` : "";
+    const source = entry.source === "riot" ? "Riot" : "App";
+    return [source, entry.region, rank, lp].filter(Boolean).join(" • ");
+  }
+
+  if (section === "item") return entry.type ? `Type: ${entry.type}` : "";
+  if (section === "trait") return entry.breakpoint ? `Breakpoint: ${entry.breakpoint}` : "";
+  if (section === "augment") return entry.rarity ? `Rarity: ${entry.rarity}` : "";
+
+  return "";
+}
 
 const listVariants: Variants = {
   hidden: {},
@@ -117,10 +141,13 @@ export function SearchInput({
   onSelect?: (section: SectionKey, entry: SearchEntry) => void;
 }) {
   const reduceMotion = useReducedMotion();
+  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
   const [data, setData] = useState<{ query: string; result: SearchResult } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [activeSection, setActiveSection] = useState<"all" | SectionKey>("all");
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   const trimmed = query.trim();
 
@@ -137,7 +164,6 @@ export function SearchInput({
     const timeout = setTimeout(async () => {
       try {
         const result = await getSearchFromQuery(trimmed);
-        console.log(trimmed, encodeURI(trimmed), query);
         if (!cancelled) setData({ query: trimmed, result });
       } catch (error) {
         if (!cancelled) {
@@ -178,19 +204,72 @@ export function SearchInput({
     () =>
       SECTIONS.map((section) => ({
         ...section,
-        entries: (result[section.key] ?? []) as SearchEntry[],
+        entries: ((result[section.key] ?? []) as SearchEntry[]).filter((entry) =>
+          Boolean(labelOf(entry)),
+        ),
       })).filter((section) => section.entries.length > 0),
     [result],
   );
 
-  const total = sections.reduce((sum, section) => sum + section.entries.length, 0);
+  const visibleSections = useMemo(() => {
+    if (activeSection === "all") return sections;
+    return sections.filter((section) => section.key === activeSection);
+  }, [activeSection, sections]);
+
+  const indexedSections = useMemo(() => {
+    let index = 0;
+    return visibleSections.map((section) => ({
+      ...section,
+      indexedEntries: section.entries.map((entry) => ({ entry, index: index++ })),
+    }));
+  }, [visibleSections]);
+
+  const flatResults = useMemo(
+    () =>
+      indexedSections.flatMap((section) =>
+        section.indexedEntries.map((indexedEntry) => ({
+          section: section.key,
+          entry: indexedEntry.entry,
+        })),
+      ),
+    [indexedSections],
+  );
+
+  useEffect(() => {
+    setActiveIndex(flatResults.length > 0 ? 0 : -1);
+  }, [trimmed, activeSection, flatResults.length]);
+
+  const total = visibleSections.reduce((sum, section) => sum + section.entries.length, 0);
   const isOpen = trimmed.length > 0;
   const hasNoResults = !loading && data?.query === trimmed && total === 0;
   const showSkeleton = loading && total === 0;
 
   function clear() {
     setQuery("");
+    setActiveIndex(-1);
     inputRef.current?.focus();
+  }
+
+  async function handleSelect(section: SectionKey, entry: SearchEntry) {
+    if (onSelect) {
+      onSelect(section, entry);
+      return;
+    }
+
+    const label = labelOf(entry);
+    if (!label) return;
+
+    if (section === "item") navigate(`/items?q=${encodeURIComponent(label)}`);
+    if (section === "unit") navigate(`/units?q=${encodeURIComponent(label)}`);
+    if (section === "trait") navigate(`/traits?q=${encodeURIComponent(label)}`);
+    if (section === "augment") navigate(`/augments?q=${encodeURIComponent(label)}`);
+    if (section === "user") {
+      navigate(`/users?q=${encodeURIComponent(label)}`, {
+        state: { user: entry },
+      });
+    }
+
+    clear();
   }
 
   const t = reduceMotion ? { duration: 0 } : { duration: 0.15, ease: "easeOut" as const };
@@ -200,13 +279,28 @@ export function SearchInput({
       <InputGroup>
         <InputGroupInput
           ref={inputRef}
-          placeholder="Search units, items, users…"
+          placeholder="Search traits, items, augments, users…"
           value={query}
           autoComplete="off"
           aria-label="Search"
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
             if (event.key === "Escape") clear();
+            if (event.key === "ArrowDown") {
+              event.preventDefault();
+              if (flatResults.length === 0) return;
+              setActiveIndex((current) => (current + 1) % flatResults.length);
+            }
+            if (event.key === "ArrowUp") {
+              event.preventDefault();
+              if (flatResults.length === 0) return;
+              setActiveIndex((current) => (current - 1 + flatResults.length) % flatResults.length);
+            }
+            if (event.key === "Enter" && activeIndex >= 0) {
+              event.preventDefault();
+              const selected = flatResults[activeIndex];
+              if (selected) void handleSelect(selected.section, selected.entry);
+            }
           }}
         />
         <InputGroupAddon>
@@ -250,6 +344,32 @@ export function SearchInput({
             >
               {showSkeleton && <ResultsSkeleton />}
 
+              {!showSkeleton && sections.length > 0 && (
+                <div className="flex flex-wrap gap-1 border-b p-2">
+                  <Badge
+                    variant={activeSection === "all" ? "default" : "outline"}
+                    className="cursor-pointer"
+                    onClick={() => setActiveSection("all")}
+                  >
+                    All
+                  </Badge>
+                  {SECTIONS.map((section) => {
+                    const count = (result[section.key] ?? []).length;
+                    if (!count) return null;
+                    return (
+                      <Badge
+                        key={section.key}
+                        variant={activeSection === section.key ? "default" : "outline"}
+                        className="cursor-pointer"
+                        onClick={() => setActiveSection(section.key)}
+                      >
+                        {section.label} ({count})
+                      </Badge>
+                    );
+                  })}
+                </div>
+              )}
+
               {hasNoResults && (
                 <Empty className="p-6">
                   <EmptyHeader>
@@ -262,7 +382,7 @@ export function SearchInput({
                 </Empty>
               )}
 
-              {sections.map((section, index) => (
+              {indexedSections.map((section, index) => (
                 <div key={section.key}>
                   {index > 0 && <Separator />}
                   <div className="p-2">
@@ -280,8 +400,9 @@ export function SearchInput({
                       initial={reduceMotion ? "visible" : "hidden"}
                       animate="visible"
                     >
-                      {section.entries.map((entry, entryIndex) => {
+                      {section.indexedEntries.map(({ entry, index: sectionIndex }, entryIndex) => {
                         const label = labelOf(entry);
+                        const subtitle = subtitleOf(section.key, entry);
                         return (
                           <motion.li
                             key={entry.id ?? `${label}-${entryIndex}`}
@@ -290,8 +411,11 @@ export function SearchInput({
                           >
                             <button
                               type="button"
-                              onClick={() => onSelect?.(section.key, entry)}
-                              className="hover:bg-accent focus-visible:bg-accent flex w-full items-center gap-3 rounded-lg px-2 py-1.5 text-left text-sm transition-colors focus-visible:outline-none"
+                              onClick={() => void handleSelect(section.key, entry)}
+                              className={cn(
+                                "hover:bg-accent focus-visible:bg-accent flex w-full items-center gap-3 rounded-lg px-2 py-1.5 text-left text-sm transition-colors focus-visible:outline-none",
+                                sectionIndex === activeIndex && "bg-accent",
+                              )}
                             >
                               <Avatar className="size-7 shrink-0">
                                 <AvatarImage src={imageOf(entry)} />
@@ -299,8 +423,15 @@ export function SearchInput({
                                   {initialsOf(label)}
                                 </AvatarFallback>
                               </Avatar>
-                              <span className="min-w-0 flex-1 truncate">
-                                <Highlight text={label} query={trimmed} />
+                              <span className="min-w-0 flex-1">
+                                <span className="block truncate">
+                                  <Highlight text={label} query={trimmed} />
+                                </span>
+                                {subtitle && (
+                                  <span className="text-muted-foreground block truncate text-xs">
+                                    {subtitle}
+                                  </span>
+                                )}
                               </span>
                             </button>
                           </motion.li>
