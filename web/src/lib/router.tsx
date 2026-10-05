@@ -65,7 +65,7 @@ export const router = createBrowserRouter([
       {
         path: "ranking",
         lazy: async () => {
-          const { default: Component } = await import("@/pages/Ranking");
+          const { default: Component } = await import("@/pages/ranking");
           return { Component };
         },
       },
