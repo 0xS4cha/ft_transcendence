@@ -31,7 +31,7 @@ export function TraitsTable() {
     };
 
     fetchData();
-  }, []);
+  }, [filter]);
 
   return (
     <DataTable

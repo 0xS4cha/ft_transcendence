@@ -32,7 +32,7 @@ export function ItemsTable() {
     };
 
     fetchData();
-  }, []);
+  }, [filter]);
 
   return (
     <DataTable
