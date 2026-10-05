@@ -14,6 +14,7 @@ from backend_app.api.endpoints.login import router as login_router
 from backend_app.api.endpoints.logout import router as logout_router
 from backend_app.api.endpoints.me import router as me_router
 from backend_app.api.endpoints.oauth_login import router as login_with_42_router
+from backend_app.api.endpoints.patchnote import router as patchnote_router
 from backend_app.api.endpoints.prometheus_metrics import (
     router as prometheus_metrics_router,
 )
@@ -44,6 +45,7 @@ __all__ = [
     "login_with_42_router",
     "logout_router",
     "me_router",
+    "patchnote_router",
     "prometheus_metrics_router",
     "refuse_friend_request_router",
     "remove_friend_router",

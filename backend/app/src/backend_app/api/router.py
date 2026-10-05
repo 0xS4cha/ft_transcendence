@@ -13,6 +13,7 @@ from backend_app.api.endpoints import (
     login_with_42_router,
     logout_router,
     me_router,
+    patchnote_router,
     prometheus_metrics_router,
     refuse_friend_request_router,
     remove_friend_router,
@@ -43,6 +44,12 @@ api_router.include_router(
     login_router,
     tags=["Authentication"],
     prefix="/auth"
+)
+
+api_router.include_router(
+	patchnote_router,
+	tags=["PatchNote"],
+	prefix="/patchnote"
 )
 
 api_router.include_router(
