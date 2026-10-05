@@ -63,10 +63,11 @@ async def get_units(
         raise UnitsUnavailableError("Units use not found")
 
     try:
-        async with aiofiles.open("app/src/shared/models_3d/models_list.json", 'r') as f:
+        async with aiofiles.open("/app/src/shared/models_3d/models_list.json", 'r') as f:
             model_dict = json.loads(await f.read())
     except FileNotFoundError:
         model_dict = {}
+        print("[get_units] model_list.json not found")
 
     units_out = [
         process_unit(unit, all_units_use, champions_by_id, model_dict, traits)
