@@ -64,6 +64,7 @@ export interface rankingPlayer {
     rating_numeric: number;
     num_played: number;
     rank: number;
+    stats: rankingPlayerStats
 }
 
 export interface rankingApi {
