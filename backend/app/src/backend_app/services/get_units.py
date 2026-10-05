@@ -114,7 +114,11 @@ def process_unit(
                 seen_names.add(trait_name)
                 break
 
-    icon = "https://cdn.metatft.com/cdn-cgi/image/width=128,height=128,format=auto/https://cdn.metatft.com/file/metatft/champions/tft18_" + name.lower() + ".png"
+    names_to_mod = ["Master Yi", "Mama Beak", "Elder Dragon"]
+    if name in names_to_mod:
+        name = name.replace(" ", "")
+
+    icon = "https://cdn.metatft.com/cdn-cgi/image/width=128,height=128,format=auto/https://cdn.metatft.com/file/metatft/champions/tft18_" + name.lower().replace("'", "") + ".png"
     model = model_dict.get(id)
 
     return (Unit(
