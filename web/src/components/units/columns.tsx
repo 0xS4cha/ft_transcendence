@@ -18,19 +18,21 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
     id: "expand",
     header: () => null,
     cell: ({ row }: any) => (
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={(event) => {
-          event.stopPropagation();
-          row.toggleExpanded();
-        }}
-        aria-label={row.getIsExpanded() ? "Collapse row" : "Expand row"}
-        className="h-8 w-8 p-0">
-        <ChevronRight
-          className={`transition-transform ${row.getIsExpanded() ? "rotate-90" : ""}`}
-        />
-      </Button>
+      row.original.model ? (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={(event) => {
+            event.stopPropagation();
+            row.toggleExpanded();
+          }}
+          aria-label={row.getIsExpanded() ? "Collapse row" : "Expand row"}
+          className="h-8 w-8 p-0">
+          <ChevronRight
+            className={`transition-transform ${row.getIsExpanded() ? "rotate-90" : ""}`}
+          />
+        </Button>
+        ) : <></>
     ),
     enableSorting: false,
     enableHiding: false
