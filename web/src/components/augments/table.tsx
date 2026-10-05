@@ -1,14 +1,15 @@
 import { AugmentsColumns } from "@/components/augments/columns";
 import { DataTable } from "@/components/data-table/data-table";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useImperativeHandle } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "@/components/ui/toast";
 import { type AugmentRow } from "@/components/augments/schema";
 import { getAugmentsStats } from "@/services/statsService";
 import { type FilterType } from "@/types/stats";
+import { downloadJson } from "@/lib/utils";
 
 
-export function AugmentsTable() {
+export function AugmentsTable({ ref }: any) {
   const [filter, setFilter] = useState<FilterType>({
     queue: "1100",
     ranked: "PLATINUM",
@@ -17,6 +18,12 @@ export function AugmentsTable() {
   const [data, setData] = useState<AugmentRow[]>([]);
   const [searchParams] = useSearchParams();
   const initialSearchQuery = searchParams.get("q")?.trim() ?? "";
+
+  useImperativeHandle(ref, () => ({
+    export() {
+      downloadJson(data, "augments.json")
+    }
+  }));
 
   useEffect(() => {
     const fetchData = async () => {

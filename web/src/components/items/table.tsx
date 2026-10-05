@@ -1,22 +1,28 @@
 import { ItemsColumns } from "@/components/items/columns";
 import { DataTable } from "@/components/data-table/data-table";
-import { ItemsTypeFilter } from "@/components/items/type_filter";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useImperativeHandle } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "@/components/ui/toast";
 import { type ItemRow } from "@/components/items/schema";
 import { getItemsStats } from "@/services/statsService";
 import { type FilterType } from "@/types/stats";
+import { downloadJson } from "@/lib/utils";
 
-export function ItemsTable() {
+export function ItemsTable({ ref }: any) {
   const [filter, setFilter] = useState<FilterType>({
-      queue: "1100",
+    queue: "1100",
     ranked: "PLATINUM",
     server: "EUW1"
   });
   const [data, setData] = useState<ItemRow[]>([]);
   const [searchParams] = useSearchParams();
   const initialSearchQuery = searchParams.get("q")?.trim() ?? "";
+
+  useImperativeHandle(ref, () => ({
+    export() {
+      downloadJson(data, "items.json")
+    }
+  }));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +50,6 @@ export function ItemsTable() {
       defaultSortId="id"
       searchPlaceholder="Search items..."
       initialSearchQuery={initialSearchQuery}
-      customToolbar={<ItemsTypeFilter />}
     />
   );
 }

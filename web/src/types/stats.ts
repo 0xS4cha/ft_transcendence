@@ -3,3 +3,7 @@ export interface FilterType {
     server: string;
     ranked: string;   
 }
+
+export interface exportRef {
+    export: () => void;
+}
