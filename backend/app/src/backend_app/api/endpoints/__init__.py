@@ -30,6 +30,7 @@ from backend_app.api.endpoints.stats import router as stats_router
 from backend_app.api.endpoints.traits_data import router as traits_data_router
 from backend_app.api.endpoints.units_data import router as units_data_router
 from backend_app.api.endpoints.websocket import router as websocket_router
+from backend_app.api.endpoints.patchnote import router as patchnote_router
 
 __all__ = [
     "accept_friend_request_router",
@@ -53,5 +54,6 @@ __all__ = [
     "stats_router",
     "traits_data_router",
     "units_data_router",
-    "websocket_router"
+    "websocket_router",
+    "patchnote_router"
 ]

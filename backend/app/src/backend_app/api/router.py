@@ -23,6 +23,7 @@ from backend_app.api.endpoints import (
     traits_data_router,
     units_data_router,
     websocket_router,
+    patchnote_router
 )
 
 api_router = APIRouter(prefix="/api")
@@ -43,6 +44,12 @@ api_router.include_router(
     login_router,
     tags=["Authentication"],
     prefix="/auth"
+)
+
+api_router.include_router(
+	patchnote_router,
+	tags=["PatchNote"],
+	prefix="/patchnote"
 )
 
 api_router.include_router(
