@@ -29,6 +29,12 @@ async def remove_friend(
             detail=f"User with username {friend_username} does not exist."
         )
 
+    if current_user.username == friend_username:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"You cannot remove yourself from your friends."
+        )
+
     uid1 = min(current_user.id, friend.id)
     uid2 = max(current_user.id, friend.id)
 
@@ -37,9 +43,10 @@ async def remove_friend(
         .where(Friends.uid1 == uid1)
         .where(Friends.uid2 == uid2)
         .where(Friends.status == Status.ACCEPTED)
+        .returning(Friends.id)
     )
 
-    if result.rowcount == 0:
+    if result.scalar_one_or_none() is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"The user with username {friend_username} is not your friend."
