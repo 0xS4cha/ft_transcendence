@@ -6,12 +6,11 @@ export default function Layout() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="relative min-h-screen py-8">
+      <SidebarInset className="relative min-h-screen">
         <header 
-          className="sticky top-0 z-40 
-            flex h-14 w-full items-center
-            justify-between border-b
-            border-white/5 bg-[#07070B]
+          className="sticky z-40 
+            flex h-14 w-full border-b
+            border-white/5 bg-[#202020]
             px-4 backdrop-blur md:hidden"
             >
           <div className="flex items-center gap-3">
@@ -19,12 +18,12 @@ export default function Layout() {
               className="h-8 w-8  text-neutral-400 
                 over:bg-white/10 hover:text-white"
                 />
-            <span className="bg-gradient-to-r from-[#4E80EE] via-[#38E1FF] to-[#70A6FF] bg-clip-text text-base font-bold tracking-wide text-transparent">
+            <span className="bg-linear-to-r from-[#4E80EE] via-[#38E1FF] to-[#70A6FF] bg-clip-text text-base font-bold tracking-wide text-transparent">
               tactyx
             </span>
           </div>
         </header>
-        <main className="mx-3">
+        <main className="mx-3 py-8">
         <Outlet />
       </main>
       </SidebarInset>

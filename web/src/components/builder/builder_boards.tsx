@@ -1,27 +1,25 @@
 import { cn } from "@/lib/utils";
-import { getChampionById } from '@/lib/champion';
 import { useDroppable, useDraggable } from "@dnd-kit/core";
+import type { UnitRow } from "../units/schema";
+import type { ItemRow } from "../items/schema";
 
 const ROWS = 4;
 const COLS = 7;
-const HEX_SIZE = 30; // TAILLE QUI M'A L'AIR RAISONNABLE
-const HEX_GAP = 5;
+const HEX_SIZE = 24; 
+const HEX_GAP = 4;
 
-const HEX_WIDTH = Math.sqrt(3) * HEX_SIZE; // FORMULE MATHEMATIQUE DE LA LARGEUR TOTALE D'UN HEXAGONE
+const HEX_WIDTH = Math.sqrt(3) * HEX_SIZE;
 const HEX_HEIGHT = 2 * HEX_SIZE;
 const ROW_HEIGHT = 1.5 * HEX_SIZE;
 
-
-function HexagonCell({ id, cx, cy, points, championId, onRemove }: {id: string, cx: number, cy: number, points: string, championId?: string, onRemove: (id: string) => void}){
+function HexagonCell({ id, cx, cy, points, champion, itemsOnCell, onRemove }: {id: string, cx: number, cy: number, points: string, champion?: UnitRow | null, itemsOnCell?: ItemRow[], onRemove: (id: string) => void}){
   const {isOver, setNodeRef} = useDroppable( {id} );
-
   const { attributes, listeners, setNodeRef: setDraggableRef, isDragging } = useDraggable({ 
     id: id,
-    disabled: !championId
+    disabled: !champion
   });
-
-  const champion = championId ? getChampionById(championId) : null;
   const clipPathId = `clip-${id}`;
+  
   return (
     <g ref={setNodeRef as any}>
       <defs>
@@ -30,58 +28,95 @@ function HexagonCell({ id, cx, cy, points, championId, onRemove }: {id: string, 
         </clipPath>
       </defs>
       <polygon
-      points={points}
-      className={cn(
-        "stroke-[grey]/75 stroke-[2px] transition-colors",
-        isOver ? "fill-[grey]/75" : "fill-[#2A2A2A]"
-      )}/>
+        points={points}
+        className={cn(
+          "stroke-[grey]/75 transition-colors",
+          isOver ? "fill-[grey]/75" : "fill-[#2A2A2A]"
+        )}
+      />
       {champion && (
         <g
-        ref={setDraggableRef as any}
-        {...listeners}
-        {...attributes}
-        onClick={() => onRemove(id)}
-        className={cn("cursor-grab hover:opacity-80 transition-opacity focus:outline-none", 
-                  isDragging && "opacity-30")}
+          ref={setDraggableRef as any}
+          {...listeners}
+          {...attributes}
+          onClick={() => onRemove(id)}
+          className={cn("cursor-grab hover:opacity-70 transition focus:outline-none", isDragging && "opacity-30")}
         >
-        <polygon points={points} fill="transparent" />
-          <image
-            href={champion.imageUrl}
-            x={cx - 30}
-            y={cy - 30}
-            width ={60}
-            height={60}
-             clipPath={`url(#${clipPathId})`}
-            preserveAspectRatio="xMidYMid slice"
-            className="pointer-events-none"
-          />
-          <text 
-            x={cx} 
-            y={cy + 10} 
-            textAnchor="middle" 
-            alignmentBaseline="middle" 
-            fill="white" 
-            fontSize="5px"
-            fontWeight="bold"
-            stroke="black"
-            strokeWidth="1px"
-            paintOrder="stroke fill"
-            className="pointer-events-none" 
-          >
+          <polygon points={points} fill="transparent" />
+          <image href={champion.icon} 
+              x={cx - 21} y={cy - 21} 
+              width={42} height={42} 
+              clipPath={`url(#${clipPathId})`}
+              preserveAspectRatio="xMidYMid"
+              className="pointer-events-none" />
+          <polygon
+          points={points}
+          className={cn(
+            "fill-none stroke-[1px] pointer-events-none",
+             champion.cost === 1 && "stroke-slate-500",
+              champion.cost === 2 && "stroke-emerald-500",
+              champion.cost === 3 && "stroke-blue-500",
+              champion.cost === 4 && "stroke-purple-500",
+              champion.cost === 5 && "stroke-yellow-500"
+           )}/>
+          <text x={cx} y={cy + 7} textAnchor="middle" alignmentBaseline="middle" fill="white" fontSize="5px" fontWeight="bold" stroke="black" strokeWidth="1px" paintOrder="stroke fill" className="pointer-events-none" >
             {champion.name}
           </text>
+          {itemsOnCell && itemsOnCell.map((item, index) => {
+            const totalItems = itemsOnCell.length;
+            const itemWidth = 9;
+            const totalWidth = (totalItems * itemWidth) + (totalItems - 4);
+            const startX = cx - (totalWidth / 2);
+            const itemType = item.type?.toLowerCase() || "";
+            let borderColor = "#475569";
+            if (itemType === "artifact")
+              borderColor = "#dc2626";
+            else if (itemType === "radiant")
+              borderColor = "#facc15";
+            return (
+              <g key={`cell-item-${id}-${index}`}>
+                <defs>
+                  <clipPath id={`clip-item-${id}-${index}`}>
+                    <rect
+                      x={startX + (index * itemWidth)}
+                      y={cy + 12}
+                      width={itemWidth - 2}
+                      height={itemWidth - 2}
+                      rx="1"
+                    />
+                  </clipPath>
+                </defs>
+                <image
+                  href={item.icon}
+                  x={startX + (index * itemWidth)}
+                  y={cy + 12}
+                  width={itemWidth - 2}
+                  height={itemWidth - 2}
+                  clipPath={`url(#clip-item-${id}-${index})`}
+                  className="drop-shadow-md pointer-events-none"
+                />
+                <rect
+                  x={startX + (index * itemWidth)}
+                  y={cy + 12}
+                  width={itemWidth - 2}
+                  height={itemWidth - 2}
+                  rx="1"
+                  fill="none"
+                  stroke={borderColor}
+                  strokeWidth="0.5"
+                  className="pointer-events-none"
+                />
+              </g>
+            );
+          })}
         </g>
       )}
     </g>
   )
 }
 
-export default function BuilderBoard({ boardState, onRemoveChampion }: { boardState: Record<string, string>, onRemoveChampion: (id: string) => void })
+export default function BuilderBoard({ boardState, champions, onRemoveChampion, boardItems , items}: { boardState: Record<string, string>, champions: UnitRow[], onRemoveChampion: (id: string) => void , boardItems: Record<string, string[]>, items: ItemRow[]})
 {
-  // UN CERCLE COMPLET FAIT 360 DEGREE IL Y A 6 POINTS A DESSINER POUR L'HEXAGONE
-  // ON RECUPERE LE RADIAN AU LIEU DE L'ANGLE (-30 POUR LA ROTATION EN HAUT)
-  // ON TROUVE LE CENTRE DE L'HEXAGONE (X ET Y QUE L'ON RAJOUTE DANS LE TABLEAU POINTS POUR CHACUN DES 6 POINTS
-  // 6 PAIRES DE COORDONNEES SEPARER PAR ESPACE
   const getHexagonPoints = (cx: number, cy: number) =>
   {
     const points = [];
@@ -98,50 +133,49 @@ export default function BuilderBoard({ boardState, onRemoveChampion }: { boardSt
     return points.join(" ");
   };
 
-  // ON REMPLIT LE TABLEAU D'HEXAGONE AVEC LES VALEURS ET ON CALCUL L'OFFSET SUR LES IMPAIRE (1,3) SINON (0,2)
-  // ON RECUPERE LA TAILLE DE L'HEXAGONE PAR RAPPORT A SA POSITION X - Y (LIGNE ET COLONE)
-  // ON MULTIPLIE SA POSITION PAR SA LARGEUR ET SA HAUTEUR EN RAJOUTANT L'OFFSET
-  // ON PUSH UN COMPOSANT VIRTUEL REACT (POLYGONE) AVEC SES POINTS ET SA CLASS (LES TRAITS DE BORDURE)
-  // KEY EST OBLIGATOIRE POUR NE PAS QUE REACT CONFONDE LES POLYGONE
-	const hexes = [];
-	for (let row = 0; row < ROWS; row++)
+  const hexes = [];
+  for (let row = 0; row < ROWS; row++)
   {
-		for(let col = 0; col < COLS; col++)
+    for(let col = 0; col < COLS; col++)
     {
-			const OddRow= row % 2 !== 0;
-			const xOffSet = OddRow ? HEX_WIDTH / 2 : 0;
+      const OddRow= row % 2 !== 0;
+      const xOffSet = OddRow ? HEX_WIDTH / 2 : 0;
 
-			const cx = (col * HEX_WIDTH) + xOffSet + (HEX_WIDTH / 2);
+      const cx = (col * HEX_WIDTH) + xOffSet + (HEX_WIDTH / 2);
       const cy =(row * ROW_HEIGHT) + (HEX_HEIGHT / 2);
 
       const hexId = `hex-${row}-${col}`;
-			hexes.push(
-				<HexagonCell
+      const champId = boardState[hexId];
+      const championOnCell = champId ? champions.find((c) => c.id === champId) : null;
+      const itemIdsOnCell = boardItems[hexId] || [];
+      const itemsOnCell = itemIdsOnCell
+        .map(itemId => items.find(i => i.id === itemId))
+        .filter((item): item is ItemRow => item !== undefined);
+      hexes.push(
+        <HexagonCell
           key={hexId}
           id={hexId}
           cx={cx}
           cy={cy}
           points={getHexagonPoints(cx, cy)}
-          championId={boardState[hexId]}
+          champion={championOnCell}
+          itemsOnCell={itemsOnCell}
           onRemove={onRemoveChampion}
         />
       );
-		}
-	}
+    }
+  }
+  const boardWidth = (COLS * HEX_WIDTH + (HEX_WIDTH / 2));
+  const boardHeight = ((ROWS - 1) * ROW_HEIGHT + HEX_HEIGHT );
 
-	const boardWidth = COLS * HEX_WIDTH + (HEX_WIDTH / 2);
-  const boardHeight = (ROWS - 1) * ROW_HEIGHT + HEX_HEIGHT;
-
-  // ON RECUPERE LA HAUTEUR ET LA LARGEUR DU SVG
-  // REACT S'OCCUPE NATIVEMENT DE TRAITER LE CONTENU JS ET DE L'AFFICHER A L'INTERIEUR DE LA BALISE SVG (SCALABLE VECTOR GRAPHIQUE)
-  // PAS DE PIXEL C'EST DES MATHS
-	return (
-    <div className="flex h-full w-full items-center justify-center p-4 bg-[#202020] rounded-xl">
+  return (
+    <div className="h-full w-full p-2">
       <svg
         viewBox={`0 0 ${boardWidth} ${boardHeight}`}
-        className="max-h-full max-w-full drop-shadow-xl ">
+        className="w-full h-full drop-shadow-xl"
+      >
         {hexes}
       </svg>
     </div>
-	)
+  )
 }
