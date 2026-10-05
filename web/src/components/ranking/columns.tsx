@@ -1,8 +1,9 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import type { rankingPlayer } from "./types/ranking";
+import type { rankingPlayer } from "@/types/ranking";
 import { Trophy } from "lucide-react";
+import { dataTableFeatures } from "@/lib/data-table-features";
 
-export const RankingColumns: ColumnDef<rankingPlayer>[] = [
+export const RankingColumns: ColumnDef<typeof dataTableFeatures, rankingPlayer>[] = [
   {
     accessorKey: "rank",
     header: "Ranks",
@@ -21,7 +22,7 @@ export const RankingColumns: ColumnDef<rankingPlayer>[] = [
   {
     accessorKey: "riot_id",
     header: "Summoner",
-    cell: ({ row }) => <span >{row.original.riot_id}</span>,
+    cell: ({ row }) => <span>{row.original.riot_id}</span>,
   },
   {
     accessorKey: "rating",
