@@ -37,9 +37,10 @@ import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { type ChatDataProps } from "@/types/chat";
-import { getChatHistory, sendChatMessage } from "@/services/chatService";
+import { getChatHistory, sendChatMessage, askChatbotQuestion } from "@/services/chatService";
 import { setChat } from "@/store/reducers/userSlice"
 import { initialsOf } from "@/lib/utils";
+import { addChatContent } from "@/store/reducers/userSlice";
 
 const MAX_LENGTH = 2000;
 
@@ -144,7 +145,7 @@ function MessagesSkeleton() {
   );
 }
 
-export function Chat({ currentUser, isAuthenticated }: { currentUser: string, isAuthenticated: boolean }) {
+export function Chat({ currentUser, isAuthenticated, currentPicture }: { currentUser: string, currentPicture?: string, isAuthenticated: boolean }) {
   const dispatch = useAppDispatch();
   const messages = useAppSelector((state) => state.user.chat ? state.user.chat : []);
   const [pendingIds, setPendingIds] = useState<Set<number>>(new Set());
@@ -189,7 +190,24 @@ export function Chat({ currentUser, isAuthenticated }: { currentUser: string, is
     setSending(true);
     setPendingIds((current) => new Set(current).add(tempId));
     try {
-      sendChatMessage(draft);
+      if (message.startsWith("/")) {
+        dispatch(addChatContent({
+              id: Math.random(),
+              date: `${Math.random()}`,
+              content: draft,
+              username: currentUser,
+              picture: currentPicture
+        }));
+        const response = await askChatbotQuestion(draft.slice(1));
+        dispatch(addChatContent({
+              id: Math.random(),
+              date: `${Math.random()}`,
+              content: response,
+              username: "Chatbot",
+        }));
+      } else {
+        sendChatMessage(draft);
+      }
     } catch (error) {
       setMessage(draft);
       toast.add({
@@ -323,7 +341,7 @@ export function Chat({ currentUser, isAuthenticated }: { currentUser: string, is
               onClick={() => void handleSubmit()}
             >
               {sending ? <Spinner /> : <SendHorizontalIcon />}
-              Post
+              {message.startsWith("/") ? "Ask" : "Post"}
             </InputGroupButton>
           </InputGroupAddon>
         </InputGroup>
