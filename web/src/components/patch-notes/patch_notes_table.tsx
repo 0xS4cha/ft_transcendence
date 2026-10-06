@@ -1,0 +1,40 @@
+import { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+
+export default function PatchNotePage() {
+  const [patchHtml, setPatchHtml] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPatchNote = async () => {
+      try {
+        const response = await fetch("/api/patchnote/latest");
+        const htmlString = await response.text(); 
+        setPatchHtml(htmlString);
+      } catch (error) {
+        console.error("Error while fetch the latest patch note", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPatchNote();
+  }, []);
+
+  if (loading) {
+    return <div className="p-8 text-center text-neutral-400">Loading patch notes...</div>;
+  }
+
+  return (
+    <div className="min-h-screen p-6 w-full max-w-5xl mx-auto">
+      <Card className="bg-[#202020] border-white/10">
+        <CardContent className="p-8">
+          <div 
+            className="patch-note-container"
+            dangerouslySetInnerHTML={{ __html: patchHtml }} 
+          />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
