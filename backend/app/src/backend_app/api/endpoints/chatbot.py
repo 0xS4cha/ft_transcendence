@@ -5,8 +5,8 @@ from fastapi import APIRouter, Depends
 from backend_app.core.chatbot import ChatBot
 from backend_app.core.jwt import Token
 from backend_app.models.users import UserModel
+from backend_app.rag.rag import Rag
 from shared.database import db
-from backend_app.rag.rag import Rag, MinimalSource
 
 chatbot = ChatBot(
 	db.settings.HOST_IP,

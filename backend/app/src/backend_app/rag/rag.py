@@ -1,10 +1,10 @@
 import json
 import os
+from pathlib import Path
+from typing import Any
 
 import bm25s
-from pathlib import Path
-from langchain_text_splitters import RecursiveCharacterTextSplitter, Language
-from typing import Any
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pydantic import BaseModel
 
 
@@ -18,12 +18,11 @@ class Rag:
     def __init__(self):
         self.indexed = False
         self.cached_chunks = None
-        print(os.system("ls /app/src/"))
-        self.index_files("/app/src/backend_app/rag/dataset/") # TODO: check dataset path
+        self.index_files("/app/src/backend_app/rag/dataset/")
     
     def chunk_file(self, path: str, corpus: list[str], index_map: dict[str, dict[str, Any]], chunk_size: int = 2000) -> None:
         if "." not in path:
-            raise Exception(f"Invalid/Unknown file extension: {path}")
+            raise Exception(f"Invalid/Unknown file extension: {path}") # noqa: TRY002
         ext = path.split(".")[-1].lower()
         if ext not in ["md", "txt"]:
             return
@@ -51,8 +50,8 @@ class Rag:
                         "end": start_char + len(doc.page_content),
                     }
                 )
-        except Exception as e:
-            raise Exception(f"Could not open file: '{path}', reason: {e}")
+        except Exception as e: # noqa: BLE001
+            raise Exception(f"Could not open file: '{path}', reason: {e}") # noqa: TRY002
 
 
     def gather_files(self, path: str) -> list[str]:
@@ -69,7 +68,7 @@ class Rag:
         index_map: dict[str, dict[str, Any]] = {}
 
         if not os.access(path, 0):
-            raise Exception("Could not find DataSet path") # noqa:
+            raise Exception("Could not find DataSet path") # noqa: TRY002
 
         files = self.gather_files(path)
         for file_path in files:
@@ -84,8 +83,8 @@ class Rag:
         try:
             with open("./data/processed/chunks/chunks.json", "w") as f:
                 json.dump(index_map, f, indent=4)
-        except Exception:
-            raise Exception("Could not write chunks manifest") # noqa: 
+        except Exception: # noqa: BLE001
+            raise Exception("Could not write chunks manifest") # noqa: TRY002
 
         print(f"\nIngestion complete! Indices saved under {output_dir}")
         self.indexed = True
@@ -121,5 +120,5 @@ class Rag:
                         )
                         chunks_ids.append(chunk_id)
             return [doc["text"] for doc in docs[0]]
-        except Exception as e:
-            raise Exception(f"Could not find indexed chunks, please index before: \n{e}")
+        except Exception as e: # noqa: BLE001
+            raise Exception(f"Could not find indexed chunks, please index before: \n{e}") # noqa: TRY002

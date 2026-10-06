@@ -1,4 +1,3 @@
-from backend_app.rag.rag import MinimalSource
 from ollama import AsyncClient
 
 
