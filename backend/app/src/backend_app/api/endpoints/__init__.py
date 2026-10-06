@@ -7,6 +7,7 @@ from backend_app.api.endpoints.chat.chatbot import router as chatbot_router
 from backend_app.api.endpoints.friends.friend_requests_list import (
     router as friend_requests_list_router,
 )
+from backend_app.api.endpoints.user.change_username import router as change_username_router
 from backend_app.api.endpoints.friends.friends_list import router as friends_list_router
 from backend_app.api.endpoints.game_data.items_data import router as items_data_router
 from backend_app.api.endpoints.game_data.leaderboard import router as leaderboard_router
@@ -37,6 +38,7 @@ __all__ = [
     "augments_data_router",
     "chat_router",
     "chatbot_router",
+    "change_username_router",
     "friend_requests_list_router",
     "friends_list_router",
     "items_data_router",
