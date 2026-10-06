@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/store/hooks";
 import { signupUser } from "@/store/reducers/userSlice";
 import { type SignupPayload } from "@/types/user";
+import { useTranslation } from "react-i18next";
 
 type SignupFormProps = React.ComponentProps<"form"> & {
   func: (type: boolean) => void;
@@ -38,6 +39,7 @@ export function SignupForm({
   });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -49,7 +51,7 @@ export function SignupForm({
     if (!checked) {
       toast.add({
         type: "error",
-        title: "Please check terms of use and condition of use",
+        title: t('auth.checkTerms'),
       });
       return ;
     };
@@ -58,12 +60,12 @@ export function SignupForm({
       navigate("/profile");
       toast.add({
         type: "info",
-        title: "Sign up successfully",
+        title: t('auth.signupSuccess'),
       });
     } catch {
       toast.add({
         type: "error",
-        title: "Sign up failed",
+        title: t('auth.signupFailed'),
       });
     }
   }
@@ -72,22 +74,22 @@ export function SignupForm({
     <form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={handleSubmit}>
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="text-2xl font-bold">Create your account</h1>
+          <h1 className="text-2xl font-bold">{t('auth.signupTitle')}</h1>
           <p className="text-sm text-balance text-muted-foreground">
-            Enter your email below to signup your account
+            {t('auth.signupSubtitle')}
           </p>
         </div>
         <Field>
-          <FieldLabel htmlFor="username">Username</FieldLabel>
-          <Input id="username" name="username" type="text" placeholder="Xx_tft_player_xX" required onChange={handleChange}/>
+          <FieldLabel htmlFor="username">{t('common.username')}</FieldLabel>
+          <Input id="username" name="username" type="text" placeholder={t('auth.usernamePlaceholder')} required onChange={handleChange}/>
         </Field>
         <Field>
-          <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input id="email" name="email" type="email" placeholder="m@example.com" required value={formData.email} onChange={handleChange}/>
+          <FieldLabel htmlFor="email">{t('common.email')}</FieldLabel>
+          <Input id="email" name="email" type="email" placeholder={t('auth.emailPlaceholder')} required value={formData.email} onChange={handleChange}/>
         </Field>
         <Field>
           <div className="flex items-center">
-            <FieldLabel htmlFor="password">Password</FieldLabel>
+            <FieldLabel htmlFor="password">{t('common.password')}</FieldLabel>
           </div>
           <ButtonGroup>
             <Input id="password" name="password" type={viewPassword ? "password" : "text"} required value={formData.password} onChange={handleChange}/>
@@ -96,7 +98,7 @@ export function SignupForm({
         </Field>
         <Field>
           <div className="flex items-center">
-            <FieldLabel htmlFor="confirm_password">Confirm your password</FieldLabel>
+            <FieldLabel htmlFor="confirm_password">{t('common.confirmPassword')}</FieldLabel>
           </div>
           <ButtonGroup>
             <Input id="confirm_password" name="confirm_password" type={viewConfirmPassword ? "password" : "text"} required value={formData.confirm_password} onChange={handleChange}/>
@@ -111,21 +113,21 @@ export function SignupForm({
             checked={checked}
           />
           <FieldLabel htmlFor="terms-checkbox-2">
-            Accept
-            <Link to="/terms" className="underline underline-offset-4" >terms</Link>
-            and
-            <Link to="/conditions" className="underline underline-offset-4" >conditions</Link>
+            {t('auth.accept')}{" "}
+            <Link to="/terms" className="underline underline-offset-4" >{t('auth.terms')}</Link>{" "}
+            {t('auth.and')}{" "}
+            <Link to="/conditions" className="underline underline-offset-4" >{t('auth.conditions')}</Link>
           </FieldLabel>
         </Field>
         <Field>
-          <Button type="submit">Sign-up</Button>
+          <Button type="submit">{t('auth.signup')}</Button>
         </Field>
-        <FieldSeparator>Or continue with</FieldSeparator>
+        <FieldSeparator>{t('auth.continueWith')}</FieldSeparator>
         <Field>
           <FieldDescription className="text-center">
-            Already have an account ?{" "}
+            {t('auth.hasAccount')} {" "}
             <a href="#" onClick={() => func(true)} className="underline underline-offset-4">
-              Login
+              {t('auth.login')}
             </a>
           </FieldDescription>
         </Field>

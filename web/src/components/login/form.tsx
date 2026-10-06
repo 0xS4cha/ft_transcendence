@@ -15,6 +15,7 @@ import { toast } from "@/components/ui/toast";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/store/hooks";
 import { loginUser } from "@/store/reducers/userSlice";
+import { useTranslation } from "react-i18next";
 
 type LoginFormProps = React.ComponentProps<"form"> & {
   func: (type: boolean) => void;
@@ -28,6 +29,7 @@ export function LoginForm({
   const [viewPassword, setViewPassword] = useState(true);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -50,12 +52,12 @@ export function LoginForm({
       navigate("/profile");
       toast.add({
         type: "info",
-        title: "Login successfully",
+        title: t('auth.loginSuccess'),
       });
     } catch {
       toast.add({
         type: "error",
-        title: "Login failed",
+        title: t('auth.loginFailed'),
       });
     }
   }
@@ -64,18 +66,18 @@ export function LoginForm({
     <form className={cn("flex flex-col gap-6", className)} onSubmit={handleSubmit} {...props}>
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="text-2xl font-bold">Login to your account</h1>
+          <h1 className="text-2xl font-bold">{t('auth.loginTitle')}</h1>
           <p className="text-sm text-balance text-muted-foreground">
-            Enter your email below to login to your account
+            {t('auth.loginSubtitle')}
           </p>
         </div>
         <Field>
-          <FieldLabel htmlFor="email">Email</FieldLabel>
+          <FieldLabel htmlFor="email">{t('common.email')}</FieldLabel>
           <Input
             id="email"
             name="email"
             type="email"
-            placeholder="m@example.com"
+            placeholder={t('auth.emailPlaceholder')}
             required
             value={formData.email}
             onChange={handleChange}
@@ -83,7 +85,7 @@ export function LoginForm({
         </Field>
         <Field>
           <div className="flex items-center">
-            <FieldLabel htmlFor="password">Password</FieldLabel>
+            <FieldLabel htmlFor="password">{t('common.password')}</FieldLabel>
           </div>
           <ButtonGroup>
             <Input
@@ -104,20 +106,20 @@ export function LoginForm({
           </ButtonGroup>
         </Field>
         <Field>
-          <Button type="submit">Login</Button>
+          <Button type="submit">{t('auth.login')}</Button>
         </Field>
-        <FieldSeparator>Or continue with</FieldSeparator>
+        <FieldSeparator>{t('auth.continueWith')}</FieldSeparator>
         <Field>
           <div className="grid grid-cols-1 gap-2 w-full">
             <Button variant="outline" type="button" className="w-full" onClick={() => window.location.href = "https://localhost:8443/api/auth/login_with_42"}>
               <img src="/42.svg" className="w-4" />
-              Login with 42
+              {t('auth.loginWith42')}
             </Button>
           </div>
           <FieldDescription className="text-center">
-            Don&apos;t have an account?{" "}
+            {t('auth.noAccount')} {" "}
             <a href="#" onClick={() => func(false)} className="underline underline-offset-4">
-              Sign up
+              {t('auth.signUp')}
             </a>
           </FieldDescription>
         </Field>

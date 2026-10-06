@@ -41,6 +41,7 @@ import { getChatHistory, sendChatMessage, askChatbotQuestion } from "@/services/
 import { setChat } from "@/store/reducers/userSlice"
 import { initialsOf } from "@/lib/utils";
 import { addChatContent } from "@/store/reducers/userSlice";
+import { useTranslation } from "react-i18next";
 
 const MAX_LENGTH = 2000;
 
@@ -148,6 +149,7 @@ function MessagesSkeleton() {
 export function Chat({ currentUser, isAuthenticated, currentPicture }: { currentUser: string, currentPicture?: string, isAuthenticated: boolean }) {
   const dispatch = useAppDispatch();
   const messages = useAppSelector((state) => state.user.chat ? state.user.chat : []);
+  const { t } = useTranslation();
   const [pendingIds, setPendingIds] = useState<Set<number>>(new Set());
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -161,14 +163,13 @@ export function Chat({ currentUser, isAuthenticated, currentPicture }: { current
     } catch (error) {
       toast.add({
         type: "error",
-        title: "Couldn't load the chat history",
+        title: t('chat.reloadMessages'),
         description: error instanceof Error ? error.message : String(error),
       });
     } finally {
       setLoading(false);
     }
-  }, [dispatch]);
-  
+  }, [dispatch, t]);
   
   useEffect(() => {
     viewportRef.current?.scrollTo({
@@ -203,7 +204,7 @@ export function Chat({ currentUser, isAuthenticated, currentPicture }: { current
               id: Math.random(),
               date: `${Math.random()}`,
               content: response,
-              username: "Chatbot",
+              username: t('chat.chatbot'),
         }));
       } else {
         sendChatMessage(draft);
@@ -212,7 +213,7 @@ export function Chat({ currentUser, isAuthenticated, currentPicture }: { current
       setMessage(draft);
       toast.add({
         type: "error",
-        title: "Message not sent",
+        title: t('chat.messageNotSent'),
         description: error instanceof Error ? error.message : String(error),
       });
     } finally {
@@ -237,16 +238,16 @@ export function Chat({ currentUser, isAuthenticated, currentPicture }: { current
   return (
     <Card className="flex h-[36rem] w-full  flex-col overflow-hidden">
       <CardHeader className="border-b">
-        <CardTitle>Global chat</CardTitle>
-        <CardDescription>Everyone in the workspace can read this.</CardDescription>
+        <CardTitle>{t('chat.globalChat')}</CardTitle>
+        <CardDescription>{t('chat.workspaceDescription')}</CardDescription>
         <CardAction className="flex items-center gap-2">
-          <Badge variant="secondary">{messages.length} messages</Badge>
+          <Badge variant="secondary">{t('chat.messages', { count: messages.length })}</Badge>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => void loadHistory()}
             disabled={loading || !isAuthenticated}
-            aria-label="Reload messages"
+            aria-label={t('chat.reloadMessages')}
           >
             <RefreshCwIcon className={cn((loading || !isAuthenticated) && "animate-spin")} />
           </Button>
@@ -270,9 +271,9 @@ export function Chat({ currentUser, isAuthenticated, currentPicture }: { current
                     <EmptyMedia variant="icon">
                       <MessagesSquareIcon />
                     </EmptyMedia>
-                    <EmptyTitle>No messages yet</EmptyTitle>
+                    <EmptyTitle>{t('chat.noMessages')}</EmptyTitle>
                     <EmptyDescription>
-                      Say hello and start the conversation.
+                      {t('chat.noMessagesDescription')}
                     </EmptyDescription>
                   </EmptyHeader>
                 </Empty>
@@ -310,7 +311,7 @@ export function Chat({ currentUser, isAuthenticated, currentPicture }: { current
         <InputGroup>
           <InputGroupTextarea
             id="chat-message"
-            placeholder="Write a message…"
+            placeholder={t('chat.writeMessage')}
             value={message}
             maxLength={MAX_LENGTH}
             disabled={loading}
@@ -324,7 +325,7 @@ export function Chat({ currentUser, isAuthenticated, currentPicture }: { current
               <KbdGroup>
                 <Kbd>Enter</Kbd>
               </KbdGroup>
-              to send
+              {t('chat.toSend')}
             </InputGroupText>
             <InputGroupText
               className={cn(
@@ -341,7 +342,7 @@ export function Chat({ currentUser, isAuthenticated, currentPicture }: { current
               onClick={() => void handleSubmit()}
             >
               {sending ? <Spinner /> : <SendHorizontalIcon />}
-              {message.startsWith("/") ? "Ask" : "Post"}
+              {message.startsWith("/") ? t('chat.ask') : t('chat.post')}
             </InputGroupButton>
           </InputGroupAddon>
         </InputGroup>

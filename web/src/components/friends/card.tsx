@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { UserPlusIcon, UsersIcon, RefreshCwIcon, TrashIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import {
   Card,
@@ -44,10 +45,14 @@ function FriendRow({
   friend,
   removing,
   onRemove,
+  deleteLabel,
+  deleteTooltip,
 }: {
   friend: UserPublic;
   removing: boolean;
   onRemove: (username: string) => void;
+  deleteLabel: string;
+  deleteTooltip: string;
 }) {
   return (
     <div
@@ -72,13 +77,13 @@ function FriendRow({
               className="text-muted-foreground hover:text-destructive"
               onClick={() => onRemove(friend.username)}
               disabled={removing}
-              aria-label={`Delete ${friend.username} from friend list`}
+              aria-label={deleteLabel}
             >
               {removing ? <Spinner /> : <TrashIcon />}
             </Button>
           }
         />
-        <TooltipContent side="left">Delete my friends</TooltipContent>
+        <TooltipContent side="left">{deleteTooltip}</TooltipContent>
       </Tooltip>
     </div>
   );
@@ -103,6 +108,7 @@ export function FriendsCard() {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [removingIds, setRemovingIds] = useState<Set<string>>(new Set());
+  const { t } = useTranslation();
 
   const loadFriends = useCallback(async () => {
     setLoading(true);
@@ -111,13 +117,13 @@ export function FriendsCard() {
     } catch (error) {
       toast.add({
         type: "error",
-        title: "Impossible to load friends list",
+        title: t("friends.loadFailed"),
         description: errorMessage(error),
       });
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     void loadFriends();
@@ -135,13 +141,13 @@ export function FriendsCard() {
       setUsername("");
       toast.add({
         type: "success",
-        title: "Request send",
-        description: `${trimmed} will be receive a request.`,
+        title: t("friends.requestSent"),
+        description: t("friends.requestSentDescription", { username: trimmed }),
       });
     } catch (error) {
       toast.add({
         type: "error",
-        title: "Request no send",
+        title: t("friends.requestNotSent"),
         description: errorMessage(error),
       });
     } finally {
@@ -157,7 +163,7 @@ export function FriendsCard() {
     } catch (error) {
       toast.add({
         type: "error",
-        title: "Delete impossible",
+        title: t("friends.deleteImpossible"),
         description: errorMessage(error),
       });
     } finally {
@@ -179,18 +185,18 @@ export function FriendsCard() {
   return (
     <Card className="flex h-[36rem] w-full flex-col overflow-hidden">
       <CardHeader className="border-b">
-        <CardTitle>Friends</CardTitle>
-        <CardDescription>Add friend with username.</CardDescription>
+        <CardTitle>{t("friends.title")}</CardTitle>
+        <CardDescription>{t("friends.subtitle")}</CardDescription>
         <CardAction className="flex items-center gap-2">
           <Badge variant="secondary">
-            {friends.length} {friends.length > 1 ? "friends" : "friend"}
+            {friends.length} {t("friends.badgeFriend", { count: friends.length })}
           </Badge>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => void loadFriends()}
             disabled={loading}
-            aria-label="Reload friends list"
+            aria-label={t("common.reload")}
           >
             <RefreshCwIcon className={cn(loading && "animate-spin")} />
           </Button>
@@ -208,10 +214,8 @@ export function FriendsCard() {
                   <EmptyMedia variant="icon">
                     <UsersIcon />
                   </EmptyMedia>
-                  <EmptyTitle>No friend now</EmptyTitle>
-                  <EmptyDescription>
-                    Send a request
-                  </EmptyDescription>
+                  <EmptyTitle>{t("friends.noFriends")}</EmptyTitle>
+                  <EmptyDescription>{t("friends.noFriendsDescription")}</EmptyDescription>
                 </EmptyHeader>
               </Empty>
             ) : (
@@ -221,6 +225,8 @@ export function FriendsCard() {
                   friend={friend}
                   removing={removingIds.has(friend.username)}
                   onRemove={(name) => void handleRemove(name)}
+                  deleteLabel={t("friends.deleteAria", { username: friend.username })}
+                  deleteTooltip={t("friends.deleteTooltip")}
                 />
               ))
             )}
@@ -232,7 +238,7 @@ export function FriendsCard() {
         <InputGroup>
           <InputGroupInput
             id="friend-username"
-            placeholder="username..."
+            placeholder={t("friends.inputPlaceholder")}
             value={username}
             maxLength={MAX_USERNAME_LENGTH}
             disabled={sending}
@@ -247,7 +253,7 @@ export function FriendsCard() {
               <KbdGroup>
                 <Kbd>Enter</Kbd>
               </KbdGroup>
-              to send
+              {t("chat.toSend")}
             </InputGroupText>
             <InputGroupButton
               variant="default"
@@ -256,7 +262,7 @@ export function FriendsCard() {
               onClick={() => void handleSend()}
             >
               {sending ? <Spinner /> : <UserPlusIcon />}
-              Add
+              {t("friends.add")}
             </InputGroupButton>
           </InputGroupAddon>
         </InputGroup>

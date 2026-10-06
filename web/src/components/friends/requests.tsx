@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { CheckIcon, XIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Card, CardHeader, CardTitle, CardAction, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -20,6 +21,7 @@ export function RequestsCard({ onAccepted }: { onAccepted?: () => void }) {
   const [requests, setRequests] = useState<UserPublic[]>([]);
   const [loading, setLoading] = useState(true);
   const [pending, setPending] = useState<Set<string>>(new Set());
+  const { t } = useTranslation();
 
   const loadRequests = useCallback(async () => {
     setLoading(true);
@@ -28,13 +30,13 @@ export function RequestsCard({ onAccepted }: { onAccepted?: () => void }) {
     } catch (error) {
       toast.add({
         type: "error",
-        title: "Couldn't load friend requests",
+        title: t("friends.loadRequestsFailed"),
         description: errorMessage(error),
       });
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     void loadRequests();
@@ -45,7 +47,10 @@ export function RequestsCard({ onAccepted }: { onAccepted?: () => void }) {
     try {
       if (action === "accept") {
         await acceptFriendRequest(username);
-        toast.add({ type: "success", title: `You are now friends with ${username}` });
+        toast.add({
+          type: "success",
+          title: t("friends.requestAcceptSuccess", { username }),
+        });
         onAccepted?.();
       } else {
         await refuseFriendRequest(username);
@@ -54,7 +59,10 @@ export function RequestsCard({ onAccepted }: { onAccepted?: () => void }) {
     } catch (error) {
       toast.add({
         type: "error",
-        title: action === "accept" ? "Couldn't accept the request" : "Couldn't decline the request",
+        title:
+          action === "accept"
+            ? t("friends.requestAcceptFailed")
+            : t("friends.requestDeclineFailed"),
         description: errorMessage(error),
       });
     } finally {
@@ -71,7 +79,7 @@ export function RequestsCard({ onAccepted }: { onAccepted?: () => void }) {
   return (
     <Card className="w-full overflow-hidden">
       <CardHeader className="border-b">
-        <CardTitle>Friend requests</CardTitle>
+        <CardTitle>{t("friends.friendRequests")}</CardTitle>
         <CardAction>
           <Badge variant="secondary">{requests.length}</Badge>
         </CardAction>
@@ -107,13 +115,13 @@ export function RequestsCard({ onAccepted }: { onAccepted?: () => void }) {
                       disabled={busy}
                       onClick={() => void handleAnswer(request.username, "refuse")}
                       className="text-muted-foreground hover:text-destructive"
-                      aria-label={`Decline ${request.username}`}
+                      aria-label={t("friends.decline")} 
                     >
                       <XIcon />
                     </Button>
                   }
                 />
-                <TooltipContent side="top">Decline</TooltipContent>
+                <TooltipContent side="top">{t("friends.decline")}</TooltipContent>
               </Tooltip>
 
               <Tooltip>
@@ -124,13 +132,13 @@ export function RequestsCard({ onAccepted }: { onAccepted?: () => void }) {
                       size="icon"
                       disabled={busy}
                       onClick={() => void handleAnswer(request.username, "accept")}
-                      aria-label={`Accept ${request.username}`}
+                      aria-label={t("friends.accept")}
                     >
                       {busy ? <Spinner /> : <CheckIcon />}
                     </Button>
                   }
                 />
-                <TooltipContent side="top">Accept</TooltipContent>
+                <TooltipContent side="top">{t("friends.accept")}</TooltipContent>
               </Tooltip>
             </div>
           );
