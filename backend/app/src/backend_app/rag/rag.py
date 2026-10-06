@@ -18,8 +18,8 @@ class Rag:
     def __init__(self):
         self.indexed = False
         self.cached_chunks = None
-        print(os.getcwd())
-        self.index_files("./rag/dataset/") # TODO: check dataset path
+        print(os.system("ls /app/src/"))
+        self.index_files("/app/src/backend_app/rag/dataset/") # TODO: check dataset path
     
     def chunk_file(self, path: str, corpus: list[str], index_map: dict[str, dict[str, Any]], chunk_size: int = 2000) -> None:
         if "." not in path:

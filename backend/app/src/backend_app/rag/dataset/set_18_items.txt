@@ -1,0 +1,262 @@
+# TFT SET 18 — ENCHANTED WILDS
+# Current patch: 18.3
+
+## BASIC COMPONENTS
+
+B.F. Sword
+Chain Vest
+Frying Pan
+Giant's Belt
+Needlessly Large Rod
+Negatron Cloak
+Recurve Bow
+Sparring Gloves
+Spatula
+Tear of the Goddess
+
+## COMPLETED ITEMS
+
+Deathblade
+Edge of Night
+Sterak's Gage
+Hextech Gunblade
+Bloodthirster
+Giant Slayer
+Infinity Edge
+Spear of Shojin
+
+Bramble Vest
+Sunfire Cape
+Crownguard
+Gargoyle Stoneplate
+Titan's Resolve
+Steadfast Heart
+Protector's Vow
+
+Warmog's Armor
+Morellonomicon
+Evenshroud
+Nashor's Tooth
+Striker's Flail
+Spirit Visage
+
+Rabadon's Deathcap
+Ionic Spark
+Guinsoo's Rageblade
+Jeweled Gauntlet
+Archangel's Staff
+
+Dragon's Claw
+Kraken's Fury
+Quicksilver
+Adaptive Helm
+
+Red Buff
+Last Whisper
+Void Staff
+
+Thief's Gloves
+Hand of Justice
+Blue Buff
+
+## EMBLEMS
+
+Hunter Emblem
+Vanguard Emblem
+Brawler Emblem
+Spellweaver Emblem
+Ravager Emblem
+Rapidfire Emblem
+Executioner Emblem
+Invoker Emblem
+
+Fae Emblem
+Elderwood Emblem
+Blackthorn Emblem
+Blossom Emblem
+Sprykin Emblem
+Inferno Emblem
+Primal Emblem
+Lunar Emblem
+
+## TACTICIAN ITEMS
+
+Tactician's Cape
+Tactician's Shield
+Tactician's Crown
+
+## ITEM RECIPES
+
+B.F. Sword + B.F. Sword
+= Deathblade
+
+B.F. Sword + Chain Vest
+= Edge of Night
+
+B.F. Sword + Frying Pan
+= Hunter Emblem
+
+B.F. Sword + Giant's Belt
+= Sterak's Gage
+
+B.F. Sword + Needlessly Large Rod
+= Hextech Gunblade
+
+B.F. Sword + Negatron Cloak
+= Bloodthirster
+
+B.F. Sword + Recurve Bow
+= Giant Slayer
+
+B.F. Sword + Sparring Gloves
+= Infinity Edge
+
+B.F. Sword + Spatula
+= Fae Emblem
+
+B.F. Sword + Tear of the Goddess
+= Spear of Shojin
+
+
+Chain Vest + Chain Vest
+= Bramble Vest
+
+Chain Vest + Frying Pan
+= Vanguard Emblem
+
+Chain Vest + Giant's Belt
+= Sunfire Cape
+
+Chain Vest + Needlessly Large Rod
+= Crownguard
+
+Chain Vest + Negatron Cloak
+= Gargoyle Stoneplate
+
+Chain Vest + Recurve Bow
+= Titan's Resolve
+
+Chain Vest + Sparring Gloves
+= Steadfast Heart
+
+Chain Vest + Spatula
+= Elderwood Emblem
+
+Chain Vest + Tear of the Goddess
+= Protector's Vow
+
+
+Frying Pan + Frying Pan
+= Tactician's Shield
+
+Frying Pan + Giant's Belt
+= Brawler Emblem
+
+Frying Pan + Needlessly Large Rod
+= Spellweaver Emblem
+
+Frying Pan + Negatron Cloak
+= Ravager Emblem
+
+Frying Pan + Recurve Bow
+= Rapidfire Emblem
+
+Frying Pan + Sparring Gloves
+= Executioner Emblem
+
+Frying Pan + Spatula
+= Tactician's Cape
+
+Frying Pan + Tear of the Goddess
+= Invoker Emblem
+
+
+Giant's Belt + Giant's Belt
+= Warmog's Armor
+
+Giant's Belt + Needlessly Large Rod
+= Morellonomicon
+
+Giant's Belt + Negatron Cloak
+= Evenshroud
+
+Giant's Belt + Recurve Bow
+= Nashor's Tooth
+
+Giant's Belt + Sparring Gloves
+= Striker's Flail
+
+Giant's Belt + Spatula
+= Blackthorn Emblem
+
+Giant's Belt + Tear of the Goddess
+= Spirit Visage
+
+
+Needlessly Large Rod + Needlessly Large Rod
+= Rabadon's Deathcap
+
+Needlessly Large Rod + Negatron Cloak
+= Ionic Spark
+
+Needlessly Large Rod + Recurve Bow
+= Guinsoo's Rageblade
+
+Needlessly Large Rod + Sparring Gloves
+= Jeweled Gauntlet
+
+Needlessly Large Rod + Spatula
+= Blossom Emblem
+
+Needlessly Large Rod + Tear of the Goddess
+= Archangel's Staff
+
+
+Negatron Cloak + Negatron Cloak
+= Dragon's Claw
+
+Negatron Cloak + Recurve Bow
+= Kraken's Fury
+
+Negatron Cloak + Sparring Gloves
+= Quicksilver
+
+Negatron Cloak + Spatula
+= Sprykin Emblem
+
+Negatron Cloak + Tear of the Goddess
+= Adaptive Helm
+
+
+Recurve Bow + Recurve Bow
+= Red Buff
+
+Recurve Bow + Sparring Gloves
+= Last Whisper
+
+Recurve Bow + Spatula
+= Inferno Emblem
+
+Recurve Bow + Tear of the Goddess
+= Void Staff
+
+
+Sparring Gloves + Sparring Gloves
+= Thief's Gloves
+
+Sparring Gloves + Spatula
+= Primal Emblem
+
+Sparring Gloves + Tear of the Goddess
+= Hand of Justice
+
+
+Spatula + Spatula
+= Tactician's Crown
+
+Spatula + Tear of the Goddess
+= Lunar Emblem
+
+
+Tear of the Goddess + Tear of the Goddess
+= Blue Buff
