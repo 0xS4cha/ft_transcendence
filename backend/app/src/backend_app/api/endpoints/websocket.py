@@ -2,6 +2,7 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from backend_app.core.jwt import Token
+from backend_app.core.rate_limiter import ws_ratelimit
 from backend_app.core.websocket import wsConnectionManager
 from shared.database import AsyncSessionDep
 
@@ -23,5 +24,8 @@ async def websocket_endpoint(websocket: WebSocket, session: AsyncSessionDep):
     try:
         while True:
             await websocket.receive_text()
-    except WebSocketDisconnect:
+            await ws_ratelimit(websocket, context_key=str(current_user.id))
+    except WebSocketDisconnect as e:
+        print(f"[websocket_endpoint] Websocket disconnected: {e}")
+    finally:
         await wsConnectionManager.disconnect(websocket, current_user.id)
