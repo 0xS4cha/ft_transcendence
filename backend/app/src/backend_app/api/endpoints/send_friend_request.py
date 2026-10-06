@@ -83,7 +83,7 @@ async def send_friend_request(
         )
 
     try:
-        await WSbroadcast("equefriend.rst", {
+        await WSbroadcast("friend.request", {
             "requester_username": current_user.username
         }, [requested.id])
     except Exception as e: #noqa BLE001

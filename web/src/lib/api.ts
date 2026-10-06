@@ -63,6 +63,12 @@ export function apiPostLink<T>(path: string): Promise<T> {
   });
 }
 
+export function apiDeleteLink<T>(path: string): Promise<T> {
+  return apiFetch<T>(path, {
+    method: "DELETE",
+  });
+}
+
 export function apiPostForm<T>(path: string, body: URLSearchParams): Promise<T> {
   return apiFetch<T>(path, {
     method: "POST",
