@@ -11,6 +11,7 @@ function applyUser(state: typeof initialState, user: UserPublic) {
   state.picture = user.picture ? user.picture : undefined;
   state.isAuthenticated = true;
   state.chat = user.chat && user.chat.length > 0 ? user.chat : [];
+  state.isDark = user.isDark ? user.isDark : typeof window !== 'undefined' ? (localStorage.getItem("isDark") == "true" || false) : true;
 }
 
 export const initializeSession = createAsyncThunk(
@@ -73,6 +74,9 @@ export const userSlice = createSlice({
       if (!state.chat) return;
       state.chat = state.chat.filter((item) => item.id !== action.payload);
     },
+    setTheme: (state, action: PayloadAction<boolean>) => {
+      state.isDark = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -116,6 +120,7 @@ export const userSlice = createSlice({
         username: "",
         isAuthenticated: false,
         chat: [],
+        isDark: true,
         status: "ready" as const,
       }))
       .addCase(logoutUser.rejected, (state) => {
@@ -124,6 +129,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { clearUser, addChatContent, updateChatContent, removeChatContent, setChat } = userSlice.actions;
+export const { clearUser, addChatContent, updateChatContent, removeChatContent, setChat, setTheme } = userSlice.actions;
 
 export default userSlice.reducer;
