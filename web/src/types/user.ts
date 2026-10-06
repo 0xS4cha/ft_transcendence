@@ -6,6 +6,7 @@ export interface UserPublic {
   username: string;
   picture?: string;
   chat?: ChatDataProps[];
+  isDark?: boolean;
 }
 
 export interface UserState extends UserPublic {
