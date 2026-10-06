@@ -6,6 +6,7 @@ from backend_app.core.chatbot import ChatBot
 from backend_app.core.jwt import Token
 from backend_app.models.users import UserModel
 from shared.database import db
+from backend_app.rag.rag import Rag, MinimalSource
 
 chatbot = ChatBot(
 	db.settings.HOST_IP,
@@ -29,7 +30,9 @@ Answer users' questions about TFT using the statistics and data provided in your
 )
 router = APIRouter()
 
+rag = Rag()
 
 @router.get("/ask")
 async def ask_chatbot(message: str, current_user: Annotated[UserModel, Depends(Token.get_current_user)]):
-	return await chatbot.ask(message)
+	relevant_chunks = rag.retrieve_chunks(message, [], 3)
+	return await chatbot.ask(message, relevant_chunks)
