@@ -140,3 +140,58 @@ body {
     @apply font-sans;
     }
 }
+
+/*patch note imports*/
+@layer components {
+  .patch-note-container {
+    @apply text-neutral-300 leading-relaxed;
+  }
+  
+  .patch-note-container h1 {
+    @apply text-3xl font-bold text-white mb-2 mt-6;
+  }
+  
+  .patch-note-container h2 {
+    @apply text-2xl font-bold text-white mt-10 mb-4 border-b border-white/10 pb-2;
+  }
+  
+  .patch-note-container h3 {
+    @apply text-xl font-semibold text-blue-400 mt-8 mb-3;
+  }
+  
+  .patch-note-container h4 {
+    @apply text-lg font-medium text-neutral-200 mt-6 mb-2;
+  }
+  
+  .patch-note-container p {
+    @apply mb-4;
+  }
+
+  .patch-note-container ul {
+    @apply list-disc list-outside ml-6 mb-6 space-y-2;
+  }
+
+  .patch-note-container table {
+    @apply w-full text-left border-collapse mb-8 mt-4;
+  }
+  
+  .patch-note-container th {
+    @apply bg-neutral-800 p-3 font-semibold text-white border border-white/10;
+  }
+  
+  .patch-note-container td {
+    @apply p-3 border border-white/10;
+  }
+
+  .patch-note-container .buff {
+    @apply text-emerald-400 font-medium;
+  }
+  
+  .patch-note-container .nerf {
+    @apply text-red-400 font-medium;
+  }
+
+  .patch-note-container .patch-meta {
+    @apply text-sm text-neutral-500 mb-8;
+  }
+}
