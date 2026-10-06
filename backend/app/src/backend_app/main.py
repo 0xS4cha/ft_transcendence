@@ -1,14 +1,12 @@
 from contextlib import asynccontextmanager
 
 import redis.asyncio as redis
-from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from fastapi_limiter.depends import RateLimiter
+from fastapi import FastAPI
 
 from backend_app.api.router import api_router
 from backend_app.core.websocket import wsConnectionManager
 from shared.database import db
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

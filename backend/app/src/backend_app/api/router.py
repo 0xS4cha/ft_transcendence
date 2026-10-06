@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from backend_app.core.rate_limiter import basic_limits, auth_limits, authenticated_limits
 
 from backend_app.api.endpoints import (
     accept_friend_request_router,
@@ -28,100 +29,125 @@ from backend_app.api.endpoints import (
 
 api_router = APIRouter(prefix="/api")
 
+
 api_router.include_router(
     signup_router,
     tags=["Authentication"],
-    prefix="/auth"
+    prefix="/auth",
+    dependencies=auth_limits
 )
 
 api_router.include_router(
     me_router,
     tags=["Authentication"],
-    prefix="/auth"
+    prefix="/auth",
+    dependencies=auth_limits
 )
 
 api_router.include_router(
     login_router,
     tags=["Authentication"],
-    prefix="/auth"
-)
-
-api_router.include_router(
-	patchnote_router,
-	tags=["PatchNote"],
-	prefix="/patchnote"
+    prefix="/auth",
+    dependencies=auth_limits
 )
 
 api_router.include_router(
     login_with_42_router,
     tags=["Authentication"],
-    prefix="/auth"
-)
-
-api_router.include_router(
-	chatbot_router,
-	tags=["Chatbot"],
-	prefix="/chatbot"
+    prefix="/auth",
+    dependencies=auth_limits
 )
 
 api_router.include_router(
     logout_router,
     tags=["Authentication"],
-    prefix="/auth"
+    prefix="/auth",
+    dependencies=auth_limits
+)
+
+
+
+api_router.include_router(
+	patchnote_router,
+	tags=["PatchNote"],
+	prefix="/patchnote",
+    dependencies=basic_limits
 )
 
 api_router.include_router(
 	leaderboard_router,
 	tags=["LeaderBoard"],
-	prefix="/leaderboard"
-)
-
-api_router.include_router(
-    items_data_router,
-    tags=["Game Data"],
-    prefix="/game_data",
-)
-
-api_router.include_router(
-    units_data_router,
-    tags=["Game Data"],
-    prefix="/game_data",
-)
-
-api_router.include_router(
-    traits_data_router,
-    tags=["Game Data"],
-    prefix="/game_data",
-)
-
-api_router.include_router(
-    augments_data_router,
-    tags=["Game Data"],
-    prefix="/game_data",
+	prefix="/leaderboard",
+    dependencies=basic_limits
 )
 
 api_router.include_router(
     stats_router,
     tags=["Stats"],
     prefix="/stats",
-)
-
-api_router.include_router(
-    prometheus_metrics_router,
-    tags=["Prometheus Metrics"],
-    prefix="/prometheus",
+    dependencies=basic_limits
 )
 
 api_router.include_router(
 	search_router,
 	tags=["Search"],
-	prefix="/search"
+	prefix="/search",
+    dependencies=basic_limits
 )
+
+
+
+api_router.include_router(
+    items_data_router,
+    tags=["Game Data"],
+    prefix="/game_data",
+    dependencies=basic_limits
+)
+
+api_router.include_router(
+    units_data_router,
+    tags=["Game Data"],
+    prefix="/game_data",
+    dependencies=basic_limits
+)
+
+api_router.include_router(
+    traits_data_router,
+    tags=["Game Data"],
+    prefix="/game_data",
+    dependencies=basic_limits
+)
+
+api_router.include_router(
+    augments_data_router,
+    tags=["Game Data"],
+    prefix="/game_data",
+    dependencies=basic_limits
+)
+
+
+
+api_router.include_router(
+    prometheus_metrics_router,
+    tags=["Prometheus Metrics"],
+    prefix="/prometheus"
+)
+
+
 
 api_router.include_router(
 	chat_router,
 	tags=["Chat"],
-	prefix="/chat"
+	prefix="/chat",
+    dependencies=authenticated_limits
+)
+
+
+api_router.include_router(
+	chatbot_router,
+	tags=["Chatbot"],
+	prefix="/chatbot",
+    dependencies=authenticated_limits
 )
 
 api_router.include_router(
@@ -130,38 +156,46 @@ api_router.include_router(
 	prefix="/websocket"
 )
 
+
+
 api_router.include_router(
     send_friend_request_router,
     tags=["Friend"],
-    prefix="/friends"
+    prefix="/friends",
+    dependencies=authenticated_limits
 )
 
 api_router.include_router(
     accept_friend_request_router,
     tags=["Friend"],
-    prefix="/friends"
+    prefix="/friends",
+    dependencies=authenticated_limits
 )
 
 api_router.include_router(
     refuse_friend_request_router,
     tags=["Friend"],
-    prefix="/friends"
+    prefix="/friends",
+    dependencies=authenticated_limits
 )
 
 api_router.include_router(
     friend_requests_list_router,
     tags=["Friend"],
-    prefix="/friends"
+    prefix="/friends",
+    dependencies=authenticated_limits
 )
 
 api_router.include_router(
     friends_list_router,
     tags=["Friend"],
-    prefix="/friends"
+    prefix="/friends",
+    dependencies=authenticated_limits
 )
 
 api_router.include_router(
     remove_friend_router,
     tags=["Friend"],
-    prefix="/friends"
+    prefix="/friends",
+    dependencies=authenticated_limits
 )
