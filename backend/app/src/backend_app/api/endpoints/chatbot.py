@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends
 from backend_app.core.chatbot import ChatBot
 from backend_app.core.jwt import Token
 from backend_app.models.users import UserModel
+from backend_app.rag.rag import Rag
 from shared.database import db
 
 chatbot = ChatBot(
@@ -13,6 +14,7 @@ chatbot = ChatBot(
 """
 You are a helpful AI assistant for a TFT statistics website.
 Answer users' questions about TFT using the statistics and data provided in your context.
+Do not mention the document number used to answer the question asked.
 
 ## Rules:
 - Be concise, clear, and factual.
@@ -25,11 +27,14 @@ Answer users' questions about TFT using the statistics and data provided in your
 - Use common TFT terminology naturally.
 - If the question is unrelated to TFT, briefly say that you specialize in TFT statistics.
 - Keep responses short unless the user asks for more detail.
+- Do not mention the document number used to answer the question asked.
 """
 )
 router = APIRouter()
 
+rag = Rag()
 
 @router.get("/ask")
 async def ask_chatbot(message: str, current_user: Annotated[UserModel, Depends(Token.get_current_user)]):
-	return await chatbot.ask(message)
+	relevant_chunks = rag.retrieve_chunks(message, [], 2)
+	return await chatbot.ask(message, relevant_chunks)

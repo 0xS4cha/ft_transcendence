@@ -1,0 +1,378 @@
+# TFT SET 18 — ENCHANTED WILDS
+# Current patch: 18.3
+# Unit roster
+
+## 1-COST UNITS
+
+Akali
+Camille
+Cinderling
+Karma
+Kobuko
+Leona
+Ornn
+Pebbles
+Rakan
+Rek'Sai
+Varus
+Veigar
+Xayah
+Yorick
+
+## 2-COST UNITS
+
+Alistar
+Caitlyn
+Elise
+Gromp
+Kayle
+LeBlanc
+Murkwolf
+Scuttlecrab
+Sejuani
+Shen
+Teemo
+Warwick
+Yunara
+
+## 3-COST UNITS
+
+Azir
+Cassiopeia
+Diana
+Fiddlesticks
+Hecarim
+Kha'Zix
+Kog'Maw
+Krug
+Mama Beak
+Master Yi
+Rammus
+Rengar
+Tristana
+Vi
+
+## 4-COST UNITS
+
+Ahri
+Amumu
+Aphelios
+Brambleback
+Ezreal
+Lillia
+Malphite
+Morgana
+Nidalee
+Sentinel
+Sett
+Sivir
+Soraka
+Zyra
+
+## 5-COST UNITS
+
+Alune
+Ashe
+Draven
+Elder Dragon
+Gnar
+Ivern
+Kennen
+Lux
+Maokai
+Taric
+
+## SPECIAL / LUX VARIANTS
+
+Lux (Blackthorn)
+Lux (Blossom)
+Lux (Coven)
+Lux (Elderwood)
+Lux (Fae)
+Lux (Inferno)
+Lux (Lunar)
+Lux (Primal)
+Lux (Solar)
+
+## UNIT COUNT
+
+Standard-cost roster:
+- 14 x 1-cost
+- 13 x 2-cost
+- 14 x 3-cost
+- 14 x 4-cost
+- 10 x 5-cost
+
+Special Lux trait variants are additionally represented by the Avatar
+mechanic.
+
+## TRAITS BY UNIT
+
+Akali:
+- Inferno
+- Adaptor
+- Ravager
+
+Camille:
+- Coven
+- Ravager
+
+Cinderling:
+- Riftbeast
+- Hunter
+
+Karma:
+- Blossom
+- Spellweaver
+
+Kobuko:
+- Sprykin
+- Brawler
+
+Leona:
+- Solar
+- Defender
+
+Ornn:
+- Elderwood
+- Defender
+
+Pebbles:
+- Riftbeast
+- Invoker
+
+Rakan:
+- Fae
+- Juggernaut
+- Vanguard
+
+Rek'Sai:
+- Blackthorn
+- Brawler
+
+Varus:
+- Inferno
+- Rapidfire
+
+Veigar:
+- Blackthorn
+- Sprykin
+- Spellweaver
+
+Xayah:
+- Elderwood
+- Fae
+- Rapidfire
+
+Yorick:
+- Blossom
+- Juggernaut
+- Summoner
+
+Alistar:
+- Elderwood
+- Brawler
+
+Caitlyn:
+- Coven
+- Hunter
+
+Elise:
+- Coven
+- Vanguard
+
+Gromp:
+- Riftbeast
+- Adaptor
+
+Kayle:
+- Solar
+- Rapidfire
+
+LeBlanc:
+- Elderwood
+- Spellweaver
+
+Murkwolf:
+- Riftbeast
+- Ravager
+
+Scuttlecrab:
+- Riftbeast
+- Juggernaut
+
+Sejuani:
+- Solar
+- Juggernaut
+
+Shen:
+- Inferno
+- Defender
+
+Teemo:
+- Sprykin
+- Invoker
+
+Warwick:
+- Blackthorn
+- Ravager
+
+Yunara:
+- Blossom
+- Executioner
+
+Azir:
+- Blackthorn
+- Executioner
+- Summoner
+
+Cassiopeia:
+- Coven
+- Spellweaver
+
+Diana:
+- Lunar
+- Ravager
+- Vanguard
+
+Fiddlesticks:
+- Flora Fatalis
+- Defender
+- Spellweaver
+
+Hecarim:
+- Elderwood
+- Vanguard
+
+Kha'Zix:
+- Rival
+
+Kog'Maw:
+- Caustic
+- Adaptor
+- Invoker
+
+Krug:
+- Riftbeast
+- Brawler
+
+Mama Beak:
+- Riftbeast
+- Summoner
+- Rapidfire
+
+Master Yi:
+- Blossom
+- Adaptor
+
+Rammus:
+- Sprykin
+- Defender
+
+Rengar:
+- Rival
+
+Tristana:
+- Fae
+- Sprykin
+- Hunter
+
+Vi:
+- Primal
+- Juggernaut
+
+Ahri:
+- Blossom
+- Spellweaver
+
+Amumu:
+- Inferno
+- Juggernaut
+
+Aphelios:
+- Lunar
+- Rapidfire
+
+Brambleback:
+- Riftbeast
+- Ravager
+
+Ezreal:
+- Elderwood
+- Executioner
+
+Lillia:
+- Fae
+- Defender
+
+Malphite:
+- Blackthorn
+- Monolith
+
+Morgana:
+- Coven
+- Invoker
+
+Nidalee:
+- Primal
+- Adaptor
+
+Sentinel:
+- Riftbeast
+- Vanguard
+- Invoker
+
+Sett:
+- Blossom
+- Brawler
+
+Sivir:
+- Primal
+- Hunter
+
+Soraka:
+- Flora Fatalis
+- Executioner
+
+Zyra:
+- Thornmaiden
+- Summoner
+
+Alune:
+- Attuned
+- Lunar
+- Spellweaver
+
+Ashe:
+- Blossom
+- Hunter
+
+Draven:
+- Bounty Seeker
+
+Elder Dragon:
+- Apex Predator
+- Riftbeast
+
+Gnar:
+- Elderwood
+- Sprykin
+- Brawler
+
+Ivern:
+- Greenfather
+
+Kennen:
+- Inferno
+- Executioner
+
+Lux:
+- Avatar
+
+Maokai:
+- Old Growth
+- Juggernaut
+
+Taric:
+- Emerald Aspect
+- Vanguard

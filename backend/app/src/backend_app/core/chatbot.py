@@ -8,7 +8,11 @@ class ChatBot:
 		self.system_prompt = system_prompt
 
 
-	async def ask(self, message: str):
+	async def ask(self, message: str, relevant_chunks: list[str]):
+		context = "\n\n".join(
+			f"[Document {len(relevant_chunks) - i}]\n{chunk}"
+			for i, chunk in enumerate(relevant_chunks)
+		)
 		response = await self.client.chat(
 			model=self.model_name,
 			messages=[
@@ -18,8 +22,8 @@ class ChatBot:
 				},
 				{
 					"role": "user",
-					"content": message
-				},
+					"content": f"Context:\n{context}\n\nQuestion:\n{message}",
+				}
 			],
 		)
 		return response["message"]["content"]
