@@ -2,10 +2,9 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 from backend_app.core.jwt import Token
+from backend_app.core.rate_limiter import ws_ratelimit
 from backend_app.core.websocket import wsConnectionManager
 from shared.database import AsyncSessionDep
-from backend_app.core.rate_limiter import ws_ratelimit
-
 
 router = APIRouter()
 

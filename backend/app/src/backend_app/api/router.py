@@ -1,5 +1,4 @@
 from fastapi import APIRouter
-from backend_app.core.rate_limiter import basic_limits, auth_limits, authenticated_limits
 
 from backend_app.api.endpoints import (
     accept_friend_request_router,
@@ -25,6 +24,11 @@ from backend_app.api.endpoints import (
     traits_data_router,
     units_data_router,
     websocket_router,
+)
+from backend_app.core.rate_limiter import (
+    auth_limits,
+    authenticated_limits,
+    basic_limits,
 )
 
 api_router = APIRouter(prefix="/api")

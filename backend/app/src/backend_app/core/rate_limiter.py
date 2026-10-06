@@ -1,10 +1,10 @@
-from fastapi import Depends, Request, WebSocket, HTTPException, status
-from pyrate_limiter import Duration, Limiter, Rate
+import jwt
+from fastapi import Depends, HTTPException, Request, WebSocket, status
 from fastapi_limiter.depends import WebSocketRateLimiter
+from jwt.exceptions import InvalidTokenError
+from pyrate_limiter import Duration, Limiter, Rate
 
 from backend_app.core.jwt import Token
-import jwt
-from jwt.exceptions import InvalidTokenError
 
 
 class RateLimiter:
