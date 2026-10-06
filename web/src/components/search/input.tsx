@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "motion/react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Sword,
   Layers,
@@ -37,7 +38,6 @@ import { cn, initialsOf, errorMessage } from "@/lib/utils";
 import { getSearchFromQuery } from "@/services/searchService";
 import { type SearchResult } from "@/types/search";
 
-
 type SearchEntry = {
   id?: string | number;
   name?: string;
@@ -56,14 +56,6 @@ type SearchEntry = {
 
 type SectionKey = "unit" | "user" | "trait" | "augment" | "item";
 
-const SECTIONS: { key: SectionKey; label: string; icon: LucideIcon }[] = [
-  { key: "unit", label: "Units", icon: Sword },
-  { key: "user", label: "Users", icon: UserIcon },
-  { key: "trait", label: "Traits", icon: Layers },
-  { key: "augment", label: "Augments", icon: Sparkle },
-  { key: "item", label: "Items", icon: Shield },
-];
-
 const EMPTY_RESULT: SearchResult = {
   length: 0,
   unit: [],
@@ -78,17 +70,21 @@ const DEBOUNCE_MS = 250;
 const labelOf = (entry: SearchEntry) => entry.name ?? entry.username ?? "";
 const imageOf = (entry: SearchEntry) => entry.picture ?? entry.icon;
 
-function subtitleOf(section: SectionKey, entry: SearchEntry): string {
+function subtitleOf(
+  section: SectionKey,
+  entry: SearchEntry,
+  t: (key: string, options?: Record<string, unknown>) => string,
+): string {
   if (section === "user") {
     const rank = [entry.tier, entry.rank].filter(Boolean).join(" ");
-    const lp = entry.leaguePoints != null ? `${entry.leaguePoints} LP` : "";
-    const source = entry.source === "riot" ? "Riot" : "App";
+    const lp = entry.leaguePoints != null ? `${entry.leaguePoints} ${t("search.lp")}` : "";
+    const source = entry.source === "riot" ? t("search.riot") : t("search.app");
     return [source, entry.region, rank, lp].filter(Boolean).join(" • ");
   }
 
-  if (section === "item") return entry.type ? `Type: ${entry.type}` : "";
-  if (section === "trait") return entry.breakpoint ? `Breakpoint: ${entry.breakpoint}` : "";
-  if (section === "augment") return entry.rarity ? `Rarity: ${entry.rarity}` : "";
+  if (section === "item") return entry.type ? `${t("search.type")}: ${entry.type}` : "";
+  if (section === "trait") return entry.breakpoint ? `${t("search.breakpoint")}: ${entry.breakpoint}` : "";
+  if (section === "augment") return entry.rarity ? `${t("search.rarity")}: ${entry.rarity}` : "";
 
   return "";
 }
@@ -143,11 +139,20 @@ export function SearchInput({
   const reduceMotion = useReducedMotion();
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [data, setData] = useState<{ query: string; result: SearchResult } | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeSection, setActiveSection] = useState<"all" | SectionKey>("all");
   const [activeIndex, setActiveIndex] = useState(-1);
+
+  const SECTIONS: { key: SectionKey; label: string; icon: LucideIcon }[] = [
+    { key: "unit", label: t("search.units"), icon: Sword },
+    { key: "user", label: t("search.users"), icon: UserIcon },
+    { key: "trait", label: t("search.traits"), icon: Layers },
+    { key: "augment", label: t("search.augments"), icon: Sparkle },
+    { key: "item", label: t("search.items"), icon: Shield },
+  ];
 
   const trimmed = query.trim();
 
@@ -169,7 +174,7 @@ export function SearchInput({
         if (!cancelled) {
           toast.add({
             type: "error",
-            title: "Search failed",
+            title: t("search.failed"),
             description: errorMessage(error),
           });
         }
@@ -182,7 +187,7 @@ export function SearchInput({
       cancelled = true;
       clearTimeout(timeout);
     };
-  }, [trimmed]);
+  }, [trimmed, t]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -204,11 +209,9 @@ export function SearchInput({
     () =>
       SECTIONS.map((section) => ({
         ...section,
-        entries: ((result[section.key] ?? []) as SearchEntry[]).filter((entry) =>
-          Boolean(labelOf(entry)),
-        ),
+        entries: ((result[section.key] ?? []) as SearchEntry[]).filter((entry) => Boolean(labelOf(entry))),
       })).filter((section) => section.entries.length > 0),
-    [result],
+    [SECTIONS, result],
   );
 
   const visibleSections = useMemo(() => {
@@ -272,17 +275,17 @@ export function SearchInput({
     clear();
   }
 
-  const t = reduceMotion ? { duration: 0 } : { duration: 0.15, ease: "easeOut" as const };
+  const animation = reduceMotion ? { duration: 0 } : { duration: 0.15, ease: "easeOut" as const };
 
   return (
     <div className="relative w-full max-w-sm">
       <InputGroup>
         <InputGroupInput
           ref={inputRef}
-          placeholder="Search traits, items, augments, users…"
+          placeholder={t("common.search")}
           value={query}
           autoComplete="off"
-          aria-label="Search"
+          aria-label={t("common.search")}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
             if (event.key === "Escape") clear();
@@ -311,13 +314,13 @@ export function SearchInput({
             <Spinner />
           ) : isOpen ? (
             <Badge variant="secondary" className="tabular-nums">
-              {total} {total === 1 ? "result" : "results"}
+              {total} {t("search.result", { count: total })}
             </Badge>
           ) : (
             <Kbd>/</Kbd>
           )}
           {isOpen && (
-            <InputGroupButton size="icon-xs" onClick={clear} aria-label="Clear search">
+            <InputGroupButton size="icon-xs" onClick={clear} aria-label={t("search.clear")}>
               <XIcon />
             </InputGroupButton>
           )}
@@ -331,7 +334,7 @@ export function SearchInput({
             initial={{ opacity: 0, y: -6, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
-            transition={t}
+            transition={animation}
             className="bg-popover text-popover-foreground absolute top-full z-50 mt-2 w-full origin-top overflow-hidden rounded-xl border shadow-md"
           >
             <div
@@ -351,7 +354,7 @@ export function SearchInput({
                     className="cursor-pointer"
                     onClick={() => setActiveSection("all")}
                   >
-                    All
+                    {t("search.all")}
                   </Badge>
                   {SECTIONS.map((section) => {
                     const count = (result[section.key] ?? []).length;
@@ -376,8 +379,8 @@ export function SearchInput({
                     <EmptyMedia variant="icon">
                       <SearchXIcon />
                     </EmptyMedia>
-                    <EmptyTitle>No results</EmptyTitle>
-                    <EmptyDescription>Nothing matches “{trimmed}”.</EmptyDescription>
+                    <EmptyTitle>{t("search.noResults")}</EmptyTitle>
+                    <EmptyDescription>{t("search.noResultsDescription", { query: trimmed })}</EmptyDescription>
                   </EmptyHeader>
                 </Empty>
               )}
@@ -402,12 +405,12 @@ export function SearchInput({
                     >
                       {section.indexedEntries.map(({ entry, index: sectionIndex }, entryIndex) => {
                         const label = labelOf(entry);
-                        const subtitle = subtitleOf(section.key, entry);
+                        const subtitle = subtitleOf(section.key, entry, t);
                         return (
                           <motion.li
                             key={entry.id ?? `${label}-${entryIndex}`}
                             variants={rowVariants}
-                            transition={t}
+                            transition={animation}
                           >
                             <button
                               type="button"

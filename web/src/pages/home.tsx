@@ -9,6 +9,7 @@ import { toast } from "@/components/ui/toast";
 import { type HomeDataProps } from "@/types/home";
 import { getHomeStats } from "@/services/statsService";
 import { useAppSelector } from '@/store/hooks';
+import { useTranslation } from 'react-i18next';
 
 const container = {
   hidden: { opacity: 0 },
@@ -26,6 +27,8 @@ export default function Home() {
     history: []
   });
   const { isAuthenticated, username, picture } = useAppSelector(state => state.user);
+  const { t } = useTranslation();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -34,18 +37,18 @@ export default function Home() {
       } catch (error) {
         toast.add({
           type: "error",
-          title: `Fetch failed: ${error}`,
+          title: `${t('home.fetchFailed')}: ${error}`,
         });
       }
     };
 
     fetchData();
-  }, []);
+  }, [t]);
 
   const stats = [
-    { Icon: User, title: "Visits", count: data.visitsCount },
-    { Icon: Coins, title: "Gold wasted", count: data.goldCount },
-    { Icon: ChartSpline, title: "Matches analyzed", count: data.matchCount },
+    { Icon: User, title: t('home.visits'), count: data.visitsCount },
+    { Icon: Coins, title: t('home.goldWasted'), count: data.goldCount },
+    { Icon: ChartSpline, title: t('home.matchesAnalyzed'), count: data.matchCount },
   ];
 
   return (
@@ -58,10 +61,10 @@ export default function Home() {
           className="space-y-1"
         >
           <h1 className="text-3xl font-semibold tracking-tight">
-            Welcome to Tactyx
+            {t('home.title')}
           </h1>
           <p className="text-muted-foreground">
-            Here's an overview of your TFT performance and analysis.
+            {t('home.subtitle')}
           </p>
         </motion.div>
 

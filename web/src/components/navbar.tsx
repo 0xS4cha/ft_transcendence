@@ -1,6 +1,7 @@
 import { NavLink, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/store/hooks";
+import { useTranslation } from "react-i18next";
 
 interface NavItem {
   readonly label: string;
@@ -8,18 +9,19 @@ interface NavItem {
 }
 
 const NAV_ITEMS: readonly NavItem[] = [
-  { label: 'units', href: '/units' },
-  { label: 'items', href: '/items' },
-  { label: 'traits', href: '/traits' },
-  { label: 'augments', href: '/augments' },
-  { label: 'patch note', href: '/patch_note' },
-  { label: 'builder', href: '/builder' },
-  { label: 'meta', href: '/meta' },
-  { label: 'ranking', href: '/ranking' },
+  { label: 'nav.units', href: '/units' },
+  { label: 'nav.items', href: '/items' },
+  { label: 'nav.traits', href: '/traits' },
+  { label: 'nav.augments', href: '/augments' },
+  { label: 'nav.patchNote', href: '/patch_note' },
+  { label: 'nav.teamBuilder', href: '/builder' },
+  { label: 'nav.meta', href: '/meta' },
+  { label: 'nav.ranking', href: '/ranking' },
 ] as const;
 
 export function Navbar() {
   const { isAuthenticated, email } = useAppSelector(state => state.user);
+  const { t } = useTranslation();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#202020] backdrop-blur">
@@ -42,7 +44,7 @@ export function Navbar() {
                 )
               }
             >
-              {item.label}
+              {t(item.label)}
             </NavLink>
           ))}
         </nav>
@@ -51,7 +53,7 @@ export function Navbar() {
           className="flex items-center gap-2.5 text-sm font-normal text-neutral-400 transition-colors hover:text-white"
         >
           <div className="h-7 w-7 rounded-full border border-white/10 bg-neutral-800" />
-          <span>{isAuthenticated ? email : "Guest"}</span>
+          <span>{isAuthenticated ? email : t('common.guest')}</span>
         </Link>
       </div>
     </header>

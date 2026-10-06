@@ -41,6 +41,7 @@ import {
 import { useAppDispatch } from "@/store/hooks"
 import { logoutUser } from "@/store/reducers/userSlice";
 import { SearchInput } from '@/components/search/input';
+import { useTranslation } from 'react-i18next';
 
 interface NavItem {
   readonly label: string;
@@ -49,20 +50,21 @@ interface NavItem {
 }
 
 const NAV_ITEMS: readonly NavItem[] = [
-  { label: 'Home', href: '/', icon: Home },
-  { label: 'Units', href: '/units', icon: Sword },
-  { label: 'Items', href: '/items', icon: Shield },
-  { label: 'Traits', href: '/traits', icon: Layers },
-  { label: 'Augments', href: '/augments', icon: Sparkle },
-  { label: 'Team builder', href: '/builder', icon: Hammer },
-  { label: 'Set 18 update', href: '/patch_note', icon: FileText },
-  { label: 'Ranking', href: '/ranking', icon: Trophy },
+  { label: 'nav.home', href: '/', icon: Home },
+  { label: 'nav.units', href: '/units', icon: Sword },
+  { label: 'nav.items', href: '/items', icon: Shield },
+  { label: 'nav.traits', href: '/traits', icon: Layers },
+  { label: 'nav.augments', href: '/augments', icon: Sparkle },
+  { label: 'nav.teamBuilder', href: '/builder', icon: Hammer },
+  { label: 'nav.set18Update', href: '/patch_note', icon: FileText },
+  { label: 'nav.ranking', href: '/ranking', icon: Trophy },
 ] as const;
 
 export function AppSidebar() {
   const { toggleSidebar } = useSidebar();
   const dispatch = useAppDispatch();
   const { isAuthenticated, username, picture } = useAppSelector(state => state.user);
+  const { t } = useTranslation();
 
   function handleLogout() {
     dispatch(logoutUser()).unwrap();
@@ -127,7 +129,7 @@ export function AppSidebar() {
                   >
                     <item.icon className="h-4 w-4 shrink-0 stroke-[1.5] text-neutral-400 transition-colors group-hover/item:text-white"/>
                     <span className="truncate group-data-[collapsible=icon]:hidden">
-                      {item.label}
+                      {t(item.label)}
                     </span>
                   </NavLink>
                 </SidebarMenuItem>
@@ -151,11 +153,11 @@ export function AppSidebar() {
 
               <div className="flex flex-col overflow-hidden text-left group-data-[collapsible=icon]:hidden">
                 <span className="truncate text-xs font-medium text-neutral-200">
-                  {isAuthenticated ? username : "Guest"}
+                  {isAuthenticated ? username : t('common.guest')}
                 </span>
 
                 <span className="truncate text-[10px] text-neutral-500">
-                  {isAuthenticated ? username : "Log in"}
+                  {isAuthenticated ? username : t('common.login')}
                 </span>
               </div>
             </button>
@@ -170,7 +172,7 @@ export function AppSidebar() {
               <>
                 <DropdownMenuItem render={
                   <Link to="/profile">
-                    Profile
+                    {t('common.profile')}
                   </Link>
                 }/>
                 <DropdownMenuItem
@@ -178,13 +180,13 @@ export function AppSidebar() {
                   onClick={handleLogout}
                 >
                   <LogOut />
-                  Logout
+                  {t('common.logout')}
                 </DropdownMenuItem>
               </>
             ) : (
               <DropdownMenuItem render={
                 <Link to="/authenticate">
-                  Log in
+                  {t('common.login')}
                 </Link>
               }/>
             )}
