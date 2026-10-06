@@ -62,20 +62,13 @@ export const router = createBrowserRouter([
           return { Component };
         },
       },
-    //   {
-    //     path: "meta",
-    //     lazy: async () => {
-    //       const { default: Component } = await import("@/pages/Meta");
-    //       return { Component };
-    //     },
-    //   },
-    //   {
-    //     path: "ranking",
-    //     lazy: async () => {
-    //       const { default: Component } = await import("@/pages/Ranking");
-    //       return { Component };
-    //     },
-    //   },
+      {
+        path: "ranking",
+        lazy: async () => {
+          const { default: Component } = await import("@/pages/ranking");
+          return { Component };
+        },
+      },
       {
         path: "profile",
         lazy: async () => {

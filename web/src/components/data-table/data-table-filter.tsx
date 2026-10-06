@@ -55,9 +55,11 @@ const serverOptions = [
 interface DataTableFilterProps {
   filter: FilterType;
   setFilter: any;
+  hideRankFilter?: boolean;
+  hideQueueFilter?: boolean;
 }
 
-export function DataTableFilter({ filter, setFilter }: DataTableFilterProps) {
+export function DataTableFilter({ filter, setFilter, hideRankFilter, hideQueueFilter }: DataTableFilterProps) {
   const updateFilter = (columnId: string, value: string) => {
     setFilter((prev: FilterType) => ({
       ...prev,
@@ -68,6 +70,7 @@ export function DataTableFilter({ filter, setFilter }: DataTableFilterProps) {
   return (
     <div className="flex flex-wrap items-center gap-2 rounded-lg">
 
+    {!hideQueueFilter && (
       <Select
         value={filter.queue}
         onValueChange={(value) => value ? updateFilter("queue", value) : console.log("value is null")}
@@ -85,8 +88,9 @@ export function DataTableFilter({ filter, setFilter }: DataTableFilterProps) {
             </SelectItem>
           ))}
         </SelectContent>
-      </Select>
+      </Select> )}
 
+      {!hideRankFilter && (
       <Select
         value={filter.ranked}
         onValueChange={(value) => value ? updateFilter("ranked", value) : console.log("value is null")}
@@ -104,7 +108,7 @@ export function DataTableFilter({ filter, setFilter }: DataTableFilterProps) {
             </SelectItem>
           ))}
         </SelectContent>
-      </Select>
+      </Select> )}
 
       <Select
         value={filter.server}
