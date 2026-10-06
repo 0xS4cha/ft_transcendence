@@ -8,3 +8,7 @@ export function getChatHistory(): Promise<ChatDataProps[]> {
 export function sendChatMessage(content: string): Promise<ChatDataProps> {
   return apiPost<ChatDataProps>("/api/chat/send", { content: content });
 }
+
+export function askChatbotQuestion(content: string): Promise<string> {
+  return apiGet<string>(`/api/chatbot/ask?message=${content}`);
+}
