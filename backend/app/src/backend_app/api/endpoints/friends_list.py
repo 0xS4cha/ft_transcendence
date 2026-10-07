@@ -55,7 +55,6 @@ async def get_friends_list(
             continue
 
         is_online = bool(await r.sismember("websocket:active_users", str(friend_id)))
-        print(is_online)
         friends_list.append({**dict(UserPublic.model_validate(friend)), "online": is_online})
 
     return friends_list

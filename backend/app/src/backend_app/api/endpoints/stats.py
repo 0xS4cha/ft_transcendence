@@ -2,10 +2,12 @@ import time
 from datetime import UTC, datetime, timedelta
 
 import requests
+from backend.app.src.backend_app.models.chat_message import ChatMessage
 from fastapi import APIRouter, Response, status
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert
 
+from backend_app.core.websocket import WSbroadcast
 from backend_app.models.users import UserModel
 from backend_app.models.visit import VisitModel
 from shared.database import AsyncSessionDep
@@ -43,7 +45,6 @@ def update_graphql_tft_stats():
         """
 
         variables = {}
- 
         response = requests.post(
             url,
             json={
@@ -110,7 +111,6 @@ async def visits(session: AsyncSessionDep):
         "value": counts.get(today - timedelta(days=i), 0)}
         for i in range(VISITOR_LIST_RANGE_DAY)
     ]
-
     return {
         "count": total,
         "history": history
@@ -119,8 +119,11 @@ async def visits(session: AsyncSessionDep):
 
 async def home(session: AsyncSessionDep):
     visits_data = await visits(session)
+    chat_msg_count = await session.scalar(select(func.count()).select_from(ChatMessage))
+
     return {
         "visitsCount": visits_data.get("count", 0),
+        "chatMessagesCount": chat_msg_count,
         "goldCount": tft_stats.get("gold_wasted", 0),
         "matchCount": tft_stats.get("total_games", 0),
         "history": visits_data.get("history", [0] * VISITOR_LIST_RANGE_DAY),
@@ -137,16 +140,16 @@ endpoints = {
 }
 @router.get("/{name}")
 async def stats_dispatcher(name: str, response: Response, session: AsyncSessionDep):
-    if not "gold_wasted" in tft_stats:
-        update_graphql_tft_stats()
     if name in endpoints:
         force_update = time.time() - endpoints[name].get("last", 0) > REFRESH_DELTA_SECONDS
         if endpoints[name].get("cache", False) is True:
-            result = await get_cache(name, endpoints[name].get("function", default), session, force_update)
+            result = await get_cache(name, endpoints[name].get("function", default), session, force_update) or {}
         else:
-            result = await endpoints[name].get("function", default)(session)
+            result = await endpoints[name].get("function", default)(session) or {}
         if force_update:
             endpoints[name]["last"] = time.time()
+        # broadcast realtime stats to all users
+        await WSbroadcast("stats.update", result)
         return result
     response.status_code = status.HTTP_404_NOT_FOUND
     return {'success': False}
