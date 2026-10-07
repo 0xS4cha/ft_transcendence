@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, HTTPException
+from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import HTMLResponse
 
 from backend_app.patchnotes import read_patchnote
