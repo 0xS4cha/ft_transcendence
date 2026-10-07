@@ -6,7 +6,7 @@ import { toast } from "@/components/ui/toast";
 import { type AugmentRow } from "@/components/augments/schema";
 import { getAugmentsStats } from "@/services/statsService";
 import { type FilterType } from "@/types/stats";
-import { downloadJson } from "@/lib/utils";
+import { downloadJson, downloadXml } from "@/lib/utils";
 
 
 export function AugmentsTable({ ref }: any) {
@@ -20,8 +20,11 @@ export function AugmentsTable({ ref }: any) {
   const initialSearchQuery = searchParams.get("q")?.trim() ?? "";
 
   useImperativeHandle(ref, () => ({
-    export() {
+    exportJson() {
       downloadJson(data, "augments.json")
+    },
+    exportXml() {
+      downloadXml(data, "augments.xml")
     }
   }));
 
@@ -48,7 +51,7 @@ export function AugmentsTable({ ref }: any) {
       columns={AugmentsColumns}
       data={data}
       getRowId={(row) => row.id}
-      defaultSortId="id"
+      defaultSortId="name"
       searchPlaceholder="Search augments..."
       initialSearchQuery={initialSearchQuery}
     />
