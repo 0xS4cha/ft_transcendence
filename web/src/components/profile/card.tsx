@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardAction, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -7,7 +7,28 @@ import { setTheme } from "@/store/reducers/userSlice";
 import { initialsOf } from "@/lib/utils";
 import i18n from "@/lib/i18n";
 import { useTranslation } from "react-i18next";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Trash, Info } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { deleteUser } from "@/store/reducers/userSlice";
+import { useState } from "react";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 
 const languageOptions = [
     { value: "en", label: "🇺🇸 English" },
@@ -21,6 +42,8 @@ export function ProfileCard() {
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
     const { username, picture, email, id, isDark } = useAppSelector((state) => state.user);
+    const [rgpdInfoOpen, setRgpdInfoOpen] = useState(false);
+    const [deleteOpen, setDeleteOpen] = useState(false);
 
     const baseLang = (i18n.resolvedLanguage || i18n.language || "en").split("-")[0];
     const language = languageOptions.some((o) => o.value === baseLang) ? baseLang : "en";
@@ -44,6 +67,10 @@ export function ProfileCard() {
             localStorage.setItem("isDark", String(dark));
         } catch {
         }
+    };
+
+    const deletergpd = async () => {
+        await dispatch(deleteUser()).unwrap();
     };
 
     return (
@@ -104,6 +131,67 @@ export function ProfileCard() {
                     </div>
                 </div>
             </CardContent>
+            <CardAction>
+                <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setRgpdInfoOpen(true)}
+                    aria-label={t("profile.rgpdInfoButton", "RGPD information")}
+                >
+                    <Info />
+                </Button>
+                <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    onClick={() => setDeleteOpen(true)}
+                    aria-label={t("profile.rgpdDeleteButton", "Delete my account")}
+                >
+                    <Trash />
+                </Button>
+            </CardAction>
+            <Dialog open={rgpdInfoOpen} onOpenChange={setRgpdInfoOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>{t("profile.rgpdInfoTitle", "Your personal data")}</DialogTitle>
+                        <DialogDescription>
+                            {t(
+                                "profile.rgpdInfoDescription",
+                                "To recover your personal data, send an email to test@tactyx.com."
+                            )}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button type="button" variant="outline" onClick={() => setRgpdInfoOpen(false)}>
+                            {t("common.close", "Close")}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+            <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>{t("profile.rgpdDeleteTitle", "Delete your account?")}</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            {t(
+                                "profile.rgpdDeleteDescription",
+                                "This action is permanent. If you only need your information back, use the info button and contact test@tactyx.com."
+                            )}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>{t("common.cancel", "Cancel")}</AlertDialogCancel>
+                        <AlertDialogAction
+                            onClick={() => {
+                                void deletergpd();
+                            }}
+                        >
+                            {t("profile.rgpdDeleteConfirm", "Delete account")}
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </Card>
     );
 }

@@ -47,6 +47,14 @@ export const logoutUser = createAsyncThunk(
   },
 );
 
+export const deleteUser = createAsyncThunk(
+  "user/deleteUser",
+  async () => {
+    await authService.delete_rgpd();
+  },
+);
+
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -124,6 +132,21 @@ export const userSlice = createSlice({
         status: "ready" as const,
       }))
       .addCase(logoutUser.rejected, (state) => {
+        state.status = "ready";
+      })
+      .addCase(deleteUser.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deleteUser.fulfilled, () => ({
+        id: 0,
+        email: "",
+        username: "",
+        isAuthenticated: false,
+        chat: [],
+        isDark: true,
+        status: "ready" as const,
+      }))
+      .addCase(deleteUser.rejected, (state) => {
         state.status = "ready";
       })
   },
