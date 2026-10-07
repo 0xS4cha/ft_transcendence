@@ -209,6 +209,6 @@ api_router.include_router(
 api_router.include_router(
     change_username_router,
     tags=["User"],
-    prefix="/",
+    prefix="/user",
     dependencies=authenticated_limits
 )

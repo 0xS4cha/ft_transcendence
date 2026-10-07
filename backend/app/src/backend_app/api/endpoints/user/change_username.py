@@ -11,7 +11,7 @@ from sqlalchemy.exc import IntegrityError
 router = APIRouter()
 
 @router.post(
-        "change_username/",
+        "/change_username",
         response_model=UserPublic
 )
 async def change_username(
