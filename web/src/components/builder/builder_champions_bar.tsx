@@ -121,7 +121,7 @@ export default function BuilderChampionsBar({ champions, items ,onAddChampionCli
   })
 
   return (
-    <div className="flex h-full w-full flex-row gap-6 p-4 bg-[#202020] rounded-md">
+    <div className="flex h-full w-full flex-row gap-6 p-4  rounded-md">
       <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
         <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-neutral-400 shrink-0">
           Champions

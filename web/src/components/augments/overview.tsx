@@ -5,6 +5,7 @@ import { AugmentsTable } from "@/components/augments/table";
 import { useRef, useState } from "react";
 import { type exportRef } from "@/types/stats"
 import { SelectContent, Select, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTranslation } from "react-i18next";
 
 const FORMATS = [
   { value: "json", label: "JSON" },
@@ -12,6 +13,7 @@ const FORMATS = [
 ] as const
 
 export function AugmentsOverview() {
+    const {t} = useTranslation();
     const exportRef = useRef<exportRef>(null);
     const [exportFormat, setExportFormat] = useState<string>('json');
     
@@ -27,7 +29,7 @@ export function AugmentsOverview() {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>List of augments</CardTitle>
+                <CardTitle>{t("table.listofaug", "List of augments")}</CardTitle>
                 <CardAction className="flex gap-2">
                     <Select value={exportFormat} onValueChange={(v) => v ? setExportFormat(v) : console.log("value is null")} >
                         <SelectTrigger

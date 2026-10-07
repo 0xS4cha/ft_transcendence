@@ -21,10 +21,10 @@ export function AugmentsTable({ ref }: any) {
 
   useImperativeHandle(ref, () => ({
     exportJson() {
-      downloadJson(data, "units.json")
+      downloadJson(data, "augments.json")
     },
     exportXml() {
-      downloadXml(data, "units.xml")
+      downloadXml(data, "augments.xml")
     }
   }));
 

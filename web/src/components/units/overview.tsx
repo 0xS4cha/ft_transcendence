@@ -5,6 +5,7 @@ import { UnitsTable } from "@/components/units/table";
 import { useRef, useState } from "react";
 import { type exportRef } from "@/types/stats"
 import { SelectContent, Select, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTranslation } from "react-i18next";
 
 const FORMATS = [
   { value: "json", label: "JSON" },
@@ -12,6 +13,7 @@ const FORMATS = [
 ] as const;
 
 export function UnitsOverview() {
+    const {t} = useTranslation();
     const exportRef = useRef<exportRef>(null);
     const [exportFormat, setExportFormat] = useState<'json' | 'xml'>('json');
     
@@ -27,7 +29,7 @@ export function UnitsOverview() {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>List of units</CardTitle>
+                <CardTitle>{t("table.listof", "List of units")}</CardTitle>
                 <CardAction className="flex gap-2">
                    <Select value={exportFormat} onValueChange={(v) => v ? setExportFormat(v) : console.log("value is null")} >
                         <SelectTrigger

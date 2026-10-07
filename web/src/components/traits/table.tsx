@@ -20,10 +20,10 @@ export function TraitsTable({ ref }: any ) {
 
   useImperativeHandle(ref, () => ({
     exportJson() {
-      downloadJson(data, "units.json")
+      downloadJson(data, "traits.json")
     },
     exportXml() {
-      downloadXml(data, "units.xml")
+      downloadXml(data, "traits.xml")
     }
   }));
 

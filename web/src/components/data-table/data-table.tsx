@@ -213,7 +213,7 @@ export function DataTable({
 
       <div className="flex items-center justify-between px-1">
         <div className="hidden flex-1 text-muted-foreground text-sm lg:flex">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
+          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} {t("table.row", "row")}
           {t("table.selected", "Selected")}
         </div>
         <div className="flex w-full items-center gap-8 lg:w-fit">

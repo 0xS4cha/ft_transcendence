@@ -20,10 +20,10 @@ export function ItemsTable({ ref }: any) {
 
   useImperativeHandle(ref, () => ({
     exportJson() {
-      downloadJson(data, "units.json")
+      downloadJson(data, "items.json")
     },
     exportXml() {
-      downloadXml(data, "units.xml")
+      downloadXml(data, "items.xml")
     }
   }));
 
