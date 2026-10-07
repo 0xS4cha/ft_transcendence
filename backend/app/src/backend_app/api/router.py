@@ -13,6 +13,7 @@ from backend_app.api.endpoints import (
     login_with_42_router,
     logout_router,
     me_router,
+    rgpd_deletion_router,
     patchnote_router,
     prometheus_metrics_router,
     refuse_friend_request_router,
@@ -46,6 +47,13 @@ api_router.include_router(
     tags=["Authentication"],
     prefix="/auth",
     dependencies=auth_limits
+)
+
+api_router.include_router(
+	rgpd_deletion_router,
+	tags=["RGPD"],
+	prefix="/auth",
+	dependencies=auth_limits
 )
 
 api_router.include_router(
