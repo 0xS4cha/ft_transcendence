@@ -9,7 +9,7 @@ cache = {}
 last_calculated_timestamp = 0
 REFRESH_INTERVAL_MS = 20000
 
-@router.get("/leaderboard")
+@router.get("/")
 async def leaderboard_get_top_fifty(server: str = "global"):
 	global last_calculated_timestamp
 

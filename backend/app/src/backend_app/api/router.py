@@ -89,7 +89,7 @@ api_router.include_router(
 api_router.include_router(
 	leaderboard_router,
 	tags=["LeaderBoard"],
-	prefix="/",
+	prefix="/leaderboard",
     dependencies=basic_limits
 )
 
