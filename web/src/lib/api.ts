@@ -63,7 +63,7 @@ export function apiPostLink<T>(path: string): Promise<T> {
   });
 }
 
-export function apiDeleteLink<T>(path: string): Promise<T> {
+export function apiDelete<T>(path: string): Promise<T> {
   return apiFetch<T>(path, {
     method: "DELETE",
   });
