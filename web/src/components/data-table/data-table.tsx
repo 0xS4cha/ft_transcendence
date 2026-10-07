@@ -28,9 +28,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { dataTableFeatures } from "@/lib/data-table-features";
-
 import { DataTableFilter } from "@/components/data-table/data-table-filter";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+import { useTranslation } from "react-i18next";
 
 import { type FilterType } from "@/types/stats";
 
@@ -73,6 +73,7 @@ export function DataTable({
     "name-desc": [{ id: defaultSortId, desc: true }],
   }), [defaultSortId]);
 
+  const { t } = useTranslation();
   const [rowSelection, setRowSelection] = useState({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([{ id: defaultSortId, desc: false }]);
@@ -144,7 +145,7 @@ export function DataTable({
             <DropdownMenuTrigger render={
               <Button variant="outline" size="sm">
                 <ArrowUpDown />
-                Sort
+                {t("table.sort", "Sort")}
               </Button>}
               />
             <DropdownMenuContent align="end">
@@ -200,7 +201,7 @@ export function DataTable({
             ) : (
               <TableRow>
                 <TableCell colSpan={table.getVisibleLeafColumns().length} className="h-24 text-center">
-                  No results.
+                  {t("table.noresult", "No results.")}
                 </TableCell>
               </TableRow>
             )}
@@ -211,12 +212,12 @@ export function DataTable({
       <div className="flex items-center justify-between px-1">
         <div className="hidden flex-1 text-muted-foreground text-sm lg:flex">
           {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-          selected.
+          {t("table.selected", "Selected")}
         </div>
         <div className="flex w-full items-center gap-8 lg:w-fit">
           <div className="hidden items-center gap-2 lg:flex">
             <Label htmlFor="rows-per-page" className="font-medium text-sm">
-              Rows per page
+              {t("table.pagination", "Row per page")}
             </Label>
             <Select
               value={`${table.state.pagination.pageSize}`}
