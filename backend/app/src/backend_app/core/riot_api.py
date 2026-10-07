@@ -1,7 +1,5 @@
 import time
-
 import requests
-
 from shared.database import db as database
 
 
