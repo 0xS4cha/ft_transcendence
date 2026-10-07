@@ -38,6 +38,7 @@ async def send_chat(chat_message: ChatMessageForm, current_user: Annotated[UserM
         "id": current_user.id,
         "date": current_time,
         "content": chat_message.content,
+        "user_id": current_user.id,
         "username": current_user.username,
         "picture": current_user.picture,
     }
