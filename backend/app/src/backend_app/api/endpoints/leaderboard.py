@@ -21,7 +21,7 @@ async def leaderboard_get_top_fifty(server: str = "global"):
 
 	server_id = server.lower().strip()
 	current_time = time.time()
-	if not server_id in cache or current_time - last_calculated_timestamp > REFRESH_INTERVAL_MS:
+	if server_id not in cache or current_time - last_calculated_timestamp > REFRESH_INTERVAL_MS:
 		async with aiohttp.ClientSession() as session, session.get(f"https://api.metatft.com/tft-leaderboard/v2/{server_id}?offset=0&limit=50") as resp:
 			json_leaderboard = await resp.json()
 			cache[server_id] = json_leaderboard

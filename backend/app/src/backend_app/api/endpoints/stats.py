@@ -8,7 +8,6 @@ from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert
 
 from backend_app.core.websocket import WSbroadcast
-from backend_app.models.chat_message import ChatMessage
 from backend_app.models.users import UserModel
 from backend_app.models.visit import VisitModel
 from shared.database import AsyncSessionDep
@@ -57,7 +56,7 @@ def update_graphql_tft_stats():
 
         response.raise_for_status()
         stats = response.json()
-        if not "getPlatformStats" in stats.get("data", {}):
+        if "getPlatformStats" not in stats.get("data", {}):
             raise requests.HTTPError()
         tft_stats["total_games"] = stats["data"]["getPlatformStats"]["totalMatches"]
         tft_stats["gold_wasted"] = stats["data"]["getPlatformStats"].get("milestones", {}).get("goldWasted", 0)
@@ -141,7 +140,7 @@ endpoints = {
 }
 @router.get("/{name}")
 async def stats_dispatcher(name: str, response: Response, session: AsyncSessionDep):
-    if not "gold_wasted" in tft_stats:
+    if "gold_wasted" not in tft_stats:
         update_graphql_tft_stats() 
     if name in endpoints:
         force_update = time.time() - endpoints[name].get("last", 0) > REFRESH_DELTA_SECONDS

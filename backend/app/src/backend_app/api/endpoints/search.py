@@ -73,7 +73,7 @@ async def query_user_profile(query_username: str):
 	game_name = query_username.split('#')[0].strip()
 	game_tag = query_username.split('#')[1].strip()
 	account = riot_api.get_account(game_name, game_tag, Platform.EUN1.get_continent())
-	if not account or not "puuid" in account:
+	if not account or "puuid" not in account:
 		return None
 
 	# get region for player
@@ -83,7 +83,7 @@ async def query_user_profile(query_username: str):
 
 	server = Platform(region)
 	summoner = riot_api.get_summoner(account["puuid"], server.value)
-	if not summoner or not "puuid" in summoner:
+	if not summoner or "puuid" not in summoner:
 		return None
 
 	ranked_data_lst = riot_api.get_ranked(account["puuid"], server.value)

@@ -52,7 +52,7 @@ class RIOTApi:
 
     def get_region(self, puuid: str):
         response = self.riot_get(f"/riot/account/v1/region/by-game/tft/by-puuid/{puuid}", "europe")
-        if not response or not isinstance(response, dict) or not "region" in response:
+        if not response or not isinstance(response, dict) or "region" not in response:
             return None
         return (response["region"] or "").upper()
         
