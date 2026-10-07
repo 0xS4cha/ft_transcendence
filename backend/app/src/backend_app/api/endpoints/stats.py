@@ -8,7 +8,7 @@ from sqlalchemy.dialects.postgresql import insert
 from backend_app.models.users import UserModel
 from backend_app.models.visit import VisitModel
 from shared.database import AsyncSessionDep
-from shared.models.home_stats import PerDayStats, ProcessedGame
+from shared.models.home_stats import PerDayStats
 
 router = APIRouter()
 REFRESH_DELTA_SECONDS    = 3
@@ -21,10 +21,6 @@ async def get_cache(name, calc_function, session: AsyncSessionDep, force_update 
     stats_cache[name] = await calc_function(session)
     return stats_cache[name]
 
-
-async def processed_game_calc(session: AsyncSessionDep):
-    total = int(await session.scalar(select(func.count()).select_from(ProcessedGame))) or 0
-    return {'count': total}
 
 async def created_accounts(session: AsyncSessionDep):
     total = int(await session.scalar(select(func.count()).select_from(UserModel))) or 0
@@ -95,7 +91,6 @@ async def default(session: AsyncSessionDep):
     return {'count': 0}
 
 endpoints = {
-    "processed_game": {"cache": True, "function": processed_game_calc, "last": 0.0},
     "accounts_created": {"cache": False, "function": created_accounts, "last": 0.0},
     "visits": {"cache": False, "function": visits, "last": 0.0},
     "daily_stats": {"cache": True, "function": get_per_day_stats, "last": 0.0},

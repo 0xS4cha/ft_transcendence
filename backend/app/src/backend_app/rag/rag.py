@@ -18,7 +18,7 @@ class Rag:
     def __init__(self):
         self.indexed = False
         self.cached_chunks = None
-        self.index_files("/app/src/backend_app/rag/dataset/")
+        self.index_files("/app/src/backend_app/rag/dataset/", 2000)
     
     def chunk_file(self, path: str, corpus: list[str], index_map: dict[str, dict[str, Any]], chunk_size: int = 2000) -> None:
         if "." not in path:

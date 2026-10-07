@@ -3,12 +3,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from ..database import Base
 
-
-class ProcessedGame(Base):
-    __tablename__ = "processed_game"
-
-    match_id: Mapped[str] = mapped_column("match_id", primary_key=True)
-
 class UnitStat(Base):
     __tablename__ = "unit_stat"
 

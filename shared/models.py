@@ -234,11 +234,6 @@ class SpellAmmo(Base):
     ammo_recharge_time: Mapped[list[float]] = mapped_column("ammoRechargeTime", JSON)
     max_ammo: Mapped[list[float]] = mapped_column("maxAmmo", JSON)
 
-class ProcessedGame(Base):
-    __tablename__ = "processed_game"
-
-    match_id: Mapped[str] = mapped_column("match_id", primary_key=True)
-
 class PerDayStats(Base):
     __tablename__ = "per_day_stats"
 

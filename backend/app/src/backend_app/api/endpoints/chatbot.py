@@ -36,5 +36,5 @@ rag = Rag()
 
 @router.get("/ask")
 async def ask_chatbot(message: str, current_user: Annotated[UserModel, Depends(Token.get_current_user)]):
-	relevant_chunks = rag.retrieve_chunks(message, [], 2)
+	relevant_chunks = rag.retrieve_chunks(message, [], 4)
 	return await chatbot.ask(message, relevant_chunks)
