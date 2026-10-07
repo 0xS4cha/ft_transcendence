@@ -38,7 +38,12 @@ const resources = {
         nextpage: "Go to next page",
         previouspage: "Go to previous page",
         lastpage: "Go to last page",
-        firstpage: "Go to first page"
+        firstpage: "Go to first page",
+        row: "row ",
+        listof: "List of units",
+        list: "List of items",
+        listoftrait:"List of traits",
+        listofaug: "List of augments"
       },
       patchnote: {
         loading: "Loading patch note ..."
@@ -139,6 +144,8 @@ const resources = {
         id: 'ID',
       },
       builder: {
+        clear: "Clear augments",
+        board: 'Clear the board',
         copyCode: 'Copy code',
         importComp: 'Import comp',
         pasteTeam: 'Paste the team here :',
@@ -226,6 +233,7 @@ const resources = {
       },
       table: {
         selected: 'Sélectionné',
+        row: "ligne ",
         sort: 'Trier',
         noresult: 'Aucun résultat.',
         pagination: 'Lignes par page',
@@ -233,6 +241,10 @@ const resources = {
         previouspage: 'Aller à la page précédente',
         lastpage: 'Aller à la dernière page',
         firstpage: 'Aller à la première page',
+        listof: "Liste des unites",
+        list: "Liste des items",
+        listoftrait: "Liste des traits",
+        listofaug: "Liste des augments"
       },
       patchnote: {
         loading: 'Chargement des notes de patch...',
@@ -242,7 +254,7 @@ const resources = {
         units: 'Unités',
         items: 'Objets',
         traits: 'Traits',
-        augments: 'Améliorations',
+        augments: 'Augments',
         teamBuilder: 'Éditeur d’équipe',
         set18Update: 'Mise à jour Set 18',
         ranking: 'Classement',
@@ -333,6 +345,8 @@ const resources = {
         id: 'ID',
       },
       builder: {
+        clear: 'rafraichir les augments',
+        board: 'rafraichir le board',
         copyCode: 'Copier le code',
         importComp: 'Importer la comp',
         pasteTeam: 'Collez votre équipe ici :',
@@ -427,6 +441,11 @@ const resources = {
         previouspage: 'Ir a la página anterior',
         lastpage: 'Ir a la última página',
         firstpage: 'Ir a la primera página',
+        row: "fila ",
+        listof: "Lista de unidades",
+         list: "Lista de artículos",
+         listoftrait: "Lista de rasgos",
+         listofaug: "Lista de mejoras"
       },
       patchnote: {
         loading: 'Cargando notas del parche...',
@@ -527,6 +546,8 @@ const resources = {
         id: 'ID',
       },
       builder: {
+        clear:  "limpiar el aumentos",
+        board: "limpiar el tablero",
         copyCode: 'Copiar código',
         importComp: 'Importar comp',
         pasteTeam: 'Pega tu equipo aquí :',

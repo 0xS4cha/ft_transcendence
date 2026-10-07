@@ -31,7 +31,7 @@ function HexagonCell({ id, cx, cy, points, champion, itemsOnCell, onRemove }: {i
         points={points}
         className={cn(
           "stroke-[grey]/75 transition-colors",
-          isOver ? "fill-[grey]/75" : "fill-[#2A2A2A]"
+          isOver ? "fill-[grey]/75" : "fill-white dark:fill-[#202020]"
         )}
       />
       {champion && (
@@ -172,7 +172,7 @@ export default function BuilderBoard({ boardState, champions, onRemoveChampion, 
     <div className="h-full w-full p-2">
       <svg
         viewBox={`0 0 ${boardWidth} ${boardHeight}`}
-        className="w-full h-full drop-shadow-xl"
+        className="w-full h-full"
       >
         {hexes}
       </svg>

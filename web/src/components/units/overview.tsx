@@ -4,13 +4,15 @@ import { Download } from "lucide-react";
 import { UnitsTable } from "@/components/units/table";
 import { useRef } from "react";
 import { type exportRef } from "@/types/stats"
+import { useTranslation } from "react-i18next";
 
 export function UnitsOverview() {
+    const {t} = useTranslation();
     const exportRef = useRef<exportRef>(null);
     return (
         <Card>
             <CardHeader>
-                <CardTitle>List of units</CardTitle>
+                <CardTitle>{t("table.listof", "List of units")}</CardTitle>
                 <CardAction>
                     <Button variant="outline" onClick={() => exportRef.current?.export()}><Download/>Export</Button>
                 </CardAction>
