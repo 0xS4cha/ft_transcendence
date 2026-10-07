@@ -64,7 +64,7 @@ function FriendRow({
       <Avatar className="size-8 shrink-0">
         <AvatarImage src={friend.picture} />
         <AvatarFallback className="text-xs">{initialsOf(friend.username)}</AvatarFallback>
-        <AvatarBadge className={friend.online ? 'bg-green-600 dark:bg-green-800' : 'bg-red-600 dark:bg-red-800' }/>
+        <AvatarBadge className={friend.online ? 'bg-green-600 dark:bg-green-800' : 'bg-gray-600 dark:bg-gray-800' }/>
       </Avatar>
 
       <span className="min-w-0 flex-1 truncate text-sm font-medium">{friend.username}</span>
