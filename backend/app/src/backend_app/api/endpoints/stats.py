@@ -2,12 +2,12 @@ import time
 from datetime import UTC, datetime, timedelta
 
 import requests
-from backend_app.models.chat_message import ChatMessage
 from fastapi import APIRouter, Response, status
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert
 
 from backend_app.core.websocket import WSbroadcast
+from backend_app.models.chat_message import ChatMessage
 from backend_app.models.users import UserModel
 from backend_app.models.visit import VisitModel
 from shared.database import AsyncSessionDep
