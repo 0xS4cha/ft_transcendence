@@ -82,14 +82,14 @@ export default function BuilderTraitsBar({ boardState, champions, traits }: { bo
               key={trait.id}
               className={cn(
                 "flex items-center gap-2 overflow-hidden rounded-lg px-2 py-1 shadow-sm transition-all w-[80%] mx-auto mb-1.5",
-               tier === 5 && "bg-linear-to-r from-[rgba(239,198,255,0.6)] to-[rgba(41,44,75,0)] text-white",
-                tier === 4 && trait.name != "Invoker" && "bg-linear-to-r from-[#4E80EE] to-[#38E1FF] text-white",
-                 tier === 4 && trait.name == "Invoker" && "bg-linear-to-r from-[rgba(252,179,74,0.6)] to-[rgba(252,179,74,0)] text-white",
-                tier === 3 && trait.name != "Invoker" && "bg-linear-to-r from-[rgba(252,179,74,0.6)] to-[rgba(252,179,74,0)] text-white",
-                tier === 3 && trait.name == "Invoker" && "bg-linear-to-r from-slate-200 to-white/10 text-white",
-                tier === 2 && "bg-linear-to-r from-slate-200 to-white/10 text-white",
-                tier === 1 && "bg-linear-to-r from-[rgba(179,123,102,0.6)] to-[rgba(179,123,102,0)] text-white",
-                tier === 10 && "bg-linear-to-r from-white/10 to-white/1 text-white"
+               tier === 5 && "bg-linear-to-r from-[rgba(232,173,255,0.6)] to-[rgba(41,44,75,0)] white:text-black text-white",
+                tier === 4 && trait.name != "Invoker" && "bg-linear-to-r from-[#4E80EE] to-[#38E1FF] white:text-black text-white",
+                  tier === 4 && trait.name == "Invoker" && "bg-linear-to-r from-[rgba(252,179,74,0.6)] to-[rgba(252,179,74,0)] text-white white:text-black ",
+                tier === 3 && trait.name != "Invoker" && "bg-linear-to-r from-[rgba(252,179,74,0.6)] to-[rgba(252,179,74,0)] text-white white:text-black",
+                tier === 3 && trait.name == "Invoker" && "bg-linear-to-r from-slate-200 to-white/10 white:text-black text-white",
+                tier === 2 && "bg-linear-to-r from-slate-300 to-slate-250 white:from-slate-300 white:to-slate-200 white:text-black text-white",
+                tier === 1 && "bg-linear-to-r from-[rgba(179,123,102,0.6)] to-[rgba(179,123,102,0)] white:text-black text-white",
+                tier === 10 && "bg-linear-to-r from-black/10 to-white/10  dark:from-white/10 dark:to-black/10 white:text-black text-white"
               )}
             >
               <img 
@@ -105,7 +105,7 @@ export default function BuilderTraitsBar({ boardState, champions, traits }: { bo
                 "relative z-10 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[9px] font-bold shadow-sm",
                 tier === 10
                   ? "bg-neutral-800 text-neutral-400" 
-                  : "bg-black/90 text-white"
+                  : "bg-black/90 text-neutral-400"
               )}>
                 {trait.currentUnits}
               </div>

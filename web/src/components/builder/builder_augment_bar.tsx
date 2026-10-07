@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import type { AugmentRow } from "../augments/schema";
+import type { AugmentRow } from "@/components/augments/schema";
+import { useTranslation } from "react-i18next";
 
 export default function BuilderAugmentsBar({ handleClearBoard, augments }: { handleClearBoard: () => void, augments: AugmentRow[] }) {
   const [selectedAugments, setSelectedAugments] = useState<(string | null)[]>([null, null, null]);
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
+  const {t} = useTranslation();
+
 
   const openModal = (index: number) => setSelectedSlot(index);
   const closeModal = () => setSelectedSlot(null);
@@ -48,7 +51,7 @@ export default function BuilderAugmentsBar({ handleClearBoard, augments }: { han
          bg-gray-400/10 px-4 py-3 text-sm font-medium 
          text-white transition-colors hover:bg-gray-400/20 
          active:scale-95">
-        Clear board
+        {t("builder.board", "Clear the board")}
       </button>
       <div className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
         Augments
@@ -72,11 +75,8 @@ export default function BuilderAugmentsBar({ handleClearBoard, augments }: { han
                 <img
                   src={augment.icon}
                   alt={augment.name}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-95 "
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-95"
                 />
-                <span className="absolute bottom-1 w-[90%] rounded px-1 py-0.5 text-center text-[8px] leading-tight font-bold tracking-wider text-white">
-                  {augment.name}
-                </span>
               </> ) : (<span className="text-xl">+</span>)}
             </button>
           );
@@ -89,13 +89,13 @@ export default function BuilderAugmentsBar({ handleClearBoard, augments }: { han
          bg-gray-400/10 px-4 py-3 text-sm font-medium 
          text-white transition-colors  
          active:scale-95">
-        Clear augments
+        {t("builder.clear", "Clear augments")}
       </button>
 
       {selectedSlot !== null && (
         <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 backdrop-blur-sm"
         onClick={closeModal}>
-          <div className="flex max-h-[80vh] w-full max-w-2xl flex-col rounded-xl border border-white/10 bg-white p-6 shadow-2xl"
+          <div className="flex max-h-[80vh] w-full max-w-2xl flex-col rounded-xl border border-white/10 dark:bg-[#202020] bg-white p-6 shadow-2xl"
           onClick={(e) => e.stopPropagation()}>
             <div className="mb-6 flex items-center justify-between">
               <h2 className="text-xl font-bold text-white">Choose an augment</h2>
