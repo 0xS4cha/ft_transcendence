@@ -146,8 +146,9 @@ function MessagesSkeleton() {
   );
 }
 
-export function Chat({ currentUser, isAuthenticated, currentPicture }: { currentUser: string, currentPicture?: string, isAuthenticated: boolean }) {
+export function Chat({ isAuthenticated }: { isAuthenticated: boolean }) {
   const dispatch = useAppDispatch();
+  const { username, picture, id } = useAppSelector((state) => state.user);
   const messages = useAppSelector((state) => state.user.chat ? state.user.chat : []);
   const { t } = useTranslation();
   const [pendingIds, setPendingIds] = useState<Set<number>>(new Set());
@@ -196,14 +197,16 @@ export function Chat({ currentUser, isAuthenticated, currentPicture }: { current
               id: Math.random(),
               date: `${Math.random()}`,
               content: draft,
-              username: currentUser,
-              picture: currentPicture
+              username: username,
+              user_id: id,
+              picture: picture
         }));
         const response = await askChatbotQuestion(draft.slice(1));
         dispatch(addChatContent({
               id: Math.random(),
               date: `${Math.random()}`,
               content: response,
+              user_id: 0,
               username: t('chat.chatbot'),
         }));
       } else {
@@ -285,7 +288,7 @@ export function Chat({ currentUser, isAuthenticated, currentPicture }: { current
                     formatDay(previous[0].date) !== formatDay(group[0].date);
 
                   return (
-                    <Fragment key={`${group[0].username}-${group[0].id}`}>
+                    <Fragment key={`${group[0].user_id}-${group[0].id}`}>
                       {showDay && formatDay(group[0].date) && (
                         <div className="flex items-center justify-center">
                           <Badge variant="outline" className="bg-card">
@@ -295,7 +298,7 @@ export function Chat({ currentUser, isAuthenticated, currentPicture }: { current
                       )}
                       <MessageGroup
                         messages={group}
-                        mine={group[0].username === currentUser}
+                        mine={group[0].user_id === id}
                         pendingIds={pendingIds}
                       />
                     </Fragment>
