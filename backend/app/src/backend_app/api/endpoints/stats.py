@@ -8,7 +8,6 @@ from sqlalchemy.dialects.postgresql import insert
 from backend_app.models.users import UserModel
 from backend_app.models.visit import VisitModel
 from shared.database import AsyncSessionDep
-from shared.models.home_stats import PerDayStats
 import requests
 
 router = APIRouter()
