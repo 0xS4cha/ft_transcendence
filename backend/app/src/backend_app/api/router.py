@@ -81,7 +81,7 @@ api_router.include_router(
 api_router.include_router(
 	leaderboard_router,
 	tags=["LeaderBoard"],
-	prefix="/leaderboard",
+	prefix="/",
     dependencies=basic_limits
 )
 
