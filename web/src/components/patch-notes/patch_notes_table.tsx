@@ -3,15 +3,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useTranslation } from "react-i18next";
 
 export default function PatchNotePage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.resolvedLanguage || i18n.language || "en";
   const [patchHtml, setPatchHtml] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPatchNote = async () => {
       try {
-        const response = await fetch("/api/patchnote/latest");
-        const htmlString = await response.text(); 
+        const response = await fetch(`/api/patchnote/latest?lang=${currentLang}`);
+        const htmlString = await response.text();
         setPatchHtml(htmlString);
       } catch (error) {
         console.log("Error while fetch the latest patch note", error);
