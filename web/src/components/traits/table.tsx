@@ -6,7 +6,7 @@ import { toast } from "@/components/ui/toast";
 import { type TraitRow } from "@/components/traits/schema";
 import { getTraitsStats } from "@/services/statsService";
 import { type FilterType } from "@/types/stats";
-import { downloadJson } from "@/lib/utils";
+import { downloadJson, downloadXml } from "@/lib/utils";
 
 export function TraitsTable({ ref }: any ) {
   const [filter, setFilter] = useState<FilterType>({
@@ -19,8 +19,11 @@ export function TraitsTable({ ref }: any ) {
   const initialSearchQuery = searchParams.get("q")?.trim() ?? "";
 
   useImperativeHandle(ref, () => ({
-    export() {
-      downloadJson(data, "traits.json")
+    exportJson() {
+      downloadJson(data, "units.json")
+    },
+    exportXml() {
+      downloadXml(data, "units.xml")
     }
   }));
 
@@ -47,7 +50,7 @@ export function TraitsTable({ ref }: any ) {
       columns={TraitsColumns}
       data={data}
       getRowId={(row) => row.id}
-      defaultSortId="id"
+      defaultSortId="name"
       searchPlaceholder="Search trait..."
       initialSearchQuery={initialSearchQuery}
     />
