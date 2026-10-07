@@ -112,7 +112,7 @@ export function FriendsCard() {
   const { t } = useTranslation();
 
   const loadFriends = useCallback(async () => {
-    setLoading(true);
+    setLoading(friends.length == 0);
     try {
       setFriends(await getFriendsList());
     } catch (error) {
@@ -127,9 +127,10 @@ export function FriendsCard() {
   }, [t]);
 
   useEffect(() => {
+    void loadFriends();
     const interval = setInterval(() => {
       void loadFriends();
-    }, 5000);
+    }, 7500);
 
     return () => clearInterval(interval);
   }, []);
