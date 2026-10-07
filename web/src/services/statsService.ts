@@ -27,7 +27,5 @@ export function getAugmentsStats(queue = "1100", rank = "DIAMOND", server = "EUW
 }
 
 export function getLeaderboardStats(server = "EUW1"): Promise<rankingApi> {
-  // console.log(server);
-  // return apiGet<rankingApi>(`/api/leaderboard/`);
   return apiGet<rankingApi>(`/api/leaderboard?server=${server}`);
 }
