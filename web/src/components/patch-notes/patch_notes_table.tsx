@@ -24,12 +24,12 @@ export default function PatchNotePage() {
   }, []);
 
   if (loading) {
-    return <div className="p-8 text-center text-neutral-400">{t("patchnote.loading", "Loading patch note ...")}</div>;
+    return <div className="p-8 text-center text-muted-foreground">{t("patchnote.loading", "Loading patch note ...")}</div>;
   }
 
   return (
     <div className="min-h-screen p-6 w-full max-w-5xl mx-auto">
-      <Card className="bg-[#202020] border-white/10">
+      <Card className="border-border bg-card text-card-foreground dark:border-white/10 dark:bg-[#202020]">
         <CardContent className="p-8">
           <div 
             className="patch-note-container"
