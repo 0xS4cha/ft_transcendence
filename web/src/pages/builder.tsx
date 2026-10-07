@@ -41,7 +41,7 @@ export default function Builder() {
         const result = await getUnitsStats();
         setChampions(result);
       } catch (error) {
-        console.error("Error while fetching champs", error);
+        console.log("Error while fetching champs", error);
       }
     };
     fetchChampions();
@@ -54,7 +54,7 @@ export default function Builder() {
         setItems(result);
       } catch (error)
       {
-        console.error("Error while fetching champs", error);
+        console.log("Error while fetching champs", error);
       }
     };
     fetchChampions();
@@ -66,7 +66,7 @@ export default function Builder() {
         const result = await getTraitsStats();
         setTraits(result);
       } catch (error) {
-        console.error("Error while fetching traits", error);
+        console.log("Error while fetching traits", error);
       }
     };
     fetchTraits()
@@ -80,7 +80,7 @@ export default function Builder() {
         setAugments(result);
       } catch (error)
       {
-        console.error("Error while fetching augments", error);
+        console.log("Error while fetching augments", error);
       }
     };
     fetchAugments();
@@ -219,7 +219,7 @@ export default function Builder() {
       alert("Code copied to clipboard !\n\n" + encodedCode)
     } catch (error)
     {
-      console.error("Error while copying :", error);
+      console.log("Error while copying :", error);
       alert("Error: failed to copy the board\n");
     }
   }
@@ -242,7 +242,7 @@ export default function Builder() {
       }
     } catch (error)
     {
-      console.error("Error while importing the comp :", error);
+      console.log("Error while importing the comp :", error);
       alert("Format is invalid or we encountered an error, retry.");
     }
   }

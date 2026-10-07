@@ -48,7 +48,7 @@ export function useWSConnection(url: string = 'ws://127.0.0.1:8080') {
             break;
         }
       } catch (err) {
-          console.error("WS message parsing failed:", err);
+          console.log("WS message parsing failed:", err);
       }
     };
 

@@ -40,7 +40,10 @@ const resources = {
         lastpage: "Go to last page",
         firstpage: "Go to first page",
         row: "row ",
-        listof: "list of units",
+        listof: "List of units",
+        list: "List of items",
+        listoftrait:"List of traits",
+        listofaug: "List of augments"
       },
       patchnote: {
         loading: "Loading patch note ..."
@@ -230,7 +233,10 @@ const resources = {
         previouspage: 'Aller à la page précédente',
         lastpage: 'Aller à la dernière page',
         firstpage: 'Aller à la première page',
-        listof: "liste des unites",
+        listof: "Liste des unites",
+        list: "Liste des items",
+        listoftrait: "Liste des traits",
+        listofaug: "Liste des augments"
       },
       patchnote: {
         loading: 'Chargement des notes de patch...',
@@ -240,7 +246,7 @@ const resources = {
         units: 'Unités',
         items: 'Objets',
         traits: 'Traits',
-        augments: 'Améliorations',
+        augments: 'Augments',
         teamBuilder: 'Éditeur d’équipe',
         set18Update: 'Mise à jour Set 18',
         ranking: 'Classement',
@@ -420,7 +426,10 @@ const resources = {
         lastpage: 'Ir a la última página',
         firstpage: 'Ir a la primera página',
         row: "fila ",
-        listof: "lista de unidades",
+        listof: "Lista de unidades",
+         list: "Lista de artículos",
+         listoftrait: "Lista de rasgos",
+         listofaug: "Lista de mejoras"
       },
       patchnote: {
         loading: 'Cargando notas del parche...',
