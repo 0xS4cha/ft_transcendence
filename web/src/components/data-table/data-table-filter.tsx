@@ -12,6 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { useMemo } from "react"
+
 import { type FilterType } from "@/types/stats";
 
 const queueOptions = [
@@ -33,7 +35,7 @@ const rankOptions = [
   { value: "CHALLENGER", label: "Challenger" },
 ] as const;
 
-const serverOptions = [
+const SERVER_OPTIONS = [
   { value: "BR1", label: "BR" },
   { value: "EUN1", label: "EUE" },
   { value: "EUW1", label: "EUW" },
@@ -51,21 +53,29 @@ const serverOptions = [
   { value: "VN2", label: "VN" },
 ] as const;
 
+const GLOBAL_OPTION = { value: "GLOBAL", label: "GLOBAL" } as const;
+
 
 interface DataTableFilterProps {
   filter: FilterType;
   setFilter: any;
   hideRankFilter?: boolean;
   hideQueueFilter?: boolean;
+  addGlobalServerFilter?: boolean;
 }
 
-export function DataTableFilter({ filter, setFilter, hideRankFilter, hideQueueFilter }: DataTableFilterProps) {
+export function DataTableFilter({ filter, setFilter, hideRankFilter, hideQueueFilter, addGlobalServerFilter }: DataTableFilterProps) {
   const updateFilter = (columnId: string, value: string) => {
     setFilter((prev: FilterType) => ({
       ...prev,
       [columnId]: value,
     }));
   };
+
+  const serverOptions = useMemo(
+    () => (addGlobalServerFilter ? [...SERVER_OPTIONS, GLOBAL_OPTION] : SERVER_OPTIONS),
+    [addGlobalServerFilter]
+  );
 
   return (
     <div className="flex flex-wrap items-center gap-2 rounded-lg">
