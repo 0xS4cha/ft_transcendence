@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useTranslation } from "react-i18next";
 
 export default function PatchNotePage() {
+  const { t } = useTranslation();
   const [patchHtml, setPatchHtml] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
@@ -22,7 +24,7 @@ export default function PatchNotePage() {
   }, []);
 
   if (loading) {
-    return <div className="p-8 text-center text-neutral-400">Loading patch notes...</div>;
+    return <div className="p-8 text-center text-neutral-400">{t("patchnote.loading", "Loading patch note ...")}</div>;
   }
 
   return (

@@ -30,6 +30,19 @@ const resources = {
         yes: 'Yes',
         no: 'No',
       },
+      table: {
+        selected: "Selected",
+        sort: "Sort",
+        noresult: "No results.",
+        pagination: "Row per page",
+        nextpage: "Go to next page",
+        previouspage: "Go to previous page",
+        lastpage: "Go to last page",
+        firstpage: "Go to first page"
+      },
+      patchnote: {
+        loading: "Loading patch note ..."
+      },
       nav: {
         home: 'Home',
         units: 'Units',
@@ -203,6 +216,19 @@ const resources = {
         yes: 'Oui',
         no: 'Non',
       },
+      table: {
+        selected: 'Sélectionné',
+        sort: 'Trier',
+        noresult: 'Aucun résultat.',
+        pagination: 'Lignes par page',
+        nextpage: 'Aller à la page suivante',
+        previouspage: 'Aller à la page précédente',
+        lastpage: 'Aller à la dernière page',
+        firstpage: 'Aller à la première page',
+      },
+      patchnote: {
+        loading: 'Chargement des notes de patch...',
+      },
       nav: {
         home: 'Accueil',
         units: 'Unités',
@@ -375,6 +401,19 @@ const resources = {
         ok: 'OK',
         yes: 'Sí',
         no: 'No',
+      },
+      table: {
+        selected: 'Seleccionado',
+        sort: 'Ordenar',
+        noresult: 'Sin resultados.',
+        pagination: 'Filas por página',
+        nextpage: 'Ir a la página siguiente',
+        previouspage: 'Ir a la página anterior',
+        lastpage: 'Ir a la última página',
+        firstpage: 'Ir a la primera página',
+      },
+      patchnote: {
+        loading: 'Cargando notas del parche...',
       },
       nav: {
         home: 'Inicio',
