@@ -70,7 +70,7 @@ export default function BuilderTraitsBar({ boardState, champions, traits }: { bo
   });
 
   return (
-    <div className="flex h-full w-full flex-col rounded-xl border border-white/10 py-3 bg-[#202020]">
+    <div className="flex h-full w-full flex-col rounded-xl border border-white/10 py-3">
       <h3 className="mx-auto px-2 mb-4 text-xs font-semibold uppercase tracking-wider text-neutral-400 shrink-0">
         traits
       </h3>

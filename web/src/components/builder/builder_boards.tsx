@@ -31,7 +31,7 @@ function HexagonCell({ id, cx, cy, points, champion, itemsOnCell, onRemove }: {i
         points={points}
         className={cn(
           "stroke-[grey]/75 transition-colors",
-          isOver ? "fill-[grey]/75" : "fill-[#2A2A2A]"
+          isOver ? "fill-[grey]/75" : "fill-[white]"
         )}
       />
       {champion && (

@@ -64,7 +64,7 @@ export default function BuilderTraitsBarMobile({ boardState , champions, traits 
   });
     
   return (
-    <div className="flex w-full items-center gap-2 overflow-x-auto custom-scrollbar rounded-xl border border-white/10 px-3 py-2.5 bg-[#202020]">
+    <div className="flex w-full items-center gap-2 overflow-x-auto custom-scrollbar rounded-xl border border-white/10 px-3 py-2.5">
       <span className="shrink-0 mr-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
         Traits
       </span>
