@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import json
 
 import redis.asyncio as redis
@@ -17,6 +18,15 @@ class WebsocketConnectionManager:
             decode_responses=True,
         )
         self._listener_task: asyncio.Task | None = None
+
+    @staticmethod
+    def _json_default(obj: object):
+        if isinstance(obj, (datetime.datetime, datetime.date)):
+            return obj.isoformat()
+        try:
+            return str(obj)
+        except Exception: # noqa: BLE001
+            raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable")
 
     async def start(self):
         self._listener_task = asyncio.create_task(self._redis_listener())
@@ -61,7 +71,7 @@ class WebsocketConnectionManager:
 
         await self.redis.publish(
             self.REDIS_CHANNEL,
-            json.dumps(payload),
+            json.dumps(payload, default=self._json_default),
         )
 
     async def _redis_listener(self):

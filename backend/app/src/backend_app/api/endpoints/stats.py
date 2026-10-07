@@ -2,12 +2,12 @@ import time
 from datetime import UTC, datetime, timedelta
 
 import requests
-from backend.app.src.backend_app.models.chat_message import ChatMessage
 from fastapi import APIRouter, Response, status
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert
 
 from backend_app.core.websocket import WSbroadcast
+from backend_app.models.chat_message import ChatMessage
 from backend_app.models.users import UserModel
 from backend_app.models.visit import VisitModel
 from shared.database import AsyncSessionDep
@@ -140,6 +140,8 @@ endpoints = {
 }
 @router.get("/{name}")
 async def stats_dispatcher(name: str, response: Response, session: AsyncSessionDep):
+    if not "gold_wasted" in tft_stats:
+        update_graphql_tft_stats()
     if name in endpoints:
         force_update = time.time() - endpoints[name].get("last", 0) > REFRESH_DELTA_SECONDS
         if endpoints[name].get("cache", False) is True:
