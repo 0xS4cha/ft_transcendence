@@ -92,6 +92,14 @@ const resources = {
         matchesAnalyzed: 'Matches analyzed',
         fetchFailed: 'Fetch failed',
       },
+      chart: {
+        title: 'Area Chart',
+        description: 'Showing total visitors for the last 3 months',
+        last3months: 'Last 3 months',
+        last30days: 'Last 30 days',
+        last7days: 'Last 7 days',
+        selectValue: 'Select a value',
+      },
       chat: {
         globalChat: 'Global chat',
         workspaceDescription: 'Everyone in the workspace can read this.',
@@ -285,6 +293,14 @@ const resources = {
         matchesAnalyzed: 'Matchs analysés',
         fetchFailed: 'Échec du chargement',
       },
+      chart: {
+        title: 'Graphique en aires',
+        description: 'Affichage du nombre total de visiteurs au cours des 3 derniers mois',
+        last3months: '3 derniers mois',
+        last30days: '30 derniers jours',
+        last7days: '7 derniers jours',
+        selectValue: 'Sélectionnez une valeur',
+      },
       chat: {
         globalChat: 'Chat global',
         workspaceDescription: 'Tout le monde dans l’espace de travail peut le lire.',
@@ -477,6 +493,14 @@ const resources = {
         goldWasted: 'Oro gastado',
         matchesAnalyzed: 'Partidas analizadas',
         fetchFailed: 'Error de carga',
+      },
+      chart: {
+        title: 'Gráfico de áreas',
+        description: 'Se muestra el número total de visitantes en los últimos 3 meses',
+        last3months: 'Últimos 3 meses',
+        last30days: 'Últimos 30 días',
+        last7days: 'Últimos 7 días',
+        selectValue: 'Selecciona un valor',
       },
       chat: {
         globalChat: 'Chat global',

@@ -23,6 +23,6 @@ Transcendence - Milestone 6 - 42 CC
 - [x] remove /docs of backend fastapi
 - [ ] readme
 - Front
-	- [ ] ranking
+	- [x] ranking
 	- [ ] set 18 update
 	- [ ] add multi language support

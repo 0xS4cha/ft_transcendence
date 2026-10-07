@@ -22,6 +22,7 @@ from backend_app.api.endpoints.refuse_friend_request import (
     router as refuse_friend_request_router,
 )
 from backend_app.api.endpoints.remove_friend import router as remove_friend_router
+from backend_app.api.endpoints.rgpd import router as rgpd_deletion_router
 from backend_app.api.endpoints.search import router as search_router
 from backend_app.api.endpoints.send_friend_request import (
     router as send_friend_request_router,
@@ -49,6 +50,7 @@ __all__ = [
     "prometheus_metrics_router",
     "refuse_friend_request_router",
     "remove_friend_router",
+    "rgpd_deletion_router",
     "search_router",
     "send_friend_request_router",
     "signup_router",
