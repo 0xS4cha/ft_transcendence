@@ -8,7 +8,6 @@ from backend_app.core.jwt import Token
 from shared.database import AsyncSessionDep
 from sqlalchemy import update
 from backend_app.services.process_img import ProcessImg, ProcessImgMediaTypeError, ProcessImgBadRequestError, ProcessImgPayloadError, ProcessImgStorageError, remove_file
-from sqlalchemy.exc import IntegrityError
 from fastapi.concurrency import run_in_threadpool
 
 
@@ -52,7 +51,6 @@ async def change_picture(
     old_picture = current_user.picture
     picture = f"profile_pictures/{image_id}.webp"
     path = os.path.join("/app/src/shared", picture)
-    
 
     try:
         result = await session.execute(
@@ -67,16 +65,9 @@ async def change_picture(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="User not found"
             )
-    
+
         await session.commit()
 
-    except IntegrityError:
-        await session.rollback()
-        remove_file(path)
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Could not update profile picture due to a conflict, please retry"
-        )
     except Exception:
         await session.rollback()
         remove_file(path)

@@ -5,6 +5,7 @@ from backend_app.api.endpoints import (
     augments_data_router,
     change_username_router,
     change_picture_router,
+    change_riotid_router,
     chat_router,
     chatbot_router,
     friend_requests_list_router,
@@ -216,6 +217,13 @@ api_router.include_router(
 
 api_router.include_router(
     change_picture_router,
+    tags=["User"],
+    prefix="/user",
+    dependencies=authenticated_limits
+)
+
+api_router.include_router(
+    change_riotid_router,
     tags=["User"],
     prefix="/user",
     dependencies=authenticated_limits

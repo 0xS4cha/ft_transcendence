@@ -27,3 +27,4 @@ backend/app/src/shared/
 
 shared/models_3d/*.glb
 shared/models_3d/*.json
+shared/profile_pictures/*

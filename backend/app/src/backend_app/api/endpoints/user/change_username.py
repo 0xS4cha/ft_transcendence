@@ -19,26 +19,26 @@ async def change_username(
     session: AsyncSessionDep,
     current_user: Annotated[UserModel, Depends(Token.get_current_user)],
 ) -> UserModel:
-    if new_username is current_user.username:
+    if new_username == current_user.username:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="You cannot use the same username as your current one."
         )
-    
-    result = await session.execute(
-        update(UserModel)
-        .where(UserModel.id == current_user.id)
-        .values(username=new_username)
-        .returning(UserModel.id)
-    )
-
-    if result.scalar_one_or_none() is None:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Username is already taken"
-        )
 
     try:
+        result = await session.execute(
+            update(UserModel)
+            .where(UserModel.id == current_user.id)
+            .values(username=new_username)
+            .returning(UserModel.id)
+        )
+
+        if result.scalar_one_or_none() is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+
         await session.commit()
     except IntegrityError as e:
         await session.rollback()
