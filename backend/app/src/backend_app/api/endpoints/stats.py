@@ -1,6 +1,7 @@
 import time
 from datetime import UTC, datetime, timedelta
 
+import requests
 from fastapi import APIRouter, Response, status
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert
@@ -8,7 +9,6 @@ from sqlalchemy.dialects.postgresql import insert
 from backend_app.models.users import UserModel
 from backend_app.models.visit import VisitModel
 from shared.database import AsyncSessionDep
-import requests
 
 router = APIRouter()
 REFRESH_DELTA_SECONDS    = 3

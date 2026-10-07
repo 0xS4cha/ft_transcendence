@@ -3,6 +3,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from ..database import Base
 
+
 class UnitStat(Base):
     __tablename__ = "unit_stat"
 

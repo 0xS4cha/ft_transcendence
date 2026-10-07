@@ -1,6 +1,7 @@
 import time
+
 import aiohttp
-from fastapi import APIRouter, status, HTTPException
+from fastapi import APIRouter, HTTPException, status
 
 router = APIRouter()
 
@@ -10,7 +11,6 @@ REFRESH_INTERVAL_MS = 20000
 
 @router.get("/")
 async def leaderboard_get_top_fifty(server: str = "global"):
-	global cache
 	global last_calculated_timestamp
 
 	if server.strip().upper() not in ["GLOBAL", "BR1","EUN1","EUW1","JP1","KR","LA1","LA2","ME1","NA1","OC1","RU","SG2","TR1","TW2","VN2"]:
