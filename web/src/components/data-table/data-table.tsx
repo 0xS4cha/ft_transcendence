@@ -52,6 +52,7 @@ interface DataTableProps {
   onExpand?: (unit: Row<typeof dataTableFeatures, UnitRow>, columns: unknown[]) => React.ReactNode;
   hideRankFilter?: boolean;
   hideQueueFilter?: boolean;
+  addGlobalServerFilter?: boolean;
 }
 
 export function DataTable({
@@ -61,6 +62,7 @@ export function DataTable({
   setFilter,
   filter,
   defaultSortId,
+  addGlobalServerFilter,
   searchPlaceholder = "Search...",
   initialSearchQuery = "",
   onExpand,
@@ -125,7 +127,7 @@ export function DataTable({
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-        <DataTableFilter setFilter={setFilter} filter={filter} hideRankFilter={hideRankFilter} hideQueueFilter={hideQueueFilter}/>
+        <DataTableFilter setFilter={setFilter} filter={filter} hideRankFilter={hideRankFilter} hideQueueFilter={hideQueueFilter} addGlobalServerFilter={addGlobalServerFilter}/>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center xl:w-auto">
           {customToolbar}
           <div className="relative w-full lg:w-80">
