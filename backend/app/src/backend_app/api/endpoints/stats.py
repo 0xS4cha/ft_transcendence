@@ -106,8 +106,8 @@ async def visits(session: AsyncSessionDep):
     visits = result.scalars().all()
     counts = {visit.date: visit.count for visit in visits}
     history = [
-        (today - timedelta(days=i),
-        counts.get(today - timedelta(days=i), 0))
+        {"date": today - timedelta(days=i),
+        "value": counts.get(today - timedelta(days=i), 0)}
         for i in range(VISITOR_LIST_RANGE_DAY)
     ]
 
