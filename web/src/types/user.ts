@@ -9,6 +9,10 @@ export interface UserPublic {
   isDark?: boolean;
 }
 
+export interface FriendState extends UserPublic {
+  online: boolean;
+}
+
 export interface UserState extends UserPublic {
   isAuthenticated: boolean;
   status: "idle" | "loading" | "ready";
