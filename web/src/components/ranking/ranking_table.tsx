@@ -21,7 +21,7 @@ export function RankingTable() {
         const response = await getLeaderboardStats(filter.server) 
         setPlayers(response.data); 
       } catch (error) {
-        console.error("Erreur fetch ranking:", error);
+        console.log("Erreur fetch ranking:", error);
       } finally {
         setLoading(false);
       }

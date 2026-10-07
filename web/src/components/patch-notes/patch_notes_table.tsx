@@ -14,7 +14,7 @@ export default function PatchNotePage() {
         const htmlString = await response.text(); 
         setPatchHtml(htmlString);
       } catch (error) {
-        console.error("Error while fetch the latest patch note", error);
+        console.log("Error while fetch the latest patch note", error);
       } finally {
         setLoading(false);
       }
