@@ -7,6 +7,7 @@ from fastapi import WebSocket
 
 class WebsocketConnectionManager:
     REDIS_CHANNEL = "websocket:broadcast"
+    ACTIVE_USERS_KEY = "websocket:active_users"
 
     def __init__(self, redis_url: str):
         self.connections: set[tuple[int, WebSocket]] = set()
@@ -34,9 +35,23 @@ class WebsocketConnectionManager:
         async with self.lock:
             self.connections.add((client_id, websocket))
 
+        user_connections_key = f"websocket:users:{client_id}"
+        websocket_key = str(id(websocket))
+        await self.redis.sadd(user_connections_key, websocket_key)
+
+        if await self.redis.scard(user_connections_key) == 1:
+            await self.redis.sadd(self.ACTIVE_USERS_KEY, str(client_id))
+
     async def disconnect(self, websocket: WebSocket, client_id: int):
         async with self.lock:
             self.connections.discard((client_id, websocket))
+
+        user_connections_key = f"websocket:users:{client_id}"
+        websocket_key = str(id(websocket))
+        await self.redis.srem(user_connections_key, websocket_key)
+
+        if await self.redis.scard(user_connections_key) == 0:
+            await self.redis.srem(self.ACTIVE_USERS_KEY, str(client_id))
 
     async def broadcast(self, message: dict, user_ids: list[int] | None = None):
         payload = {
@@ -96,7 +111,6 @@ class WebsocketConnectionManager:
 
 
 wsConnectionManager = WebsocketConnectionManager("redis://redis:6379")
-
 async def WSbroadcast(type: str, data: dict, user_ids: list[int] | None = None) -> int:
     await wsConnectionManager.broadcast(
         {
