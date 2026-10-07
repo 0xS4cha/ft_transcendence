@@ -22,7 +22,7 @@ const container = {
 export default function Home() {
   const data = useAppSelector(state => state.home);
   const dispatch = useAppDispatch();
-  const { isAuthenticated, username, picture } = useAppSelector(state => state.user);
+  const { isAuthenticated } = useAppSelector(state => state.user);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export default function Home() {
           transition={{ duration: 0.4, delay: 0.35, ease: "easeOut" }}
           className="grid grid-cols-1 gap-6 md:grid-cols-2"
         >
-          <Chat currentUser={username} currentPicture={picture} isAuthenticated={isAuthenticated} />
+          <Chat isAuthenticated={isAuthenticated} />
           <ChartHistory data={data.history} />
         </motion.div>
       </div>

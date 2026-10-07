@@ -46,7 +46,7 @@ api_router.include_router(
     me_router,
     tags=["Authentication"],
     prefix="/auth",
-    dependencies=auth_limits
+    # dependencies=auth_limits
 )
 
 api_router.include_router(
