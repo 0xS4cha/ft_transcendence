@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from sqlalchemy import or_, select
 
+from backend_app.core.dependencies import RedisDep
 from backend_app.core.jwt import Token
 from backend_app.models.friends import Friends, Status
 from backend_app.models.users import UserModel
@@ -16,8 +17,9 @@ router = APIRouter()
 )
 async def get_friends_list(
     current_user: Annotated[UserModel, Depends(Token.get_current_user)],
-    session: AsyncSessionDep
-) -> list[UserPublic]:
+    session: AsyncSessionDep,
+    r: RedisDep,
+) -> list[dict[str, str | None | int | bool]]:
     friendships = (await session.scalars(
         select(Friends)
         .where(
@@ -31,8 +33,6 @@ async def get_friends_list(
 
     if not friendships:
         return []
-
-    
 
     ids = []
     for friendship in friendships:
@@ -53,6 +53,9 @@ async def get_friends_list(
         if friend is None:
             print(f"[Friendship {friendship.id} references missing user {friend_id}")
             continue
-        friends_list.append(UserPublic.model_validate(friend))
+
+        is_online = bool(await r.sismember("websocket:active_users", str(friend_id)))
+        print(is_online)
+        friends_list.append({**dict(UserPublic.model_validate(friend)), "online": is_online})
 
     return friends_list
