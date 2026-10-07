@@ -1,9 +1,9 @@
 import { apiGet, apiPostLink, apiDeleteLink } from "@/lib/api";
-import { type UserPublic } from "@/types/user";
+import { type UserPublic, type FriendState } from "@/types/user";
 import { toast } from "@/components/ui/toast";
 
-export function getFriendsList(): Promise<UserPublic[]> {
-  return apiGet<UserPublic[]>("/api/friends/friends_list");
+export function getFriendsList(): Promise<FriendState[]> {
+  return apiGet<FriendState[]>("/api/friends/friends_list");
 }
 
 export function getFriendsRequestList(): Promise<UserPublic[]> {
