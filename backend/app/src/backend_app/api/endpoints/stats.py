@@ -2,7 +2,6 @@ import time
 from datetime import UTC, datetime, timedelta
 
 import requests
-from backend.app.src.backend_app.models.chat_message import ChatMessage
 from fastapi import APIRouter, Response, status
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert
