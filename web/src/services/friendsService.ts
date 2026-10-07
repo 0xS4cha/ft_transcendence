@@ -1,4 +1,4 @@
-import { apiGet, apiPostLink, apiDeleteLink } from "@/lib/api";
+import { apiGet, apiPostLink, apiDelete } from "@/lib/api";
 import { type UserPublic, type FriendState } from "@/types/user";
 import { toast } from "@/components/ui/toast";
 
@@ -19,11 +19,11 @@ export function acceptFriendRequest(id: string): Promise<any> {
 }
 
 export function removeFriend(id: string): Promise<any> {
-  return apiDeleteLink<any>(`/api/friends/remove_friend/${id}`);
+  return apiDelete<any>(`/api/friends/remove_friend/${id}`);
 }
 
 export function refuseFriendRequest(id: string): Promise<any> {
-  return apiDeleteLink<any>(`/api/friends/refuse_friend_request/${id}`);
+  return apiDelete<any>(`/api/friends/refuse_friend_request/${id}`);
 }
 
 export function receiveFriendRequest(id: string): void {

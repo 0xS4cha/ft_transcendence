@@ -1,4 +1,4 @@
-import { apiGet, apiPost, apiPostForm } from "@/lib/api";
+import { apiGet, apiPost, apiPostForm, apiDelete } from "@/lib/api";
 import { type SignupPayload, type UserPublic } from "@/types/user";
 
 export function login(email: string, password: string): Promise<UserPublic> {
@@ -19,4 +19,8 @@ export function getCurrentUser(): Promise<UserPublic> {
 
 export function logout(): Promise<void> {
   return apiPost<void>("/api/auth/logout", {});
+}
+
+export function delete_rgpd(): Promise<void> {
+  return apiDelete<void>("/api/auth/me");
 }
