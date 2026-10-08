@@ -24,3 +24,7 @@ export function logout(): Promise<void> {
 export function delete_rgpd(): Promise<void> {
   return apiDelete<void>("/api/auth/me");
 }
+
+export function setUsername(test: string): Promise<void> {
+  return apiPost<void>("/api/", test)
+}

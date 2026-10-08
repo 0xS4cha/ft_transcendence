@@ -7,9 +7,9 @@ import { setTheme } from "@/store/reducers/userSlice";
 import { initialsOf } from "@/lib/utils";
 import i18n from "@/lib/i18n";
 import { useTranslation } from "react-i18next";
-import { Moon, Sun, Trash, Info } from "lucide-react";
+import { Moon, Sun, Trash, Info , Pencil, Upload} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { deleteUser } from "@/store/reducers/userSlice";
+import { deleteUser, setUsername, setPicture } from "@/store/reducers/userSlice";
 import { useState } from "react";
 import {
     AlertDialog,
@@ -29,6 +29,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import { Input } from "@base-ui/react";
 
 const languageOptions = [
     { value: "en", label: "🇺🇸 English" },
@@ -44,6 +45,10 @@ export function ProfileCard() {
     const { username, picture, email, id, isDark } = useAppSelector((state) => state.user);
     const [rgpdInfoOpen, setRgpdInfoOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
+    
+    const [editOpen, setEditOpen] = useState(false);
+    const [editUsername, setEditUsername] = useState(username || "");
+    const [editPicture, setEditPicture] = useState(picture || "")
 
     const baseLang = (i18n.resolvedLanguage || i18n.language || "en").split("-")[0];
     const language = languageOptions.some((o) => o.value === baseLang) ? baseLang : "en";
@@ -73,6 +78,28 @@ export function ProfileCard() {
         await dispatch(deleteUser()).unwrap();
     };
 
+    const handleSaveProfile = () => {
+        if (editUsername.trim() !== "") {
+            dispatch(setUsername(editUsername));
+        }
+        if (editPicture.trim() !== "") {
+            dispatch(setPicture(editPicture));
+        }
+        setEditOpen(false)
+    };
+
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) =>{
+      const file = e.target.files?.[0]
+      if (file)
+      {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setEditPicture(reader.result as string);
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
     return (
         <Card>
             <CardContent>
@@ -83,7 +110,20 @@ export function ProfileCard() {
                             <AvatarFallback className="text-lg">{initialsOf(username)}</AvatarFallback>
                         </Avatar>
                         <div className="text-center">
-                            <h2 className="text-xl font-semibold">{username}</h2>
+                            <h2 className="text-xl font-semibold">{username}
+                            <Button 
+                                    variant="ghost" 
+                                    size="icon"
+                                    className="h-6 w-6"
+                                    onClick={() => {
+                                        setEditUsername(username || "");
+                                        setEditPicture(picture || "");
+                                        setEditOpen(true);
+                                    }}
+                                >
+                                    <Pencil className="h-2 w-2" />
+                                </Button>
+                                </h2>
                             <p className="text-muted-foreground text-sm break-all">{email}</p>
                         </div>
                     </div>
@@ -192,6 +232,65 @@ export function ProfileCard() {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
+
+            <Dialog open={editOpen} onOpenChange={setEditOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>{t("profile.editTitle", "Edit Profile")}</DialogTitle>
+                        <DialogDescription>
+                            {t("profile.editDescription", "Make changes to your profile here.")}
+                        </DialogDescription>
+                    </DialogHeader>
+                    
+                    <div className="grid gap-4 py-4">
+                        <div className="grid gap-2">
+                            <Label htmlFor="username">{t("profile.username", "Username")}</Label>
+                            <Input 
+                                id="username" 
+                                value={editUsername} 
+                                onChange={(e) => setEditUsername(e.target.value || "")} 
+                            />
+                        </div>
+                        <div className="grid gap-2">
+                            <Label>{t("profile.avatar", "Avatar")}</Label>
+                            <Label 
+                            htmlFor="picture-upload"
+                            className="flex flex-col items-center justify-center w-full h-32 border-2 rounded-lg cursor-pointer  hover:bg-white/10 border-white/10 hover:border-white/30 transition-colors"
+                            >
+                              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                <Upload className="w-8 h-8 mb-3 text-neutral-400" />
+                                  <p className="mb-2 text-sm text-neutral-400">
+                                    <span className="font-semibold text-white">Click to upload</span> or drag and drop
+                                  </p>
+                                  <p className="text-xs text-neutral-500">SVG, PNG, JPG or GIF</p>
+                              </div>
+                                <Input 
+                                    id="picture-upload" 
+                                    type="file" 
+                                    accept="image/*" 
+                                    className="hidden" 
+                                    onChange={handleImageUpload}
+                                />
+                            </Label>
+                            {editPicture && (
+                                <div className="mt-2 flex justify-center">
+                                    <Avatar className="size-16 border border-white/10">
+                                        <AvatarImage src={editPicture} alt="Preview" className="object-cover" />
+                                    </Avatar>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setEditOpen(false)}>
+                            {t("common.cancel", "Cancel")}
+                        </Button>
+                        <Button onClick={handleSaveProfile}>
+                            {t("common.save", "Save")}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </Card>
     );
 }
