@@ -81,4 +81,14 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
     header: "Cost",
     cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.cost).toFixed(2)}</span>,
   },
+  {
+    id: "avg_place",
+    accessorFn: (row) => row.avg_place,
+    enableSorting: true,
+  },
+  {
+    id: "name",
+    accessorFn: (row) => row.name,
+    enableSorting: true,
+  }
 ];

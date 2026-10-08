@@ -73,6 +73,7 @@ export function UnitsTable({ ref }: any) {
       data={data}
       getRowId={(row) => row.unit}
       defaultSortId="name"
+      addAvgSort={true}
       searchPlaceholder="Search units..."
       onExpand={renderSubComponent}
       initialSearchQuery={initialSearchQuery}

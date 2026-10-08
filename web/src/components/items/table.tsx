@@ -51,6 +51,7 @@ export function ItemsTable({ ref }: any) {
       filter={filter}
       getRowId={(row) => row.id}
       defaultSortId="name"
+      addAvgSort={true}
       searchPlaceholder="Search items..."
       initialSearchQuery={initialSearchQuery}
     />
