@@ -286,7 +286,6 @@ export function Chat({ isAuthenticated }: { isAuthenticated: boolean }) {
                   const showDay =
                     !previous ||
                     formatDay(previous[0].date) !== formatDay(group[0].date);
-
                   return (
                     <Fragment key={`${group[0].user_id}-${group[0].id}`}>
                       {showDay && formatDay(group[0].date) && (
