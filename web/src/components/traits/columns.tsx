@@ -47,4 +47,14 @@ export const TraitsColumns: ColumnDef<typeof dataTableFeatures, TraitRow>[] = [
     header: "Frequency",
     cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.frequency).toFixed(2)}</span>,
   },
+  {
+    id: "avg_place",
+    accessorFn: (row) => row.avg_place,
+    enableSorting: true,
+  },
+  {
+    id: "name",
+    accessorFn: (row) => row.name,
+    enableSorting: true,
+  }
 ];

@@ -34,11 +34,6 @@ import { useTranslation } from "react-i18next";
 
 import { type FilterType } from "@/types/stats";
 
-const sortOptions = [
-  { value: "name-asc", label: "Name A-Z" },
-  { value: "name-desc", label: "Name Z-A" },
-] as const;
-
 interface DataTableProps {
   columns: any;
   data: any;
@@ -52,6 +47,7 @@ interface DataTableProps {
   onExpand?: (unit: Row<typeof dataTableFeatures, UnitRow>, columns: unknown[]) => React.ReactNode;
   hideRankFilter?: boolean;
   hideQueueFilter?: boolean;
+  addAvgSort?: boolean;
   addGlobalServerFilter?: boolean;
 }
 
@@ -63,6 +59,7 @@ export function DataTable({
   filter,
   defaultSortId,
   addGlobalServerFilter,
+  addAvgSort,
   searchPlaceholder = "Search...",
   initialSearchQuery = "",
   onExpand,
@@ -70,10 +67,26 @@ export function DataTable({
   hideRankFilter,
   hideQueueFilter,
 }: DataTableProps) {
-  const sortOptionState = useMemo(() => ({
-    "name-asc": [{ id: defaultSortId, desc: false }],
-    "name-desc": [{ id: defaultSortId, desc: true }],
-  }), [defaultSortId]);
+  
+  const { sortOptions, sortOptionState } = useMemo(() => {
+    const config = {
+      "name-asc":  { label: "Name A-Z", sorting: [{ id: defaultSortId, desc: false }] },
+      "name-desc": { label: "Name Z-A", sorting: [{ id: defaultSortId, desc: true }] },
+      ...(addAvgSort && {
+        "avg-asc":  { label: "Avg. place asc",  sorting: [{ id: "avg_place", desc: false }] },
+        "avg-desc": { label: "Avg. place desc", sorting: [{ id: "avg_place", desc: true }] },
+      }),
+    };
+
+    const entries = Object.entries(config);
+
+    return {
+      sortOptions: entries.map(([value, { label }]) => ({ value, label })),
+      sortOptionState: Object.fromEntries(
+        entries.map(([value, { sorting }]) => [value, sorting])
+      ),
+    };
+  }, [defaultSortId, addAvgSort]);
 
   const { t } = useTranslation();
   const [rowSelection, setRowSelection] = useState({});
@@ -121,8 +134,10 @@ export function DataTable({
     const currentSort = sorting[0];
     if (currentSort?.id === defaultSortId && !currentSort.desc) return "name-asc";
     if (currentSort?.id === defaultSortId && currentSort.desc) return "name-desc";
+    if (currentSort?.id === "avg_place" && !currentSort.desc) return "avg-asc";
+    if (currentSort?.id === "avg_place" && currentSort.desc) return "avg-desc"; 
     return "newest";
-  }, [sorting, defaultSortId]);
+  }, [sorting, defaultSortId, addAvgSort]);
 
   return (
     <div className="space-y-4">
@@ -154,7 +169,8 @@ export function DataTable({
               <DropdownMenuRadioGroup
                 value={sortValue}
                 onValueChange={(value) => {
-                  table.setSorting(sortOptionState[value as keyof typeof sortOptionState] ?? sortOptionState["name-asc"]);
+                  const next = sortOptionState[value] ?? sortOptionState["name-asc"];
+                  table.setSorting(next);
                   table.setPageIndex(0);
                 }}
               >

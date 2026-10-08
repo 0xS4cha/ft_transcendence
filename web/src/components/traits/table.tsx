@@ -52,6 +52,7 @@ export function TraitsTable({ ref }: any ) {
       getRowId={(row) => row.id}
       defaultSortId="name"
       searchPlaceholder="Search trait..."
+      addAvgSort={true}
       initialSearchQuery={initialSearchQuery}
     />
   );
