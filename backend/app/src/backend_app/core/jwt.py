@@ -33,13 +33,16 @@ class Token:
 
     @staticmethod
     async def get_current_user(
-        access_token: Annotated[str, Cookie()],
-        session: AsyncSessionDep    
+        session: AsyncSessionDep,
+        access_token: Annotated[str | None, Cookie()] = None,
     ) -> UserModel :
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials"
         )
+
+        if access_token is None:
+            raise credentials_exception
 
         try:
             payload = jwt.decode(access_token, Token.secret_key, [Token.algorithm])

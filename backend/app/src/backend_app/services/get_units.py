@@ -119,7 +119,7 @@ def process_unit(
         name = name.replace(" ", "")
 
     icon = "https://cdn.metatft.com/cdn-cgi/image/width=128,height=128,format=auto/https://cdn.metatft.com/file/metatft/champions/tft18_" + name.lower().replace("'", "") + ".png"
-    model = model_dict.get(id)
+    model = f"models_3d/{model_dict.get(id)}"
 
     return (Unit(
         id=id,
