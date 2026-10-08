@@ -19,6 +19,7 @@ from backend_app.api.endpoints import (
     prometheus_metrics_router,
     refuse_friend_request_router,
     remove_friend_router,
+    remove_picture_router,
     rgpd_deletion_router,
     search_router,
     send_friend_request_router,
@@ -48,7 +49,6 @@ api_router.include_router(
     me_router,
     tags=["Authentication"],
     prefix="/auth",
-    # dependencies=auth_limits
 )
 
 api_router.include_router(
@@ -224,6 +224,13 @@ api_router.include_router(
 
 api_router.include_router(
     change_picture_router,
+    tags=["User"],
+    prefix="/user",
+    dependencies=authenticated_limits
+)
+
+api_router.include_router(
+    remove_picture_router,
     tags=["User"],
     prefix="/user",
     dependencies=authenticated_limits
