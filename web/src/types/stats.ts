@@ -5,5 +5,7 @@ export interface FilterType {
 }
 
 export interface exportRef {
-    export: () => void;
+    export?: () => void;
+    exportJson: () => void;
+    exportXml: () => void;
 }

@@ -9,7 +9,7 @@ import { toast } from "@/components/ui/toast";
 import { type UnitRow } from "@/components/units/schema";
 import { getUnitsStats } from "@/services/statsService";
 import { type FilterType } from "@/types/stats";
-import { downloadJson } from "@/lib/utils";
+import { downloadJson, downloadXml } from "@/lib/utils";
 
 interface UnitsExpandProps {
   unit: Row<typeof dataTableFeatures, UnitRow>;
@@ -31,8 +31,11 @@ export function UnitsTable({ ref }: any) {
   const initialSearchQuery = searchParams.get("q")?.trim() ?? "";
 
   useImperativeHandle(ref, () => ({
-    export() {
+    exportJson() {
       downloadJson(data, "units.json")
+    },
+    exportXml() {
+      downloadXml(data, "units.xml")
     }
   }));
 
@@ -69,7 +72,7 @@ export function UnitsTable({ ref }: any) {
       columns={UnitsColumns}
       data={data}
       getRowId={(row) => row.unit}
-      defaultSortId="unit"
+      defaultSortId="name"
       searchPlaceholder="Search units..."
       onExpand={renderSubComponent}
       initialSearchQuery={initialSearchQuery}

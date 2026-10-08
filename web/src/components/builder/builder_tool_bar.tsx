@@ -7,7 +7,7 @@ export default function BuilderToolBar({ onCopyCode, onImportCode }: {onCopyCode
   const { t } = useTranslation();
 
   return (
-    <div className="flex shrink-0 items-center justify-between gap-2 rounded-xl border border-white/10 px-3 py-2 bg-[#202020]">
+    <div className="flex shrink-0 items-center justify-between gap-2 rounded-xl border border-white/10 px-3 py-2">
       <div className="w-30 xl:w-45">
         <SelectDemo/>
       </div>

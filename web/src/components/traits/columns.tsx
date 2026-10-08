@@ -1,7 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import { Subscribe } from "@tanstack/react-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Checkbox } from "@/components/ui/checkbox";
 import { dataTableFeatures } from "@/lib/data-table-features";
 import type { TraitRow } from "@/components/traits/schema";
 
@@ -11,45 +9,6 @@ export const TraitsColumns: ColumnDef<typeof dataTableFeatures, TraitRow>[] = [
     accessorFn: (row) => `${row.name} ${row.id}`,
     filterFn: "includesString",
     enableHiding: true,
-  },
-  {
-    id: "select",
-    header: ({ table }: any) => (
-      <div className="flex items-center justify-center">
-        <Subscribe
-          source={table.atoms.rowSelection}
-          selector={() =>
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected() && "indeterminate")
-          }
-        >
-          {(checked) => (
-            <Checkbox
-              checked={Boolean(checked)}
-              onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-              aria-label="Select all items on this page"
-            />
-          )}
-        </Subscribe>
-      </div>
-    ),
-    cell: ({ row }: any) => (
-      <div className="flex items-center justify-center">
-        <Subscribe
-          source={row.table.atoms.rowSelection}
-          selector={(selection: Record<string, boolean>) => Boolean(selection?.[row.id])}
-        >
-          {(checked) => (
-            <Checkbox
-              checked={checked}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              aria-label={`Select ${row.original.id}`}
-            />
-          )}
-        </Subscribe>
-      </div>
-    ),
-    enableHiding: false,
   },
   {
     accessorKey: "name",

@@ -6,5 +6,6 @@ export const initialState: UserState = {
   username: "",
   isAuthenticated: false,
   status: "idle",
-  chat: []
+  chat: [],
+  isDark: typeof window !== 'undefined' ? (localStorage.getItem("isDark") == "true" || false) : true,
 };

@@ -1,7 +1,6 @@
 export interface HistoryChartProps {
   date: string;
-  gold_wasted_avg: number;
-  time_elapsed_avg: number;
+  value: number;
 }
 
 export interface HomeDataProps {

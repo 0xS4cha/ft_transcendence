@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useTranslation } from "react-i18next";
 
 export default function PatchNotePage() {
+  const { t } = useTranslation();
   const [patchHtml, setPatchHtml] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
@@ -12,7 +14,7 @@ export default function PatchNotePage() {
         const htmlString = await response.text(); 
         setPatchHtml(htmlString);
       } catch (error) {
-        console.error("Error while fetch the latest patch note", error);
+        console.log("Error while fetch the latest patch note", error);
       } finally {
         setLoading(false);
       }
@@ -22,12 +24,12 @@ export default function PatchNotePage() {
   }, []);
 
   if (loading) {
-    return <div className="p-8 text-center text-neutral-400">Loading patch notes...</div>;
+    return <div className="p-8 text-center text-muted-foreground">{t("patchnote.loading", "Loading patch note ...")}</div>;
   }
 
   return (
     <div className="min-h-screen p-6 w-full max-w-5xl mx-auto">
-      <Card className="bg-[#202020] border-white/10">
+      <Card className="border-border bg-card text-card-foreground dark:border-white/10 dark:bg-[#202020]">
         <CardContent className="p-8">
           <div 
             className="patch-note-container"

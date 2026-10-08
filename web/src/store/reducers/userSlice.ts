@@ -11,6 +11,7 @@ function applyUser(state: typeof initialState, user: UserPublic) {
   state.picture = user.picture ? user.picture : undefined;
   state.isAuthenticated = true;
   state.chat = user.chat && user.chat.length > 0 ? user.chat : [];
+  state.isDark = user.isDark ? user.isDark : typeof window !== 'undefined' ? (localStorage.getItem("isDark") == "true" || false) : true;
 }
 
 export const initializeSession = createAsyncThunk(
@@ -46,6 +47,14 @@ export const logoutUser = createAsyncThunk(
   },
 );
 
+export const deleteUser = createAsyncThunk(
+  "user/deleteUser",
+  async () => {
+    await authService.delete_rgpd();
+  },
+);
+
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -72,6 +81,9 @@ export const userSlice = createSlice({
     removeChatContent: (state, action: PayloadAction<number>) => {
       if (!state.chat) return;
       state.chat = state.chat.filter((item) => item.id !== action.payload);
+    },
+    setTheme: (state, action: PayloadAction<boolean>) => {
+      state.isDark = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -116,14 +128,30 @@ export const userSlice = createSlice({
         username: "",
         isAuthenticated: false,
         chat: [],
+        isDark: true,
         status: "ready" as const,
       }))
       .addCase(logoutUser.rejected, (state) => {
         state.status = "ready";
       })
+      .addCase(deleteUser.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deleteUser.fulfilled, () => ({
+        id: 0,
+        email: "",
+        username: "",
+        isAuthenticated: false,
+        chat: [],
+        isDark: true,
+        status: "ready" as const,
+      }))
+      .addCase(deleteUser.rejected, (state) => {
+        state.status = "ready";
+      })
   },
 });
 
-export const { clearUser, addChatContent, updateChatContent, removeChatContent, setChat } = userSlice.actions;
+export const { clearUser, addChatContent, updateChatContent, removeChatContent, setChat, setTheme } = userSlice.actions;
 
 export default userSlice.reducer;

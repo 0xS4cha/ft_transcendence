@@ -18,14 +18,14 @@ export default function Conditions() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="space-y-12 pb-24 text-white/80"
+            className="space-y-12 pb-24 text-foreground/80 dark:text-white/80"
           >
             {conditions.map((u) => (
               <section key={u.id}>
                 <div className="flex items-center gap-3 mb-4">
-                  <h2 className="text-lg font-semibold text-white">{u.id}. {u.title}</h2>
+                  <h2 className="text-lg font-semibold text-foreground dark:text-white">{u.id}. {u.title}</h2>
                 </div>
-                <p className="text-xs leading-relaxed text-white/60">{u.content}</p>
+                <p className="text-xs leading-relaxed text-foreground/70 dark:text-white/60">{u.content}</p>
               </section>
             ))}
           </motion.div>

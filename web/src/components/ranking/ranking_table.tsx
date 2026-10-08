@@ -3,6 +3,7 @@ import { DataTable } from "@/components/data-table/data-table";
 import { RankingColumns } from "./columns";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import type { rankingPlayer } from "@/types/ranking";
+import { getLeaderboardStats } from "@/services/statsService";
 
 export function RankingTable() {
   const [players, setPlayers] = useState<rankingPlayer[]>([]);
@@ -10,25 +11,24 @@ export function RankingTable() {
 
   const [filter, setFilter] = useState({
     queue: "1100",
-    server: "EUW1",
-	ranked: "CHALLENGER"
+    server: "GLOBAL",
+	  ranked: "CHALLENGER"
   });
 
   useEffect(() => {
     const fetchRankings = async () => {
       try {
-        const response = await fetch("/api/leaderboard/"); 
-        const json = await response.json();
-        setPlayers(json.data); 
+        const response = await getLeaderboardStats(filter.server) 
+        setPlayers(response.data); 
       } catch (error) {
-        console.error("Erreur fetch ranking:", error);
+        console.log("Erreur fetch ranking:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchRankings();
-  }, []);
+  }, [filter]);
 
   return (
     <Card className="w-full">
@@ -48,6 +48,7 @@ export function RankingTable() {
             filter={filter}
             setFilter={setFilter}
             hideRankFilter={true}
+            addGlobalServerFilter={true}
             hideQueueFilter={true}
           />
         )}

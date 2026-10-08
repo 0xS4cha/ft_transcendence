@@ -2,17 +2,50 @@ import { Card, CardTitle, CardAction, CardHeader, CardContent } from "@/componen
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { TraitsTable } from "@/components/traits/table";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { type exportRef } from "@/types/stats"
+import { SelectContent, Select, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTranslation } from "react-i18next";
+
+const FORMATS = [
+  { value: "json", label: "JSON" },
+  { value: "xml", label: "XML" },
+] as const;
 
 export function TraitsOverview() {
+    const { t } = useTranslation();
     const exportRef = useRef<exportRef>(null);
+    const [exportFormat, setExportFormat] = useState<'json' | 'xml'>('json');
+    
+    const handleExport = () => {
+    
+        if (exportFormat === 'json') {
+            exportRef.current?.exportJson();
+        } else {
+            exportRef.current?.exportXml();
+        }
+    };
+    
     return (
         <Card>
             <CardHeader>
-                <CardTitle>List of traits</CardTitle>
-                <CardAction>
-                    <Button variant="outline" onClick={() => exportRef.current?.export()}><Download/>Export</Button>
+                <CardTitle>{t("table.listoftrait", "list of traits")}</CardTitle>
+                <CardAction className="flex gap-2">
+                   <Select value={exportFormat} onValueChange={(v) => v ? setExportFormat(v) : console.log("value is null")} >
+                        <SelectTrigger
+                        size="sm"
+                        aria-label="Format d'export"
+                        className="w-[100px] focus:z-10"
+                        >
+                        <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                        {FORMATS.map((f) => (
+                            <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>
+                        ))}
+                        </SelectContent>
+                    </Select>
+                    <Button variant="outline" onClick={handleExport}><Download/>Export</Button>
                 </CardAction>
             </CardHeader>
             <CardContent>

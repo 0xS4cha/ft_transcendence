@@ -6,7 +6,7 @@ import { toast } from "@/components/ui/toast";
 import { type ItemRow } from "@/components/items/schema";
 import { getItemsStats } from "@/services/statsService";
 import { type FilterType } from "@/types/stats";
-import { downloadJson } from "@/lib/utils";
+import { downloadJson, downloadXml } from "@/lib/utils";
 
 export function ItemsTable({ ref }: any) {
   const [filter, setFilter] = useState<FilterType>({
@@ -19,8 +19,11 @@ export function ItemsTable({ ref }: any) {
   const initialSearchQuery = searchParams.get("q")?.trim() ?? "";
 
   useImperativeHandle(ref, () => ({
-    export() {
+    exportJson() {
       downloadJson(data, "items.json")
+    },
+    exportXml() {
+      downloadXml(data, "items.xml")
     }
   }));
 
@@ -47,7 +50,7 @@ export function ItemsTable({ ref }: any) {
       setFilter={setFilter}
       filter={filter}
       getRowId={(row) => row.id}
-      defaultSortId="id"
+      defaultSortId="name"
       searchPlaceholder="Search items..."
       initialSearchQuery={initialSearchQuery}
     />

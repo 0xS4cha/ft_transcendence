@@ -20,6 +20,7 @@ from backend_app.api.endpoints import (
     prometheus_metrics_router,
     refuse_friend_request_router,
     remove_friend_router,
+    rgpd_deletion_router,
     search_router,
     send_friend_request_router,
     signup_router,
@@ -48,7 +49,14 @@ api_router.include_router(
     me_router,
     tags=["Authentication"],
     prefix="/auth",
-    dependencies=auth_limits
+    # dependencies=auth_limits
+)
+
+api_router.include_router(
+	rgpd_deletion_router,
+	tags=["RGPD"],
+	prefix="/auth",
+	dependencies=auth_limits
 )
 
 api_router.include_router(

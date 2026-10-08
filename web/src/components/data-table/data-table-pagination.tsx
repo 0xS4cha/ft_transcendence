@@ -5,12 +5,15 @@ import {
   ChevronsLeft,
   ChevronsRight,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface DataTablePaginationProps {
   table: any;
 }
 
 export function DataTablePagination({ table }: DataTablePaginationProps) {
+  const { t } = useTranslation();
+
   return (
     <>
       <div className="flex w-fit items-center justify-center font-medium text-sm">
@@ -24,7 +27,7 @@ export function DataTablePagination({ table }: DataTablePaginationProps) {
           onClick={() => table.setPageIndex(0)}
           disabled={!table.getCanPreviousPage()}
         >
-          <span className="sr-only">Go to first page</span>
+          <span className="sr-only">{t("table.firstpage", "Go to first page")}</span>
           <ChevronsLeft className="size-4" />
         </Button>
         <Button
@@ -34,7 +37,7 @@ export function DataTablePagination({ table }: DataTablePaginationProps) {
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          <span className="sr-only">Go to previous page</span>
+          <span className="sr-only">{t("table.previouspage", "Go to previous page")}</span>
           <ChevronLeft className="size-4" />
         </Button>
         <Button
@@ -44,7 +47,7 @@ export function DataTablePagination({ table }: DataTablePaginationProps) {
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          <span className="sr-only">Go to next page</span>
+          <span className="sr-only">{t("table.nextpage", "Go to next page")}</span>
           <ChevronRight className="size-4" />
         </Button>
         <Button
@@ -54,7 +57,7 @@ export function DataTablePagination({ table }: DataTablePaginationProps) {
           onClick={() => table.setPageIndex(table.getPageCount() - 1)}
           disabled={!table.getCanNextPage()}
         >
-          <span className="sr-only">Go to last page</span>
+          <span className="sr-only">{t("table.lastpage", "Go to last page")}</span>
           <ChevronsRight className="size-4" />
         </Button>
       </div>

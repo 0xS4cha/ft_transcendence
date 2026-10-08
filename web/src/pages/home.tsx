@@ -4,11 +4,11 @@ import { Separator } from "@/components/ui/separator";
 import { BreakdownCard } from "@/components/home/breakdowncard";
 import { ChartHistory } from "@/components/home/chart";
 import { Chat } from "@/components/home/chat"
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "@/components/ui/toast";
-import { type HomeDataProps } from "@/types/home";
 import { getHomeStats } from "@/services/statsService";
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setHomeStats } from '@/store/reducers/homeSlice';
 import { useTranslation } from 'react-i18next';
 
 const container = {
@@ -20,20 +20,16 @@ const container = {
 };
 
 export default function Home() {
-  const [data, setData] = useState<HomeDataProps>({
-    visitsCount: 0,
-    goldCount: 0,
-    matchCount: 0,
-    history: []
-  });
-  const { isAuthenticated, username, picture } = useAppSelector(state => state.user);
+  const data = useAppSelector(state => state.home);
+  const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAppSelector(state => state.user);
   const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await getHomeStats();
-        setData(result);
+        dispatch(setHomeStats(result));
       } catch (error) {
         toast.add({
           type: "error",
@@ -43,7 +39,7 @@ export default function Home() {
     };
 
     fetchData();
-  }, [t]);
+  }, [dispatch, t]);
 
   const stats = [
     { Icon: User, title: t('home.visits'), count: data.visitsCount },
@@ -89,7 +85,7 @@ export default function Home() {
           transition={{ duration: 0.4, delay: 0.35, ease: "easeOut" }}
           className="grid grid-cols-1 gap-6 md:grid-cols-2"
         >
-          <Chat currentUser={username} currentPicture={picture} isAuthenticated={isAuthenticated} />
+          <Chat isAuthenticated={isAuthenticated} />
           <ChartHistory data={data.history} />
         </motion.div>
       </div>

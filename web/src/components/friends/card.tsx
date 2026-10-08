@@ -18,7 +18,7 @@ import {
   InputGroupInput,
   InputGroupText,
 } from "@/components/ui/input-group";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage, AvatarBadge } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
@@ -36,7 +36,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 import { getFriendsList, sendFriendsRequest, removeFriend } from "@/services/friendsService";
-import { type UserPublic } from "@/types/user";
+import { type FriendState } from "@/types/user";
 import { initialsOf, errorMessage } from "@/lib/utils";
 
 const MAX_USERNAME_LENGTH = 32;
@@ -48,7 +48,7 @@ function FriendRow({
   deleteLabel,
   deleteTooltip,
 }: {
-  friend: UserPublic;
+  friend: FriendState;
   removing: boolean;
   onRemove: (username: string) => void;
   deleteLabel: string;
@@ -64,6 +64,7 @@ function FriendRow({
       <Avatar className="size-8 shrink-0">
         <AvatarImage src={friend.picture} />
         <AvatarFallback className="text-xs">{initialsOf(friend.username)}</AvatarFallback>
+        <AvatarBadge className={friend.online ? 'bg-green-600 dark:bg-green-800' : 'bg-gray-600 dark:bg-gray-800' }/>
       </Avatar>
 
       <span className="min-w-0 flex-1 truncate text-sm font-medium">{friend.username}</span>
@@ -103,7 +104,7 @@ function FriendsSkeleton() {
 }
 
 export function FriendsCard() {
-  const [friends, setFriends] = useState<UserPublic[]>([]);
+  const [friends, setFriends] = useState<FriendState[]>([]);
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
@@ -111,7 +112,7 @@ export function FriendsCard() {
   const { t } = useTranslation();
 
   const loadFriends = useCallback(async () => {
-    setLoading(true);
+    setLoading(friends.length == 0);
     try {
       setFriends(await getFriendsList());
     } catch (error) {
@@ -127,7 +128,12 @@ export function FriendsCard() {
 
   useEffect(() => {
     void loadFriends();
-  }, [loadFriends]);
+    const interval = setInterval(() => {
+      void loadFriends();
+    }, 7500);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const trimmed = username.trim();
   const canSend = trimmed.length > 0 && !sending;

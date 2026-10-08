@@ -1,8 +1,6 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import { Subscribe } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Checkbox } from "@/components/ui/checkbox";
 import { dataTableFeatures } from "@/lib/data-table-features";
 import type { UnitRow } from "@/components/units/schema";
 import { ChevronRight } from "lucide-react";
@@ -36,42 +34,6 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
     ),
     enableSorting: false,
     enableHiding: false
-  },
-  {
-    id: "select",
-    header: ({ table }: any) => (
-      <div className="flex items-center justify-center">
-        <Subscribe
-          source={table.atoms.rowSelection}
-          selector={() =>
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected() && "indeterminate")
-          }
-        >
-          {(checked) => (
-            <Checkbox
-              checked={Boolean(checked)}
-              onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-              aria-label="Select all units on this page"
-            />
-          )}
-        </Subscribe>
-      </div>
-    ),
-    cell: ({ row }: any) => (
-      <div className="flex items-center justify-center">
-        <Subscribe source={row.table.atoms.rowSelection} selector={(selection: Record<string, boolean>) => Boolean(selection?.[row.id])}>
-          {(checked) => (
-            <Checkbox
-              checked={checked}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              aria-label={`Select ${row.original.unit}`}
-            />
-          )}
-        </Subscribe>
-      </div>
-    ),
-    enableHiding: false,
   },
   {
     accessorKey: "unit",

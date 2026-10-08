@@ -6,6 +6,11 @@ export interface UserPublic {
   username: string;
   picture?: string;
   chat?: ChatDataProps[];
+  isDark?: boolean;
+}
+
+export interface FriendState extends UserPublic {
+  online: boolean;
 }
 
 export interface UserState extends UserPublic {

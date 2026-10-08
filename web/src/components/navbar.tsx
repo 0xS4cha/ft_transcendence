@@ -24,7 +24,7 @@ export function Navbar() {
   const { t } = useTranslation();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#202020] backdrop-blur">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-card/80 backdrop-blur dark:border-white/5 dark:bg-[#202020]">
       <div className="flex h-16 w-full items-center justify-between px-8 ">
         <Link
           to="/"
@@ -40,7 +40,7 @@ export function Navbar() {
               className={({ isActive }) =>
                 cn(
                   'text-sm font-normal transition-colors',
-                  isActive ? 'text-white' : 'text-neutral-400 hover:text-neutral-200',
+                  isActive ? 'text-foreground dark:text-white' : 'text-muted-foreground hover:text-foreground dark:text-neutral-400 dark:hover:text-neutral-200',
                 )
               }
             >
@@ -50,9 +50,9 @@ export function Navbar() {
         </nav>
         <Link
           to={isAuthenticated ? "/profile" : "/authenticate"}
-          className="flex items-center gap-2.5 text-sm font-normal text-neutral-400 transition-colors hover:text-white"
+          className="flex items-center gap-2.5 text-sm font-normal text-muted-foreground transition-colors hover:text-foreground dark:text-neutral-400 dark:hover:text-white"
         >
-          <div className="h-7 w-7 rounded-full border border-white/10 bg-neutral-800" />
+          <div className="h-7 w-7 rounded-full border border-border bg-muted dark:border-white/10 dark:bg-neutral-800" />
           <span>{isAuthenticated ? email : t('common.guest')}</span>
         </Link>
       </div>

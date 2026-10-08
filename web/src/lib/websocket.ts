@@ -1,7 +1,9 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useAppDispatch } from "@/store/hooks"
 import { addChatContent } from "@/store/reducers/userSlice";
+import { setHomeStats } from "@/store/reducers/homeSlice";
 import { receiveFriendRequest } from "@/services/friendsService"
+import { type HomeDataProps } from "@/types/home";
 
 export function useWSConnection(url: string = 'ws://127.0.0.1:8080') {
   const [isConnected, setIsConnected] = useState(false);
@@ -46,9 +48,12 @@ export function useWSConnection(url: string = 'ws://127.0.0.1:8080') {
           case "friend.request":
             receiveFriendRequest(parsed.data.requester_username);
             break;
+          case "stats.update":
+            dispatch(setHomeStats(parsed.data as HomeDataProps));
+            break;
         }
       } catch (err) {
-          console.error("WS message parsing failed:", err);
+          console.log("WS message parsing failed:", err);
       }
     };
 

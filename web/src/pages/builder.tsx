@@ -41,7 +41,7 @@ export default function Builder() {
         const result = await getUnitsStats();
         setChampions(result);
       } catch (error) {
-        console.error("Error while fetching champs", error);
+        console.log("Error while fetching champs", error);
       }
     };
     fetchChampions();
@@ -54,7 +54,7 @@ export default function Builder() {
         setItems(result);
       } catch (error)
       {
-        console.error("Error while fetching champs", error);
+        console.log("Error while fetching champs", error);
       }
     };
     fetchChampions();
@@ -66,7 +66,7 @@ export default function Builder() {
         const result = await getTraitsStats();
         setTraits(result);
       } catch (error) {
-        console.error("Error while fetching traits", error);
+        console.log("Error while fetching traits", error);
       }
     };
     fetchTraits()
@@ -80,7 +80,7 @@ export default function Builder() {
         setAugments(result);
       } catch (error)
       {
-        console.error("Error while fetching augments", error);
+        console.log("Error while fetching augments", error);
       }
     };
     fetchAugments();
@@ -219,7 +219,7 @@ export default function Builder() {
       alert("Code copied to clipboard !\n\n" + encodedCode)
     } catch (error)
     {
-      console.error("Error while copying :", error);
+      console.log("Error while copying :", error);
       alert("Error: failed to copy the board\n");
     }
   }
@@ -242,7 +242,7 @@ export default function Builder() {
       }
     } catch (error)
     {
-      console.error("Error while importing the comp :", error);
+      console.log("Error while importing the comp :", error);
       alert("Format is invalid or we encountered an error, retry.");
     }
   }
@@ -263,11 +263,11 @@ export default function Builder() {
       <div className="flex  w-full max-w-375 mx-auto flex-col gap-3 overflow-hidden">
         <BuilderToolBar onCopyCode={handleCopycode} onImportCode={handleImportCode}/>
         <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_3.3fr_0.8fr] gap-3 min-h-0 flex-1">
-          <div className="hidden lg:flex flex-col min-w-0 min-h-0 max-h-125">
+          <div className="hidden lg:flex flex-col min-w-0 min-h-0 max-h-127">
             <BuilderTraitsBar boardState={boardState} champions={champions} traits={traits} />
           </div>
           <div className="flex flex-col gap-3 min-w-0 min-h-0">
-            <div className="flex items-center justify-center rounded-xl border border-white/10 flex-1 bg-[#202020]">
+            <div className="flex items-center justify-center rounded-xl border border-white/10 flex-1">
                 <BuilderBoard boardState={boardState} champions={champions} onRemoveChampion={handleRemoveChampion} boardItems={boardItems} items={items}/>
             </div>
             <div className="block lg:hidden ">

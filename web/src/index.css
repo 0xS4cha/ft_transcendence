@@ -5,10 +5,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-body {
-  background-color: oklch(0.2178 0 0);
-  color: white;
-}
 :root {
   --background: oklch(0.9551 0 0);
   --foreground: oklch(0.3211 0 0);
@@ -129,40 +125,80 @@ body {
 }
 
 @layer base {
-
   * {
     @apply border-border outline-ring/50;
-    }
+  }
+
   body {
     @apply bg-background text-foreground;
-    }
+  }
+
   html {
     @apply font-sans;
-    }
+  }
+
+  html:not(.dark) {
+    color-scheme: light;
+  }
+
+  html:not(.dark) .text-white,
+  html:not(.dark) .text-white\/80,
+  html:not(.dark) .text-white\/60,
+  html:not(.dark) .text-white\/55,
+  html:not(.dark) .text-white\/10,
+  html:not(.dark) .text-white\/5 {
+    color: var(--foreground) !important;
+  }
+
+  html:not(.dark) .bg-[#202020],
+  html:not(.dark) .bg-neutral-800,
+  html:not(.dark) .bg-neutral-900 {
+    background-color: var(--card) !important;
+  }
+
+  html:not(.dark) .border-white\/5,
+  html:not(.dark) .border-white\/10,
+  html:not(.dark) .border-white\/20,
+  html:not(.dark) .border-white\/30 {
+    border-color: var(--border) !important;
+  }
+
+  html:not(.dark) .bg-white\/10,
+  html:not(.dark) .bg-white\/4,
+  html:not(.dark) .bg-white\/5,
+  html:not(.dark) .bg-white\/20 {
+    background-color: color-mix(in srgb, var(--muted) 70%, transparent) !important;
+  }
+
+  html:not(.dark) .hover\:bg-white\/4:hover,
+  html:not(.dark) .hover\:bg-white\/10:hover,
+  html:not(.dark) .hover\:bg-white\/20:hover {
+    background-color: color-mix(in srgb, var(--muted) 70%, transparent) !important;
+  }
 }
 
 /*patch note imports*/
 @layer components {
   .patch-note-container {
-    @apply text-neutral-300 leading-relaxed;
+    @apply text-foreground/80 leading-relaxed;
   }
-  
+
   .patch-note-container h1 {
-    @apply text-3xl font-bold text-white mb-2 mt-6;
+    @apply text-3xl font-bold text-foreground dark:text-white mb-2 mt-6;
   }
-  
+
   .patch-note-container h2 {
-    @apply text-2xl font-bold text-white mt-10 mb-4 border-b border-white/10 pb-2;
+    @apply text-2xl font-bold text-foreground dark:text-white mt-10 mb-4 border-b border-border dark:border-white/10 pb-2;
   }
-  
+
   .patch-note-container h3 {
-    @apply text-xl font-semibold text-blue-400 mt-8 mb-3;
+    @apply text-xl font-semibold text-blue-500 dark:text-blue-400 mt-8 mb-3;
   }
-  
+
   .patch-note-container h4 {
-    @apply text-lg font-medium text-neutral-200 mt-6 mb-2;
+    @apply text-lg font-medium text-foreground/90 dark:text-neutral-200 mt-6 mb-2;
   }
-  
+
   .patch-note-container p {
     @apply mb-4;
   }
@@ -174,24 +210,24 @@ body {
   .patch-note-container table {
     @apply w-full text-left border-collapse mb-8 mt-4;
   }
-  
+
   .patch-note-container th {
-    @apply bg-neutral-800 p-3 font-semibold text-white border border-white/10;
+    @apply bg-muted p-3 font-semibold text-foreground dark:bg-neutral-800 dark:text-white border border-border dark:border-white/10;
   }
-  
+
   .patch-note-container td {
-    @apply p-3 border border-white/10;
+    @apply p-3 border border-border dark:border-white/10;
   }
 
   .patch-note-container .buff {
-    @apply text-emerald-400 font-medium;
+    @apply text-emerald-600 dark:text-emerald-400 font-medium;
   }
-  
+
   .patch-note-container .nerf {
-    @apply text-red-400 font-medium;
+    @apply text-red-600 dark:text-red-400 font-medium;
   }
 
   .patch-note-container .patch-meta {
-    @apply text-sm text-neutral-500 mb-8;
+    @apply text-sm text-muted-foreground mb-8;
   }
 }

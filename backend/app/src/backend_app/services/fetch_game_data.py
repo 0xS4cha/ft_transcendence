@@ -68,7 +68,7 @@ async def get_or_fetch[T](
             print(f"[get_or_fetch] cache validation failed for {key}, refetching: {e}")
 
 
-    results = await fetch_fn();
+    results = await fetch_fn()
 
     try:
         adapted = adapter.dump_json(results)
