@@ -1,4 +1,4 @@
-import { apiGet, apiPost, apiPostForm, apiDelete } from "@/lib/api";
+import { apiGet, apiPost, apiPostForm, apiDelete, apiFetch } from "@/lib/api";
 import { type SignupPayload, type UserPublic } from "@/types/user";
 
 export function login(email: string, password: string): Promise<UserPublic> {
@@ -25,6 +25,18 @@ export function delete_rgpd(): Promise<void> {
   return apiDelete<void>("/api/auth/me");
 }
 
-export function setUsername(test: string): Promise<void> {
-  return apiPost<void>("/api/", test)
+export function changeUsername(newUsername: string): Promise<UserPublic> {
+  const encodedUsername = encodeURIComponent(newUsername);
+  
+  return apiPost<UserPublic>(`/api/user/change_username?new_username=${encodedUsername}`, null);
+}
+
+export function changePicture(file: File): Promise<UserPublic> {
+  const formData = new FormData();
+  formData.append("file", file); 
+
+  return apiFetch<UserPublic>("/api/user/change_picture", {
+    method: "POST",
+    body: formData,
+  });
 }

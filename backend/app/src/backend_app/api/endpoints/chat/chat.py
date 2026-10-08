@@ -56,7 +56,7 @@ async def messages(current_user: Annotated[UserModel, Depends(Token.get_current_
     current_time = time.time()
     if current_time - last_refresh_timestamp > refresh_delta_s:
         async with session:
-            result = await session.execute(select(ChatMessage, UserModel.username, UserModel.picture)
+            result = await session.execute(select(ChatMessage, UserModel.username, UserModel.picture, UserModel.id)
                                            .join(UserModel, UserModel.id == ChatMessage.owner_id)
                                            .order_by(ChatMessage.date.desc())
                                            .limit(MAX_MESSAGES_COUNT))
@@ -65,10 +65,11 @@ async def messages(current_user: Annotated[UserModel, Depends(Token.get_current_
                     "id": message.id,
                     "date": message.date,
                     "content": message.content,
+                    "user_id": user_id,
                     "username": username,
                     "picture": picture
                 }
-                for message, username, picture in [r for r in result][::-1]
+                for message, username, picture, user_id in [r for r in result][::-1]
             ]
         last_refresh_timestamp = current_time
     return cached_messages

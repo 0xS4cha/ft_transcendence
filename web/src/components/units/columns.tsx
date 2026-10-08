@@ -59,7 +59,7 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
   },
   {
     accessorKey: "place",
-    header: "Average Place",
+    header: "Place place (avg.)",
     filterFn: "equalsString",
     cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.avg_place).toFixed(2)}</span>
   },
