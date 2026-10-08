@@ -40,7 +40,7 @@ async def send_chat(chat_message: ChatMessageForm, current_user: Annotated[UserM
         "content": chat_message.content,
         "user_id": current_user.id,
         "username": current_user.username,
-        "picture": f"/api/public/{current_user.picture}",
+        "picture": f"/api/public/{current_user.picture}" if not "cdn.intra.42.fr" in current_user.picture else current_user.picture,
     }
     await WSbroadcast("chat.msg", data)
     return data
@@ -67,7 +67,7 @@ async def messages(current_user: Annotated[UserModel, Depends(Token.get_current_
                     "content": message.content,
                     "user_id": user_id,
                     "username": username,
-                    "picture": f"/api/public/{picture}",
+                    "picture": f"/api/public/{picture}" if not "cdn.intra.42.fr" in picture else picture,
                 }
                 for message, username, picture, user_id in [r for r in result][::-1]
             ]
