@@ -7,6 +7,14 @@
     <title>Tactyx</title>
   </head>
   <body>
+    <svg width="0" height="0" class="absolute pointer-events-none" aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;">
+      <filter id="s18-augment-tier-key" colorInterpolationFilters="sRGB" x="-25%" y="-25%" width="150%" height="150%">
+        <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0.75 0.75 0.75 0 0" />
+      </filter>
+      <filter id="s18-augment-tier-glyph" colorInterpolationFilters="sRGB" x="-25%" y="-25%" width="150%" height="150%">
+        <feColorMatrix type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 1" />
+      </filter>
+    </svg>
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>
   </body>
