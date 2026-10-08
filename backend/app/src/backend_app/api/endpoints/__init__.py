@@ -19,7 +19,6 @@ from backend_app.api.endpoints.friends.refuse_friend_request import (
 from backend_app.api.endpoints.friends.remove_friend import (
     router as remove_friend_router,
 )
-from backend_app.api.endpoints.rgpd import router as rgpd_deletion_router
 from backend_app.api.endpoints.friends.send_friend_request import (
     router as send_friend_request_router,
 )
@@ -32,6 +31,7 @@ from backend_app.api.endpoints.game_data.patchnote import router as patchnote_ro
 from backend_app.api.endpoints.game_data.search import router as search_router
 from backend_app.api.endpoints.game_data.traits_data import router as traits_data_router
 from backend_app.api.endpoints.game_data.units_data import router as units_data_router
+from backend_app.api.endpoints.rgpd import router as rgpd_deletion_router
 from backend_app.api.endpoints.stats.prometheus_metrics import (
     router as prometheus_metrics_router,
 )
