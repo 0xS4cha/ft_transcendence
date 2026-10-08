@@ -216,7 +216,7 @@ export function ProfileCard() {
                         <AlertDialogDescription>
                             {t(
                                 "profile.rgpdDeleteDescription",
-                                "This action is permanent. If you only need your information back, use the info button and contact test@tactyx.com."
+                                "Are you sure ? This action is permanent."
                             )}
                         </AlertDialogDescription>
                     </AlertDialogHeader>

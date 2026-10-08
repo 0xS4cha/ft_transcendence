@@ -32,14 +32,20 @@ export const ItemsColumns: ColumnDef<typeof dataTableFeatures, ItemRow>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "type",
+    header: "Type",
+    filterFn: "equalsString",
+    cell: ({ row }: any) => <span className="text-sm">{row.original.type}</span>
+  },
+  {
     accessorKey: "place",
-    header: "Place change (avg.)",
+    header: "Average Place",
     filterFn: "equalsString",
     cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.avg_place).toFixed(2)}</span>
   },
   {
     accessorKey: "wr",
-    header: "WR",
+    header: "Win rat",
     cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.winrate).toFixed(2)}%</span>,
   },
   {

@@ -8,8 +8,8 @@ import { SelectContent, Select, SelectItem, SelectTrigger, SelectValue } from "@
 import { useTranslation } from "react-i18next";
 
 const FORMATS = [
-  { value: "json", label: "JSON" },
-  { value: "xml", label: "XML" },
+  { value: "json", label: "json" },
+  { value: "xml", label: "xml" },
 ] as const;
 
 export function ItemsOverview() {
@@ -45,7 +45,7 @@ export function ItemsOverview() {
                         ))}
                         </SelectContent>
                     </Select>
-                    <Button variant="outline" onClick={handleExport}><Download/>Export</Button>
+                    <Button size="sm" variant="outline" onClick={handleExport}><Download/>Export</Button>
                 </CardAction>
             </CardHeader>
             <CardContent>

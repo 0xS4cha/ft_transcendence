@@ -41,10 +41,10 @@ const resources = {
         lastpage: "Go to last page",
         firstpage: "Go to first page",
         row: "row ",
-        listof: "List of units",
-        list: "List of items",
-        listoftrait:"List of traits",
-        listofaug: "List of augments"
+        listof: "Units",
+        list: "Items",
+        listoftrait:"Traits",
+        listofaug: "Augments"
       },
       patchnote: {
         loading: "Loading patch note ..."
@@ -94,7 +94,7 @@ const resources = {
         fetchFailed: 'Fetch failed',
       },
       chart: {
-        title: 'Area Chart',
+        title: 'Website visits',
         description: 'Showing total visitors for the last 3 months',
         last3months: 'Last 3 months',
         last30days: 'Last 30 days',
@@ -148,7 +148,7 @@ const resources = {
         rgpdInfoDescription: 'To recover your personal data, send an email to test@tactyx.com.',
         rgpdDeleteButton: 'Delete my account',
         rgpdDeleteTitle: 'Delete your account?',
-        rgpdDeleteDescription: 'This action is permanent. If you only need your information back, use the info button and contact test@tactyx.com.',
+        rgpdDeleteDescription: 'Are you sure ? This action is permanent.',
         rgpdDeleteConfirm: 'Delete account',
       },
       builder: {
@@ -250,10 +250,10 @@ const resources = {
         previouspage: 'Aller à la page précédente',
         lastpage: 'Aller à la dernière page',
         firstpage: 'Aller à la première page',
-        listof: "Liste des unites",
-        list: "Liste des items",
-        listoftrait: "Liste des traits",
-        listofaug: "Liste des augments"
+        listof: "Unites",
+        list: "Items",
+        listoftrait: "Traits",
+        listofaug: "Augments"
       },
       patchnote: {
         loading: 'Chargement des notes de patch...',
@@ -303,7 +303,7 @@ const resources = {
         fetchFailed: 'Échec du chargement',
       },
       chart: {
-        title: 'Graphique en aires',
+        title: 'Visits du site',
         description: 'Affichage du nombre total de visiteurs au cours des 3 derniers mois',
         last3months: '3 derniers mois',
         last30days: '30 derniers jours',
@@ -357,7 +357,7 @@ const resources = {
         rgpdInfoDescription: 'Pour récupérer vos données personnelles, envoyez un e-mail à test@tactyx.com.',
         rgpdDeleteButton: 'Supprimer mon compte',
         rgpdDeleteTitle: 'Supprimer votre compte ?',
-        rgpdDeleteDescription: 'Cette action est définitive. Si vous avez seulement besoin de récupérer vos informations, utilisez le bouton info et contactez test@tactyx.com.',
+        rgpdDeleteDescription: 'Cette action est définitive. Etes vous sûr de la vouloir ?',
         rgpdDeleteConfirm: 'Supprimer le compte',
       },
       builder: {
@@ -459,10 +459,10 @@ const resources = {
         lastpage: 'Ir a la última página',
         firstpage: 'Ir a la primera página',
         row: "fila ",
-        listof: "Lista de unidades",
-         list: "Lista de artículos",
-         listoftrait: "Lista de rasgos",
-         listofaug: "Lista de mejoras"
+        listof: "Unidades",
+        list: "Artículos",
+        listoftrait: "Rasgos",
+        listofaug: "Mejoras"
       },
       patchnote: {
         loading: 'Cargando notas del parche...',

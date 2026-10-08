@@ -49,9 +49,6 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
               <span className="truncate font-medium text-sm leading-none">
                 {row.original.name}
               </span>
-              <span className="truncate text-muted-foreground text-xs leading-none">
-                #{row.original.id}
-              </span>
             </div>
           </div>
         </div>
@@ -62,13 +59,13 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
   },
   {
     accessorKey: "place",
-    header: "Place place (avg.)",
+    header: "Average Place",
     filterFn: "equalsString",
     cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.avg_place).toFixed(2)}</span>
   },
   {
     accessorKey: "wr",
-    header: "WR",
+    header: "Win rate",
     cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.winrate).toFixed(2)}%</span>,
   },
   {

@@ -11,7 +11,8 @@ import {
   ChevronLeft,
   ChevronRight,
   User,
-  LogOut
+  LogOut,
+  SearchIcon
 } from 'lucide-react';
 import { NavLink, Link } from 'react-router-dom';
 
@@ -61,9 +62,9 @@ const NAV_ITEMS: readonly NavItem[] = [
 ] as const;
 
 export function AppSidebar() {
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, setOpen, open } = useSidebar();
   const dispatch = useAppDispatch();
-  const { isAuthenticated, username, picture } = useAppSelector(state => state.user);
+  const { isAuthenticated, username, picture, email } = useAppSelector(state => state.user);
   const { t } = useTranslation();
 
   function handleLogout() {
@@ -101,7 +102,7 @@ export function AppSidebar() {
           className="group/reopen relative hidden h-8 w-8 items-center justify-center rounded-md transition-colors hover:bg-muted group-data-[collapsible=icon]:flex dark:hover:bg-white/10"
         >
           <span className="bg-linear-to-r from-[#4E80EE] via-[#38E1FF] to-[#70A6FF] bg-clip-text font-mono text-[11px] font-black tracking-tighter text-transparent transition-opacity duration-150 group-hover/reopen:opacity-0">
-            TACTYX
+            tactyx
           </span>
           <ChevronRight className="absolute h-4 w-4 translate-x-0.5 text-muted-foreground opacity-0 transition-all duration-150 group-hover/reopen:opacity-100 dark:text-neutral-200" />
         </button>
@@ -114,6 +115,19 @@ export function AppSidebar() {
               <SearchInput />
             </div>
             <SidebarMenu className="gap-2">
+              {!open && (
+                <SidebarMenuItem key="search">
+                  <button
+                    onClick={() => setOpen(true)}
+                    className="group/item flex h-8 w-full items-center gap-3 rounded-md px-2.5 text-[13px] font-normal transition-colors group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 text-muted-foreground hover:bg-muted/60 hover:text-foreground dark:text-neutral-400 dark:hover:bg-white/4 dark:hover:text-white"
+                  >
+                    <SearchIcon className="h-4 w-4 shrink-0 stroke-[1.5] text-muted-foreground transition-colors group-hover/item:text-foreground dark:text-neutral-400 dark:group-hover/item:text-white" />
+                    <span className="truncate group-data-[collapsible=icon]:hidden">
+                      Search
+                    </span>
+                  </button>
+                </SidebarMenuItem>
+              )}
               {NAV_ITEMS.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <NavLink
@@ -122,11 +136,11 @@ export function AppSidebar() {
                       cn(
                         'group/item flex h-8 items-center gap-3 rounded-md px-2.5 text-[13px] font-normal transition-colors group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0',
                         isActive
-                          ? 'bg-muted/80 font-medium text-foreground shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] dark:bg-white/10 dark:text-white'
-                          : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground dark:text-neutral-400 dark:hover:bg-white/4 dark:hover:text-white',
+                        ? 'bg-muted/80 font-medium text-foreground shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] dark:bg-white/10 dark:text-white'
+                        : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground dark:text-neutral-400 dark:hover:bg-white/4 dark:hover:text-white',
                       )
                     }
-                  >
+                    >
                     <item.icon className="h-4 w-4 shrink-0 stroke-[1.5] text-muted-foreground transition-colors group-hover/item:text-foreground dark:text-neutral-400 dark:group-hover/item:text-white"/>
                     <span className="truncate group-data-[collapsible=icon]:hidden">
                       {t(item.label)}
@@ -157,7 +171,7 @@ export function AppSidebar() {
                 </span>
 
                 <span className="truncate text-[10px] text-muted-foreground dark:text-neutral-500">
-                  {isAuthenticated ? username : t('common.login')}
+                  {isAuthenticated ? email : t('common.login')}
                 </span>
               </div>
             </button>
