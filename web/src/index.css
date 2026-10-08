@@ -150,7 +150,7 @@
     color: var(--foreground) !important;
   }
 
-  html:not(.dark) .bg-[#202020],
+  html:not(.dark) .bg-neutral-700,
   html:not(.dark) .bg-neutral-800,
   html:not(.dark) .bg-neutral-900 {
     background-color: var(--card) !important;

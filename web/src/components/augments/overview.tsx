@@ -8,8 +8,8 @@ import { SelectContent, Select, SelectItem, SelectTrigger, SelectValue } from "@
 import { useTranslation } from "react-i18next";
 
 const FORMATS = [
-  { value: "json", label: "JSON" },
-  { value: "xml", label: "XML" },
+  { value: "json", label: "json" },
+  { value: "xml", label: "xml" },
 ] as const
 
 export function AugmentsOverview() {
