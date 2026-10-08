@@ -44,7 +44,7 @@ export const ItemsColumns: ColumnDef<typeof dataTableFeatures, ItemRow>[] = [
   },
   {
     accessorKey: "wr",
-    header: "Win rat",
+    header: "Win rate",
     cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.winrate).toFixed(2)}%</span>,
   },
   {

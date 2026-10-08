@@ -158,10 +158,6 @@ export function ProfileCard() {
                         </div>
                     </div>
 
-                    <dl className="bg-muted flex items-center justify-between rounded-md border px-4 py-3">
-                        <dt className="text-muted-foreground text-sm">{t("profile.id", "ID")}</dt>
-                        <dd className="font-mono text-sm font-medium">{id}</dd>
-                    </dl>
 
                     <div className="space-y-6 border-t pt-6">
                         <div className="space-y-2">
@@ -201,7 +197,7 @@ export function ProfileCard() {
                     </div>
                 </div>
             </CardContent>
-            <CardAction>
+            <CardAction className="flex px-4 gap-2">
                 <Button
                     type="button"
                     variant="outline"
