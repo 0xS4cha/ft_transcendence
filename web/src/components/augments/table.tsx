@@ -11,7 +11,7 @@ import { downloadJson, downloadXml } from "@/lib/utils";
 
 export function AugmentsTable({ ref }: any) {
   const [filter, setFilter] = useState<FilterType>({
-    queue: "1100",
+    queue: "Ranked",
     ranked: "PLATINUM",
     server: "EUW1"
   });

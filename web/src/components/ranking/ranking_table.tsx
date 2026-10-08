@@ -10,7 +10,7 @@ export function RankingTable() {
   const [loading, setLoading] = useState(true);
 
   const [filter, setFilter] = useState({
-    queue: "1100",
+    queue: "Ranked",
     server: "GLOBAL",
 	  ranked: "CHALLENGER"
   });

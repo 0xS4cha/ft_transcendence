@@ -460,9 +460,9 @@ const resources = {
         firstpage: 'Ir a la primera página',
         row: "fila ",
         listof: "Unidades",
-        list: "Artículos",
-        listoftrait: "Rasgos",
-        listofaug: "Mejoras"
+         list: "Artículos",
+         listoftrait: "Rasgos",
+         listofaug: "Mejoras"
       },
       patchnote: {
         loading: 'Cargando notas del parche...',
