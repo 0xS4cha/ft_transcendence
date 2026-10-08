@@ -95,6 +95,8 @@ export function DataTable({
   const [expanded, setExpanded] = useState<ExpandedState>({});
   const [columnVisibility] = useState<ColumnVisibilityState>({
     search: false,
+    avg_place: false,
+    name: false
   });
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,

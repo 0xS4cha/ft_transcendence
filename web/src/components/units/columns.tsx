@@ -84,11 +84,13 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
   {
     id: "avg_place",
     accessorFn: (row) => row.avg_place,
+    enableHiding: true,
     enableSorting: true,
   },
   {
     id: "name",
     accessorFn: (row) => row.name,
     enableSorting: true,
+    enableHiding: true,
   }
 ];
