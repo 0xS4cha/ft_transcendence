@@ -19,9 +19,6 @@ from backend_app.api.endpoints.friends.refuse_friend_request import (
 from backend_app.api.endpoints.friends.remove_friend import (
     router as remove_friend_router,
 )
-from backend_app.api.endpoints.user.remove_picture import (
-    router as remove_picture_router,
-)
 from backend_app.api.endpoints.friends.send_friend_request import (
     router as send_friend_request_router,
 )
@@ -44,6 +41,9 @@ from backend_app.api.endpoints.user.change_picture import (
 )
 from backend_app.api.endpoints.user.change_username import (
     router as change_username_router,
+)
+from backend_app.api.endpoints.user.remove_picture import (
+    router as remove_picture_router,
 )
 
 __all__ = [

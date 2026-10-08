@@ -1,15 +1,14 @@
-from typing import Annotated
 import os
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import update
 
-
 from backend_app.core.jwt import Token
 from backend_app.models.users import UserModel
 from backend_app.schemas.user import UserPublic
+from backend_app.services.process_img import remove_file
 from shared.database import AsyncSessionDep
-from backend_app.services.process_img import remove_file,
 
 router = APIRouter()
 
