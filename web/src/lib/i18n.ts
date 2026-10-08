@@ -94,7 +94,7 @@ const resources = {
         fetchFailed: 'Fetch failed',
       },
       chart: {
-        title: 'Area Chart',
+        title: 'Website visits',
         description: 'Showing total visitors for the last 3 months',
         last3months: 'Last 3 months',
         last30days: 'Last 30 days',
@@ -148,7 +148,7 @@ const resources = {
         rgpdInfoDescription: 'To recover your personal data, send an email to test@tactyx.com.',
         rgpdDeleteButton: 'Delete my account',
         rgpdDeleteTitle: 'Delete your account?',
-        rgpdDeleteDescription: 'This action is permanent. If you only need your information back, use the info button and contact test@tactyx.com.',
+        rgpdDeleteDescription: 'Are you sure ? This action is permanent.',
         rgpdDeleteConfirm: 'Delete account',
       },
       builder: {
@@ -303,7 +303,7 @@ const resources = {
         fetchFailed: 'Échec du chargement',
       },
       chart: {
-        title: 'Graphique en aires',
+        title: 'Visits du site',
         description: 'Affichage du nombre total de visiteurs au cours des 3 derniers mois',
         last3months: '3 derniers mois',
         last30days: '30 derniers jours',
@@ -357,7 +357,7 @@ const resources = {
         rgpdInfoDescription: 'Pour récupérer vos données personnelles, envoyez un e-mail à test@tactyx.com.',
         rgpdDeleteButton: 'Supprimer mon compte',
         rgpdDeleteTitle: 'Supprimer votre compte ?',
-        rgpdDeleteDescription: 'Cette action est définitive. Si vous avez seulement besoin de récupérer vos informations, utilisez le bouton info et contactez test@tactyx.com.',
+        rgpdDeleteDescription: 'Cette action est définitive. Etes vous sûr de la vouloir ?',
         rgpdDeleteConfirm: 'Supprimer le compte',
       },
       builder: {

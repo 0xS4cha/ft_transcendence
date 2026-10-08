@@ -15,7 +15,7 @@ from shared.database import AsyncSessionDep, db
 class Token:
     secret_key = db.settings.SECRET_JWT_KEY
     algorithm = "HS256"
-    access_token_expire_minutes = 30
+    access_token_expire_minutes = 43200
 
     class TokenData(BaseModel):
         username: str | None = None

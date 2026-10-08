@@ -45,7 +45,7 @@ export function ItemsOverview() {
                         ))}
                         </SelectContent>
                     </Select>
-                    <Button variant="outline" onClick={handleExport}><Download/>Export</Button>
+                    <Button size="sm" variant="outline" onClick={handleExport}><Download/>Export</Button>
                 </CardAction>
             </CardHeader>
             <CardContent>

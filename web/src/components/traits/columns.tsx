@@ -32,13 +32,13 @@ export const TraitsColumns: ColumnDef<typeof dataTableFeatures, TraitRow>[] = [
   },
   {
     accessorKey: "place",
-    header: "Avg place",
+    header: "Average Place",
     filterFn: "equalsString",
     cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.avg_place).toFixed(2)}</span>
   },
   {
     accessorKey: "wr",
-    header: "WR",
+    header: "Win rate",
     cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.winrate).toFixed(2)}%</span>,
   },
   {
