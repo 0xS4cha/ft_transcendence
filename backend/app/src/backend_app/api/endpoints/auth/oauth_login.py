@@ -102,7 +102,7 @@ async def callback(
 
     user_data = me_response.json()
     email = user_data.get("email")
-    if not email:
+    if not email or email.count("@") != 1:
         raise HTTPException(status_code=400, detail="No email provided by 42 API")
 
     login = user_data.get("login", email.split('@')[0])
@@ -121,6 +121,8 @@ async def callback(
         session.add(new_user)
         await session.commit()
         await session.refresh(new_user)
+    else:
+        raise HTTPException(status_code=400, detail="User with this email already exists!")
 
     redirect_url = f"{db.settings.FRONTEND_URL.rstrip('/')}/profile"
     redirect = RedirectResponse(url=redirect_url)
