@@ -15,6 +15,7 @@ dependencies = [
     "fastapi-limiter>=0.2.0",
     "fastapi[standard]>=0.141.1",
     "greenlet>=3.5.5",
+    "httpx>=0.28.1",
     "httpx2>=2.12.0",
     "langchain-text-splitters>=1.1.3",
     "ollama>=0.6.3",

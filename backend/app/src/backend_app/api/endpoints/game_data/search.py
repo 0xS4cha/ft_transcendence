@@ -72,21 +72,21 @@ async def query_user_profile(query_username: str):
 
 	game_name = query_username.split('#')[0].strip()
 	game_tag = query_username.split('#')[1].strip()
-	account = riot_api.get_account(game_name, game_tag, Platform.EUN1.get_continent())
+	account = await riot_api.get_account(game_name, game_tag, Platform.EUN1.get_continent())
 	if not account or "puuid" not in account:
 		return None
 
 	# get region for player
-	region = riot_api.get_region(account["puuid"])
+	region = await riot_api.get_region(account["puuid"])
 	if not region:
 		return None
 
 	server = Platform(region)
-	summoner = riot_api.get_summoner(account["puuid"], server.value)
+	summoner = await riot_api.get_summoner(account["puuid"], server.value)
 	if not summoner or "puuid" not in summoner:
 		return None
 
-	ranked_data_lst = riot_api.get_ranked(account["puuid"], server.value)
+	ranked_data_lst = await riot_api.get_ranked(account["puuid"], server.value)
 	if ranked_data_lst and isinstance(ranked_data_lst, list) and len(ranked_data_lst) > 0:
 		ranked_data = ranked_data_lst[0]
 		
