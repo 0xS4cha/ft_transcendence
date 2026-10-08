@@ -150,6 +150,10 @@ const resources = {
         rgpdDeleteTitle: 'Delete your account?',
         rgpdDeleteDescription: 'Are you sure ? This action is permanent.',
         rgpdDeleteConfirm: 'Delete account',
+        pic: 'Delete picture',
+        deletePicTitle: 'Delete profile picture?',
+        deletePicDescription: 'Are you sure you want to delete your profile picture?',
+        deletePicConfirm: 'Delete picture',
       },
       builder: {
         clear: "Clear augments",
@@ -359,6 +363,10 @@ const resources = {
         rgpdDeleteTitle: 'Supprimer votre compte ?',
         rgpdDeleteDescription: 'Cette action est définitive. Etes vous sûr de la vouloir ?',
         rgpdDeleteConfirm: 'Supprimer le compte',
+        pic: 'Supprimer la photo',
+        deletePicTitle: 'Supprimer la photo de profil ?',
+        deletePicDescription: 'Êtes-vous sûr de vouloir supprimer votre photo de profil ?',
+        deletePicConfirm: 'Supprimer la photo',
       },
       builder: {
         clear: 'rafraichir les augments',
@@ -568,6 +576,10 @@ const resources = {
         rgpdDeleteTitle: '¿Eliminar tu cuenta?',
         rgpdDeleteDescription: 'Esta acción es permanente. Si solo necesitas recuperar tu información, usa el botón de información y contacta con test@tactyx.com.',
         rgpdDeleteConfirm: 'Eliminar cuenta',
+        pic: 'Eliminar imagen',
+        deletePicTitle: '¿Eliminar foto de perfil?',
+        deletePicDescription: '¿Estás seguro de que deseas eliminar tu foto de perfil?',
+        deletePicConfirm: 'Eliminar imagen',
       },
       builder: {
         clear:  "limpiar el aumentos",

@@ -30,7 +30,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@base-ui/react";
-import { changeUsername, changePicture } from "@/services/authService";
+import { changeUsername, changePicture, deletePicture } from "@/services/authService";
 
 const languageOptions = [
     { value: "en", label: "🇺🇸 English" },
@@ -46,6 +46,7 @@ export function ProfileCard() {
     const { username, picture, email, id, isDark } = useAppSelector((state) => state.user);
     const [rgpdInfoOpen, setRgpdInfoOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
+    const [deletePictureOpen, setDeletePictureOpen] = useState(false);
     
     const [editOpen, setEditOpen] = useState(false);
     const [editUsername, setEditUsername] = useState(username || "");
@@ -78,6 +79,21 @@ export function ProfileCard() {
 
     const deletergpd = async () => {
         await dispatch(deleteUser()).unwrap();
+    };
+
+    const handleDeletePicture = async () => {
+        try {
+            if (picture) {
+                await deletePicture();
+                dispatch(setPicture(""));
+            }
+            setEditPicturePreview("");
+            setSelectedFile(null);
+            setDeletePictureOpen(false);
+        } catch (error) {
+            console.error("Erreur lors de la suppression de la photo de profil :", error);
+            setDeletePictureOpen(false);
+        }
     };
 
     const handleSaveProfile = async () => {
@@ -246,6 +262,29 @@ export function ProfileCard() {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
+            <AlertDialog open={deletePictureOpen} onOpenChange={setDeletePictureOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>{t("profile.deletePicTitle", "Delete profile picture?")}</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            {t(
+                                "profile.deletePicDescription",
+                                "Are you sure you want to delete your profile picture?"
+                            )}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>{t("common.cancel", "Cancel")}</AlertDialogCancel>
+                        <AlertDialogAction
+                            onClick={() => {
+                                void handleDeletePicture();
+                            }}
+                        >
+                            {t("profile.deletePicConfirm", "Delete picture")}
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
 
             <Dialog open={editOpen} onOpenChange={setEditOpen}>
                 <DialogContent>
@@ -260,6 +299,7 @@ export function ProfileCard() {
                         <div className="grid gap-2">
                             <Label htmlFor="username">{t("profile.username", "Username")}</Label>
                             <Input 
+                                className="border-2 rounded-md hover:bg-white/10 border-white/10 hover:border-white/30"
                                 id="username" 
                                 value={editUsername} 
                                 onChange={(e) => setEditUsername(e.target.value || "")} 
@@ -293,6 +333,21 @@ export function ProfileCard() {
                                      </Avatar>
                                  </div>
                             )}
+                            <div className="flex justify-center flex-col">
+                                <Label htmlFor="picture-delete">{t("profile.pic", "Delete picture")}</Label>
+                                <Button
+                                    id="picture-delete"
+                                    className="mt-2"
+                                    type="button"
+                                    variant="destructive"
+                                    size="icon"
+                                    onClick={() => setDeletePictureOpen(true)}
+                                    disabled={!picture && !editPicturePreview}
+                                    aria-label={t("profile.pic", "Delete picture")}
+                                >
+                                    <Trash />
+                                </Button>
+                            </div>
                         </div>
                     </div>
                     <DialogFooter>

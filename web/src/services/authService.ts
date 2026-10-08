@@ -40,3 +40,7 @@ export function changePicture(file: File): Promise<UserPublic> {
     body: formData,
   });
 }
+
+export function deletePicture(): Promise<void> {
+  return apiDelete<void>(`/api/user/remove_picture`);
+}
