@@ -42,6 +42,9 @@ from backend_app.api.endpoints.user.change_picture import (
 from backend_app.api.endpoints.user.change_username import (
     router as change_username_router,
 )
+from backend_app.api.endpoints.user.remove_picture import (
+    router as remove_picture_router,
+)
 
 __all__ = [
     "accept_friend_request_router",
@@ -62,6 +65,7 @@ __all__ = [
     "prometheus_metrics_router",
     "refuse_friend_request_router",
     "remove_friend_router",
+    "remove_picture_router",
     "rgpd_deletion_router",
     "search_router",
     "send_friend_request_router",

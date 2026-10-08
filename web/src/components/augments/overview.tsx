@@ -35,7 +35,7 @@ export function AugmentsOverview() {
                         <SelectTrigger
                         size="sm"
                         aria-label="Format d'export"
-                        className="w-[100px] focus:z-10"
+                        className="w-25 focus:z-10"
                         >
                         <SelectValue />
                         </SelectTrigger>

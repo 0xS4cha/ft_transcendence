@@ -4,11 +4,22 @@ import * as authService from "@/services/authService";
 import { type SignupPayload, type UserPublic } from "@/types/user";
 import { type ChatDataProps } from "@/types/chat";
 
+function resolvePictureUrl(picture?: string | null): string | undefined {
+  if (!picture) return undefined;
+  if (picture.startsWith("http://") || picture.startsWith("https://") || picture.startsWith("/api/public/")) {
+    return picture;
+  }
+  if (picture.startsWith("profile_pictures/")) {
+    return `/api/public/${picture}`;
+  }
+  return picture;
+}
+
 function applyUser(state: typeof initialState, user: UserPublic) {
   state.id = user.id;
   state.email = user.email;
   state.username = user.username;
-  state.picture = user.picture ? user.picture : undefined;
+  state.picture = resolvePictureUrl(user.picture);
   state.isAuthenticated = true;
   state.chat = user.chat && user.chat.length > 0 ? user.chat : [];
   state.isDark = user.isDark ? user.isDark : typeof window !== 'undefined' ? (localStorage.getItem("isDark") == "true" || false) : true;
@@ -89,7 +100,7 @@ export const userSlice = createSlice({
       state.username = action.payload;
     },
     setPicture: (state, action: PayloadAction<string>) => {
-      state.picture = action.payload;
+      state.picture = resolvePictureUrl(action.payload);
     }
   },
   extraReducers: (builder) => {

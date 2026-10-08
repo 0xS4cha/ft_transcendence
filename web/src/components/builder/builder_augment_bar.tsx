@@ -44,7 +44,7 @@ export default function BuilderAugmentsBar({ handleClearBoard, augments }: { han
   const sortedAugments = [...augments].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <div className="flex flex-col gap-4 py-4 px-4 h-full w-full rounded-xl border border-white/10">
+    <div className="flex flex-col gap-4 py-4 px-4 h-full w-full rounded-xl">
       <button
         onClick={handleClearBoard}
         className="w-full rounded-md
@@ -73,9 +73,9 @@ export default function BuilderAugmentsBar({ handleClearBoard, augments }: { han
               {augment ? (
               <>
                 <img
-                  src={augment.icon}
+                  src={augment.name === "Giant and Mighty" ? "https://cdn.teamfight.lol/tft/augment/BandOfThievesII.png" : augment.icon}
                   alt={augment.name}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-95"
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-95 bg-transparent"
                 />
               </> ) : (<span className="text-xl">+</span>)}
             </button>
@@ -117,11 +117,11 @@ export default function BuilderAugmentsBar({ handleClearBoard, augments }: { han
                   hover:scale-95 active:scale-95"
                   title={aug.name}>
                   <img
-                    src={aug.icon}
+                    src={aug.name === "Giant and Mighty" ? "https://cdn.teamfight.lol/tft/augment/BandOfThievesII.png" : aug.icon}
                     alt={aug.name}
                     className="aspect-square w-full
                     rounded-md border-2 border-transparent
-                    object-cover transition-colors"/>
+                    object-cover transition-colors bg-transparent"/>
                     <span className="text-center text-xs font-semibold text-white transition-colors leading-tight">
                       {aug.name}
                     </span>
