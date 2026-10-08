@@ -1,4 +1,5 @@
 import asyncio
+
 import httpx
 
 from shared.database import db as database
@@ -24,10 +25,7 @@ class RIOTApi:
                     )
 
                     if response.status_code in (401, 403):
-                        raise Exception(
-                            f"{response.status_code} Forbidden: "
-                            "your Riot API key is invalid or expired."
-                        )  # noqa: TRY002
+                        raise Exception(f"{response.status_code} Forbidden: your Riot API key is invalid or expired.") # noqa: TRY002
 
                     if response.status_code == 404:
                         print(f"https://{server}.api.riotgames.com{url}")

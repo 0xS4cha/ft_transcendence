@@ -9,23 +9,27 @@ class ChatBot:
 
 
 	async def ask(self, message: str, relevant_chunks: list[str]):
-		context = "\n\n".join(
-			f"[Document {len(relevant_chunks) - i}]\n{chunk}"
-			for i, chunk in enumerate(relevant_chunks)
-		)
-		response = await self.client.chat(
-			model=self.model_name,
-			messages=[
-				{
-					"role": "system",
-					"content": self.system_prompt
-				},
-				{
-					"role": "user",
-					"content": f"Context:\n{context}\n\nQuestion:\n{message}",
-				}
-			],
-		)
-		return response["message"]["content"]
+		try:
+			context = "\n\n".join(
+				f"[Document {len(relevant_chunks) - i}]\n{chunk}"
+				for i, chunk in enumerate(relevant_chunks)
+			)
+			response = await self.client.chat(
+				model=self.model_name,
+				messages=[
+					{
+						"role": "system",
+						"content": self.system_prompt
+					},
+					{
+						"role": "user",
+						"content": f"Context:\n{context}\n\nQuestion:\n{message}",
+					}
+				],
+			)
+			return response["message"]["content"]
+		except Exception as e: #noqa: BLE001
+			print(e)
+			return "Could not access chatbot for the moment, try again later"
 
 
