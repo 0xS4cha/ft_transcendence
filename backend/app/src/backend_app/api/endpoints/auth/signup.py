@@ -47,7 +47,6 @@ async def signup(
         hashed_password=Password.hash_password(user_data.password),
         username=user_data.username,
         picture=None,
-        riotid=None
     )
 
     session.add(new_user)

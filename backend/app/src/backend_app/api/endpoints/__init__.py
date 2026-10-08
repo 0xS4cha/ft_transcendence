@@ -39,7 +39,6 @@ from backend_app.api.endpoints.stats.stats import router as stats_router
 from backend_app.api.endpoints.user.change_picture import (
     router as change_picture_router,
 )
-from backend_app.api.endpoints.user.change_riotid import router as change_riotid_router
 from backend_app.api.endpoints.user.change_username import (
     router as change_username_router,
 )
@@ -48,7 +47,6 @@ __all__ = [
     "accept_friend_request_router",
     "augments_data_router",
     "change_picture_router",
-    "change_riotid_router",
     "change_username_router",
     "chat_router",
     "chatbot_router",
