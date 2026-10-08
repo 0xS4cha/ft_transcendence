@@ -43,7 +43,7 @@ type ThemeValue = "light" | "dark";
 export function ProfileCard() {
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
-    const { username, picture, email, id, isDark } = useAppSelector((state) => state.user);
+    const { username, picture, email, isDark } = useAppSelector((state) => state.user);
     const [rgpdInfoOpen, setRgpdInfoOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deletePictureOpen, setDeletePictureOpen] = useState(false);

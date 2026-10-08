@@ -107,27 +107,62 @@ export default function BuilderAugmentsBar({ handleClearBoard, augments }: { han
                 X
               </button>
             </div>
-            <div className="grid flex-1 grid-cols-4 gap-4 overflow-y-auto custom-scrollbar pr-2 sm:grid-cols-5 md:grid-cols-6">
-              {sortedAugments.map((aug) => (
-                <button
-                  key={aug.id}
-                  onClick={() => handleSelectAugment(aug.id)}
-                  className="group flex flex-col 
-                  items-center gap-2 transition-transform 
-                  hover:scale-95 active:scale-95"
-                  title={aug.name}>
-                  <img
-                    src={aug.name === "Giant and Mighty" ? "https://cdn.teamfight.lol/tft/augment/BandOfThievesII.png" : aug.icon}
-                    alt={aug.name}
-                    className="aspect-square w-full
-                    rounded-md border-2 border-transparent
-                    object-cover transition-colors bg-transparent"/>
-                    <span className="text-center text-xs font-semibold text-white transition-colors leading-tight">
+            <>
+              <svg width="0" height="0" className="absolute" aria-hidden>
+                <filter
+                  id="s18-augment-tier-key"
+                  colorInterpolationFilters="sRGB"
+                  x="-25%" y="-25%" width="150%" height="150%"
+                >
+                  <feColorMatrix
+                    type="matrix"
+                    values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0.75 0.75 0.75 0 0"
+                  />
+                </filter>
+                <filter
+                  id="s18-augment-tier-glyph"
+                  colorInterpolationFilters="sRGB"
+                  x="-25%" y="-25%" width="150%" height="150%"
+                >
+                  <feColorMatrix
+                    type="matrix"
+                    values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 1"
+                  />
+                </filter>
+              </svg>
+
+              <div className="grid flex-1 grid-cols-4 gap-4 overflow-y-auto custom-scrollbar pr-2 sm:grid-cols-5 md:grid-cols-6">
+                {sortedAugments.map((aug) => (
+                  <button
+                    key={aug.id}
+                    onClick={() => handleSelectAugment(aug.id)}
+                    className="group flex flex-col items-center gap-2 transition-transform hover:scale-95 active:scale-95"
+                    title={aug.name}
+                  >
+                    <span
+                      className="block aspect-square w-full opacity-80"
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(180deg, #DEBA31 20%, #E7BA1E 50%, #D69C31 80%)",
+                        filter:
+                          "url(#s18-augment-tier-key) drop-shadow(0 0 2px #A18E21)",
+                      }}
+                    >
+                      <img
+                        src={aug.icon}
+                        alt={aug.name}
+                        draggable={false}
+                        className="block h-full w-full mix-blend-multiply"
+                        style={{ filter: "url(#s18-augment-tier-glyph)" }}
+                      />
+                    </span>
+                    <span className="text-center text-xs font-semibold text-white leading-tight">
                       {aug.name}
                     </span>
-                </button>
-              ))}
-            </div>
+                  </button>
+                ))}
+              </div>
+            </>
           </div>
         </div>
       )}
