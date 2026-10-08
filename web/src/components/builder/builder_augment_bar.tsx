@@ -44,7 +44,7 @@ export default function BuilderAugmentsBar({ handleClearBoard, augments }: { han
   const sortedAugments = [...augments].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <div className="flex flex-col gap-4 py-4 px-4 h-full w-full rounded-xl border border-white/10">
+    <div className="flex flex-col gap-4 py-4 px-4 h-full w-full rounded-xl">
       <button
         onClick={handleClearBoard}
         className="w-full rounded-md
