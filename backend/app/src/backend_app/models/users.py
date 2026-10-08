@@ -24,4 +24,3 @@ class   UserModel(Base):
         back_populates="owner",
         cascade="all, delete-orphan",
     )
-    riotid: Mapped[str | None] = mapped_column()

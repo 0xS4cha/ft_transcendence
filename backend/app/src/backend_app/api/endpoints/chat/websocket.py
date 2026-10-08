@@ -15,11 +15,11 @@ async def websocket_endpoint(websocket: WebSocket, session: AsyncSessionDep):
         await websocket.close(code=1008)
         return
     try:
-        current_user = await Token.get_current_user(token, session)
+        current_user = await Token.get_current_user(session, token)
     except Exception: # noqa: BLE001
         await websocket.close(code=1008)
         return
-
+    
     await wsConnectionManager.connect(websocket, current_user.id)
     try:
         while True:

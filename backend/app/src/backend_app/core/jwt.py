@@ -28,7 +28,7 @@ class Token:
         to_encode = data.copy()
         expire = datetime.now(dt.UTC) + expires_delta
         to_encode.update({"exp": expire})
-        encoded_jwt = jwt.encode(to_encode, Token.secret_key, Token.algorithm)
+        encoded_jwt = jwt.encode(to_encode, Token.secret_key, algorithm=Token.algorithm)
         return encoded_jwt
 
     @staticmethod
@@ -45,7 +45,7 @@ class Token:
             raise credentials_exception
 
         try:
-            payload = jwt.decode(access_token, Token.secret_key, [Token.algorithm])
+            payload = jwt.decode(access_token, Token.secret_key, algorithms=[Token.algorithm])
             username = payload.get("sub")
 
             if username is None :
