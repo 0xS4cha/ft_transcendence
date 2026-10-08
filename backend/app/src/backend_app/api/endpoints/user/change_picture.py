@@ -1,15 +1,22 @@
-from typing import Annotated
 import os
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
-from backend_app.schemas.user import UserPublic
-from backend_app.models.users import UserModel
-from backend_app.core.jwt import Token
-from shared.database import AsyncSessionDep
-from sqlalchemy import update
-from backend_app.services.process_img import ProcessImg, ProcessImgMediaTypeError, ProcessImgBadRequestError, ProcessImgPayloadError, ProcessImgStorageError, remove_file
 from fastapi.concurrency import run_in_threadpool
+from sqlalchemy import update
 
+from backend_app.core.jwt import Token
+from backend_app.models.users import UserModel
+from backend_app.schemas.user import UserPublic
+from backend_app.services.process_img import (
+    ProcessImg,
+    ProcessImgBadRequestError,
+    ProcessImgMediaTypeError,
+    ProcessImgPayloadError,
+    ProcessImgStorageError,
+    remove_file,
+)
+from shared.database import AsyncSessionDep
 
 router = APIRouter()
 
@@ -20,7 +27,7 @@ router = APIRouter()
 async def change_picture(
     session: AsyncSessionDep,
     current_user: Annotated[UserModel, Depends(Token.get_current_user)],
-    file: UploadFile = File(),
+    file: Annotated[UploadFile, File()],
 ) -> UserModel:
 
     process = ProcessImg()

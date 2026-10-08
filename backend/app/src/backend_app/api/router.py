@@ -3,9 +3,9 @@ from fastapi import APIRouter
 from backend_app.api.endpoints import (
     accept_friend_request_router,
     augments_data_router,
-    change_username_router,
     change_picture_router,
     change_riotid_router,
+    change_username_router,
     chat_router,
     chatbot_router,
     friend_requests_list_router,

@@ -1,11 +1,12 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import update
+
+from backend_app.core.jwt import Token
 from backend_app.models.users import UserModel
 from backend_app.schemas.user import UserPublic
-from backend_app.core.jwt import Token
 from shared.database import AsyncSessionDep
-from sqlalchemy import update
 
 router = APIRouter()
 

@@ -1,10 +1,10 @@
 import os
+import warnings
 from io import BytesIO
 from typing import BinaryIO
-from PIL import Image, ImageOps
 from uuid import uuid4
 
-import warnings
+from PIL import Image, ImageOps
 
 Image.MAX_IMAGE_PIXELS = 20000000
 warnings.simplefilter("error", Image.DecompressionBombWarning)

@@ -1,12 +1,13 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from backend_app.models.users import UserModel
-from backend_app.schemas.user import UserPublic
-from backend_app.core.jwt import Token
-from shared.database import AsyncSessionDep
 from sqlalchemy import update
 from sqlalchemy.exc import IntegrityError
+
+from backend_app.core.jwt import Token
+from backend_app.models.users import UserModel
+from backend_app.schemas.user import UserPublic
+from shared.database import AsyncSessionDep
 
 router = APIRouter()
 
@@ -40,7 +41,7 @@ async def change_username(
             )
 
         await session.commit()
-    except IntegrityError as e:
+    except IntegrityError:
         await session.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
