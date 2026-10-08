@@ -33,7 +33,7 @@ print(f"\n\033[1;35mDATABASE_URL: \033[0;35m{db.settings.database_url}\033[0m\n"
 
 app.include_router(api_router)
 
-app.mount("/api/public", StaticFiles(directory="/app/src/shared"), name="static")
+app.mount("/api/public/models_3d", StaticFiles(directory="/app/src/shared/models_3d"), name="models_3d")
 
 @app.head("/health")
 @app.get("/health")
