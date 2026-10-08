@@ -1,5 +1,4 @@
 from fastapi import APIRouter, HTTPException, Response, status
-from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
 from backend_app.core.authenticate import Authenticate
@@ -11,35 +10,17 @@ from shared.database import AsyncSessionDep
 
 router = APIRouter()
 
+
 @router.post("/signup", response_model=UserPublic)
 async def signup(
     user_data: UserCreate,
     session: AsyncSessionDep,
-    response: Response
+    response: Response,
 ):
-    user = await Authenticate.get_user(user_data.email, session)
-
-    if user:
+    if await Authenticate.get_user(user_data.email, session):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="Email is already taken"
-        )
-
-    usernames = (await session.scalars(
-        select(UserModel.username)
-        )
-    ).all()
-
-    if user_data.username in usernames:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Username is already taken"
-        )
-
-    if user_data.password != user_data.confirm_password:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Passwords don't match"
+            detail="Email or username is already taken",
         )
 
     new_user = UserModel(
@@ -47,20 +28,19 @@ async def signup(
         hashed_password=Password.hash_password(user_data.password),
         username=user_data.username,
         picture=None,
+        email_verified=False,
     )
-
     session.add(new_user)
+
     try:
         await session.commit()
     except IntegrityError:
         await session.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="Email or username is already taken"
+            detail="Email or username is already taken",
         )
-    
+
     await session.refresh(new_user)
-
-    Token.generate_token(user_data.email, response)
-
+    Token.generate_token(new_user.email, response)
     return new_user

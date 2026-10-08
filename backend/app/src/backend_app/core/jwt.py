@@ -21,65 +21,58 @@ class Token:
         username: str | None = None
 
     @staticmethod
-    def create_access_token(
-            data: dict,
-            expires_delta: timedelta
-    ) -> str:
+    def create_access_token(data: dict, expires_delta: timedelta) -> str:
+        now = datetime.now(dt.UTC)
         to_encode = data.copy()
-        expire = datetime.now(dt.UTC) + expires_delta
-        to_encode.update({"exp": expire})
-        encoded_jwt = jwt.encode(to_encode, Token.secret_key, algorithm=Token.algorithm)
-        return encoded_jwt
+        to_encode.update({"iat": now, "exp": now + expires_delta})
+        return jwt.encode(to_encode, Token.secret_key, algorithm=Token.algorithm)
 
     @staticmethod
     async def get_current_user(
         session: AsyncSessionDep,
         access_token: Annotated[str | None, Cookie()] = None,
-    ) -> UserModel :
+    ) -> UserModel:
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials"
+            detail="Could not validate credentials",
         )
 
         if access_token is None:
             raise credentials_exception
 
         try:
-            payload = jwt.decode(access_token, Token.secret_key, algorithms=[Token.algorithm])
-            username = payload.get("sub")
-
-            if username is None :
-                raise credentials_exception
-            
-            token_data = Token.TokenData(username=username)
-
+            payload = jwt.decode(
+                access_token,
+                Token.secret_key,
+                algorithms=[Token.algorithm],
+                options={"require": ["exp", "sub"]},
+            )
         except InvalidTokenError:
             raise credentials_exception
 
-        user = await Authenticate.get_user(token_data.username, session)
+        token_data = Token.TokenData(username=payload.get("sub"))
+        if token_data.username is None:
+            raise credentials_exception
 
-        if not user:
+        user = await Authenticate.get_user(token_data.username, session)
+        if user is None:
             raise credentials_exception
 
         return user
 
     @staticmethod
-    def generate_token(
-        email: str,
-        response : Response
-    ):
-        access_token_expires = timedelta(minutes=Token.access_token_expire_minutes)
+    def generate_token(email: str, response: Response) -> None:
         access_token = Token.create_access_token(
-            data={"sub": email},
-            expires_delta=access_token_expires
+            data={"sub": email.strip().lower()},
+            expires_delta=timedelta(minutes=Token.access_token_expire_minutes),
         )
-        
+
         response.set_cookie(
             key="access_token",
             value=access_token,
-            max_age=Token.access_token_expire_minutes*60,
+            max_age=Token.access_token_expire_minutes * 60,
             path="/",
             secure=db.settings.FRONTEND_URL.startswith("https"),
             httponly=True,
-            samesite="lax"
+            samesite="lax",
         )

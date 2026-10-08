@@ -24,3 +24,4 @@ class   UserModel(Base):
         back_populates="owner",
         cascade="all, delete-orphan",
     )
+    email_verified: Mapped[bool | None] = mapped_column()

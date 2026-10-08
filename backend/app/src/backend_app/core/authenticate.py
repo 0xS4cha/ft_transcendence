@@ -1,20 +1,15 @@
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend_app.models.users import UserModel
-from shared.database import AsyncSessionDep
 
 
 class Authenticate:
     @staticmethod
     async def get_user(
-        user_email: str,    
-        session: AsyncSessionDep
-    ) -> UserModel:
-        existing_user = await session.scalar(
-                select(UserModel).where(UserModel.email == user_email)
+        user_email: str,
+        session: AsyncSession,
+    ) -> UserModel | None:
+        return await session.scalar(
+            select(UserModel).where(UserModel.email == user_email.strip().lower())
         )
-        
-        if not existing_user:
-            return (False)
-        
-        return (existing_user)
