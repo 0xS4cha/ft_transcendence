@@ -30,6 +30,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@base-ui/react";
+import { changeUsername, changePicture } from "@/services/authService";
 
 const languageOptions = [
     { value: "en", label: "🇺🇸 English" },
@@ -48,7 +49,8 @@ export function ProfileCard() {
     
     const [editOpen, setEditOpen] = useState(false);
     const [editUsername, setEditUsername] = useState(username || "");
-    const [editPicture, setEditPicture] = useState(picture || "")
+    const [editPicturePreview, setEditPicturePreview] = useState(picture || "");
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     const baseLang = (i18n.resolvedLanguage || i18n.language || "en").split("-")[0];
     const language = languageOptions.some((o) => o.value === baseLang) ? baseLang : "en";
@@ -78,27 +80,38 @@ export function ProfileCard() {
         await dispatch(deleteUser()).unwrap();
     };
 
-    const handleSaveProfile = () => {
-        if (editUsername.trim() !== "") {
-            dispatch(setUsername(editUsername));
+    const handleSaveProfile = async () => {
+        try {
+            if (editUsername.trim() !== "" && editUsername !== username) {
+                await changeUsername(editUsername.trim());
+                dispatch(setUsername(editUsername.trim()));
+            }
+
+            if (selectedFile) {
+                const response = await changePicture(selectedFile);
+                if (response?.picture) {
+                    dispatch(setPicture(response.picture));
+                }
+                setSelectedFile(null);
+            }
+
+            setEditOpen(false);
+        } catch (error) {
+            console.error("Erreur lors de la sauvegarde du profil :", error);
         }
-        if (editPicture.trim() !== "") {
-            dispatch(setPicture(editPicture));
-        }
-        setEditOpen(false)
     };
 
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) =>{
-      const file = e.target.files?.[0]
-      if (file)
-      {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setEditPicture(reader.result as string);
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setSelectedFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setEditPicturePreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
         }
-        reader.readAsDataURL(file);
-      }
-    }
+    };
 
     return (
         <Card>
@@ -117,7 +130,8 @@ export function ProfileCard() {
                                     className="h-6 w-6"
                                     onClick={() => {
                                         setEditUsername(username || "");
-                                        setEditPicture(picture || "");
+                                        setEditPicturePreview(picture || "");
+                                        setSelectedFile(null);
                                         setEditOpen(true);
                                     }}
                                 >
@@ -272,17 +286,23 @@ export function ProfileCard() {
                                     onChange={handleImageUpload}
                                 />
                             </Label>
-                            {editPicture && (
-                                <div className="mt-2 flex justify-center">
-                                    <Avatar className="size-16 border border-white/10">
-                                        <AvatarImage src={editPicture} alt="Preview" className="object-cover" />
-                                    </Avatar>
-                                </div>
+                            {editPicturePreview && (
+                                 <div className="mt-2 flex justify-center">
+                                     <Avatar className="size-16 border border-white/10">
+                                         <AvatarImage src={editPicturePreview} alt="Preview" className="object-cover" />
+                                     </Avatar>
+                                 </div>
                             )}
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setEditOpen(false)}>
+                        <Button
+                            variant="outline"
+                            onClick={() => {
+                                setEditOpen(false);
+                                setSelectedFile(null);
+                            }}
+                        >
                             {t("common.cancel", "Cancel")}
                         </Button>
                         <Button onClick={handleSaveProfile}>
