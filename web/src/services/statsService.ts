@@ -11,18 +11,34 @@ export function getHomeStats(): Promise<HomeDataProps> {
 }
 
 export function getItemsStats(queue = "1100", rank = "DIAMOND", server = "EUW1"): Promise<ItemRow[]> {
+  if (queue === "Ranked")
+      queue = "1100"
+  else if (queue === "Double up")
+      queue = "1160"
   return apiGet<ItemRow[]>(`/api/game_data/items_data?queue=${queue}&rank=${rank}&server=${server}`);
 }
 
 export function getUnitsStats(queue = "1100", rank = "DIAMOND", server = "EUW1"): Promise<UnitRow[]> {
+  if (queue === "Ranked")
+      queue = "1100"
+  else if (queue === "Double up")
+      queue = "1160"
   return apiGet<UnitRow[]>(`/api/game_data/units_data?queue=${queue}&rank=${rank}&server=${server}`);
 }
 
 export function getTraitsStats(queue = "1100", rank = "DIAMOND", server = "EUW1"): Promise<TraitRow[]> {
+  if (queue === "Ranked")
+      queue = "1100"
+  else if (queue === "Double up")
+      queue = "1160"
   return apiGet<TraitRow[]>(`/api/game_data/traits_data?queue=${queue}&rank=${rank}&server=${server}`);
 }
 
 export function getAugmentsStats(queue = "1100", rank = "DIAMOND", server = "EUW1"): Promise<AugmentRow[]> {
+  if (queue === "Ranked")
+      queue = "1100"
+  else if (queue === "Double up")
+      queue = "1160"
   return apiGet<AugmentRow[]>(`/api/game_data/augments_data?queue=${queue}&rank=${rank}&server=${server}`);
 }
 

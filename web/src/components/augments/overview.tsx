@@ -8,8 +8,8 @@ import { SelectContent, Select, SelectItem, SelectTrigger, SelectValue } from "@
 import { useTranslation } from "react-i18next";
 
 const FORMATS = [
-  { value: "json", label: "JSON" },
-  { value: "xml", label: "XML" },
+  { value: "json", label: "json" },
+  { value: "xml", label: "xml" },
 ] as const
 
 export function AugmentsOverview() {
@@ -35,7 +35,7 @@ export function AugmentsOverview() {
                         <SelectTrigger
                         size="sm"
                         aria-label="Format d'export"
-                        className="w-[100px] focus:z-10"
+                        className="w-25 focus:z-10"
                         >
                         <SelectValue />
                         </SelectTrigger>

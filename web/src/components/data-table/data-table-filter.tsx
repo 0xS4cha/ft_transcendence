@@ -17,8 +17,8 @@ import { useMemo } from "react"
 import { type FilterType } from "@/types/stats";
 
 const queueOptions = [
-  { value: "1100", label: "Ranked" },
-  { value: "1160", label: "Double up" },
+  { value: "Ranked", label: "Ranked" },
+  { value: "Double up", label: "Double up" },
 ] as const;
 
 const rankOptions = [

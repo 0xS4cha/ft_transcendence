@@ -23,7 +23,6 @@ export const TraitsColumns: ColumnDef<typeof dataTableFeatures, TraitRow>[] = [
           <div className="flex items-end justify-between gap-3">
             <div className="grid min-w-0 gap-0.5">
               <span className="truncate font-medium text-sm leading-none">{row.original.name}</span>
-              <span className="truncate text-muted-foreground text-xs leading-none">#{row.original.id}</span>
             </div>
           </div>
         </div>
@@ -33,7 +32,7 @@ export const TraitsColumns: ColumnDef<typeof dataTableFeatures, TraitRow>[] = [
   },
   {
     accessorKey: "place",
-    header: "Place change (avg.)",
+    header: "Avg place",
     filterFn: "equalsString",
     cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.avg_place).toFixed(2)}</span>
   },

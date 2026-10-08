@@ -41,10 +41,10 @@ const resources = {
         lastpage: "Go to last page",
         firstpage: "Go to first page",
         row: "row ",
-        listof: "List of units",
-        list: "List of items",
-        listoftrait:"List of traits",
-        listofaug: "List of augments"
+        listof: "Units",
+        list: "Items",
+        listoftrait:"Traits",
+        listofaug: "Augments"
       },
       patchnote: {
         loading: "Loading patch note ..."
@@ -250,10 +250,10 @@ const resources = {
         previouspage: 'Aller à la page précédente',
         lastpage: 'Aller à la dernière page',
         firstpage: 'Aller à la première page',
-        listof: "Liste des unites",
-        list: "Liste des items",
-        listoftrait: "Liste des traits",
-        listofaug: "Liste des augments"
+        listof: "Unites",
+        list: "Items",
+        listoftrait: "Traits",
+        listofaug: "Augments"
       },
       patchnote: {
         loading: 'Chargement des notes de patch...',
@@ -459,10 +459,10 @@ const resources = {
         lastpage: 'Ir a la última página',
         firstpage: 'Ir a la primera página',
         row: "fila ",
-        listof: "Lista de unidades",
-         list: "Lista de artículos",
-         listoftrait: "Lista de rasgos",
-         listofaug: "Lista de mejoras"
+        listof: "Unidades",
+         list: "Artículos",
+         listoftrait: "Rasgos",
+         listofaug: "Mejoras"
       },
       patchnote: {
         loading: 'Cargando notas del parche...',
