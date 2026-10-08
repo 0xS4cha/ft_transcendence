@@ -85,6 +85,12 @@ export const userSlice = createSlice({
     setTheme: (state, action: PayloadAction<boolean>) => {
       state.isDark = action.payload;
     },
+    setUsername: (state, action: PayloadAction<string>) => {
+      state.username = action.payload;
+    },
+    setPicture: (state, action: PayloadAction<string>) => {
+      state.picture = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -152,6 +158,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { clearUser, addChatContent, updateChatContent, removeChatContent, setChat, setTheme } = userSlice.actions;
+export const { clearUser, addChatContent, updateChatContent, removeChatContent, setChat, setTheme, setUsername , setPicture} = userSlice.actions;
 
 export default userSlice.reducer;

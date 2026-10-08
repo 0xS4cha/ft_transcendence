@@ -1,5 +1,4 @@
-// import { conditions } from "@/constants/conditions";
-// import { motion } from "motion/react";
+
 import { ProtectedRoute } from "@/context/auth/ProtectedRoute";
 import { ProfileCard } from "@/components/profile/card"
 import { FriendsCard } from "@/components/friends/card"

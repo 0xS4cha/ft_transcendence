@@ -146,7 +146,7 @@ async def save_models(
     temp_path = output_path + '.tmp'
 
     try:
-        async with aiofiles.open(temp_path, 'w') as f:  
+        async with aiofiles.open(temp_path, 'w') as f:
             await f.write(content)
 
         os.replace(temp_path, output_path)
