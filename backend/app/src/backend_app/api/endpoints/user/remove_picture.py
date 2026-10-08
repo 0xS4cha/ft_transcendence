@@ -1,3 +1,4 @@
+import os
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -6,33 +7,36 @@ from sqlalchemy import update
 from backend_app.core.jwt import Token
 from backend_app.models.users import UserModel
 from backend_app.schemas.user import UserPublic
+from backend_app.services.process_img import remove_file
 from shared.database import AsyncSessionDep
 
 router = APIRouter()
 
-@router.post(
-    "/change_riotid",
-    response_model = UserPublic
+@router.delete(
+    "/remove_picture",
+    response_model=UserPublic
 )
-async def change_riotid(
-    new_riotid: str,
+async def remove_picture(
     session: AsyncSessionDep,
-    current_user: Annotated[UserModel, Depends(Token.get_current_user)],
+    current_user: Annotated[UserModel, Depends(Token.get_current_user)]
 ) -> UserModel:
-    if new_riotid == current_user.riotid:
+    picture = current_user.picture
+
+    if picture is None:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="This is already your RiotID"
+            detail="You don't have a profile picture to delete."
         )
+
 
     try:
         result = await session.execute(
             update(UserModel)
             .where(UserModel.id == current_user.id)
-            .values(riotid=new_riotid)
+            .values(picture=None)
             .returning(UserModel.id)
         )
-        
+
         if result.scalar_one_or_none() is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -45,6 +49,11 @@ async def change_riotid(
         await session.rollback()
         raise
 
+    if not picture.startswith("https://cdn.intra.42.fr/users/"):
+        path = os.path.join("/app/src/shared", picture)
+        remove_file(path)
+
     await session.refresh(current_user)
-    
+
     return current_user
+    

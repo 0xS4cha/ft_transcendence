@@ -12,7 +12,6 @@ class   UserPublic(BaseModel):
     email: EmailStr
     username: str
     picture: str | None = None
-    riotid: str | None = None
 
     class Config:
         from_attributes = True
