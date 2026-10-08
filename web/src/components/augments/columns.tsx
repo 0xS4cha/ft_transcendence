@@ -11,7 +11,7 @@ export const AugmentsColumns: ColumnDef<typeof dataTableFeatures, AugmentRow>[] 
     enableHiding: true,
   },
   {
-    accessorKey: "name",
+    accessorKey: "augment",
     header: "Augment",
     cell: ({ row }: any) => (
       <div className="flex items-center gap-2">
@@ -37,4 +37,10 @@ export const AugmentsColumns: ColumnDef<typeof dataTableFeatures, AugmentRow>[] 
     filterFn: "equalsString",
     cell: ({ row }: any) => <span className="text-sm">{row.original.rarity}</span>
   },
+  {
+    id: "name",
+    accessorFn: (row) => row.name,
+    enableSorting: true,
+    enableHiding: true,
+  }
 ];

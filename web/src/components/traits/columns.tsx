@@ -51,10 +51,12 @@ export const TraitsColumns: ColumnDef<typeof dataTableFeatures, TraitRow>[] = [
     id: "avg_place",
     accessorFn: (row) => row.avg_place,
     enableSorting: true,
+    enableHiding: true,
   },
   {
     id: "name",
     accessorFn: (row) => row.name,
     enableSorting: true,
+    enableHiding: true,
   }
 ];
