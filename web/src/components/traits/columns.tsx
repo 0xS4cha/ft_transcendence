@@ -11,8 +11,8 @@ export const TraitsColumns: ColumnDef<typeof dataTableFeatures, TraitRow>[] = [
     enableHiding: true,
   },
   {
-    accessorKey: "name",
-    header: "Item",
+    accessorKey: "trait",
+    header: "Trait",
     cell: ({ row }: any) => (
       <div className="flex items-center gap-2">
         <Avatar>
@@ -50,10 +50,12 @@ export const TraitsColumns: ColumnDef<typeof dataTableFeatures, TraitRow>[] = [
     id: "avg_place",
     accessorFn: (row) => row.avg_place,
     enableSorting: true,
+    enableHiding: true,
   },
   {
     id: "name",
     accessorFn: (row) => row.name,
     enableSorting: true,
+    enableHiding: true,
   }
 ];

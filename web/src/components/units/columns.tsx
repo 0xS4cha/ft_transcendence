@@ -2,7 +2,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { dataTableFeatures } from "@/lib/data-table-features";
-import type { UnitRow } from "@/components/units/schema";
+import type { UnitRow, TraitRow } from "@/components/units/schema";
 import { ChevronRight } from "lucide-react";
 
 export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
@@ -80,13 +80,28 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
     cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.cost).toFixed(2)}</span>,
   },
   {
+    accessorKey: "traits",
+    header: "Traits",
+    cell: ({ row }: any) => (
+      <div className="flex flex-row">
+        {row.original.traits.map((trait: TraitRow) => (
+          <Avatar>
+            <AvatarImage src={trait.icon}/>
+          </Avatar>
+        ))}
+      </div>
+    ) 
+  },
+  {
     id: "avg_place",
     accessorFn: (row) => row.avg_place,
+    enableHiding: true,
     enableSorting: true,
   },
   {
     id: "name",
     accessorFn: (row) => row.name,
     enableSorting: true,
+    enableHiding: true,
   }
 ];

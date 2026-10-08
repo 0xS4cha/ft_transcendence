@@ -1,5 +1,12 @@
 import z from "zod";
 
+const TraitRow = z.object({
+  name: z.string(),
+  breakpoints: z.array(z.string()),
+  icon: z.string(),
+  winrate: z.number(),
+});
+
 const UnitRow = z.object({
   id: z.string(),
   avg_place: z.number(),
@@ -9,7 +16,8 @@ const UnitRow = z.object({
   icon: z.string(),
   model: z.string(),
   cost: z.number(),
-  traits: z.array(z.string()),
+  traits: z.array(TraitRow),
 });
 
 export type UnitRow = z.infer<typeof UnitRow>;
+export type TraitRow = z.infer<typeof TraitRow>;

@@ -11,7 +11,7 @@ export const ItemsColumns: ColumnDef<typeof dataTableFeatures, ItemRow>[] = [
     enableHiding: true,
   },
   {
-    accessorKey: "name",
+    accessorKey: "item",
     header: "Item",
     cell: ({ row }: any) => (
       <div className="flex items-center gap-2">
@@ -50,10 +50,12 @@ export const ItemsColumns: ColumnDef<typeof dataTableFeatures, ItemRow>[] = [
     id: "avg_place",
     accessorFn: (row) => row.avg_place,
     enableSorting: true,
+    enableHiding: true,
   },
   {
     id: "name",
     accessorFn: (row) => row.name,
     enableSorting: true,
+    enableHiding: true,
   }
 ];
