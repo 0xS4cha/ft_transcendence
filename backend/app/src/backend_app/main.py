@@ -55,27 +55,18 @@ async def sqlalchemy_db_error_handler(
     request: Request,
     exc: DBAPIError,
 ):
-    original = exc.orig
-
-    if isinstance(
-        original,
-        (
-            asyncpg.exceptions.CharacterNotInRepertoireError,
-            asyncpg.exceptions.DataError,
-        ),
-    ) or True:
-        return JSONResponse(
-            status_code=400,
-            content={"detail": "Invalid input data."},
-        )
-
-    raise exc
+    print(exc)
+    return JSONResponse(
+        status_code=400,
+        content={"detail": "Invalid input data."},
+    )
 
 @app.exception_handler(asyncpg.exceptions.DataError)
 async def data_error_handler(
     request: Request,
     exc: asyncpg.exceptions.DataError,
 ):
+    print(exc)
     return JSONResponse(
         status_code=400,
         content={
