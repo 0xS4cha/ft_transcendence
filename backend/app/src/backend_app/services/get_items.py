@@ -3,15 +3,16 @@ from typing import Any
 
 import redis.asyncio as redis
 from httpx2 import AsyncClient, HTTPError
-from pydantic import TypeAdapter
+from pydantic import TypeAdapter, ValidationError
 
 from backend_app.schemas.item import Item
 from backend_app.services.fetch_game_data import (
+    dict_list,
     fetch_lookup,
     fetch_results,
     get_game_data,
 )
-from backend_app.services.get_stats import get_all_datas_use, get_stats
+from backend_app.services.get_stats import get_all_datas_use, get_stats, valid_places
 
 
 class ItemsUnavailableError(Exception):
@@ -37,7 +38,7 @@ async def get_items(
     if lookup is None:
         raise ItemsUnavailableError("Lookup data not found")
 
-    items_compo = lookup.get("items") 
+    items_compo = lookup.get("items")
 
     if items_compo is None:
         raise ItemsUnavailableError("Set data not found")
@@ -47,13 +48,13 @@ async def get_items(
 
     items_by_id = {
         c["apiName"]: c
-        for c in items_compo
-        if "apiName" in c
+        for c in dict_list(items_compo)
+        if isinstance(c.get("apiName"), str)
     }
     if not items_by_id:
         raise ItemsUnavailableError("Items compo api names not found")
-    
-    items = [item for item in items if item.get("itemName", "") in items_by_id]
+
+    items = [item for item in items if item.get("itemName") in items_by_id]
     if not items:
         raise ItemsUnavailableError("Items not found in items compo")
 
@@ -76,8 +77,8 @@ def process_item(
 ) -> Item | None:
 
     id = item.get("itemName")
-    places = item.get("places")
-    if id is None or places is None:
+    places = valid_places(item.get("places"))
+    if not isinstance(id, str) or places is None:
         return None
 
     total_item_use = sum(places)
@@ -99,17 +100,20 @@ def process_item(
         return None
 
     icon = "https://cdn.metatft.com/cdn-cgi/image/width=128,height=128,format=auto/https://cdn.metatft.com/file/metatft/items/" + id.lower() + ".png"
-    
-    return (Item(
-        id=id,
-        name=name,
-        avg_place=avg_place,
-        winrate=winrate,
-        frequency=frequency,
-        type=type,
-        composition=composition,
-        icon=icon,
-    ))
+
+    try:
+        return Item(
+            id=id,
+            name=name,
+            avg_place=avg_place,
+            winrate=winrate,
+            frequency=frequency,
+            type=type,
+            composition=composition,
+            icon=icon,
+        )
+    except ValidationError:
+        return None
 
 
 def get_type(
@@ -121,5 +125,5 @@ def get_type(
     for word in to_find:
         if word in name:
             type = word
-    
+
     return type

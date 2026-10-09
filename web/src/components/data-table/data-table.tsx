@@ -1,14 +1,15 @@
-import { useEffect, useState, useMemo, Fragment } from "react";
+import { useState, useMemo, Fragment, type Dispatch, type SetStateAction } from "react";
 import {
+  type ColumnDef,
   type ColumnFiltersState,
   type ColumnVisibilityState,
   type PaginationState,
   type SortingState,
   type ExpandedState,
   type Row,
+  type RowData,
   useTable,
 } from "@tanstack/react-table";
-import type { UnitRow } from "@/components/units/schema";
 
 import {
   ArrowUpDown,
@@ -34,24 +35,28 @@ import { useTranslation } from "react-i18next";
 
 import { type FilterType } from "@/types/stats";
 
-interface DataTableProps {
-  columns: any;
-  data: any;
-  getRowId: (originalRow: any, index: number, parent?: any) => string;
+function hasModel(original: unknown): boolean {
+  return typeof original === "object" && original !== null && "model" in original && Boolean(original.model);
+}
+
+interface DataTableProps<TData extends RowData> {
+  columns: ColumnDef<typeof dataTableFeatures, TData>[];
+  data: TData[];
+  getRowId: (originalRow: TData, index: number) => string;
   defaultSortId: string;
   searchPlaceholder?: string;
   initialSearchQuery?: string;
   filter: FilterType;
-  setFilter: any;
+  setFilter: Dispatch<SetStateAction<FilterType>>;
   customToolbar?: React.ReactNode;
-  onExpand?: (unit: Row<typeof dataTableFeatures, UnitRow>, columns: unknown[]) => React.ReactNode;
+  onExpand?: (row: Row<typeof dataTableFeatures, TData>, columns: unknown[]) => React.ReactNode;
   hideRankFilter?: boolean;
   hideQueueFilter?: boolean;
   addAvgSort?: boolean;
   addGlobalServerFilter?: boolean;
 }
 
-export function DataTable({
+export function DataTable<TData extends RowData>({
   columns,
   data,
   getRowId,
@@ -66,7 +71,7 @@ export function DataTable({
   customToolbar,
   hideRankFilter,
   hideQueueFilter,
-}: DataTableProps) {
+}: DataTableProps<TData>) {
   
   const { sortOptions, sortOptionState } = useMemo(() => {
     const config = {
@@ -90,7 +95,9 @@ export function DataTable({
 
   const { t } = useTranslation();
   const [rowSelection, setRowSelection] = useState({});
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(() =>
+    initialSearchQuery ? [{ id: "search", value: initialSearchQuery }] : []
+  );
   const [sorting, setSorting] = useState<SortingState>([{ id: defaultSortId, desc: false }]);
   const [expanded, setExpanded] = useState<ExpandedState>({});
   const [columnVisibility] = useState<ColumnVisibilityState>({
@@ -103,6 +110,17 @@ export function DataTable({
     pageSize: 10,
   });
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
+  const [syncedSearchQuery, setSyncedSearchQuery] = useState(initialSearchQuery);
+
+  if (syncedSearchQuery !== initialSearchQuery) {
+    setSyncedSearchQuery(initialSearchQuery);
+    setSearchQuery(initialSearchQuery);
+    setColumnFilters((current) => [
+      ...current.filter((columnFilter) => columnFilter.id !== "search"),
+      ...(initialSearchQuery ? [{ id: "search", value: initialSearchQuery }] : []),
+    ]);
+    setPagination((current) => ({ ...current, pageIndex: 0 }));
+  }
 
   const table = useTable({
     features: dataTableFeatures,
@@ -126,12 +144,6 @@ export function DataTable({
     getRowCanExpand: () => true,
   });
 
-  useEffect(() => {
-    setSearchQuery(initialSearchQuery);
-    table.getColumn("search")?.setFilterValue(initialSearchQuery || undefined);
-    table.setPageIndex(0);
-  }, [initialSearchQuery]);
-
   const sortValue = useMemo(() => {
     const currentSort = sorting[0];
     if (currentSort?.id === defaultSortId && !currentSort.desc) return "name-asc";
@@ -139,7 +151,7 @@ export function DataTable({
     if (currentSort?.id === "avg_place" && !currentSort.desc) return "avg-asc";
     if (currentSort?.id === "avg_place" && currentSort.desc) return "avg-desc"; 
     return "newest";
-  }, [sorting, defaultSortId, addAvgSort]);
+  }, [sorting, defaultSortId]);
 
   return (
     <div className="space-y-4">
@@ -190,9 +202,9 @@ export function DataTable({
       <div className="overflow-hidden rounded-lg border bg-card">
         <Table>
           <TableHeader className="bg-muted/15">
-            {table.getHeaderGroups().map((headerGroup: any) => (
+            {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header: any) => (
+                {headerGroup.headers.map((header) => (
                   <TableHead key={header.id} colSpan={header.colSpan} className="h-11 p-3 font-medium">
                     {header.isPlaceholder ? null : <table.FlexRender header={header} />}
                   </TableHead>
@@ -202,16 +214,16 @@ export function DataTable({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row: any) => (
+              table.getRowModel().rows.map((row) => (
                 <Fragment key={row.id}>
                   <TableRow key={row.id} data-state={table.state.rowSelection[row.id] && "selected"}>
-                    {row.getVisibleCells().map((cell: any) => (
+                    {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="p-3 align-middle">
                         <table.FlexRender cell={cell} />
                       </TableCell>
                     ))}
                   </TableRow>
-                 {onExpand && row.getIsExpanded() && row.original.model && (
+                 {onExpand && row.getIsExpanded() && hasModel(row.original) && (
                   <>
                     {onExpand(row, columns)}
                  </>

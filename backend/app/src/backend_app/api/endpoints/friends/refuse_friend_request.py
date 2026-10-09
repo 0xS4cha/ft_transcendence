@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import delete, select
+from sqlalchemy import and_, delete, or_, select
 
 from backend_app.core.jwt import Token
 from backend_app.models.friends import Friends, Status
@@ -37,8 +37,12 @@ async def refuse_friend_request(
     
     result = await session.execute(
         delete(Friends)
-        .where(Friends.requested == current_user.id)
-        .where(Friends.requester == requester.id)
+        .where(
+            or_(
+                and_(Friends.requested == current_user.id, Friends.requester == requester.id),
+                and_(Friends.requester == current_user.id, Friends.requested == requester.id),
+            )
+        )
         .where(Friends.status == Status.PENDING)
         .returning(Friends.id)
     )

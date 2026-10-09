@@ -1,17 +1,7 @@
-import { createContext, useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { initializeSession, logoutUser } from "@/store/reducers/userSlice";
-import { type UserPublic } from "@/types/user";
-
-interface AuthContextType {
-  user: UserPublic | null;
-  loading: boolean;
-  isAuthenticated: boolean;
-  login: () => Promise<boolean>;
-  logout: () => Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextType | null>(null);
+import { AuthContext } from "@/context/auth/auth-context";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
@@ -25,7 +15,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loading = status !== "ready";
 
   const login = async () => {
-    window.location.href = import.meta.env.VITE_AUTH42;
+    window.location.href = "/api/auth/login_with_42";
     return false;
   };
 
@@ -40,8 +30,3 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used inside AuthProvider");
-  return context;
-}

@@ -2,10 +2,11 @@ from typing import Any
 
 import redis.asyncio as redis
 from httpx2 import AsyncClient, HTTPError
-from pydantic import TypeAdapter
+from pydantic import TypeAdapter, ValidationError
 
 from backend_app.schemas.augment import Augment
 from backend_app.services.fetch_game_data import (
+    dict_list,
     fetch_lookup,
     get_game_data,
 )
@@ -34,7 +35,7 @@ async def get_augments(
         raise AugmentsUnavailableError("Augments data not found")
 
     augments_out = [
-        a for augment in augments
+        a for augment in dict_list(augments)
         if (a := process_augment(augment)) is not None
     ]
 
@@ -54,15 +55,18 @@ def process_augment(
        name is None or \
        rarity is None or \
        rounds is None or \
-       icon_path is None:
+       not isinstance(icon_path, str):
         return None
 
     icon = f"https://cdn.metatft.com/file/metatft/augments/{icon_path.lower()}.png"
 
-    return (Augment(
-        id=id,
-        name=name,
-        rarity=rarity,
-        rounds=rounds,
-        icon=icon
-    ))
+    try:
+        return Augment(
+            id=id,
+            name=name,
+            rarity=rarity,
+            rounds=rounds,
+            icon=icon
+        )
+    except ValidationError:
+        return None

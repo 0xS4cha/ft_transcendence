@@ -1,3 +1,4 @@
+import type { Dispatch, SetStateAction } from "react";
 import {
   Swords,
   Trophy,
@@ -58,7 +59,7 @@ const GLOBAL_OPTION = { value: "GLOBAL", label: "GLOBAL" } as const;
 
 interface DataTableFilterProps {
   filter: FilterType;
-  setFilter: any;
+  setFilter: Dispatch<SetStateAction<FilterType>>;
   hideRankFilter?: boolean;
   hideQueueFilter?: boolean;
   addGlobalServerFilter?: boolean;

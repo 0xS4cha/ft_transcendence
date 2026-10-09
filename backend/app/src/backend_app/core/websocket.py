@@ -1,9 +1,13 @@
 import asyncio
+import contextlib
 import datetime
 import json
+import logging
 
 import redis.asyncio as redis
 from fastapi import WebSocket
+
+logger = logging.getLogger(__name__)
 
 
 class WebsocketConnectionManager:
@@ -25,8 +29,8 @@ class WebsocketConnectionManager:
             return obj.isoformat()
         try:
             return str(obj)
-        except Exception: # noqa: BLE001
-            raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable")
+        except Exception as e:
+            raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable") from e
 
     async def start(self):
         self._listener_task = asyncio.create_task(self._redis_listener())
@@ -75,25 +79,35 @@ class WebsocketConnectionManager:
         )
 
     async def _redis_listener(self):
-        pubsub = self.redis.pubsub()
-        await pubsub.subscribe(self.REDIS_CHANNEL)
+        backoff = 1
+        while True:
+            pubsub = self.redis.pubsub()
+            try:
+                await pubsub.subscribe(self.REDIS_CHANNEL)
+                backoff = 1
+                async for item in pubsub.listen():
+                    if item["type"] != "message":
+                        continue
+                    await self._handle_pubsub_message(item["data"])
+            except asyncio.CancelledError:
+                raise
+            except (redis.RedisError, OSError) as e:
+                logger.warning(f"[websocket] pub/sub listener error, reconnecting in {backoff}s: {e!r}")
+            finally:
+                with contextlib.suppress(Exception):
+                    await pubsub.aclose()
+            await asyncio.sleep(backoff)
+            backoff = min(backoff * 2, 30)
+
+    async def _handle_pubsub_message(self, data: str):
         try:
-            async for item in pubsub.listen():
-                if item["type"] != "message":
-                    continue
-
-                payload = json.loads(item["data"])
-                await self._broadcast_local(
-                    message=payload["message"],
-                    user_ids=payload["user_ids"],
-                )
-
-        except asyncio.CancelledError:
-            raise asyncio.CancelledError()
-
-        finally:
-            await pubsub.unsubscribe(self.REDIS_CHANNEL)
-            await pubsub.close()
+            payload = json.loads(data)
+            message = payload["message"]
+            user_ids = payload["user_ids"]
+        except (ValueError, TypeError, KeyError) as e:
+            logger.warning(f"[websocket] ignoring malformed broadcast: {e!r}")
+            return
+        await self._broadcast_local(message=message, user_ids=user_ids)
 
     async def _broadcast_local(self, message: dict, user_ids: list[int] | None = None,):
         async with self.lock:

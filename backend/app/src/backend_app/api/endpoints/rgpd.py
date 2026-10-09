@@ -7,6 +7,7 @@ from backend_app.core.jwt import Token
 from backend_app.models.chat_message import ChatMessage
 from backend_app.models.friends import Friends
 from backend_app.models.users import UserModel
+from backend_app.services.process_img import remove_profile_picture
 from shared.database import AsyncSessionDep
 
 router = APIRouter()
@@ -18,6 +19,7 @@ async def delete_account(
 	response: Response
 ):
 	user_id = current_user.id
+	picture = current_user.picture
 
 	await session.execute(
 		delete(ChatMessage).where(ChatMessage.owner_id == user_id)
@@ -31,6 +33,7 @@ async def delete_account(
 		delete(UserModel).where(UserModel.id == user_id)
 	)
 	await session.commit()
+	remove_profile_picture(picture)
 
 	return response.delete_cookie(
 		key="access_token",

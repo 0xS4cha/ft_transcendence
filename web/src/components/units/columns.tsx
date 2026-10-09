@@ -15,7 +15,7 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
   {
     id: "expand",
     header: () => null,
-    cell: ({ row }: any) => (
+    cell: ({ row }) => (
       row.original.model ? (
         <Button
           variant="ghost"
@@ -38,7 +38,7 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
   {
     accessorKey: "unit",
     header: "Unit",
-    cell: ({ row }: any) => (
+    cell: ({ row }) => (
       <div className="flex items-center gap-2 cursor-pointer">
         <Avatar>
           <AvatarImage src={row.original.icon}/>
@@ -61,27 +61,27 @@ export const UnitsColumns: ColumnDef<typeof dataTableFeatures, UnitRow>[] = [
     accessorKey: "place",
     header: "Average place",
     filterFn: "equalsString",
-    cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.avg_place).toFixed(2)}</span>
+    cell: ({ row }) => <span className="text-sm">{Number(row.original.avg_place).toFixed(2)}</span>
   },
   {
     accessorKey: "wr",
     header: "Win rate",
-    cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.winrate).toFixed(2)}%</span>,
+    cell: ({ row }) => <span className="text-sm">{Number(row.original.winrate).toFixed(2)}%</span>,
   },
   {
     accessorKey: "frequency",
     header: "Frequency",
-    cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.frequency).toFixed(2)}</span>,
+    cell: ({ row }) => <span className="text-sm">{Number(row.original.frequency).toFixed(2)}</span>,
   },
   {
     accessorKey: "cost",
     header: "Cost",
-    cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.cost).toFixed(2)}</span>,
+    cell: ({ row }) => <span className="text-sm">{Number(row.original.cost).toFixed(2)}</span>,
   },
   {
     accessorKey: "traits",
     header: "Traits",
-    cell: ({ row }: any) => (
+    cell: ({ row }) => (
       <div className="flex flex-row">
         {row.original.traits.map((trait: TraitRow) => (
           <Avatar>

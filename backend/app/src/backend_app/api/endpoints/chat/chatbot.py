@@ -1,12 +1,16 @@
+import logging
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
+from fastapi.concurrency import run_in_threadpool
 
 from backend_app.core.chatbot import ChatBot
 from backend_app.core.jwt import Token
 from backend_app.models.users import UserModel
-from backend_app.rag.rag import Rag
+from backend_app.rag.rag import Rag, RagError
 from shared.database import db
+
+logger = logging.getLogger(__name__)
 
 chatbot = ChatBot(
 	db.settings.HOST_IP,
@@ -34,7 +38,16 @@ router = APIRouter()
 
 rag = Rag()
 
+MAX_QUESTION_LENGTH = 2000
+
 @router.get("/ask")
-async def ask_chatbot(message: str, current_user: Annotated[UserModel, Depends(Token.get_current_user)]):
-	relevant_chunks = rag.retrieve_chunks(message, [], 4)
+async def ask_chatbot(
+	message: Annotated[str, Query(min_length=1, max_length=MAX_QUESTION_LENGTH)],
+	current_user: Annotated[UserModel, Depends(Token.get_current_user)],
+):
+	try:
+		relevant_chunks = await run_in_threadpool(rag.retrieve_chunks, message, [], 4)
+	except RagError as e:
+		logger.warning(f"[ask_chatbot] retrieval failed: {e!r}")
+		relevant_chunks = []
 	return await chatbot.ask(message, relevant_chunks)

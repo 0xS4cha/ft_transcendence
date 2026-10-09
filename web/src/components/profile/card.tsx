@@ -11,6 +11,7 @@ import { Moon, Sun, Trash, Info , Pencil, Upload} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { deleteUser, setUsername, setPicture } from "@/store/reducers/userSlice";
 import { useState } from "react";
+import { toast } from "@/components/ui/toast";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -31,6 +32,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@base-ui/react";
 import { changeUsername, changePicture, deletePicture } from "@/services/authService";
+import { errorMessage } from "@/lib/utils";
 
 const languageOptions = [
     { value: "en", label: "🇺🇸 English" },
@@ -74,6 +76,7 @@ export function ProfileCard() {
         try {
             localStorage.setItem("isDark", String(dark));
         } catch {
+            return;
         }
     };
 
@@ -91,7 +94,11 @@ export function ProfileCard() {
             setSelectedFile(null);
             setDeletePictureOpen(false);
         } catch (error) {
-            console.error("Erreur lors de la suppression de la photo de profil :", error);
+            toast.add({
+                type: "error",
+                title: "Error",
+                description: errorMessage(error)
+            });
             setDeletePictureOpen(false);
         }
     };
@@ -113,7 +120,11 @@ export function ProfileCard() {
 
             setEditOpen(false);
         } catch (error) {
-            console.error("Erreur lors de la sauvegarde du profil :", error);
+            toast.add({
+                type: "error",
+                title: "Error",
+                description: errorMessage(error)
+            });
         }
     };
 

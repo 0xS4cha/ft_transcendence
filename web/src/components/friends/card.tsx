@@ -34,10 +34,9 @@ import {
 } from "@/components/ui/empty";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "@/components/ui/toast";
-import { cn } from "@/lib/utils";
+import { cn, initialsOf, errorMessage, resolvePictureUrl } from "@/lib/utils";
 import { getFriendsList, sendFriendsRequest, removeFriend } from "@/services/friendsService";
 import { type FriendState } from "@/types/user";
-import { initialsOf, errorMessage } from "@/lib/utils";
 
 const MAX_USERNAME_LENGTH = 32;
 
@@ -62,7 +61,7 @@ function FriendRow({
       )}
     >
       <Avatar className="size-8 shrink-0">
-        <AvatarImage src={friend.picture} />
+        <AvatarImage src={resolvePictureUrl(friend.picture)} />
         <AvatarFallback className="text-xs">{initialsOf(friend.username)}</AvatarFallback>
         <AvatarBadge className={friend.online ? 'bg-green-600 dark:bg-green-800' : 'bg-gray-600 dark:bg-gray-800' }/>
       </Avatar>
@@ -111,20 +110,18 @@ export function FriendsCard() {
   const [removingIds, setRemovingIds] = useState<Set<string>>(new Set());
   const { t } = useTranslation();
 
-  const loadFriends = useCallback(async () => {
-    setLoading(friends.length == 0);
-    try {
-      setFriends(await getFriendsList());
-    } catch (error) {
-      toast.add({
-        type: "error",
-        title: t("friends.loadFailed"),
-        description: errorMessage(error),
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [t]);
+  const loadFriends = useCallback(() =>
+    getFriendsList()
+      .then(setFriends)
+      .catch((error: unknown) => {
+        toast.add({
+          type: "error",
+          title: t("friends.loadFailed"),
+          description: errorMessage(error),
+        });
+      })
+      .finally(() => setLoading(false)),
+  [t]);
 
   useEffect(() => {
     void loadFriends();
@@ -133,7 +130,7 @@ export function FriendsCard() {
     }, 7500);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [loadFriends]);
 
   const trimmed = username.trim();
   const canSend = trimmed.length > 0 && !sending;

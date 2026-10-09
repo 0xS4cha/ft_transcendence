@@ -13,7 +13,7 @@ export const TraitsColumns: ColumnDef<typeof dataTableFeatures, TraitRow>[] = [
   {
     accessorKey: "trait",
     header: "Trait",
-    cell: ({ row }: any) => (
+    cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <Avatar>
           <AvatarImage src={row.original.icon}/>
@@ -34,17 +34,17 @@ export const TraitsColumns: ColumnDef<typeof dataTableFeatures, TraitRow>[] = [
     accessorKey: "place",
     header: "Average Place",
     filterFn: "equalsString",
-    cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.avg_place).toFixed(2)}</span>
+    cell: ({ row }) => <span className="text-sm">{Number(row.original.avg_place).toFixed(2)}</span>
   },
   {
     accessorKey: "wr",
     header: "Win rate",
-    cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.winrate).toFixed(2)}%</span>,
+    cell: ({ row }) => <span className="text-sm">{Number(row.original.winrate).toFixed(2)}%</span>,
   },
   {
     accessorKey: "frequency",
     header: "Frequency",
-    cell: ({ row }: any) => <span className="text-sm">{parseFloat(row.original.frequency).toFixed(2)}</span>,
+    cell: ({ row }) => <span className="text-sm">{Number(row.original.frequency).toFixed(2)}</span>,
   },
   {
     id: "avg_place",

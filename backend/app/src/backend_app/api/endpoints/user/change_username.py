@@ -1,12 +1,13 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import update
 from sqlalchemy.exc import IntegrityError
 
+from backend_app.core.authenticate import Authenticate
 from backend_app.core.jwt import Token
 from backend_app.models.users import UserModel
-from backend_app.schemas.user import UserPublic
+from backend_app.schemas.user import USERNAME_PATTERN, UserPublic
 from shared.database import AsyncSessionDep
 
 router = APIRouter()
@@ -16,7 +17,7 @@ router = APIRouter()
         response_model=UserPublic
 )
 async def change_username(
-    new_username: str,
+    new_username: Annotated[str, Query(pattern=USERNAME_PATTERN)],
     session: AsyncSessionDep,
     current_user: Annotated[UserModel, Depends(Token.get_current_user)],
 ) -> UserModel:
@@ -24,6 +25,12 @@ async def change_username(
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="You cannot use the same username as your current one."
+        )
+
+    if await Authenticate.username_taken(new_username, session, current_user.id):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Username is already taken"
         )
 
     try:
@@ -46,7 +53,7 @@ async def change_username(
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Username is already taken"
-        )
+        ) from None
 
     await session.refresh(current_user)
 

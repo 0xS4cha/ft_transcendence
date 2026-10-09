@@ -3,16 +3,17 @@ from typing import Any
 
 import redis.asyncio as redis
 from httpx2 import AsyncClient, HTTPError
-from pydantic import TypeAdapter
+from pydantic import TypeAdapter, ValidationError
 
 from backend_app.core.utils import safe_get
 from backend_app.schemas.trait import Trait
 from backend_app.services.fetch_game_data import (
+    dict_list,
     fetch_results,
     fetch_set_data,
     get_game_data,
 )
-from backend_app.services.get_stats import get_all_datas_use, get_stats
+from backend_app.services.get_stats import get_all_datas_use, get_stats, valid_places
 
 
 class TraitsUnavailableError(Exception):
@@ -43,13 +44,16 @@ async def get_traits(
 
     traits_by_id = {
         c["apiName"]: c
-        for c in set_data.get("traits", [])
-        if "apiName" in c
+        for c in dict_list(set_data.get("traits"))
+        if isinstance(c.get("apiName"), str)
     }
     if not traits_by_id:
         raise TraitsUnavailableError("Set data traits api names not found")
     
-    traits = [trait for trait in traits if trait.get("trait", "")[:-2] in traits_by_id]
+    traits = [
+        trait for trait in traits
+        if isinstance(trait.get("trait"), str) and trait["trait"][:-2] in traits_by_id
+    ]
     if not traits:
         raise TraitsUnavailableError("Traits not found in set data traits")
 
@@ -72,8 +76,8 @@ def process_trait(
 ) -> Trait | None:
 
     id = trait.get("trait")
-    places = trait.get("places")
-    if id is None or places is None:
+    places = valid_places(trait.get("places"))
+    if not isinstance(id, str) or not id[-1:].isdigit() or places is None:
         return None
 
     total_trait_use = sum(places)
@@ -102,29 +106,32 @@ def process_trait(
     if background_icon is None:
         return None
 
-    return (Trait(
-        id=id,
-        name=name,
-        avg_place=avg_place,
-        winrate=winrate,
-        frequency=frequency,
-        breakpoint=breakpoint,
-        breakpoints=breakpoints,
-        icon=icon,
-        background_icon=background_icon,
-    ))
+    try:
+        return Trait(
+            id=id,
+            name=name,
+            avg_place=avg_place,
+            winrate=winrate,
+            frequency=frequency,
+            breakpoint=breakpoint,
+            breakpoints=breakpoints,
+            icon=icon,
+            background_icon=background_icon,
+        )
+    except ValidationError:
+        return None
 
 
 def get_breakpoints(
     unit_trait_info: dict[str, Any]
 ) -> list[str] | None:
     effects = unit_trait_info.get("effects")
-    if effects is None:
+    if not isinstance(effects, list):
         return None
 
     breakpoints = []
     for breakpoint in effects:
-        if "minUnits" not in breakpoint:
+        if not isinstance(breakpoint, dict) or "minUnits" not in breakpoint:
             return None
         elif breakpoint["minUnits"] is None:
             breakpoints.append("0")

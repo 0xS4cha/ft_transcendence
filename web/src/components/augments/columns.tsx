@@ -53,7 +53,7 @@ export const AugmentsColumns: ColumnDef<typeof dataTableFeatures, AugmentRow>[] 
         <span>Augment</span>
       </>
     ),
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const activeStyle = getAugmentStyle(row.original.rarity);
       return (
         <div className="flex items-center gap-2">

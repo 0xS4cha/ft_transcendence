@@ -6,12 +6,14 @@ import {
   ChevronsRight,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import type { ReactTable, RowData } from "@tanstack/react-table";
+import { dataTableFeatures } from "@/lib/data-table-features";
 
-interface DataTablePaginationProps {
-  table: any;
+interface DataTablePaginationProps<TData extends RowData> {
+  table: ReactTable<typeof dataTableFeatures, TData>;
 }
 
-export function DataTablePagination({ table }: DataTablePaginationProps) {
+export function DataTablePagination<TData extends RowData>({ table }: DataTablePaginationProps<TData>) {
   const { t } = useTranslation();
 
   return (

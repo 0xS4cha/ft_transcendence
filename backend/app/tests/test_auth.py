@@ -125,9 +125,9 @@ async def test_me_returns_current_user(make_user):
     assert resp.status_code == 200 and resp.json()["username"] == "bob"
 
 
-def _token(sub="bob@example.com", key=None, alg="HS256", exp_delta=timedelta(hours=1), **extra):
+def _token(sub="1", key=None, alg="HS256", exp_delta=timedelta(hours=1), ver=0, **extra):
     now = datetime.now(UTC)
-    payload = {"sub": sub, "iat": now, "exp": now + exp_delta, **extra}
+    payload = {"sub": sub, "ver": ver, "iat": now, "exp": now + exp_delta, **extra}
     return jwt.encode(payload, key or Token.secret_key, algorithm=alg)
 
 
@@ -138,8 +138,13 @@ def _token(sub="bob@example.com", key=None, alg="HS256", exp_delta=timedelta(hou
     _token(key="wrong-key-wrong-key-wrong-key-wrong"),
     _token(exp_delta=timedelta(seconds=-10)),
     _token(sub="nobody@example.com"),
+    _token(sub="bob@example.com"),
+    _token(ver=1),
+    _token(sub="999"),
+    _token(ver=None),
     jwt.encode({"sub": "bob@example.com"}, "x" * 32, algorithm="HS256"),
     jwt.encode({"sub": "bob@example.com", "exp": 9999999999}, None, algorithm="none"),
+    jwt.encode({"sub": "1", "ver": 0, "exp": 9999999999}, None, algorithm="none"),
 ])
 async def test_me_rejects_bad_tokens(make_user, client, token):
     await make_user("bob")
@@ -163,6 +168,14 @@ async def test_logout_clears_cookie(make_user):
     resp = await c.post("/api/auth/logout")
     assert resp.status_code == 200
     assert 'access_token=""' in resp.headers["set-cookie"] or "max-age=0" in resp.headers["set-cookie"].lower()
+
+
+async def test_logout_revokes_token(make_user, client):
+    c = await make_user()
+    token = c.cookies.get("access_token")
+    assert (await c.post("/api/auth/logout")).status_code == 200
+    resp = await client.get("/api/auth/me", headers={"Cookie": f"access_token={token}"})
+    assert resp.status_code == 401
 
 
 async def test_token_lifetime_is_reasonable():
@@ -313,7 +326,7 @@ async def test_oauth_upstream_unreachable_is_502(client, monkeypatch):
 
 
 async def test_manually_set_valid_token_is_accepted(make_user, client):
-    """Positive control for the cookie-injection tests above."""
-    await make_user("bob")
-    resp = await client.get("/api/auth/me", headers={"Cookie": f"access_token={_token()}"})
+    bob = await make_user("bob")
+    token = _token(sub=str(bob.user["id"]))
+    resp = await client.get("/api/auth/me", headers={"Cookie": f"access_token={token}"})
     assert resp.status_code == 200

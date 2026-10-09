@@ -15,6 +15,7 @@ from backend_app.services.process_img import (
     ProcessImgPayloadError,
     ProcessImgStorageError,
     remove_file,
+    remove_profile_picture,
 )
 from shared.database import AsyncSessionDep
 
@@ -38,22 +39,22 @@ async def change_picture(
         raise HTTPException(
             status_code=status.HTTP_413_CONTENT_TOO_LARGE,
             detail=str(e)
-        )
+        ) from e
     except ProcessImgMediaTypeError as e:
         raise HTTPException(
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
             detail=str(e)
-        )
+        ) from e
     except ProcessImgBadRequestError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
-        )
+        ) from e
     except ProcessImgStorageError as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=str(e)
-        )
+        ) from e
 
     old_picture = current_user.picture
     picture = f"profile_pictures/{image_id}.webp"
@@ -80,9 +81,7 @@ async def change_picture(
         remove_file(path)
         raise
     
-    if old_picture and not old_picture.startswith("https://cdn.intra.42.fr/users/"):
-        old_path = os.path.join("/app/src/shared", old_picture)
-        remove_file(old_path)
+    remove_profile_picture(old_picture)
         
     await session.refresh(current_user)
     

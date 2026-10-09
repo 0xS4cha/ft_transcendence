@@ -17,7 +17,10 @@ async def signup(
     session: AsyncSessionDep,
     response: Response,
 ):
-    if await Authenticate.get_user(user_data.email, session):
+    if (
+        await Authenticate.get_user(user_data.email, session)
+        or await Authenticate.username_taken(user_data.username, session)
+    ):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Email or username is already taken",
@@ -39,8 +42,8 @@ async def signup(
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Email or username is already taken",
-        )
+        ) from None
 
     await session.refresh(new_user)
-    Token.generate_token(new_user.email, response)
+    Token.generate_token(new_user, response)
     return new_user

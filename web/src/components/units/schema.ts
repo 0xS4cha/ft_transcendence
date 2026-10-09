@@ -14,7 +14,7 @@ const UnitRow = z.object({
   frequency: z.number(),
   name: z.string(),
   icon: z.string(),
-  model: z.string(),
+  model: z.string().nullable(),
   cost: z.number(),
   traits: z.array(TraitRow),
 });

@@ -125,7 +125,7 @@ services:
       - localnet_transcendence
   
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus:v3.15.0
     container_name: transcendence-prometheus
     restart: unless-stopped
     volumes:
@@ -149,7 +149,7 @@ services:
       - localnet_transcendence
     
   alertmanager:
-    image: prom/alertmanager:latest
+    image: prom/alertmanager:v0.34.1
     container_name: transcendence-alertmanager
     restart: unless-stopped
     volumes:
@@ -160,7 +160,7 @@ services:
       - localnet_transcendence
     
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:13.2.3
     container_name: transcendence-grafana
     restart: unless-stopped
     environment:
@@ -180,7 +180,7 @@ services:
       - localnet_transcendence
     
   node-exporter:
-    image: prom/node-exporter:latest
+    image: prom/node-exporter:v1.12.1
     container_name: transcendence-node-exporter
     restart: unless-stopped
     volumes:
@@ -197,7 +197,7 @@ services:
       - localnet_transcendence
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
+    image: gcr.io/cadvisor/cadvisor:v0.55.1
     container_name: transcendence-cadvisor
     restart: unless-stopped
     volumes:
@@ -212,7 +212,7 @@ services:
       - localnet_transcendence
 
   postgres-exporter:
-    image: prometheuscommunity/postgres-exporter:latest
+    image: prometheuscommunity/postgres-exporter:v0.20.1
     container_name: transcendence-postgres-exporter
     restart: unless-stopped
     environment:
@@ -234,3 +234,6 @@ volumes:
 networks:
   localnet_transcendence:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16

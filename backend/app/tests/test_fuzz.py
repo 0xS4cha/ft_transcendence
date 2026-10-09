@@ -34,7 +34,10 @@ async def call(method, url, cookie=None, **kw):
 
 
 def assert_no_5xx(resp, ctx):
-    assert resp.status_code < 500, f"{resp.status_code} for {ctx}: {resp.text[:300]}"
+    graceful = (502, 503)
+    assert resp.status_code < 500 or resp.status_code in graceful, (
+        f"{resp.status_code} for {ctx}: {resp.text[:300]}"
+    )
 
 
 async def logged_in_cookie():

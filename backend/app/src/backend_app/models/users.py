@@ -1,3 +1,4 @@
+from sqlalchemy import Index, func, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend_app.models.chat_message import ChatMessage
@@ -25,3 +26,11 @@ class   UserModel(Base):
         cascade="all, delete-orphan",
     )
     email_verified: Mapped[bool | None] = mapped_column()
+    token_version: Mapped[int] = mapped_column(
+        default=0,
+        server_default=text("0"),
+    )
+
+    __table_args__ = (
+        Index("uq_users_username_lower", func.lower(username), unique=True),
+    )

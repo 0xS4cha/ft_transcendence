@@ -21,7 +21,7 @@ function HexagonCell({ id, cx, cy, points, champion, itemsOnCell, onRemove }: {i
   const clipPathId = `clip-${id}`;
   
   return (
-    <g ref={setNodeRef as any}>
+    <g ref={(node: SVGGElement | null) => setNodeRef(node as unknown as HTMLElement | null)}>
       <defs>
         <clipPath id={clipPathId}>
           <polygon points={points}/>
@@ -36,7 +36,7 @@ function HexagonCell({ id, cx, cy, points, champion, itemsOnCell, onRemove }: {i
       />
       {champion && (
         <g
-          ref={setDraggableRef as any}
+          ref={(node: SVGGElement | null) => setDraggableRef(node as unknown as HTMLElement | null)}
           {...listeners}
           {...attributes}
           onClick={() => onRemove(id)}

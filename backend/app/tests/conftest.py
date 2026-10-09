@@ -25,7 +25,6 @@ from sqlalchemy import text
 from backend_app.api.endpoints.chat import chat as chat_module
 from backend_app.api.endpoints.game_data import leaderboard as leaderboard_module
 from backend_app.api.endpoints.game_data import patchnote as patchnote_module
-from backend_app.api.endpoints.game_data import search as search_module
 from backend_app.api.endpoints.stats import stats as stats_module
 from backend_app.core import rate_limiter
 from backend_app.core.websocket import wsConnectionManager
@@ -73,7 +72,6 @@ async def clean_state() -> AsyncIterator[None]:
     leaderboard_module.cache.clear()
     leaderboard_module.last_calculated_timestamp = 0
     patchnote_module.cached_patchnote.clear()
-    search_module.searched_user_cache.clear()
     stats_module.stats_cache.clear()
     stats_module.tft_stats.clear()
     for endpoint in stats_module.endpoints.values():

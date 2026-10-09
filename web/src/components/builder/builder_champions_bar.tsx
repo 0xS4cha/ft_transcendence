@@ -8,7 +8,7 @@ function DraggableChampion({ champion, onClick }: { champion: UnitRow, onClick: 
 
   return (
     <button
-      ref={setNodeRef as any}
+      ref={setNodeRef}
       {...listeners}
       {...attributes}
       onClick={onClick}
@@ -44,7 +44,7 @@ function DraggableItem({ item}: { item: ItemRow}) {
 
   return (
     <button
-      ref={setNodeRef as any}
+      ref={setNodeRef}
       {...listeners}
       {...attributes}
       title={item.name}

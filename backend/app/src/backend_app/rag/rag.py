@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 from pathlib import Path
 from typing import Any
@@ -6,6 +7,12 @@ from typing import Any
 import bm25s
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pydantic import BaseModel
+
+logger = logging.getLogger(__name__)
+
+
+class RagError(Exception):
+    pass
 
 
 class MinimalSource(BaseModel):
@@ -19,10 +26,11 @@ class Rag:
         self.indexed = False
         self.cached_chunks = None
         self.index_files("/app/src/backend_app/rag/dataset/", 2000)
+        self.retriever = bm25s.BM25.load("data/processed/bm25_index", load_corpus=True)
     
     def chunk_file(self, path: str, corpus: list[str], index_map: dict[str, dict[str, Any]], chunk_size: int = 2000) -> None:
         if "." not in path:
-            raise Exception(f"Invalid/Unknown file extension: {path}") # noqa: TRY002
+            raise RagError(f"Invalid/Unknown file extension: {path}")
         ext = path.split(".")[-1].lower()
         if ext not in ["md", "txt"]:
             return
@@ -50,8 +58,8 @@ class Rag:
                         "end": start_char + len(doc.page_content),
                     }
                 )
-        except Exception as e: # noqa: BLE001
-            raise Exception(f"Could not open file: '{path}', reason: {e}") # noqa: TRY002
+        except Exception as e:
+            raise RagError(f"Could not open file: '{path}', reason: {e}") from e
 
 
     def gather_files(self, path: str) -> list[str]:
@@ -68,7 +76,7 @@ class Rag:
         index_map: dict[str, dict[str, Any]] = {}
 
         if not os.access(path, 0):
-            raise Exception("Could not find DataSet path") # noqa: TRY002
+            raise RagError("Could not find DataSet path")
 
         files = self.gather_files(path)
         for file_path in files:
@@ -83,18 +91,17 @@ class Rag:
         try:
             with open("./data/processed/chunks/chunks.json", "w") as f:
                 json.dump(index_map, f, indent=4)
-        except Exception: # noqa: BLE001
-            raise Exception("Could not write chunks manifest") # noqa: TRY002
+        except Exception as e:
+            raise RagError("Could not write chunks manifest") from e
 
-        print(f"\nIngestion complete! Indices saved under {output_dir}")
+        logger.info(f"\nIngestion complete! Indices saved under {output_dir}")
         self.indexed = True
 
 
     def retrieve_chunks(self, query: str, found_files: list[MinimalSource], k: int = 3) -> list[str]:
         try:
-            retriever = bm25s.BM25.load("data/processed/bm25_index", load_corpus=True)
             query_tokens = bm25s.tokenize(query)
-            docs, _ = retriever.retrieve(query_tokens, k=k)
+            docs, _ = self.retriever.retrieve(query_tokens, k=k)
             chunks_ids = []
             if self.cached_chunks:
                 data = self.cached_chunks
@@ -120,5 +127,5 @@ class Rag:
                         )
                         chunks_ids.append(chunk_id)
             return [doc["text"] for doc in docs[0]]
-        except Exception as e: # noqa: BLE001
-            raise Exception(f"Could not find indexed chunks, please index before: \n{e}") # noqa: TRY002
+        except Exception as e:
+            raise RagError(f"Could not find indexed chunks, please index before: \n{e}") from e

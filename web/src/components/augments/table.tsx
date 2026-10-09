@@ -1,15 +1,15 @@
 import { AugmentsColumns } from "@/components/augments/columns";
 import { DataTable } from "@/components/data-table/data-table";
-import { useEffect, useState, useImperativeHandle } from "react";
+import { useEffect, useState, useImperativeHandle, type Ref } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "@/components/ui/toast";
 import { type AugmentRow } from "@/components/augments/schema";
 import { getAugmentsStats } from "@/services/statsService";
-import { type FilterType } from "@/types/stats";
+import { type FilterType, type exportRef } from "@/types/stats";
 import { downloadJson, downloadXml } from "@/lib/utils";
 
 
-export function AugmentsTable({ ref }: any) {
+export function AugmentsTable({ ref }: { ref?: Ref<exportRef> }) {
   const [filter, setFilter] = useState<FilterType>({
     queue: "Ranked",
     ranked: "PLATINUM",

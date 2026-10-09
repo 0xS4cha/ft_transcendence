@@ -1,8 +1,9 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card"
 import { CountUp } from "@/components/ui/countup";
+import type { LucideIcon } from "lucide-react";
 
 interface BreakdownProps {
-    Icon: any;
+    Icon: LucideIcon;
     title: string;
     count: number;
 }

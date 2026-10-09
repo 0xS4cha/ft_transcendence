@@ -1,3 +1,4 @@
+import logging
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -10,6 +11,8 @@ from backend_app.core.websocket import WSbroadcast
 from backend_app.models.friends import Friends, Status
 from backend_app.models.users import UserModel
 from shared.database import AsyncSessionDep
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
     
@@ -76,18 +79,18 @@ async def send_friend_request(
         await session.commit()
     except IntegrityError as e:
         await session.rollback()
-        print("[send_friend_request] Integrity error while creating friend request")
+        logger.warning(f"[send_friend_request] Integrity error while creating friend request: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid friend request: {e}"
-        )
+            detail="Invalid friend request"
+        ) from None
 
     try:
         await WSbroadcast("friend.request", {
             "requester_username": current_user.username
         }, [requested.id])
     except Exception as e: #noqa BLE001
-        print(f"Failed to broadcast friend request to user with id {requested.id}")
+        logger.warning(f"Failed to broadcast friend request to user with id {requested.id}: {e}")
 
     return {
         "message": "Friend request successfully sent."
