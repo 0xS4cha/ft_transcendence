@@ -18,6 +18,14 @@ MAX_MESSAGES_COUNT  = 200
 class ChatMessageForm(BaseModel):
     content: str | None = None
 
+
+def picture_url(picture: str | None) -> str | None:
+    if not picture:
+        return None
+    if picture.startswith("https://"):
+        return picture
+    return f"/api/public/{picture}"
+
 @router.post("/send")
 async def send_chat(chat_message: ChatMessageForm, current_user: Annotated[UserModel, Depends(Token.get_current_user)], session: AsyncSessionDep):
     if not chat_message.content:
@@ -40,7 +48,7 @@ async def send_chat(chat_message: ChatMessageForm, current_user: Annotated[UserM
         "content": chat_message.content,
         "user_id": current_user.id,
         "username": current_user.username,
-        "picture": f"/api/public/{current_user.picture}" if not "cdn.intra.42.fr" in current_user.picture else current_user.picture,
+        "picture": picture_url(current_user.picture),
     }
     await WSbroadcast("chat.msg", data)
     return data
@@ -67,7 +75,7 @@ async def messages(current_user: Annotated[UserModel, Depends(Token.get_current_
                     "content": message.content,
                     "user_id": user_id,
                     "username": username,
-                    "picture": f"/api/public/{picture}" if not "cdn.intra.42.fr" in picture else picture,
+                    "picture": picture_url(picture),
                 }
                 for message, username, picture, user_id in [r for r in result][::-1]
             ]

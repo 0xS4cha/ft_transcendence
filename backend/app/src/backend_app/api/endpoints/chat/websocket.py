@@ -24,7 +24,9 @@ async def websocket_endpoint(websocket: WebSocket, session: AsyncSessionDep):
     try:
         while True:
             await websocket.receive_text()
-            await ws_ratelimit(websocket, context_key=str(current_user.id))
+            if not await ws_ratelimit(websocket, context_key=str(current_user.id)):
+                await websocket.close(code=1008, reason="Rate limit exceeded")
+                break
     except WebSocketDisconnect as e:
         print(f"[websocket_endpoint] Websocket disconnected: {e}")
     finally:

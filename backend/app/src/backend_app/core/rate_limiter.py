@@ -1,41 +1,59 @@
+import time
+
 import jwt
+import redis.asyncio as redis
 from fastapi import Depends, HTTPException, Request, WebSocket, status
-from fastapi_limiter.depends import WebSocketRateLimiter
 from jwt.exceptions import InvalidTokenError
-from pyrate_limiter import Duration, Limiter, Rate
 
 from backend_app.core.jwt import Token
+
+
+async def hit(r: redis.Redis, key: str, times: int, seconds: int) -> bool:
+    window = int(time.time()) // seconds
+    redis_key = f"ratelimit:{key}:{seconds}:{window}"
+    try:
+        async with r.pipeline(transaction=True) as pipe:
+            count, _ = await pipe.incr(redis_key).expire(redis_key, seconds).execute()
+    except redis.RedisError as e:
+        print(f"[rate_limiter] Redis unavailable, allowing request: {e}")
+        return True
+    return count <= times
 
 
 class RateLimiter:
     def __init__(
         self,
-        limiter: Limiter,
-        retry_after: int,
+        name: str,
+        times: int,
+        seconds: int,
         identifier
     ) -> None:
-        self.limiter = limiter
+        self.name = name
+        self.times = times
+        self.seconds = seconds
         self.identifier = identifier
-        self.retry_after = retry_after
 
     async def __call__(
         self,
         request: Request,
     ) -> None:
-        key = await self.identifier(request)
-        ok = await self.limiter.try_acquire_async(key, blocking=False)
-        if not ok:
+        key = f"{self.name}:{await self.identifier(request)}"
+        if not await hit(request.app.state.redis, key, self.times, self.seconds):
             raise HTTPException(
                 status_code=status.HTTP_429_TOO_MANY_REQUESTS,
                 detail="Too Many Requests",
-                headers ={"Retry-After": str(self.retry_after)}
+                headers={"Retry-After": str(self.seconds)}
             )
+
+
+def client_ip(request: Request) -> str:
+    return request.client.host if request.client else "unknown"
 
 
 async def ip_identifier(
     request: Request
 ) -> str:
-    return f"ip:{request.client.host}"
+    return f"ip:{client_ip(request)}"
 
 
 async def user_identifier(
@@ -51,35 +69,29 @@ async def user_identifier(
             if username:
                 return f"user:{username}"
         except InvalidTokenError:
-            print("[user_identifier] Invalid token.")
+            pass
 
-    return f"ip:{request.client.host}"
+    return f"ip:{client_ip(request)}"
 
 
-def limit(times: int, seconds: int, identifier):
-    return Depends(RateLimiter(
-        limiter=Limiter(Rate(times, Duration.SECOND * seconds)),
-        retry_after=seconds,
-        identifier=identifier,
-    ))
+def limit(name: str, times: int, seconds: int, identifier):
+    return Depends(RateLimiter(name, times, seconds, identifier))
 
-basic_limits = [limit(100, 60, ip_identifier)]
-auth_limits = [limit(10, 60, ip_identifier)]
+basic_limits = [limit("basic", 100, 60, ip_identifier)]
+auth_limits = [limit("auth", 10, 60, ip_identifier)]
 authenticated_limits = [
-    limit(60, 60, user_identifier),
-    limit(200, 60, ip_identifier)
+    limit("authenticated-user", 60, 60, user_identifier),
+    limit("authenticated-ip", 200, 60, ip_identifier)
 ]
 
-async def ws_identifier(ws: WebSocket) -> str:
-    return f"ws:{ws.client.host}"
+
+class WebSocketRateLimiter:
+    def __init__(self, times: int, seconds: int) -> None:
+        self.times = times
+        self.seconds = seconds
+
+    async def __call__(self, ws: WebSocket, context_key: str) -> bool:
+        return await hit(ws.app.state.redis, f"ws:{context_key}", self.times, self.seconds)
 
 
-async def ws_callback(ws: WebSocket):
-    await ws.close(code=1008, reason="Rate limit exceeded")
-
-
-ws_ratelimit = WebSocketRateLimiter(
-    limiter=Limiter(Rate(20, Duration.SECOND * 10)),
-    identifier=ws_identifier,
-    callback=ws_callback,
-)
+ws_ratelimit = WebSocketRateLimiter(times=20, seconds=10)
