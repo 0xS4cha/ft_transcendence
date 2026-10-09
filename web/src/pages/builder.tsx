@@ -23,6 +23,8 @@ import BuilderAugmentsBar from "@/components/builder/builder_augment_bar";
 import BuilderChampionsBar from "@/components/builder/builder_champions_bar";
 import BuilderTraitsBarMobile from "@/components/builder/builder_traits_bar_mobile";
 import { getAugmentsStats, getItemsStats, getTraitsStats, getUnitsStats } from "@/services/statsService";
+import { toast } from "@/components/ui/toast";
+import { errorMessage } from "@/lib/utils";
 
 export default function Builder() {
 
@@ -216,11 +218,18 @@ export default function Builder() {
       const jsonString = JSON.stringify(compData);
       const encodedCode = btoa(jsonString);
       await navigator.clipboard.writeText(encodedCode);
-      alert("Code copied to clipboard !\n\n" + encodedCode)
+      toast.add({
+          type: "info",
+          title: "Code",
+          description: "Code copied to clipboard"
+      });
     } catch (error)
     {
-      console.log("Error while copying :", error);
-      alert("Error: failed to copy the board\n");
+      toast.add({
+          type: "error",
+          title: "Error",
+          description: errorMessage(error)
+      });
     }
   }
 
@@ -243,7 +252,11 @@ export default function Builder() {
     } catch (error)
     {
       console.log("Error while importing the comp :", error);
-      alert("Format is invalid or we encountered an error, retry.");
+      toast.add({
+          type: "error",
+          title: "Error",
+          description: errorMessage(error)
+      });
     }
   }
 
