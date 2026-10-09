@@ -35,12 +35,19 @@ dependencies = [
 [dependency-groups]
 dev = [
     "httpx2>=2.12.0",
+    "hypothesis>=6.168.5",
     "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "pytest-cov>=7.1.0",
     "ruff>=0.16.5",
 ]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
 
 [tool.uv]
 required-environments = [
