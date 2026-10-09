@@ -41,9 +41,9 @@
 
 ## Description
 
-**Tactyx** is an end-to-end web platform inspired by competitive analytical tools such as MetaTFT, built specifically for the Teamfight Tactics gaming community.
+**Tactyx** is an end-to-end web platform inspired by competitive analytical tools such as MetaTFT or TeamFight.lol, built specifically for the Teamfight Tactics gaming community.
 
-### Goal and Overview
+### Goal and OverviewProject Manager
 
 The primary goal of Tactyx is to give TFT players a centralized, high-performance platform to:
 1. **Analyze Game Meta & Performance**: Explore granular statistical metrics (win rate, pick rate, average placement, item popularity) for units, items, traits, and augments.
@@ -266,7 +266,7 @@ The frontend will be available at `http://localhost:5173`, proxying API requests
 
 | Member | 42 Login | Assigned Role(s) | Primary Responsibilities |
 | --- | --- | --- | --- |
-| **Nathan Bodin** | `nbodin` | **Project Manager** / Developer | Supervised overall software architecture, system integration, Designed the css style of the site and technology choices. Architected backend models, Alembic migrations, user authentication (Argon2, JWT), 42 OAuth 2.0 integration, user profiles, friends system, Redis rate limiters, and code styling enforcement. |
+| **Nathan Bodin** | `nbodin` | **Project Manager** / Developer | Supervised overall software architecture, system integration, Designed the site in figma Fand technology choices. Architected backend models, Alembic migrations, user authentication (Argon2, JWT), 42 OAuth 2.0 integration, user profiles, friends system, Redis rate limiters, and code styling enforcement. |
 | **Sacha Servanton** | `sservant` | **Tech Lead** / Developer | Coordinated sprint milestones, task assignments, and delivery schedules. Designed the frontend architecture with React 19, Vite, and Tailwind CSS v4. Implemented custom design system, theme switching, interactive data tables with multi-format export (JSON/XML), internationalization (i18n), Prometheus/Grafana integration, and frontend 42 OAuth/chat flows. |
 | **Antoine Bonin** | `antbonin` | **Product Owner** / Developer | Defined product, feature priorities, user requirements, and acceptance criteria.  Designed and implemented the complete interactive Team Builder with `@dnd-kit` drag-and-drop, trait calculations, and composition import/export. Built the application navigation sidebar, patch notes page, ranking tables, and responsive theme polish. |
 | **Jules Clement Massonnat** | `julcleme` | **Tech Lead**/ Developer | Developed the AI RAG Assistant pipeline (BM25s retrieval, LangChain chunking, Ollama Qwen integration, TFT knowledge base). Built the real-time WebSocket connection manager with Redis Pub/Sub, live chat backend, game data scrapers, 3D model automated downloader, multi-entity search with Riot API, home analytics, and Nginx reverse proxy SSL configuration. |
@@ -278,9 +278,9 @@ The frontend will be available at `http://localhost:5173`, proxying API requests
 ### Work Organization
 
 The team adopted an **Agile / Scrum-inspired workflow** organized around iterative feature milestones:
-1. **Requirements & Backlog Definition**: The Product Owner (`nbodin`) drafted user stories and feature specifications based on the 42 subject modules and TFT analytical platforms.
-2. **Sprint Planning & Task Distribution**: The Project Manager (`sservant`) organized tasks, assigned issues to team members based on technical specialization, and tracked progress.
-3. **Architecture Guidance**: The Tech Lead (`antbonin`) reviewed design choices, ensured consistency between frontend interfaces and backend APIs, and managed component contracts.
+1. **Requirements & Backlog Definition**: The Product Owner (`antbonin`) drafted user stories and feature specifications based on the 42 subject modules and TFT analytical platforms.
+2. **Sprint Planning & Task Distribution**: The Project Manager (`nbodin`) organized tasks, assigned issues to team members based on technical specialization, and tracked progress.
+3. **Architecture Guidance**: The Techs Leads (`sservant | julcleme`) reviewed design choices, ensured consistency between frontend interfaces and backend APIs, and managed component contracts.
 4. **Regular Sync Meetings**: Daily stand-ups (in-person at 42 Lyon and over voice calls) to identify blockers, synchronize interface contracts, and align sprint goals.
 
 ### Project Management Tools
