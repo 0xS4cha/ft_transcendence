@@ -1,13 +1,15 @@
 from pydantic import BaseModel
 
+from backend_app.core.validators import SafeString
+
 
 class Trait(BaseModel):
-    id: str
-    name: str
+    id: SafeString
+    name: SafeString
     avg_place: float
     winrate: float
     frequency: float
-    breakpoint: str
-    breakpoints: list[str]
-    icon: str
-    background_icon: str
+    breakpoint: SafeString
+    breakpoints: list[SafeString]
+    icon: SafeString
+    background_icon: SafeString

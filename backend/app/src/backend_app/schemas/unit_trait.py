@@ -1,7 +1,9 @@
 from pydantic import BaseModel
 
+from backend_app.core.validators import SafeString
+
 
 class   UnitTrait(BaseModel):
-    name: str
-    breakpoints: list[str]
-    icon: str
+    name: SafeString
+    breakpoints: list[SafeString]
+    icon: SafeString

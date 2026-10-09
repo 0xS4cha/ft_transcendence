@@ -60,7 +60,7 @@ def update_graphql_tft_stats():
             raise requests.HTTPError()
         tft_stats["total_games"] = stats["data"]["getPlatformStats"]["totalMatches"]
         tft_stats["gold_wasted"] = stats["data"]["getPlatformStats"].get("milestones", {}).get("goldWasted", 0)
-    except requests.HTTPError:
+    except Exception: # noqa: BLE001
         print("GRAPHQL STATS: Could not aquire stats for game")
 
 

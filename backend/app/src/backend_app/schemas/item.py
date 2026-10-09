@@ -1,12 +1,14 @@
 from pydantic import BaseModel
 
+from backend_app.core.validators import SafeString
+
 
 class Item(BaseModel):
-    id: str
-    name: str
+    id: SafeString
+    name: SafeString
     avg_place: float
     winrate: float
     frequency: float
-    type: str
-    composition: list[str] 
-    icon: str
+    type: SafeString
+    composition: list[SafeString] 
+    icon: SafeString
