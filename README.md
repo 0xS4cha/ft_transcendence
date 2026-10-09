@@ -266,9 +266,9 @@ The frontend will be available at `http://localhost:5173`, proxying API requests
 
 | Member | 42 Login | Assigned Role(s) | Primary Responsibilities |
 | --- | --- | --- | --- |
-| **Nathan Bodin** | `nbodin` | **Product Owner** / Developer | Defined product backlog, feature priorities, user requirements, and acceptance criteria. Architected backend models, Alembic migrations, user authentication (Argon2, JWT), 42 OAuth 2.0 integration, user profiles, friends system, Redis rate limiters, and code styling enforcement. |
-| **Sacha Servanton** | `sservant` | **Project Manager** / Developer | Coordinated sprint milestones, task assignments, and delivery schedules. Designed the frontend architecture with React 19, Vite, and Tailwind CSS v4. Implemented custom design system, theme switching, interactive data tables with multi-format export (JSON/XML), internationalization (i18n), Prometheus/Grafana integration, and frontend 42 OAuth/chat flows. |
-| **Antoine Bonin** | `antbonin` | **Tech Lead** / Developer | Supervised overall software architecture, system integration, and technology choices. Designed and implemented the complete interactive Team Builder with `@dnd-kit` drag-and-drop, trait calculations, and composition import/export. Built the application navigation sidebar, patch notes page, ranking tables, and responsive theme polish. |
+| **Nathan Bodin** | `nbodin` | **Project Manager** / Developer | Supervised overall software architecture, system integration, Designed the css style of the site and technology choices. Architected backend models, Alembic migrations, user authentication (Argon2, JWT), 42 OAuth 2.0 integration, user profiles, friends system, Redis rate limiters, and code styling enforcement. |
+| **Sacha Servanton** | `sservant` | **Tech Lead** / Developer | Coordinated sprint milestones, task assignments, and delivery schedules. Designed the frontend architecture with React 19, Vite, and Tailwind CSS v4. Implemented custom design system, theme switching, interactive data tables with multi-format export (JSON/XML), internationalization (i18n), Prometheus/Grafana integration, and frontend 42 OAuth/chat flows. |
+| **Antoine Bonin** | `antbonin` | **Product Owner** / Developer | Defined product, feature priorities, user requirements, and acceptance criteria.  Designed and implemented the complete interactive Team Builder with `@dnd-kit` drag-and-drop, trait calculations, and composition import/export. Built the application navigation sidebar, patch notes page, ranking tables, and responsive theme polish. |
 | **Jules Clement Massonnat** | `julcleme` | **Tech Lead**/ Developer | Developed the AI RAG Assistant pipeline (BM25s retrieval, LangChain chunking, Ollama Qwen integration, TFT knowledge base). Built the real-time WebSocket connection manager with Redis Pub/Sub, live chat backend, game data scrapers, 3D model automated downloader, multi-entity search with Riot API, home analytics, and Nginx reverse proxy SSL configuration. |
 
 ---
@@ -348,7 +348,7 @@ The project uses **PostgreSQL 15** as its primary database.
 
 **Why PostgreSQL was chosen:**
 1. **Relational Data Integrity**: The core domain requires strong relationships (Users $\leftrightarrow$ Friendships, Users $\leftrightarrow$ Chat Messages, Champions $\leftrightarrow$ Spells $\leftrightarrow$ Skins $\leftrightarrow$ Tactical Info). PostgreSQL provides strict foreign key constraints, cascading deletes, and unique composite indexes (e.g. unique friendships between `uid1` and `uid2`).
-2. **ACID Compliance**: Ensures that user authentication, password updates, friend requests, and GDPR account deletions execute with total transactional consistency.
+2. **ACID Compliance**: Ensures that user authentication, password updates, friend requests, and account deletions execute with total transactional consistency.
 3. **Hybrid Relational + JSON Capabilities**: PostgreSQL native `JSON` / `JSONB` support allows storing complex TFT attributes (e.g., dynamic spell coefficient arrays, item stat dictionaries, chroma colors) without requiring excessive normalization.
 4. **Asynchronous Performance**: Exceptional performance when paired with the `asyncpg` non-blocking PostgreSQL driver in FastAPI.
 
@@ -538,27 +538,26 @@ Aggregated TFT unit statistics loaded from Riot/MetaTFT data.
 
 | Feature | Category | Contributor(s) | Description |
 | --- | --- | --- | --- |
-| **User Registration & Login** | Authentication | Nathan Bodin (`nbodin`) | Secure account registration and login using Argon2 password hashing and HTTP-only JWT cookies. |
-| **42 Intra OAuth 2.0** | Authentication | Nathan Bodin (`nbodin`), Sacha Servanton (`sservant`) | Remote authentication via 42 Intra with CSRF state protection, automatic account creation, and avatar sync. |
-| **Profile Management** | User System | Nathan Bodin (`nbodin`), Antoine Bonin (`antbonin`) | View user profile, modify username, upload custom avatar with automated Pillow image resizing, or remove avatar. |
-| **GDPR / RGPD Account Deletion** | Privacy & Security | Jules Clement Massonnat (`julcleme`), Sacha Servanton (`sservant`) | Self-service endpoint (`/api/auth/me`) that completely purges user credentials, chat messages, friendships, and cookies. |
-| **Friends System** | Social | Nathan Bodin (`nbodin`), Sacha Servanton (`sservant`) | Send, accept, refuse, and remove friend requests with relational constraints and pending invitation tabs. |
-| **Live Presence Tracking** | Social & Real-Time | Jules Clement Massonnat (`julcleme`), Sacha Servanton (`sservant`) | Tracks active WebSocket connections in Redis to broadcast online/offline indicators for friends. |
-| **Real-Time Global Chat** | Real-Time | Jules Clement Massonnat (`julcleme`), Sacha Servanton (`sservant`) | Persistent live chat room with full-duplex WebSockets, Redis Pub/Sub broadcasting, avatar display, and 200-message history cache. |
-| **TFT Statistics Tables** | Analytics | Sacha Servanton (`sservant`) | High-performance interactive tables for Units, Items, Traits, and Augments with multi-column sorting, filtering, and pagination. |
-| **3D Champion Visualizer** | 3D Graphics | Jules Clement Massonnat (`julcleme`), Sacha Servanton (`sservant`) | Expanding table rows renders interactive 3D champion `.glb` models with Three.js, React Three Fiber, lighting, and OrbitControls. |
-| **Interactive Team Builder** | Gameplay Tool | Antoine Bonin (`antbonin`) | Drag-and-drop TFT board with `@dnd-kit`, hex board positioning, item equipping, dynamic trait synergy calculations, and augment selector. |
-| **Composition Import & Export** | Gameplay Tool | Antoine Bonin (`antbonin`) | Export team compositions to clipboard as Base64-encoded JSON strings and import existing codes into the board. |
-| **Multi-Format Data Export** | Data Management | Sacha Servanton (`sservant`) | Export statistics tables (Units, Items, Traits, Augments) directly to formatted JSON and XML files. |
-| **Leaderboard / Rankings** | Analytics | Jules Clement Massonnat (`julcleme`), Antoine Bonin (`antbonin`) | Displays top 50 players globally or filtered by competitive region (EUW, NA, KR, etc.) with backend caching. |
-| **Multi-Entity Search** | Search | Jules Clement Massonnat (`julcleme`), Sacha Servanton (`sservant`), Nathan Bodin (`nbodin`) | Unified search bar resolving units, items, traits, augments, and live Riot summoner profiles (`gameName#tagLine`). |
-| **Set 18 Patch Notes Viewer** | Content | Jules Clement Massonnat (`julcleme`), Antoine Bonin (`antbonin`) | Responsive patch notes reader with localized HTML content in English, French, and Spanish. |
-| **AI / RAG Chatbot Assistant** | Artificial Intelligence | Jules Clement Massonnat (`julcleme`), Sacha Servanton (`sservant`) | In-chat AI assistant (`/question`) querying local Ollama (Qwen 3) with BM25s sparse retrieval over curated TFT documentation. |
-| **Analytics Dashboard** | Observability | Jules Clement Massonnat (`julcleme`), Sacha Servanton (`sservant`) | Visualizes 90-day visitor trends using Recharts, platform activity metrics, and live GraphQL game stats from `teamfight.lol`. |
-| **Internationalization (i18n)** | Accessibility | Sacha Servanton (`sservant`), Antoine Bonin (`antbonin`) | Complete language switching between English (`en`), French (`fr`), and Spanish (`es`) across the UI and patch notes. |
-| **Custom Design System & Theme** | UI/UX | Sacha Servanton (`sservant`), Antoine Bonin (`antbonin`) | Cohesive UI design system built on Tailwind v4 and shadcn/ui with dark/light mode toggle and responsive mobile drawers. |
-| **System Observability & Alerts** | DevOps | Sacha Servanton (`sservant`), Jules Clement Massonnat (`julcleme`) | Prometheus metrics scraping, node-exporter, cadvisor, postgres-exporter, Alertmanager threshold rules, and Grafana dashboards. |
-| **Reverse Proxy & Rate Limiting** | Infrastructure | Jules Clement Massonnat (`julcleme`), Nathan Bodin (`nbodin`) | Nginx reverse proxy with SSL termination, HTTP to HTTPS redirect, Basic Auth protection, and Redis rate limiting. |
+| **User Registration & Login** | Authentication | `nbodin` | Secure account registration and login using Argon2 password hashing and HTTP-only JWT cookies. |
+| **42 Intra OAuth 2.0** | Authentication | `nbodin`, `sservant` | Remote authentication via 42 Intra with CSRF state protection, automatic account creation, and avatar sync. |
+| **Profile Management** | User System | `nbodin`, `antbonin` | View user profile, modify username, upload custom avatar with automated Pillow image resizing, or remove avatar. |
+| **Friends System** | Social | `nbodin`, `sservant` | Send, accept, refuse, and remove friend requests with relational constraints and pending invitation tabs. |
+| **Live Presence Tracking** | Social & Real-Time | `julcleme`, `sservant` | Tracks active WebSocket connections in Redis to broadcast online/offline indicators for friends. |
+| **Real-Time Global Chat** | Real-Time | `julcleme`, `sservant` | Persistent live chat room with full-duplex WebSockets, Redis Pub/Sub broadcasting, avatar display, and 200-message history cache. |
+| **TFT Statistics Tables** | Analytics | `sservant` | High-performance interactive tables for Units, Items, Traits, and Augments with multi-column sorting, filtering, and pagination. |
+| **3D Champion Visualizer** | 3D Graphics | `julcleme`, `sservant` | Expanding table rows renders interactive 3D champion `.glb` models with Three.js, React Three Fiber, lighting, and OrbitControls. |
+| **Interactive Team Builder** | Gameplay Tool | `antbonin` | Drag-and-drop TFT board with `@dnd-kit`, hex board positioning, item equipping, dynamic trait synergy calculations, and augment selector. |
+| **Composition Import & Export** | Gameplay Tool | `antbonin` | Export team compositions to clipboard as Base64-encoded JSON strings and import existing codes into the board. |
+| **Multi-Format Data Export** | Data Management | `sservant` | Export statistics tables (Units, Items, Traits, Augments) directly to formatted JSON and XML files. |
+| **Leaderboard / Rankings** | Analytics | `julcleme`, `antbonin` | Displays top 50 players globally or filtered by competitive region (EUW, NA, KR, etc.) with backend caching. |
+| **Multi-Entity Search** | Search | `julcleme`, `sservant`, `nbodin` | Unified search bar resolving units, items, traits, augments, and live Riot summoner profiles (`gameName#tagLine`). |
+| **Set 18 Patch Notes Viewer** | Content | `julcleme`, `antbonin` | Responsive patch notes reader with localized HTML content in English, French, and Spanish. |
+| **AI / RAG Chatbot Assistant** | Artificial Intelligence | `julcleme`, `sservant` | In-chat AI assistant (`/question`) querying local Ollama (Qwen 3) with BM25s sparse retrieval over curated TFT documentation. |
+| **Analytics Dashboard** | Observability | `julcleme`, `sservant` | Visualizes 90-day visitor trends using Recharts, platform activity metrics, and live GraphQL game stats from `teamfight.lol`. |
+| **Internationalization (i18n)** | Accessibility | `sservant`, `antbonin` | Complete language switching between English (`en`), French (`fr`), and Spanish (`es`) across the UI and patch notes. |
+| **Custom Design System & Theme** | UI/UX | `sservant`, `antbonin` | Cohesive UI design system built on Tailwind v4 and shadcn/ui with dark/light mode toggle and responsive mobile drawers. |
+| **System Observability & Alerts** | DevOps | `sservant`, `julcleme` | Prometheus metrics scraping, node-exporter, cadvisor, postgres-exporter, Alertmanager threshold rules, and Grafana dashboards. |
+| **Reverse Proxy & Rate Limiting** | Infrastructure | `julcleme`, `nbodin` | Nginx reverse proxy with SSL termination, HTTP to HTTPS redirect, Basic Auth protection, and Redis rate limiting. |
 
 ---
 
@@ -680,9 +679,9 @@ Aggregated TFT unit statistics loaded from Riot/MetaTFT data.
 
 ## Individual Contributions
 
-### Nathan Bodin (`nbodin`) — Product Owner & Developer
+### Nathan Bodin (`nbodin`) — Project Manager & Developer
 
-- **Role & Responsibilities**: Product Owner directing backlog prioritization, user story definition, acceptance criteria, and backend engineering.
+- **Role & Responsibilities**: Product Manager directing backlog prioritization, user story definition, acceptance criteria, and backend engineering.
 - **Specific Components & Features Implemented**:
   - Engineered the FastAPI application structure, Alembic migration environment, and SQLAlchemy model hierarchy.
   - Implemented secure user authentication: registration, login with Argon2 hashing, JWT generation, and token expiration policies.
@@ -699,7 +698,7 @@ Aggregated TFT unit statistics loaded from Riot/MetaTFT data.
 
 ---
 
-### Sacha Servanton (`sservant`) — Project Manager & Developer
+### Sacha Servanton (`sservant`) — Tech Lead & Developer
 
 - **Role & Responsibilities**: Project Manager organizing sprint tracking, task distribution, and lead frontend architect.
 - **Specific Components & Features Implemented**:
@@ -719,9 +718,9 @@ Aggregated TFT unit statistics loaded from Riot/MetaTFT data.
 
 ---
 
-### Antoine Bonin (`antbonin`) — Tech Lead & Developer
+### Antoine Bonin (`antbonin`) — Product Owner & Developer
 
-- **Role & Responsibilities**: Tech Lead supervising overall architecture consistency, interface contracts, and core gameplay tools.
+- **Role & Responsibilities**: Product Owner checking consistency, interface contracts, and core gameplay tools.
 - **Specific Components & Features Implemented**:
   - Designed and built the complete interactive **Team Builder** from scratch:
     - Hexagonal board layout with drop targets.
