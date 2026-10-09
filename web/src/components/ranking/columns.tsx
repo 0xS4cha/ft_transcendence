@@ -4,6 +4,12 @@ import { Trophy } from "lucide-react";
 import { dataTableFeatures } from "@/lib/data-table-features";
 
 export const RankingColumns: ColumnDef<typeof dataTableFeatures, rankingPlayer>[] = [
+    {
+    id: "search",
+    accessorFn: (row) => `${row.riot_id} ${row.rank}`,
+    filterFn: "includesString",
+    enableHiding: true,
+  },
   {
     accessorKey: "rank",
     header: "Ranks",
