@@ -3,12 +3,12 @@ import { DataTable } from "@/components/data-table/data-table";
 import { UnitsExpand } from "@/components/units/expand";
 import type { Row, ColumnDef } from "@tanstack/react-table";
 import type { dataTableFeatures } from "@/lib/data-table-features";
-import { useEffect, useState, useImperativeHandle } from "react";
+import { useEffect, useState, useImperativeHandle, type Ref } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "@/components/ui/toast";
 import { type UnitRow } from "@/components/units/schema";
 import { getUnitsStats } from "@/services/statsService";
-import { type FilterType } from "@/types/stats";
+import { type FilterType, type exportRef } from "@/types/stats";
 import { downloadJson, downloadXml } from "@/lib/utils";
 
 interface UnitsExpandProps {
@@ -20,7 +20,7 @@ function UnitsExpandRenderer({ unit, columns }: UnitsExpandProps) {
   return <UnitsExpand unit={unit} columns={columns} />;
 }
 
-export function UnitsTable({ ref }: any) {
+export function UnitsTable({ ref }: { ref?: Ref<exportRef> }) {
   const [filter, setFilter] = useState<FilterType>({
     queue: "Ranked",
     ranked: "PLATINUM",
@@ -71,7 +71,7 @@ export function UnitsTable({ ref }: any) {
       filter={filter}
       columns={UnitsColumns}
       data={data}
-      getRowId={(row) => row.unit}
+      getRowId={(row) => row.id}
       defaultSortId="name"
       addAvgSort={true}
       searchPlaceholder="Search units..."

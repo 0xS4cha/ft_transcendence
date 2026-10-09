@@ -9,34 +9,32 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "@/components/ui/toast";
-import { cn, initialsOf, errorMessage } from "@/lib/utils";
+import { cn, initialsOf, errorMessage, resolvePictureUrl } from "@/lib/utils";
 import {
   getFriendsRequestList,
   acceptFriendRequest,
   refuseFriendRequest,
 } from "@/services/friendsService";
-import { type UserPublic } from "@/types/user";
+import { type UserProfile } from "@/types/user";
 
 export function RequestsCard({ onAccepted }: { onAccepted?: () => void }) {
-  const [requests, setRequests] = useState<UserPublic[]>([]);
+  const [requests, setRequests] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [pending, setPending] = useState<Set<string>>(new Set());
   const { t } = useTranslation();
 
-  const loadRequests = useCallback(async () => {
-    setLoading(true);
-    try {
-      setRequests(await getFriendsRequestList());
-    } catch (error) {
-      toast.add({
-        type: "error",
-        title: t("friends.loadRequestsFailed"),
-        description: errorMessage(error),
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [t]);
+  const loadRequests = useCallback(() =>
+    getFriendsRequestList()
+      .then(setRequests)
+      .catch((error: unknown) => {
+        toast.add({
+          type: "error",
+          title: t("friends.loadRequestsFailed"),
+          description: errorMessage(error),
+        });
+      })
+      .finally(() => setLoading(false)),
+  [t]);
 
   useEffect(() => {
     void loadRequests();
@@ -98,7 +96,7 @@ export function RequestsCard({ onAccepted }: { onAccepted?: () => void }) {
               )}
             >
               <Avatar className="size-8 shrink-0">
-                <AvatarImage src={request.picture} />
+                <AvatarImage src={resolvePictureUrl(request.picture)} />
                 <AvatarFallback className="text-xs">{initialsOf(request.username)}</AvatarFallback>
               </Avatar>
 

@@ -9,20 +9,29 @@ export default function PatchNotePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+
     const fetchPatchNote = async () => {
       try {
-        const response = await fetch(`/api/patchnote/latest?lang=${currentLang}`);
+        const response = await fetch(`/api/patchnote/latest?lang=${encodeURIComponent(currentLang)}`);
         const htmlString = await response.text();
-        setPatchHtml(htmlString);
+        if (!cancelled && response.ok) {
+          setPatchHtml(htmlString);
+        }
       } catch (error) {
         console.log("Error while fetch the latest patch note", error);
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
-    fetchPatchNote();
-  }, []);
+    void fetchPatchNote();
+    return () => {
+      cancelled = true;
+    };
+  }, [currentLang]);
 
   if (loading) {
     return <div className="p-8 text-center text-muted-foreground">{t("patchnote.loading", "Loading patch note ...")}</div>;

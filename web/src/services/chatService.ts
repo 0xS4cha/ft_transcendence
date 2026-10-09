@@ -10,5 +10,5 @@ export function sendChatMessage(content: string): Promise<ChatDataProps> {
 }
 
 export function askChatbotQuestion(content: string): Promise<string> {
-  return apiGet<string>(`/api/chatbot/ask?message=${content}`);
+  return apiGet<string>(`/api/chatbot/ask?message=${encodeURIComponent(content)}`);
 }

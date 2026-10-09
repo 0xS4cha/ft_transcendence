@@ -210,7 +210,7 @@ export function Chat({ isAuthenticated }: { isAuthenticated: boolean }) {
               username: t('chat.chatbot'),
         }));
       } else {
-        sendChatMessage(draft);
+        await sendChatMessage(draft);
       }
     } catch (error) {
       setMessage(draft);

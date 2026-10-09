@@ -36,26 +36,19 @@ export default function UserSearchPage() {
 
   const query = searchParams.get("q")?.trim() ?? "";
 
-  const [user, setUser] = useState<UserSearch | null>(state?.user ?? null);
-  const [loading, setLoading] = useState(Boolean(query) && !state?.user);
+  const stateUser =
+    query && state?.user?.username?.toLowerCase() === query.toLowerCase() ? state.user : null;
+  const [fetched, setFetched] = useState<{ query: string; user: UserSearch | null } | null>(null);
+  const [failedQuery, setFailedQuery] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!query) {
-      setUser(null);
-      setLoading(false);
-      return;
-    }
-
-    if (state?.user?.username?.toLowerCase() === query.toLowerCase()) {
-      setUser(state.user);
-      setLoading(false);
+    if (!query || stateUser) {
       return;
     }
 
     let cancelled = false;
 
     async function load() {
-      setLoading(true);
       try {
         const result = await getSearchFromQuery(query);
         const exactMatch =
@@ -63,18 +56,16 @@ export default function UserSearchPage() {
           result.user[0] ??
           null;
 
-        if (!cancelled) setUser(exactMatch);
+        if (!cancelled) setFetched({ query, user: exactMatch });
       } catch (error) {
         if (!cancelled) {
-          setUser(null);
+          setFailedQuery(query);
           toast.add({
             type: "error",
             title: "Failed to load user",
             description: errorMessage(error),
           });
         }
-      } finally {
-        if (!cancelled) setLoading(false);
       }
     }
 
@@ -83,7 +74,10 @@ export default function UserSearchPage() {
     return () => {
       cancelled = true;
     };
-  }, [query, state?.user]);
+  }, [query, stateUser]);
+
+  const user = stateUser ?? (fetched?.query === query ? fetched.user : null);
+  const loading = Boolean(query) && !stateUser && fetched?.query !== query && failedQuery !== query;
 
   const totalGames = (user?.wins ?? 0) + (user?.losses ?? 0);
   const winrate = totalGames > 0 ? (user?.wins ?? 0) / totalGames : null;

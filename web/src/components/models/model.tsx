@@ -27,7 +27,3 @@ export function Model({ url, animationName }: ModelProps) {
 
   return <primitive ref={group} object={clone} scale={1} />
 }
-
-export function preloadModel(url: string) {
-  useGLTF.preload(url)
-}

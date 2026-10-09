@@ -142,29 +142,27 @@ export function SearchInput({
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [data, setData] = useState<{ query: string; result: SearchResult } | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [failedQuery, setFailedQuery] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<"all" | SectionKey>("all");
   const [activeIndex, setActiveIndex] = useState(-1);
 
-  const SECTIONS: { key: SectionKey; label: string; icon: LucideIcon }[] = [
+  const SECTIONS: { key: SectionKey; label: string; icon: LucideIcon }[] = useMemo(() => [
     { key: "unit", label: t("search.units"), icon: Sword },
     { key: "user", label: t("search.users"), icon: UserIcon },
     { key: "trait", label: t("search.traits"), icon: Layers },
     { key: "augment", label: t("search.augments"), icon: Sparkle },
     { key: "item", label: t("search.items"), icon: Shield },
-  ];
+  ], [t]);
 
   const trimmed = query.trim();
+  const loading = trimmed.length > 0 && data?.query !== trimmed && failedQuery !== trimmed;
 
   useEffect(() => {
     if (!trimmed) {
-      setData(null);
-      setLoading(false);
       return;
     }
 
     let cancelled = false;
-    setLoading(true);
 
     const timeout = setTimeout(async () => {
       try {
@@ -172,14 +170,13 @@ export function SearchInput({
         if (!cancelled) setData({ query: trimmed, result });
       } catch (error) {
         if (!cancelled) {
+          setFailedQuery(trimmed);
           toast.add({
             type: "error",
             title: t("search.failed"),
             description: errorMessage(error),
           });
         }
-      } finally {
-        if (!cancelled) setLoading(false);
       }
     }, DEBOUNCE_MS);
 
@@ -238,9 +235,12 @@ export function SearchInput({
     [indexedSections],
   );
 
-  useEffect(() => {
+  const resultsKey = `${trimmed}|${activeSection}|${flatResults.length}`;
+  const [activeIndexKey, setActiveIndexKey] = useState(resultsKey);
+  if (activeIndexKey !== resultsKey) {
+    setActiveIndexKey(resultsKey);
     setActiveIndex(flatResults.length > 0 ? 0 : -1);
-  }, [trimmed, activeSection, flatResults.length]);
+  }
 
   const total = visibleSections.reduce((sum, section) => sum + section.entries.length, 0);
   const isOpen = trimmed.length > 0;

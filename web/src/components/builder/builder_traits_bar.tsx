@@ -25,12 +25,11 @@ export default function BuilderTraitsBar({ boardState, champions, traits }: { bo
   uniqueChampIds.forEach((champId) => {
     const champ = champions.find((c) => c.id === champId);
     if (champ && Array.isArray(champ.traits)) {
-      champ.traits.forEach((traitRaw: any) => {
-        if (!traitRaw) return;
-        const traitName = typeof traitRaw === 'string' ? traitRaw : (traitRaw.name || traitRaw.id);
-        
+      champ.traits.forEach((traitRaw) => {
+        const traitName = traitRaw?.name;
+
         if (traitName) {
-          const key = String(traitName).toLowerCase(); 
+          const key = traitName.toLowerCase();
           traitCounts[key] = (traitCounts[key] || 0) + 1;
         }
       });

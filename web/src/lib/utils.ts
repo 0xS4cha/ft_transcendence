@@ -60,3 +60,14 @@ export function downloadXml(data: unknown[], filename: string) {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+export function resolvePictureUrl(picture?: string | null): string | undefined {
+  if (!picture) return undefined;
+  if (picture.startsWith("http://") || picture.startsWith("https://") || picture.startsWith("/api/public/")) {
+    return picture;
+  }
+  if (picture.startsWith("profile_pictures/")) {
+    return `/api/public/${picture}`;
+  }
+  return picture;
+}

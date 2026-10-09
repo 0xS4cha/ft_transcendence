@@ -9,7 +9,13 @@ export interface UserPublic {
   isDark?: boolean;
 }
 
-export interface FriendState extends UserPublic {
+export interface UserProfile {
+  id: number;
+  username: string;
+  picture?: string;
+}
+
+export interface FriendState extends UserProfile {
   online: boolean;
 }
 

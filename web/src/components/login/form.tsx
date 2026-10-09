@@ -111,7 +111,7 @@ export function LoginForm({
         <FieldSeparator>{t('auth.continueWith')}</FieldSeparator>
         <Field>
           <div className="grid grid-cols-1 gap-2 w-full">
-            <Button variant="outline" type="button" className="w-full" onClick={() => window.location.href = "https://localhost:8443/api/auth/login_with_42"}>
+            <Button variant="outline" type="button" className="w-full" onClick={() => window.location.href = "/api/auth/login_with_42"}>
               <img src="/42.svg" className="w-4" />
               {t('auth.loginWith42')}
             </Button>

@@ -3,17 +3,8 @@ import { initialState } from "@/constants/user";
 import * as authService from "@/services/authService";
 import { type SignupPayload, type UserPublic } from "@/types/user";
 import { type ChatDataProps } from "@/types/chat";
+import { resolvePictureUrl } from "@/lib/utils";
 
-function resolvePictureUrl(picture?: string | null): string | undefined {
-  if (!picture) return undefined;
-  if (picture.startsWith("http://") || picture.startsWith("https://") || picture.startsWith("/api/public/")) {
-    return picture;
-  }
-  if (picture.startsWith("profile_pictures/")) {
-    return `/api/public/${picture}`;
-  }
-  return picture;
-}
 
 function applyUser(state: typeof initialState, user: UserPublic) {
   state.id = user.id;

@@ -1,14 +1,14 @@
 import { ItemsColumns } from "@/components/items/columns";
 import { DataTable } from "@/components/data-table/data-table";
-import { useEffect, useState, useImperativeHandle } from "react";
+import { useEffect, useState, useImperativeHandle, type Ref } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "@/components/ui/toast";
 import { type ItemRow } from "@/components/items/schema";
 import { getItemsStats } from "@/services/statsService";
-import { type FilterType } from "@/types/stats";
+import { type FilterType, type exportRef } from "@/types/stats";
 import { downloadJson, downloadXml } from "@/lib/utils";
 
-export function ItemsTable({ ref }: any) {
+export function ItemsTable({ ref }: { ref?: Ref<exportRef> }) {
   const [filter, setFilter] = useState<FilterType>({
     queue: "Ranked",
     ranked: "PLATINUM",

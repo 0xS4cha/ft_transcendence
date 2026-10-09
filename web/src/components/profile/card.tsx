@@ -74,6 +74,7 @@ export function ProfileCard() {
         try {
             localStorage.setItem("isDark", String(dark));
         } catch {
+            return;
         }
     };
 
