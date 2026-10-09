@@ -7,11 +7,11 @@ from urllib.parse import quote
 
 import httpx
 import pytest
+from conftest import BASE_URL
 from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
 
 from backend_app.main import app
-from conftest import BASE_URL
 
 FUZZ = settings(
     max_examples=150,

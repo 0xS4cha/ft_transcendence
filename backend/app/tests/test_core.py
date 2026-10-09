@@ -8,6 +8,7 @@ import httpx
 import jwt
 import pytest
 import redis.asyncio as redis
+from conftest import BASE_URL, REDIS_URL
 from fastapi import HTTPException
 from starlette.testclient import TestClient
 
@@ -20,7 +21,6 @@ from backend_app.main import app
 from backend_app.services.get_items import get_type
 from backend_app.services.get_stats import get_all_datas_use, get_stats
 from backend_app.services.get_traits import get_background_icon, get_breakpoints
-from conftest import BASE_URL, REDIS_URL
 
 # --- utils / stats ----------------------------------------------------------
 

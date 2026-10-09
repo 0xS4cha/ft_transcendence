@@ -1,7 +1,7 @@
 import pytest
+from conftest import image_bytes
 
 from backend_app.api.endpoints.chat import chatbot as chatbot_module
-from conftest import image_bytes
 
 C = "/api/chat"
 
