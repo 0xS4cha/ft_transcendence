@@ -3,6 +3,7 @@ from datetime import UTC, datetime, timedelta
 
 import requests
 from fastapi import APIRouter, Response, status
+from fastapi.concurrency import run_in_threadpool
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert
 
@@ -24,44 +25,59 @@ async def get_cache(name, calc_function, session: AsyncSessionDep, force_update 
     return stats_cache[name]
 
 tft_stats = {}
-def update_graphql_tft_stats():
-    try:
-        url = "https://api.teamfight.lol/graphql"
-        query = """
-        query GetPlatformStats {
-            getPlatformStats {
-            totalSummoners
-            totalMatches
-            milestones {
-                goldWasted
-                threeStarUnits
-                damageDealt
-                itemsEquipped
-                __typename
-            }
-            __typename
-            }
-        }
-        """
+TFT_STATS_URL = "https://api.teamfight.lol/graphql"
+TFT_STATS_TIMEOUT_SECONDS = 5
+TFT_STATS_RETRY_SECONDS = 300
+TFT_STATS_QUERY = """
+query GetPlatformStats {
+    getPlatformStats {
+    totalSummoners
+    totalMatches
+    milestones {
+        goldWasted
+        threeStarUnits
+        damageDealt
+        itemsEquipped
+        __typename
+    }
+    __typename
+    }
+}
+"""
 
-        variables = {}
+
+def fetch_graphql_tft_stats() -> None:
+    try:
         response = requests.post(
-            url,
+            TFT_STATS_URL,
             json={
                 "operationName": "GetPlatformStats",
-                "query": query,
-                "variables": variables
-            }
+                "query": TFT_STATS_QUERY,
+                "variables": {},
+            },
+            timeout=TFT_STATS_TIMEOUT_SECONDS,
         )
-
         response.raise_for_status()
-        stats = response.json()
-        if "getPlatformStats" not in stats.get("data", {}):
-            raise requests.HTTPError()
-        tft_stats["total_games"] = stats["data"]["getPlatformStats"]["totalMatches"]
-        tft_stats["gold_wasted"] = stats["data"]["getPlatformStats"].get("milestones", {}).get("goldWasted", 0)
-    except Exception: # noqa: BLE001
-        print("GRAPHQL STATS: Could not aquire stats for game")
+        body = response.json()
+        data = body.get("data") if isinstance(body, dict) else None
+        platform = (data or {}).get("getPlatformStats") or {}
+        total_matches = platform.get("totalMatches")
+        if total_matches is None:
+            raise ValueError("missing getPlatformStats.totalMatches")
+        tft_stats["total_games"] = total_matches
+        tft_stats["gold_wasted"] = (platform.get("milestones") or {}).get("goldWasted", 0)
+    except Exception as e:  # noqa: BLE001
+        print(f"GRAPHQL STATS: Could not acquire stats for game: {e}")
+
+
+async def update_graphql_tft_stats() -> None:
+    now = time.time()
+    if "gold_wasted" in tft_stats:
+        return
+    if now - tft_stats.get("_last_attempt", 0) < TFT_STATS_RETRY_SECONDS:
+        return
+    tft_stats["_last_attempt"] = now
+    await run_in_threadpool(fetch_graphql_tft_stats)
 
 
 
@@ -140,8 +156,7 @@ endpoints = {
 }
 @router.get("/{name}")
 async def stats_dispatcher(name: str, response: Response, session: AsyncSessionDep):
-    if "gold_wasted" not in tft_stats:
-        update_graphql_tft_stats() 
+    await update_graphql_tft_stats()
     if name in endpoints:
         force_update = time.time() - endpoints[name].get("last", 0) > REFRESH_DELTA_SECONDS
         if endpoints[name].get("cache", False) is True:

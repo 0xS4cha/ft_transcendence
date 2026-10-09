@@ -33,9 +33,6 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./shared/:/app/src/shared/
-      - ./backend/app/src:/app/src #dev env, change when prod
-      - ./backend/app/alembic:/app/alembic #dev env, change when prod
-      - ./backend/app/alembic.ini:/app/alembic.ini #dev env, change when prod
     networks:
       - localnet_transcendence
 

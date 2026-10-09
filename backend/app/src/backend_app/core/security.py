@@ -1,31 +1,23 @@
 from functools import lru_cache
 
 from pwdlib import PasswordHash
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend_app.core.authenticate import Authenticate
 from backend_app.models.users import UserModel
-from shared.database import AsyncSessionDep
 
 
-class   Password:
+class Password:
     password_hash = PasswordHash.recommended()
     dummy_password = "@FnN7m+ZuAqg"
 
     @staticmethod
-    def hash_password(
-            password: str
-    ) -> str:
+    def hash_password(password: str) -> str:
         return Password.password_hash.hash(password)
 
     @staticmethod
-    def verify_password(
-            plain_password: str,
-            hashed_password: str
-    ) -> bool:
-        return Password.password_hash.verify(
-            plain_password,
-            hashed_password
-        )
+    def verify_password(plain_password: str, hashed_password: str) -> bool:
+        return Password.password_hash.verify(plain_password, hashed_password)
 
     @staticmethod
     @lru_cache
@@ -36,18 +28,15 @@ class   Password:
     async def authenticate_user(
         email: str,
         password: str,
-        session: AsyncSessionDep
-    ) -> UserModel:
-
+        session: AsyncSession,
+    ) -> UserModel | None:
         user = await Authenticate.get_user(email, session)
 
-        dummy_hash = Password.get_dummy_hash()
-
-        if not user:
-            Password.verify_password(password, dummy_hash)
-            return False
+        if user is None:
+            Password.verify_password(password, Password.get_dummy_hash())
+            return None
 
         if not Password.verify_password(password, user.hashed_password):
-            return False
+            return None
 
         return user
