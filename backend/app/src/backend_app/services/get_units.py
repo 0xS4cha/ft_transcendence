@@ -1,21 +1,25 @@
 import asyncio
 import json
+import logging
 from typing import Any
 
 import aiofiles
 import redis.asyncio as redis
 from httpx2 import AsyncClient, HTTPError
-from pydantic import TypeAdapter
+from pydantic import TypeAdapter, ValidationError
 
 from backend_app.schemas.trait import Trait
 from backend_app.schemas.unit import Unit
 from backend_app.schemas.unit_trait import UnitTrait
 from backend_app.services.fetch_game_data import (
+    dict_list,
     fetch_results,
     fetch_set_data,
     get_game_data,
 )
-from backend_app.services.get_stats import get_all_datas_use, get_stats
+from backend_app.services.get_stats import get_all_datas_use, get_stats, valid_places
+
+logger = logging.getLogger(__name__)
 
 
 class UnitsUnavailableError(Exception):
@@ -47,14 +51,18 @@ async def get_units(
 
     champions_by_id = {
         c["apiName"]: c
-        for c in set_data.get("champions", [])
-        if "apiName" in c
+        for c in dict_list(set_data.get("champions"))
+        if isinstance(c.get("apiName"), str)
     }
     if not champions_by_id:
         raise UnitsUnavailableError("Set data champions api names not found")
 
-    units = [unit for unit in units if "TFT" not in unit.get("unit", "")]
-    units = [unit for unit in units if unit.get("unit", "") in champions_by_id]
+    units = [
+        unit for unit in units
+        if isinstance(unit.get("unit"), str)
+        and "TFT" not in unit["unit"]
+        and unit["unit"] in champions_by_id
+    ]
     if not units:
         raise UnitsUnavailableError("Units not found in set data units")
 
@@ -65,13 +73,15 @@ async def get_units(
     try:
         async with aiofiles.open("/app/src/shared/models_3d/models_list.json", 'r') as f:
             model_dict = json.loads(await f.read())
-    except FileNotFoundError:
+    except (OSError, ValueError):
         model_dict = {}
-        print("[get_units] model_list.json not found")
+        logger.warning("[get_units] models_list.json not found or invalid")
+    if not isinstance(model_dict, dict):
+        model_dict = {}
 
     units_out = [
-        process_unit(unit, all_units_use, champions_by_id, model_dict, traits)
-        for unit in units
+        u for unit in units
+        if (u := process_unit(unit, all_units_use, champions_by_id, model_dict, traits)) is not None
     ]
 
     return units_out
@@ -86,8 +96,8 @@ def process_unit(
 ) -> Unit | None:
 
     id = unit.get("unit")
-    places = unit.get("places")
-    if id is None or places is None:
+    places = valid_places(unit.get("places"))
+    if not isinstance(id, str) or places is None:
         return None
 
     total_unit_use = sum(places)
@@ -101,13 +111,14 @@ def process_unit(
 
     name = champion_info.get("name")
     cost = champion_info.get("cost")
-    if name is None or cost is None:
+    if not isinstance(name, str) or cost is None:
         return None
     
     traits = []
     seen_names = set()
 
-    for trait_name in champion_info.get("traits", []):
+    trait_names = champion_info.get("traits")
+    for trait_name in trait_names if isinstance(trait_names, list) else []:
         for trait in traits_list:
             if trait.name == trait_name and trait_name not in seen_names:
                 traits.append(UnitTrait.model_validate(trait, from_attributes=True))
@@ -119,16 +130,20 @@ def process_unit(
         name = name.replace(" ", "")
 
     icon = "https://cdn.metatft.com/cdn-cgi/image/width=128,height=128,format=auto/https://cdn.metatft.com/file/metatft/champions/tft18_" + name.lower().replace("'", "") + ".png"
-    model = f"models_3d/{model_dict.get(id)}"
+    model_file = model_dict.get(id)
+    model = f"models_3d/{model_file}" if isinstance(model_file, str) else None
 
-    return (Unit(
-        id=id,
-        name=name,
-        avg_place=avg_place,
-        winrate=winrate,
-        frequency=frequency,
-        cost=cost,
-        traits=traits,
-        icon=icon,
-        model=model,
-    ))
+    try:
+        return Unit(
+            id=id,
+            name=name,
+            avg_place=avg_place,
+            winrate=winrate,
+            frequency=frequency,
+            cost=cost,
+            traits=traits,
+            icon=icon,
+            model=model,
+        )
+    except ValidationError:
+        return None

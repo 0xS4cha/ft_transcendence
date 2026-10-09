@@ -1,3 +1,5 @@
+import json
+import logging
 from enum import Enum
 
 import redis.asyncio as redis
@@ -27,6 +29,8 @@ from backend_app.services.get_units import (
 	units_adapter,
 )
 
+logger = logging.getLogger(__name__)
+
 router = APIRouter()
 
 class Platform(Enum):
@@ -50,67 +54,84 @@ class Platform(Enum):
 	NA1="NA1"
 	
 	def get_continent(self):
-		if self.value in [Platform.EUN1, Platform.EUW1, Platform.BR1, Platform.TR1]: # europe
+		if self in [Platform.EUN1, Platform.EUW1, Platform.BR1, Platform.TR1]:
 			return "europe"
-		if self.value in [Platform.JP1, Platform.RU, Platform.TW2, Platform.OC1, Platform.SG2, Platform.KR, Platform.VN2]: # asia
+		if self in [Platform.JP1, Platform.RU, Platform.TW2, Platform.OC1, Platform.SG2, Platform.KR, Platform.VN2]:
 			return "asia"
-		if self.value in [Platform.LA1, Platform.LA2, Platform.ME1, Platform.NA1]: # america
-			return "america"
-		return "europe" # eu by default
+		if self in [Platform.LA1, Platform.LA2, Platform.ME1, Platform.NA1]:
+			return "americas"
+		return "europe"
 
 queue = "1100"
 ranks = "BRONZE,CHALLENGER,DIAMOND,EMERALD,GOLD,GRANDMASTER,IRON,MASTER,PLATINUM,RANKUNKNOWN,SILVER"
 servers= "BR1,EUN1,EUW1,JP1,KR,LA1,LA2,ME1,NA1,OC1,RU,SG2,TR1,TW2,VN2"	
 
-searched_user_cache = {}
-async def query_user_profile(query_username: str):
-	if query_username.count('#') != 1:
+USER_CACHE_TTL_SECONDS = 600
+USER_NOT_FOUND_TTL_SECONDS = 60
+
+
+async def fetch_user_profile(query_username: str) -> dict | None:
+	game_name, game_tag = (part.strip() for part in query_username.split('#'))
+	if not game_name or not game_tag:
 		return None
 
-	if query_username in searched_user_cache:
-		return searched_user_cache[query_username]
-
-	game_name = query_username.split('#')[0].strip()
-	game_tag = query_username.split('#')[1].strip()
 	account = await riot_api.get_account(game_name, game_tag, Platform.EUN1.get_continent())
-	if not account or "puuid" not in account:
+	if not isinstance(account, dict) or "puuid" not in account:
 		return None
 
-	# get region for player
 	region = await riot_api.get_region(account["puuid"])
-	if not region:
+	try:
+		server = Platform(region)
+	except ValueError:
 		return None
 
-	server = Platform(region)
 	summoner = await riot_api.get_summoner(account["puuid"], server.value)
-	if not summoner or "puuid" not in summoner:
+	if not isinstance(summoner, dict) or "puuid" not in summoner:
 		return None
 
 	ranked_data_lst = await riot_api.get_ranked(account["puuid"], server.value)
-	if ranked_data_lst and isinstance(ranked_data_lst, list) and len(ranked_data_lst) > 0:
-		ranked_data = ranked_data_lst[0]
-		
-		username = f"{account.get('gameName')}#{account.get('tagLine')}"
-		searched_user_cache[username] = {
-			'username': username,
-			'region': region,
-			'puuid': summoner.get('puuid'),
-			'icon': f"https://cdn.metatft.com/file/metatft/profileicons/profileicon{summoner.get('profileIconId')}.png",
-			'summonerLevel': summoner.get('summonerLevel'),
-			"queueType": ranked_data.get('queueType'),
-			"tier": ranked_data.get('tier'),
-			"rank": ranked_data.get('rank'),
-			"leaguePoints": ranked_data.get('leaguePoints'),
-			"wins": ranked_data.get('wins'),
-			"losses": ranked_data.get('losses'),
-			"hotStreak": ranked_data.get('hotStreak'),
-			"veteran": ranked_data.get('veteran'),
-			"freshBlood": ranked_data.get('freshBlood'),
-			"inactive": ranked_data.get('inactive')
-		}
-		return searched_user_cache[username]
-	else:
-		return {}
+	if not isinstance(ranked_data_lst, list) or not ranked_data_lst or not isinstance(ranked_data_lst[0], dict):
+		return None
+
+	ranked_data = ranked_data_lst[0]
+	return {
+		'username': f"{account.get('gameName')}#{account.get('tagLine')}",
+		'region': region,
+		'puuid': summoner.get('puuid'),
+		'icon': f"https://cdn.metatft.com/file/metatft/profileicons/profileicon{summoner.get('profileIconId')}.png",
+		'summonerLevel': summoner.get('summonerLevel'),
+		"queueType": ranked_data.get('queueType'),
+		"tier": ranked_data.get('tier'),
+		"rank": ranked_data.get('rank'),
+		"leaguePoints": ranked_data.get('leaguePoints'),
+		"wins": ranked_data.get('wins'),
+		"losses": ranked_data.get('losses'),
+		"hotStreak": ranked_data.get('hotStreak'),
+		"veteran": ranked_data.get('veteran'),
+		"freshBlood": ranked_data.get('freshBlood'),
+		"inactive": ranked_data.get('inactive')
+	}
+
+
+async def query_user_profile(r: redis.Redis, query_username: str) -> dict | None:
+	if query_username.count('#') != 1:
+		return None
+
+	key = f"riot:profile:{query_username.lower()}"
+	try:
+		cached = await r.get(key)
+	except redis.RedisError:
+		cached = None
+	if cached is not None:
+		return json.loads(cached)
+
+	profile = await fetch_user_profile(query_username)
+	ttl = USER_CACHE_TTL_SECONDS if profile else USER_NOT_FOUND_TTL_SECONDS
+	try:
+		await r.set(key, json.dumps(profile), ex=ttl)
+	except redis.RedisError:
+		pass
+	return profile
 
 
 async def query_augment(
@@ -211,14 +232,15 @@ async def search(
 		try:
 			final[key] = await (fn(r, query))
 		except HTTPException as e:
-			print(f"{key} unavailable: {e.detail}")
+			logger.warning(f"{key} unavailable: {e.detail}")
 			final[key] = []
 			
 	try:
-		final["user"] = [await query_user_profile(query)]
+		profile = await query_user_profile(r, query)
 	except Exception as e: #noqa
-		print(f"[search] user lookup failed for {query}: {e}")
-		final["user"] = []
+		logger.warning(f"[search] user lookup failed for {query}: {e!r}")
+		profile = None
+	final["user"] = [profile] if profile else []
 
 	return final
 

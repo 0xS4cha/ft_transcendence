@@ -1,4 +1,12 @@
-from backend_app.core.utils import safe_get
+from typing import Any
+
+
+def valid_places(places: Any) -> list[int] | None:
+    if not isinstance(places, list) or not places:
+        return None
+    if not all(isinstance(p, int) and not isinstance(p, bool) and p >= 0 for p in places):
+        return None
+    return places
 
 
 def get_all_datas_use(
@@ -7,23 +15,25 @@ def get_all_datas_use(
     total = 0
 
     for d in data:
-        total += sum(d.get("places"), 0)
+        places = valid_places(d.get("places"))
+        if places is not None:
+            total += sum(places)
 
-    return (total)
+    return total
 
 
 def get_stats(
-    places: list,
+    places: list[int],
     total_data_use: int,
     all_datas_use: int,
 ) -> tuple[float, float, float]:
-    
+
     weighted = 0
     for rank, count in enumerate(places, start=1):
         weighted += rank * count
     weighted /= total_data_use
 
-    winrate = (safe_get(places, 0) / total_data_use) * 100
+    winrate = (places[0] / total_data_use) * 100
 
     if all_datas_use == 0:
         frequency = 0

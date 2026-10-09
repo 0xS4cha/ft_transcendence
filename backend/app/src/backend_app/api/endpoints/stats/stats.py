@@ -1,21 +1,28 @@
+import logging
 import time
 from datetime import UTC, datetime, timedelta
 
+import redis.asyncio as redis
 import requests
-from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, Request, Response, status
 from fastapi.concurrency import run_in_threadpool
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert
 
+from backend_app.core.dependencies import RedisDep
+from backend_app.core.rate_limiter import client_ip
 from backend_app.core.websocket import WSbroadcast
 from backend_app.models.chat_message import ChatMessage
 from backend_app.models.users import UserModel
 from backend_app.models.visit import VisitModel
 from shared.database import AsyncSessionDep
 
+logger = logging.getLogger(__name__)
+
 router = APIRouter()
 REFRESH_DELTA_SECONDS    = 3
 VISITOR_LIST_RANGE_DAY   = 90
+VISIT_DEDUP_SECONDS      = 2 * 24 * 3600
 
 stats_cache = {}
 async def get_cache(name, calc_function, session: AsyncSessionDep, force_update = False):
@@ -67,7 +74,7 @@ def fetch_graphql_tft_stats() -> None:
         tft_stats["total_games"] = total_matches
         tft_stats["gold_wasted"] = (platform.get("milestones") or {}).get("goldWasted", 0)
     except Exception as e:  # noqa: BLE001
-        print(f"GRAPHQL STATS: Could not acquire stats for game: {e}")
+        logger.warning(f"GRAPHQL STATS: Could not acquire stats for game: {e}")
 
 
 async def update_graphql_tft_stats() -> None:
@@ -85,8 +92,14 @@ async def created_accounts(session: AsyncSessionDep):
     total = int(await session.scalar(select(func.count()).select_from(UserModel))) or 0
     return {'count': total}
 
-async def visits(session: AsyncSessionDep):
+async def record_visit(session: AsyncSessionDep, r: redis.Redis, ip: str) -> None:
     today = datetime.now(UTC).date()
+    try:
+        first_visit_today = await r.set(f"visit:{today}:{ip}", 1, nx=True, ex=VISIT_DEDUP_SECONDS)
+    except redis.RedisError:
+        return
+    if not first_visit_today:
+        return
 
     stmt = insert(VisitModel).values(
         date=today,
@@ -102,6 +115,10 @@ async def visits(session: AsyncSessionDep):
 
     await session.execute(stmt)
     await session.commit()
+
+
+async def visits(session: AsyncSessionDep):
+    today = datetime.now(UTC).date()
 
     total = int(
         await session.scalar(
@@ -155,18 +172,28 @@ endpoints = {
     "home": {"cache": True, "function": home, "last": 0.0},
 }
 @router.get("/{name}")
-async def stats_dispatcher(name: str, response: Response, session: AsyncSessionDep):
+async def stats_dispatcher(
+    name: str,
+    request: Request,
+    response: Response,
+    session: AsyncSessionDep,
+    r: RedisDep,
+):
+    if name not in endpoints:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {'success': False}
+
     await update_graphql_tft_stats()
-    if name in endpoints:
-        force_update = time.time() - endpoints[name].get("last", 0) > REFRESH_DELTA_SECONDS
-        if endpoints[name].get("cache", False) is True:
-            result = await get_cache(name, endpoints[name].get("function", default), session, force_update) or {}
-        else:
-            result = await endpoints[name].get("function", default)(session) or {}
-        if force_update:
-            endpoints[name]["last"] = time.time()
-        # broadcast realtime stats to all users
-        await WSbroadcast("stats.update", result)
-        return result
-    response.status_code = status.HTTP_404_NOT_FOUND
-    return {'success': False}
+    if name in ("home", "visits"):
+        await record_visit(session, r, client_ip(request))
+
+    force_update = time.time() - endpoints[name].get("last", 0) > REFRESH_DELTA_SECONDS
+    if endpoints[name].get("cache", False) is True:
+        result = await get_cache(name, endpoints[name].get("function", default), session, force_update) or {}
+    else:
+        result = await endpoints[name].get("function", default)(session) or {}
+    if force_update:
+        endpoints[name]["last"] = time.time()
+        if name == "home":
+            await WSbroadcast("stats.update", result)
+    return result

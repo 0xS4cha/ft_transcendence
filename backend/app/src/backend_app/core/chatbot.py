@@ -1,10 +1,14 @@
+import logging
+
 from ollama import AsyncClient
+
+logger = logging.getLogger(__name__)
 
 
 class ChatBot:
 	def __init__(self, host_ip: str, model_name: str, system_prompt: str):
 		self.model_name = model_name
-		self.client = AsyncClient(host=f"http://{host_ip}:11434")
+		self.client = AsyncClient(host=f"http://{host_ip}:11434", timeout=120)
 		self.system_prompt = system_prompt
 
 
@@ -29,7 +33,7 @@ class ChatBot:
 			)
 			return response["message"]["content"]
 		except Exception as e: #noqa: BLE001
-			print(e)
+			logger.warning(e)
 			return "Could not access chatbot for the moment, try again later"
 
 

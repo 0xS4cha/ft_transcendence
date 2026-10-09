@@ -1,3 +1,4 @@
+import logging
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
@@ -7,8 +8,10 @@ from backend_app.core.dependencies import RedisDep
 from backend_app.core.jwt import Token
 from backend_app.models.friends import Friends, Status
 from backend_app.models.users import UserModel
-from backend_app.schemas.user import UserPublic
+from backend_app.schemas.user import UserProfile
 from shared.database import AsyncSessionDep
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -19,7 +22,7 @@ async def get_friends_list(
     current_user: Annotated[UserModel, Depends(Token.get_current_user)],
     session: AsyncSessionDep,
     r: RedisDep,
-) -> list[dict[str, str | None | int | bool]]:
+) -> list[dict[str, str | int | bool | None]]:
     friendships = (await session.scalars(
         select(Friends)
         .where(
@@ -51,10 +54,10 @@ async def get_friends_list(
         friend_id = friendship.requester if current_user.id == friendship.requested else friendship.requested
         friend = friends_by_id.get(friend_id)
         if friend is None:
-            print(f"[Friendship {friendship.id} references missing user {friend_id}")
+            logger.warning(f"[Friendship {friendship.id} references missing user {friend_id}")
             continue
 
         is_online = bool(await r.sismember("websocket:active_users", str(friend_id)))
-        friends_list.append({**dict(UserPublic.model_validate(friend)), "online": is_online})
+        friends_list.append({**dict(UserProfile.model_validate(friend)), "online": is_online})
 
     return friends_list

@@ -1,8 +1,8 @@
 import time
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends
+from pydantic import BaseModel, StringConstraints
 from sqlalchemy import select
 
 from backend_app.core.jwt import Token
@@ -14,9 +14,13 @@ from shared.database import AsyncSessionDep
 router = APIRouter()
 
 MAX_MESSAGES_COUNT  = 200
+MAX_MESSAGE_LENGTH  = 2000
 
 class ChatMessageForm(BaseModel):
-    content: str | None = None
+    content: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, min_length=1, max_length=MAX_MESSAGE_LENGTH),
+    ]
 
 
 def picture_url(picture: str | None) -> str | None:
@@ -28,22 +32,18 @@ def picture_url(picture: str | None) -> str | None:
 
 @router.post("/send")
 async def send_chat(chat_message: ChatMessageForm, current_user: Annotated[UserModel, Depends(Token.get_current_user)], session: AsyncSessionDep):
-    if not chat_message.content:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not send empty message"
-        )
     current_time = round(time.time() * 1000)
+    message = ChatMessage(
+        content=chat_message.content,
+        date=current_time,
+        owner=current_user
+    )
     async with session:
-        session.add(ChatMessage(
-            content=chat_message.content,
-            date=current_time,
-            owner=current_user
-		))
+        session.add(message)
         await session.commit()
     # broadcast message sent to all users
     data = {
-        "id": current_user.id,
+        "id": message.id,
         "date": current_time,
         "content": chat_message.content,
         "user_id": current_user.id,

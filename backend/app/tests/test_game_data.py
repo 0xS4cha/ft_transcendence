@@ -208,6 +208,8 @@ async def test_missing_3d_model_is_null_not_string_none(client, monkeypatch):
 # --- leaderboard ------------------------------------------------------------
 
 class FakeAiohttpResp:
+    status = 200
+
     def __init__(self, data=None, exc=None):
         self.data, self.exc = data, exc
 
@@ -225,6 +227,9 @@ class FakeAiohttpResp:
 
 def fake_aiohttp(monkeypatch, data=None, exc=None, calls=None):
     class Session:
+        def __init__(self, *_a, **_kw):
+            pass
+
         async def __aenter__(self):
             return self
 
@@ -329,7 +334,7 @@ async def test_search_user_found(client, monkeypatch):
 
 async def test_search_uses_correct_riot_routing(monkeypatch):
     from backend_app.api.endpoints.game_data.search import Platform
-    assert Platform.NA1.get_continent() == "america"
+    assert Platform.NA1.get_continent() == "americas"
     assert Platform.KR.get_continent() == "asia"
 
 

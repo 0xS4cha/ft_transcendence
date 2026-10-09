@@ -1,3 +1,4 @@
+import logging
 import time
 
 import jwt
@@ -7,6 +8,8 @@ from jwt.exceptions import InvalidTokenError
 
 from backend_app.core.jwt import Token
 
+logger = logging.getLogger(__name__)
+
 
 async def hit(r: redis.Redis, key: str, times: int, seconds: int) -> bool:
     window = int(time.time()) // seconds
@@ -15,7 +18,7 @@ async def hit(r: redis.Redis, key: str, times: int, seconds: int) -> bool:
         async with r.pipeline(transaction=True) as pipe:
             count, _ = await pipe.incr(redis_key).expire(redis_key, seconds).execute()
     except redis.RedisError as e:
-        print(f"[rate_limiter] Redis unavailable, allowing request: {e}")
+        logger.warning(f"[rate_limiter] Redis unavailable, allowing request: {e}")
         return True
     return count <= times
 
