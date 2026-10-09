@@ -1,8 +1,11 @@
 from contextlib import asynccontextmanager
 
+import asyncpg
 import redis.asyncio as redis
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy.exc import DBAPIError
 
 from backend_app.api.router import api_router
 from backend_app.core.websocket import wsConnectionManager
@@ -33,6 +36,44 @@ app.include_router(api_router)
 
 app.mount("/api/public/models_3d", StaticFiles(directory="/app/src/shared/models_3d"), name="models_3d")
 app.mount("/api/public/profile_pictures", StaticFiles(directory="/app/src/shared/profile_pictures"), name="profile_pictures")
+
+
+@app.exception_handler(asyncpg.exceptions.CharacterNotInRepertoireError)
+async def character_not_in_repertoire_handler(
+    request: Request,
+    exc: asyncpg.exceptions.CharacterNotInRepertoireError,
+):
+    return JSONResponse(
+        status_code=400,
+        content={
+            "detail": "Input contains an unsupported character."
+        },
+    )
+
+@app.exception_handler(DBAPIError)
+async def sqlalchemy_db_error_handler(
+    request: Request,
+    exc: DBAPIError,
+):
+    print(exc)
+    return JSONResponse(
+        status_code=400,
+        content={"detail": "Invalid input data."},
+    )
+
+@app.exception_handler(asyncpg.exceptions.DataError)
+async def data_error_handler(
+    request: Request,
+    exc: asyncpg.exceptions.DataError,
+):
+    print(exc)
+    return JSONResponse(
+        status_code=400,
+        content={
+            "detail": "Invalid input data."
+        },
+    )
+
 
 @app.head("/health")
 @app.get("/health")

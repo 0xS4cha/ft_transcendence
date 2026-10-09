@@ -1,5 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
 
+from backend_app.core.validators import SafeString
+
 
 class UserCreate(BaseModel):
     email: EmailStr
@@ -21,9 +23,8 @@ class UserCreate(BaseModel):
 
 class   UserPublic(BaseModel):
     id: int
-    email: EmailStr
-    username: str
-    picture: str | None = None
+    username: SafeString
+    picture: SafeString | None = None
 
     class Config:
         from_attributes = True
