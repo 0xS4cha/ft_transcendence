@@ -11,7 +11,6 @@ class   UserCreate(BaseModel):
 
 class   UserPublic(BaseModel):
     id: int
-    email: EmailStr
     username: SafeString
     picture: SafeString | None = None
 
