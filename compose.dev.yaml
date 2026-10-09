@@ -1,0 +1,10 @@
+# Dev overrides, layered on top of compose.yaml by `make up` / `make re`.
+# `make prod` uses compose.yaml alone.
+services:
+  backend:
+    command: ["fastapi", "dev", "--host", "0.0.0.0", "--port", "3000", "--proxy-headers", "--forwarded-allow-ips=172.18.0.0/16"]
+    volumes:
+      - ./backend/app/src:/app/src
+      - ./shared/:/app/src/shared/
+      - ./backend/app/alembic:/app/alembic
+      - ./backend/app/alembic.ini:/app/alembic.ini
