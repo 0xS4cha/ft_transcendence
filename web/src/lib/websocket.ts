@@ -62,6 +62,7 @@ export function useWSConnection(url: string = 'ws://127.0.0.1:8080') {
       };
 
       ws.onclose = () => {
+        console.log("testtes")
         setIsConnected(false);
         if (isActive) {
           const delay = Math.min(1000 * Math.pow(2, reconnectAttempt.current), 30000);

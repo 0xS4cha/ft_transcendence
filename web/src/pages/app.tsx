@@ -7,14 +7,17 @@ import { useWSConnection } from "@/lib/websocket"
 import { useAppSelector } from "@/store/hooks";
 
 export default function App() {
-  const { isActive, startConnection } = useWSConnection("/api/websocket/ws");
+  const { isActive, startConnection, stopConnection } = useWSConnection("/api/websocket/ws");
   const { isAuthenticated, isDark } = useAppSelector(state => state.user);
 
   useEffect(() => {
     if (!isActive && isAuthenticated) {
       startConnection();
     }
-  }, [isActive, isAuthenticated, startConnection]);
+    if (!isAuthenticated && isActive) {
+      stopConnection();
+    }
+  }, [isActive, isAuthenticated, startConnection, stopConnection]);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDark);

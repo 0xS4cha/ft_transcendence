@@ -14,6 +14,8 @@ USERNAME_PATTERN = r"^[A-Za-z0-9_-]{3,32}$"
 
 Username = Annotated[str, StringConstraints(pattern=USERNAME_PATTERN)]
 
+from backend_app.core.validators import SafeString
+
 
 class UserCreate(BaseModel):
     email: EmailStr
@@ -37,9 +39,8 @@ class   UserPublic(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
-    email: EmailStr
-    username: str
-    picture: str | None = None
+    username: SafeString
+    picture: SafeString | None = None
 
 
 class   UserProfile(BaseModel):
