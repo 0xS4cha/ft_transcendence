@@ -269,7 +269,7 @@ The frontend will be available at `http://localhost:5173`, proxying API requests
 | **Nathan Bodin** | `nbodin` | **Product Owner** / Developer | Defined product backlog, feature priorities, user requirements, and acceptance criteria. Architected backend models, Alembic migrations, user authentication (Argon2, JWT), 42 OAuth 2.0 integration, user profiles, friends system, Redis rate limiters, and code styling enforcement. |
 | **Sacha Servanton** | `sservant` | **Project Manager** / Developer | Coordinated sprint milestones, task assignments, and delivery schedules. Designed the frontend architecture with React 19, Vite, and Tailwind CSS v4. Implemented custom design system, theme switching, interactive data tables with multi-format export (JSON/XML), internationalization (i18n), Prometheus/Grafana integration, and frontend 42 OAuth/chat flows. |
 | **Antoine Bonin** | `antbonin` | **Tech Lead** / Developer | Supervised overall software architecture, system integration, and technology choices. Designed and implemented the complete interactive Team Builder with `@dnd-kit` drag-and-drop, trait calculations, and composition import/export. Built the application navigation sidebar, patch notes page, ranking tables, and responsive theme polish. |
-| **Jules Clement Massonnat** | `julcleme` | **Developer** | Developed the AI RAG Assistant pipeline (BM25s retrieval, LangChain chunking, Ollama Qwen integration, TFT knowledge base). Built the real-time WebSocket connection manager with Redis Pub/Sub, live chat backend, game data scrapers, 3D model automated downloader, multi-entity search with Riot API, home analytics, and Nginx reverse proxy SSL configuration. |
+| **Jules Clement Massonnat** | `julcleme` | **Tech Lead**/ Developer | Developed the AI RAG Assistant pipeline (BM25s retrieval, LangChain chunking, Ollama Qwen integration, TFT knowledge base). Built the real-time WebSocket connection manager with Redis Pub/Sub, live chat backend, game data scrapers, 3D model automated downloader, multi-entity search with Riot API, home analytics, and Nginx reverse proxy SSL configuration. |
 
 ---
 
@@ -575,6 +575,7 @@ Aggregated TFT unit statistics loaded from Riot/MetaTFT data.
 | **Advanced 3D Graphics** | Major | +2 | Yes (Three.js / React Three Fiber / Drei) |
 | **Complete RAG System** | Major | +2 | Yes (Ollama Qwen 3 + BM25s retrieval) |
 | **Advanced Analytics Dashboard** | Major | +2 | Yes (Recharts visualizations + live stats) |
+| **Team builder** | Major (Custom) | + 2 | Yes (/builder) |
 | **Object-Relational Mapping (ORM)** | Minor | +1 | Yes (SQLAlchemy 2.0 Async + Alembic) |
 | **OAuth 2.0 Authentication** | Minor | +1 | Yes (42 Intra OAuth 2.0) |
 | **Data Import and Export** | Minor | +1 | Yes (JSON, XML, and Team Builder Base64 JSON) |
@@ -582,7 +583,8 @@ Aggregated TFT unit statistics loaded from Riot/MetaTFT data.
 | **Advanced Search** | Minor | +1 | Yes (Multi-entity search + Riot Games API) |
 | **User Activity Analytics** | Minor | +1 | Yes (90-day visitor tracking, usage counters) |
 | **Custom Design System** | Minor | +1 | Yes (Tailwind v4 tokens, light/dark themes, >10 UI components) |
-| **Total Points** | | **23** | *(Exceeds the 14-point minimum requirement)* |
+| **Chatbot** | Minor (custom) | +1 | Yes (with / in the chat) |
+| **Total Points** | | **24** | *(Exceeds the 14-point minimum requirement)* |
 
 ---
 
@@ -623,44 +625,56 @@ Aggregated TFT unit statistics loaded from Riot/MetaTFT data.
 - **Implementation**: Interactive area and line charts built with Recharts, 90-day visitor tracking persisted in PostgreSQL, live counters for chat messages and accounts, and real-time updates broadcast via WebSockets.
 - **Worked on by**: Sacha Servanton (`sservant`), Jules Clement Massonnat (`julcleme`).
 
+#### 8. Team builder (custom) (2 Points)
+- **Choice & Justification**: The team builder is an essential tool of this type; it allows players to visualize team compositions to optimize their chances of winning.
+- **Implementation**: An interactive grid with the ability to place units and items.
+- **Worked on by**: Antoine Bonin (`antbonin`).
+
+
+
 ---
 
 ### Minor Modules (1 Point Each)
 
-#### 8. Object-Relational Mapping (ORM) (1 Point)
+#### 9. Object-Relational Mapping (ORM) (1 Point)
 - **Choice & Justification**: Guarantees type safety, protects against SQL injection, and provides declarative schema management.
 - **Implementation**: Implemented with **SQLAlchemy 2.0 Async** and **Alembic**. Models define relationships, foreign keys, cascades, and constraints with type hints (`Mapped[...]`).
 - **Worked on by**: Nathan Bodin (`nbodin`), Jules Clement Massonnat (`julcleme`).
 
-#### 9. OAuth 2.0 Authentication (1 Point)
+#### 10. OAuth 2.0 Authentication (1 Point)
 - **Choice & Justification**: Simplifies onboarding for 42 students and guarantees secure identity delegation.
 - **Implementation**: The user is redirected to `https://api.intra.42.fr/oauth/authorize` with a cryptographically secure `state` cookie. Upon callback, the backend exchanges the code for an access token, fetches the user's 42 profile (email, login, avatar), associates or creates the account in PostgreSQL, and issues an authenticated JWT session.
 - **Worked on by**: Nathan Bodin (`nbodin`), Sacha Servanton (`sservant`).
 
-#### 10. Data Import and Export (1 Point)
+#### 11. Data Import and Export (1 Point)
 - **Choice & Justification**: Enables players to back up data, share team compositions, or analyze statistics externally.
 - **Implementation**: Statistics tables export to **JSON** and **XML** formats using browser Blob downloads. The Team Builder supports exporting compositions to clipboard as Base64 JSON strings and importing codes to reconstruct the board.
 - **Worked on by**: Sacha Servanton (`sservant`), Antoine Bonin (`antbonin`).
 
-#### 11. Multi-Language Support (1 Point)
+#### 12. Multi-Language Support (1 Point)
 - **Choice & Justification**: Enhances accessibility for an international gaming user base.
 - **Implementation**: Built with `react-i18next` supporting **English (`en`)**, **French (`fr`)**, and **Spanish (`es`)**. All navigation labels, form controls, table headers, error messages, and Set 18 patch notes are completely translated.
 - **Worked on by**: Sacha Servanton (`sservant`), Antoine Bonin (`antbonin`), Jules Clement Massonnat (`julcleme`).
 
-#### 12. Advanced Search (1 Point)
+#### 13. Advanced Search (1 Point)
 - **Choice & Justification**: Enables users to find TFT game items and players across a large dataset instantly.
 - **Implementation**: Backend search endpoint querying units, items, traits, augments, and player summoners via Riot Games API (`name#tag`). Frontend features real-time search inputs with debounce and category-filtered results.
 - **Worked on by**: Jules Clement Massonnat (`julcleme`), Sacha Servanton (`sservant`), Nathan Bodin (`nbodin`).
 
-#### 13. User Activity Analytics (1 Point)
+#### 14. User Activity Analytics (1 Point)
 - **Choice & Justification**: Provides transparency into platform usage and community interaction.
 - **Implementation**: Tracks daily user visits in `visit_model` across a 90-day rolling window, aggregate registered account counts, and live TFT platform data via GraphQL.
 - **Worked on by**: Jules Clement Massonnat (`julcleme`), Sacha Servanton (`sservant`).
 
-#### 14. Custom Design System (1 Point)
+#### 15. Custom Design System (1 Point)
 - **Choice & Justification**: Ensures visual polish, consistent spacing, and accessibility across all views.
 - **Implementation**: Custom token-based design system built on Tailwind CSS v4, supporting dynamic light and dark themes via `next-themes`, and over 15 reusable UI components (dialogs, cards, sheets, sidebars, toolbars, badges, buttons, selects, avatars, tables).
 - **Worked on by**: Sacha Servanton (`sservant`), Antoine Bonin (`antbonin`).
+
+#### 16. Chatbot (custom) (1 Point)
+- **Choice & Justification**: In the age of AI, this type of tool is essential for obtaining precise information from large datasets.
+- **Implementation**: The chatbot is integrated with our RAG tool, allowing users to ask a question by placing a '/' before their input.
+- **Worked on by**: Jules Clément Massonnat (`julcleme`) (back),  Sacha Servanton (`sservant`) (front).
 
 ---
 
@@ -727,7 +741,7 @@ Aggregated TFT unit statistics loaded from Riot/MetaTFT data.
 
 ---
 
-### Jules Clement Massonnat (`julcleme`) — Developer
+### Jules Clement Massonnat (`julcleme`) — Tech Lead & Developer
 
 - **Role & Responsibilities**: Full-stack developer specializing in real-time systems, RAG / AI pipelines, data ingestion, and networking.
 - **Specific Components & Features Implemented**:
