@@ -28,5 +28,5 @@ async def login(
             detail="Incorrect username or password",
         )
 
-    Token.generate_token(user.email, response)
+    Token.generate_token(user, response)
     return user

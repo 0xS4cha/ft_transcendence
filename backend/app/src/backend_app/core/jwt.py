@@ -5,9 +5,8 @@ from typing import Annotated
 import jwt
 from fastapi import Cookie, HTTPException, Response, status
 from jwt.exceptions import InvalidTokenError
-from pydantic import BaseModel
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend_app.core.authenticate import Authenticate
 from backend_app.models.users import UserModel
 from shared.database import AsyncSessionDep, db
 
@@ -15,10 +14,7 @@ from shared.database import AsyncSessionDep, db
 class Token:
     secret_key = db.settings.SECRET_JWT_KEY
     algorithm = "HS256"
-    access_token_expire_minutes = 43200
-
-    class TokenData(BaseModel):
-        username: str | None = None
+    access_token_expire_minutes = 7 * 24 * 60
 
     @staticmethod
     def create_access_token(data: dict, expires_delta: timedelta) -> str:
@@ -28,17 +24,12 @@ class Token:
         return jwt.encode(to_encode, Token.secret_key, algorithm=Token.algorithm)
 
     @staticmethod
-    async def get_current_user(
-        session: AsyncSessionDep,
-        access_token: Annotated[str | None, Cookie()] = None,
-    ) -> UserModel:
-        credentials_exception = HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
-        )
-
-        if access_token is None:
-            raise credentials_exception
+    async def user_from_token(
+        access_token: str | None,
+        session: AsyncSession,
+    ) -> UserModel | None:
+        if not access_token:
+            return None
 
         try:
             payload = jwt.decode(
@@ -48,22 +39,36 @@ class Token:
                 options={"require": ["exp", "sub"]},
             )
         except InvalidTokenError:
-            raise credentials_exception
+            return None
 
-        token_data = Token.TokenData(username=payload.get("sub"))
-        if token_data.username is None:
-            raise credentials_exception
+        sub = payload.get("sub")
+        version = payload.get("ver")
+        if not isinstance(sub, str) or not sub.isdigit() or not isinstance(version, int):
+            return None
 
-        user = await Authenticate.get_user(token_data.username, session)
-        if user is None:
-            raise credentials_exception
+        user = await session.get(UserModel, int(sub))
+        if user is None or user.token_version != version:
+            return None
 
         return user
 
     @staticmethod
-    def generate_token(email: str, response: Response) -> None:
+    async def get_current_user(
+        session: AsyncSessionDep,
+        access_token: Annotated[str | None, Cookie()] = None,
+    ) -> UserModel:
+        user = await Token.user_from_token(access_token, session)
+        if user is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate credentials",
+            )
+        return user
+
+    @staticmethod
+    def generate_token(user: UserModel, response: Response) -> None:
         access_token = Token.create_access_token(
-            data={"sub": email.strip().lower()},
+            data={"sub": str(user.id), "ver": user.token_version},
             expires_delta=timedelta(minutes=Token.access_token_expire_minutes),
         )
 

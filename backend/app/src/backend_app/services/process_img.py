@@ -1,10 +1,14 @@
+import logging
 import os
+import re
 import warnings
 from io import BytesIO
 from typing import BinaryIO
 from uuid import uuid4
 
 from PIL import Image, ImageOps
+
+logger = logging.getLogger(__name__)
 
 Image.MAX_IMAGE_PIXELS = 20000000
 warnings.simplefilter("error", Image.DecompressionBombWarning)
@@ -15,7 +19,16 @@ def remove_file(path: str) -> None:
     except FileNotFoundError:
         pass
     except OSError:
-        print(f"Failed to remove {path}")
+        logger.warning(f"Failed to remove {path}")
+
+SHARED_DIR = "/app/src/shared"
+UPLOADED_PICTURE = re.compile(r"profile_pictures/[0-9a-f]{32}\.webp")
+
+
+def remove_profile_picture(picture: str | None) -> None:
+    if picture and UPLOADED_PICTURE.fullmatch(picture):
+        remove_file(os.path.join(SHARED_DIR, picture))
+
 
 class ProcessImgBadRequestError(Exception):
     pass
@@ -85,7 +98,7 @@ class ProcessImg:
                 dest.write(safe_bytes)
         except OSError as e:
             remove_file(path)
-            print("[process_profile_pic] Failed to write profile picture")
+            logger.warning("[process_profile_pic] Failed to write profile picture")
             raise ProcessImgStorageError("Storage unavailable, try again later") from e
 
         return image_id

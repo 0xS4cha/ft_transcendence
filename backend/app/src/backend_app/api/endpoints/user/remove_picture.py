@@ -1,4 +1,3 @@
-import os
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -7,7 +6,7 @@ from sqlalchemy import update
 from backend_app.core.jwt import Token
 from backend_app.models.users import UserModel
 from backend_app.schemas.user import UserPublic
-from backend_app.services.process_img import remove_file
+from backend_app.services.process_img import remove_profile_picture
 from shared.database import AsyncSessionDep
 
 router = APIRouter()
@@ -49,9 +48,7 @@ async def remove_picture(
         await session.rollback()
         raise
 
-    if not picture.startswith("https://cdn.intra.42.fr/users/"):
-        path = os.path.join("/app/src/shared", picture)
-        remove_file(path)
+    remove_profile_picture(picture)
 
     await session.refresh(current_user)
 
