@@ -873,8 +873,8 @@ In accordance with 42 curriculum guidelines, artificial intelligence tools were 
 
 ## License
 
-This project was developed for educational purposes as part of the **42 Curriculum**.
-[info] *(Add specific license information if applicable, e.g., MIT License).*
+This project was developed for educational purposes as part of the **42 Curriculum** we do not plan on releasing a plubic app.
+
 
 ---
 
